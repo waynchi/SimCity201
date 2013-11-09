@@ -1,0 +1,103 @@
+class Owner extends Resident {
+	// Data
+
+	List<MyHouse> myHouses;
+	List<RentOrder> rents;
+	double money;
+	double PEN_INCREMENT = 50.0;
+
+	//-----------------------------------------------------------//
+
+	// Actions
+
+	applyPenalty(RentOrder ro) {
+		ro.mh.penalty += PEN_INCREMENT;
+		ro.mh.r.payPenalty(PEN_INCREMENT);
+		ro.s = AppliedPenalty;
+	}
+
+	applyPenaltyAndRemove(RentOrder ro) {
+		ro.mh.penalty += PEN_INCREMENT;
+		ro.mh.r.payPenalty(PEN_INCREMENT);
+		rents.remove(ro);
+	}
+
+	//-----------------------------------------------------------//
+
+	// Messages
+
+	hereIsRent(House h, double money) {
+		MyHouse m = find(h);
+		this.money += money;
+		for (RentOrder ro : rents) {
+			if (ro.mh == m && ro.s == Due) {
+				rents.remove(ro);
+				return;
+			}
+		}
+		for (RentOrder ro : rents) {
+			if (ro.mh == m && ro.s == AppliedPenalty) {
+				rents.remove(ro);
+				return;
+			}
+		}
+		for (RentOrder ro : rents) {
+			if (ro.mh == m && ro.s == ApplyPenalty) {
+				ro.s = ApplyPenaltyAndRemove;
+				return;
+			}
+		}
+	}
+
+	hereIsPenalty(House h, double money) {
+		Myouse mh = find(h);
+		this.money += money;
+		mh.penalty -= money;
+	}
+
+	generateRent(m) {
+		for (RentOrder ro : rents) {
+			if (ro.mh == m && ro.s == Due) {
+				ro.s = ApplyPenalty;
+			}
+		}
+		rents.add(new RentOrder(m));
+	}
+
+	//-----------------------------------------------------------//
+	
+	// Scheduler
+	
+	if there is RentOrder ro st ro.s = ApplyPenaltyAndRemove
+		applyPenaltyAndRemove(ro);
+	if there is RentOrder ro st ro.s = ApplyPenalty
+		applyPenalty(ro);
+	super.pickAndExecuteAnAction();
+
+	//-----------------------------------------------------------//
+
+	// Helper data Structures
+
+	class MyHouse {
+		House h;
+		Resident r;
+		double penalty;
+		double rent;
+		Timer rentTimer;
+
+		// A mechanism to generate rent at regular intervals.
+		// Calls generateRent(this).
+	}
+
+	class RentOrder {
+		MyHouse mh;
+		RentOrderState s;
+
+		public RentOrder(MyHouse mh) {
+			this.mh = mh;
+			s = Due;
+		}
+	}
+
+	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
+}

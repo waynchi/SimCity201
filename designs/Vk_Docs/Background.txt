@@ -1,0 +1,43 @@
+class Apartments {
+	List<House> houses;
+	ApartmentsGui gui;
+}
+
+class House {
+	int number;
+	List<Item> items;
+	Person occupant;
+	HouseGui gui;
+	boolean isLocked;
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void lock() {
+		isLocked = true;
+	}
+
+	public void unlock() {
+		isLocked = false;
+	}
+}
+
+class Item {
+	String name;
+	Dimension position;
+	boolean isBroken;
+	ItemGui gui;
+	Timer breakTimer;
+	int breakingTime;
+	House h;
+
+	public void repair() {
+		isBroken = false;
+		// resume breakTimer;
+	}
+
+	// The breakTimer breaks things if not broken already after
+	// breakingTime milliseconds. Then somethingBroke of the resident
+	// is called and breakTimer is paused.
+}

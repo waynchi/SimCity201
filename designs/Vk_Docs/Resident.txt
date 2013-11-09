@@ -1,0 +1,60 @@
+class Resident extends Role {
+	// Data
+
+	House house;
+	RepairMan repairMan;
+	RepairState repairState = None;
+
+	//-----------------------------------------------------------//
+
+	// Actions
+
+	callRepairMan() {
+		repairMan.needHelp(house);
+		repairState = HelpRequested;
+	}
+
+	giveBrokenItems(List<Item> brokenItems) {
+		repairMan.thingsAreBroken(house, brokenItems);
+		repairState = BeingRepaired;
+	}
+
+	thankRepairMan() {
+		repairMan.thankYou(house);
+		repairState = None;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Messages
+
+	somethingBroke() {
+		if (repairState == None)
+			repairState = NeedsRepair;
+	}
+
+	ImHere() {
+		repairState = RepairManIsHere;
+	}
+
+	repairDone() {
+		repairState = RepairDone;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Scheduler
+
+	if there exists a broken item (or list of brokenItems is not empty) and repairState = NeedsRepair
+		callRepairMan();
+	if repairState = RepairManIsHere and list of brokenItems is not empty
+		giveBrokenItems(List<Item> brokenItems);
+	if repairState = RepairDone
+		thankRepairMan();
+
+	//-----------------------------------------------------------//
+
+	// Helper Data Structures
+
+	enum RepairState {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
+}

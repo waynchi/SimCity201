@@ -1,0 +1,103 @@
+class RepairMan extends Role{
+	// The salarTimer puts salary into homeMoney after salaryTime
+	// milliseconds. This has to be implemented.
+
+	// Data
+	List<MyHouse> houses;
+	House myHouse;
+	Timer salaryTimer;
+	double salary;
+	double money;
+	double homeMoney;
+	int salaryTime;
+
+	//-----------------------------------------------------------//
+
+	// Actions
+
+	goToHouse(MyHouse mh) {
+		DoGoToHouse(mh);
+		if (mh.isLocked) {
+			mh.s = ToBeRechecked;
+			GoBack();
+			mh.recheck.schedule(new Timertask() {
+				run() {
+					timeToRecheck(mh);
+				}
+			}, 5000);
+		}
+		else {
+			mh.r.ImHere();
+			mh.s = Reached;
+		}
+	}
+
+	repairItems(MyHouse mh) {
+		for (Item i : brokenItems) {
+			i.repair();
+		}
+		mh.s = DoneRepairing;
+		mh.r.repairDone();
+		mh.brokenItems = null;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Messages
+
+	needHelp(House h) {
+		MyHouse mh = find(h);
+		mh.s = NeedsRepair;
+	}
+
+	thingsAreBroken(House h, List<Item> brokenitems) {
+		MyHouse mh = find(h);
+		mh.brokenItems = brokenItems;
+		mh.s = ItemsGiven;
+	}
+
+	thankYou(House h) {
+		MyHouse mh = find(h);
+		mh.s = None;
+	}
+
+	timeToRecheck(MyHouse mh) {
+		mh.s = NeedsRepair;
+	}
+
+	salaryArrives() {
+		homeMoney += salary;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Scheduler
+	if there is a MyHouse mh st mh.s = ItemsGiven
+		repairItems(mh)
+	if there is a MyHouse st mh.s = NeedsRepair
+		goToHouse(mh);
+
+	//-----------------------------------------------------------//
+
+	// Utilities
+
+	// Ensure thread safety for homeMoney.
+	pickUpSalaryMoney() {
+		money += homeMoney;
+		homeMoney = 0;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Helper Data Structures
+
+	class MyHouse {
+		House h;
+		Resident r;
+		List<Item> brokenItems;
+		HouseState s;
+		Timer recheck;
+	}
+
+	enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing};
+}
