@@ -1,0 +1,112 @@
+BUS
+Data:
+class Passenger {
+	State st = {waiting, waitingAndNotified};
+	BusPassengerRole bpr;
+	Passenger(BusPassengerRole p)
+	{
+		bpr = p;
+		st = waiting;
+	}
+}
+List<Passenger> myPassengers;
+BusGui busGui;
+State busState = {driving, newStopAndPassengersNotified, off};
+BusStop currentStop;
+List<BusStop> myBusStops;
+Messages:
+ImBoarding(BusPassengerRole p){ //remove place
+myPassengers.add(new Passenger(p));
+}
+ImLeaving(BusPassengerRole p){
+Passenger toRemove = findPassenger(p);
+myPassengers.remove(toRemove);
+}
+AnimationFinishedArrivedAtStop(BusStop S){
+currentStop = S;
+busState= newStop;
+stateChanged();
+}
+
+
+Scheduler:
+
+for passenger in myPassengers
+	if busState = newStop and passenger.st = waiting
+		NotifyPassengerAboutCurrentStop(passenger)
+		busState = newStopAndPassengersNotified;
+		passenger.st = waitingAndNotified;
+
+If(busState = newStopAndPassengersNotified)
+	GoToNextStop();
+	busState = driving;
+
+
+Action:
+NotfyPassengersAboutCurrentStop(Passenger p){
+p.bpr.msgArrivedAtStop(currentStop);
+busState = newStopAndPassengersNotified;
+stateChanged();
+}
+
+GoToNextStop(){
+busGui.msgGoToNextStop(myBusStops);
+}
+
+
+
+
+
+Car
+
+Data:
+class Passenger {
+	CarPassengerRole cpr;
+	State st = {};
+	String destination;
+	Passenger(CarPassengerRole c, String d)
+	{
+		cpr = c;
+		destination = d;
+	}
+}
+List<Passenger> myPassengers;
+CarGui carGui;
+State carState = {stopped, driving, arrivedToDestination};
+
+Messages:
+TakeMeHere(Customer c, String place) {
+myPassengers.add(new Passenger(c,place));
+}
+
+AnimationFinishedArrivedAtDestination(String place){
+carState = arrivedToDestination;
+}
+
+ImLeaving(CarPassengerRole cpr){
+Passenger p = findPassenger(cpr);
+myPassengers.remove(p);
+carState = stopped;
+}
+
+Scheduler:
+
+For myPassenger in myPassengers
+If myPassenger.st = waitingInCar & carState = stopped
+		carState = driving;
+		GoToDestination(myPassenger);
+For myPassenger in myPassengers
+If carState = arrivedToDestination & myPassenger.st = waitingInCar
+	myPassenger.st = leaving;
+	TellPassengerWeArrived(myPassenger);
+
+	
+Actions:
+
+GoToDestination(Passenger myPassenger){
+carGui.msgGoToThisPlace(myPassenger.destination);
+}
+
+TellPassengerWeArrived(Passenger myPassenger){
+myPassenger.cpr.msgArrivedToDestination(myPassenger.place);
+}
