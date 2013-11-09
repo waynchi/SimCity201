@@ -1,0 +1,27 @@
+Agenda
+
+- Go Over each and every Design Document (including Eric Strodes)
+
+- Redistribute Roles
+	- Discuss Gui
+	- Restaurant Main class
+	- Anything else?
+
+- Discuss how we're going to use git
+	- double branching
+		- One will be the main branch you work on.
+		- The other will be what you use to commit into the branch.
+		
+- Discuss how we're going to merge together our code.
+	- A* Algorithm
+	- People and Role classes
+	- Anything else?
+		
+- Due Dates
+	- Monday completed Design Document. Pushed.
+	
+	
+	
+
+	
+- Continue working on design or start coding.
