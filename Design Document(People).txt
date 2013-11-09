@@ -9,7 +9,7 @@ Boolean hasCar;
 enum HungryState hunger
 {NotHungry, Hungry, Eating}
 enum AgentState state
-{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar}
+{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome}
 enum AgentEvent event
 {GoingToSleep, WakingUp, GoingToRestaurant, GoingToSleep, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle}
 
@@ -104,20 +104,30 @@ msgTimeIs(int Time)
 	}
 	if(Time >= lastTime && state == Idle)
 	{
-		if(!(Time >= 1700) && Money >= *price of a car && !hasCar)
+		if(!hasCar)
 		{
-			event = GoingToBuyCar;
-			return;
-		}	
+			if(!(Time >= 1700) && Money >= *price of a car)
+			{
+				event = GoingToBuyCar;
+				return;
+			}
+			if(!(Time>= 1700 && Money <= *price of a car)
+			{
+				rand(){
+					1. do nothing();
+					2.{ event == GoingToRetrieveMoney();
+				return}
+				}
+			}
+		}				
 		else
 		{
-			if(Money >= 10000)
+			if(Money >= 1000000)
 			{
 				event = GoingToDepositMoney();
 				return;
 			}
 		}
-		
 		event = GoingHome;
 	}
 	if(Time == 2330)
@@ -167,7 +177,7 @@ if(state == Idle && event == GoingHome)
 	{
 	state == RestingAtHome;
 	}
-	GoingHome();
+	GoToHouse();
 	return true;
 }
 if(state == Idle && event == GoingToBuyCar)
@@ -176,7 +186,18 @@ if(state == Idle && event == GoingToBuyCar)
 	GoBuyCar();
 	return true;
 }
-if(state == Idle && event == 
+if(state == Idle && event == GoingToRetrieveMoney)
+{
+	state == GoingToBank;
+	GoToBank(true);
+	return true;
+}
+if(state == Idle && event == GoingToDepositMoney)
+{
+	state == GoingToBank;
+	GoToBank(false);
+	return true;
+}
 
 
 
@@ -198,6 +219,12 @@ GoToHouse()
 	roles.HouseAgent.msg(this);	
 }
 
+GoBuyCar()
+{
+	gui.GoToMarket();
+	roles.MarketCustomerAgent.msgBuyCar()
+}
+
 LeaveWork()
 {
 	for(MyRole r: roles)
@@ -209,6 +236,13 @@ LeaveWork()
 	}
 	msgTimeIs(MainApplication.Time);
 }
+
+GoToBank(Boolean retrieval)
+{
+	gui.GoToBank;
+	roles.BankCustomerAgent.msg(retrieval,this);
+}
+	
 
 GoToWork()
 {
