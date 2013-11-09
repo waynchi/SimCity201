@@ -1,0 +1,269 @@
+People extends Agent
+
+Data
+
+List<MyRole> roles;
+List<Job> jobs;
+Double Money;
+Boolean hasCar;
+enum HungryState hunger
+{NotHungry, Hungry, Eating}
+enum AgentState state
+{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome}
+enum AgentEvent event
+{GoingToSleep, WakingUp, GoingToRestaurant, GoingToSleep, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle}
+
+
+class Job
+{
+	String job;
+	int start;
+	int end;
+	
+	Job(String job, int start, int end)
+	{
+		this.job = job;
+		this.start = start;
+		this.end = end;
+	}
+}
+
+class MyRole
+{
+	String job;
+	Role role;
+}
+
+Messages
+
+msgTimeIs(int Time)
+{
+	if(Time == 800)
+	{
+		event == WakingUp;
+		stateChanged();
+		return;
+	}
+	if(state == Idle)
+	{
+	if(job.get(0).start - Time >= 200)
+	{
+		if(!hasCar)
+		{
+			if(Money >= *price of a car)
+			{
+			event == GoingToBuyCar;
+			return;
+			}
+			else
+			{
+			rand(){
+			1. do nothing();
+			2.{ event == GoingToRetrieveMoney();
+			return}
+			
+		}
+		else
+		{
+			if(Money >= 10000)
+			{
+				event == GoingToDepositMoney();
+				return;
+			}
+		}
+	}
+	}
+	int lastTime = 100000;
+	for(Job job: jobs)
+	{
+	if(Time == job.start)
+	{
+		event = GoingToWork;
+		stateChanged();
+		return;
+	}
+	if(Time == job.end)
+	{
+		event = LeavingWork;
+		stateChanged();
+		return;
+	}
+	lastTime = job.end;
+	}
+	if(state != Sleep || state != Working)
+	{
+		if(hunger == Hungry)
+		{
+			rand()
+			{
+				event = GoingToRestaurant;
+				event = GoingHome;
+				return;
+			}
+		}
+	}
+	if(Time >= lastTime && state == Idle)
+	{
+		if(!hasCar)
+		{
+			if(!(Time >= 1700) && Money >= *price of a car)
+			{
+				event = GoingToBuyCar;
+				return;
+			}
+			if(!(Time>= 1700 && Money <= *price of a car)
+			{
+				rand(){
+					1. do nothing();
+					2.{ event == GoingToRetrieveMoney();
+				return}
+				}
+			}
+		}				
+		else
+		{
+			if(Money >= 1000000)
+			{
+				event = GoingToDepositMoney();
+				return;
+			}
+		}
+		event = GoingHome;
+	}
+	if(Time == 2330)
+	{
+		event = GoingToSleep;
+		return;
+	}
+	
+}
+
+Scheduler
+
+if there exists a role in Myroles such that role is active{
+	role.pickAndExecuteAnAction();
+}
+
+if(state == Sleep && event == WakingUp)
+{
+	state == Idle;
+	return true;
+}
+if(state == Idle && event == GoingToWork)
+{
+	state == Working;
+	GoToWork();
+	return true;
+}
+if(state == Working && event == LeavingWork)
+{
+	state == Idle;
+	LeaveWork();
+	return true;
+}
+if(state == Idle && event == GoingToRestaurant)
+{
+	state == EatingAtRestaurant;
+	GoingToRestaurant();
+	return true;
+}
+if(state == Idle && event == GoingHome)
+{
+	if(hunger == Hungry)
+	{
+	state == EatingAtHome;
+	}
+	else
+	{
+	state == RestingAtHome;
+	}
+	GoToHouse();
+	return true;
+}
+if(state == Idle && event == GoingToBuyCar)
+{
+	state == BuyingCar;
+	GoBuyCar();
+	return true;
+}
+if(state == Idle && event == GoingToRetrieveMoney)
+{
+	state == GoingToBank;
+	GoToBank(true);
+	return true;
+}
+if(state == Idle && event == GoingToDepositMoney)
+{
+	state == GoingToBank;
+	GoToBank(false);
+	return true;
+}
+
+
+
+
+
+
+Actions
+
+GoToRestaurant()
+{
+	gui.GoToRestaurant();
+	roles.RestaurantCustomerAgent.msg(this);
+	
+}
+
+GoToHouse()
+{
+	gui.GoToHouse();
+	roles.HouseAgent.msg(this);	
+}
+
+GoBuyCar()
+{
+	gui.GoToMarket();
+	roles.MarketCustomerAgent.msgBuyCar()
+}
+
+LeaveWork()
+{
+	for(MyRole r: roles)
+	{
+		if(r.Job == Job.job)
+		{
+			r.role.msgInActive();
+		}
+	}
+	msgTimeIs(MainApplication.Time);
+}
+
+GoToBank(Boolean retrieval)
+{
+	gui.GoToBank;
+	roles.BankCustomerAgent.msg(retrieval,this);
+}
+	
+
+GoToWork()
+{
+	if(Job.job == "Waiter")
+	{
+		roles.WaiterAgent.msg(this);
+	}
+	if(Job.job == "Host")
+	{
+		roles.HostAgent.msg(this);
+	}
+	if(Job.job == "Cook")
+	{
+		roles.CookAgent.msg(this);
+	}
+	if(Job.job == "Vendor")
+	{
+		roles.VendorAgent.msg(this);
+	}
+	if(Job.job == "Teller")
+	{
+		roles.TellerAgent.msg(this);
+	}
+}
