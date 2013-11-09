@@ -38,7 +38,7 @@ Messages
 
 msgTimeIs(int Time)
 {
-	if(Time == 800)
+	if(Time == 800 && state == sleep)
 	{
 		event == WakingUp;
 		stateChanged();
@@ -266,4 +266,7 @@ GoToWork()
 	{
 		roles.TellerAgent.msg(this);
 	}
-}
+	if(Job.job == "RepairMan")
+	{
+		roles.RepairAgent.msg(this);
+	}
