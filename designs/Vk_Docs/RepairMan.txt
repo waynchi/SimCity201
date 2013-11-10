@@ -1,15 +1,18 @@
-class RepairMan extends Role{
-	// The salarTimer puts salary into homeMoney after salaryTime
+class RepairMan extends Resident{
+	// The salaryTimer puts salary into homeMoney after salaryTime
 	// milliseconds. This has to be implemented.
+	// The Person has to send two separate messages to shutdown job
+	// the repairman and shut down his Resident role.
 
 	// Data
 	List<MyHouse> houses;
-	House myHouse;
 	Timer salaryTimer;
 	double salary;
 	double money;
 	double homeMoney;
 	int salaryTime;
+	List<Item> myBrokenItems;
+	boolean isJobActive;
 
 	//-----------------------------------------------------------//
 
@@ -41,6 +44,12 @@ class RepairMan extends Role{
 		mh.brokenItems = null;
 	}
 
+	repairMyHomeItems() {
+		for (Item i : myBrokenItems) {
+			i.repair();
+		}
+	}
+
 	//-----------------------------------------------------------//
 
 	// Messages
@@ -69,13 +78,24 @@ class RepairMan extends Role{
 		homeMoney += salary;
 	}
 
+	myItemBroke(Item i) {
+		myBrokenItems.add(i);
+	}
+
 	//-----------------------------------------------------------//
 
 	// Scheduler
-	if there is a MyHouse mh st mh.s = ItemsGiven
-		repairItems(mh)
-	if there is a MyHouse st mh.s = NeedsRepair
-		goToHouse(mh);
+	if (isJobActive == true) {
+		if there is a MyHouse mh st mh.s = ItemsGiven
+			repairItems(mh)
+		if there is a MyHouse st mh.s = NeedsRepair
+			goToHouse(mh);
+		if myBrokenItems is not empty
+			repairMyHomeItems();
+	}
+	else {
+		super.pickAndExecuteAnAction();
+	}
 
 	//-----------------------------------------------------------//
 

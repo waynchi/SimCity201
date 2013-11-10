@@ -4,6 +4,8 @@ class Resident extends Role {
 	House house;
 	RepairMan repairMan;
 	RepairState repairState = None;
+	State myState;
+	Semaphore busy = new Semaphore(0, true);
 
 	//-----------------------------------------------------------//
 
@@ -24,6 +26,21 @@ class Resident extends Role {
 		repairState = None;
 	}
 
+	cookAtHome() {
+		myState = Cooking;
+		DoCook();
+	}
+
+	eatFood() {
+		DoEatFood();
+		busy.acquire();
+	}
+
+	sleep() {
+		myState = Sleeping;
+		DoSleep();
+	}
+
 	//-----------------------------------------------------------//
 
 	// Messages
@@ -41,20 +58,46 @@ class Resident extends Role {
 		repairState = RepairDone;
 	}
 
+	eatAtHome() {
+		myState = WantToCook;
+	}
+
+	foodCooked() {
+		myState = FoodCooked;
+	}
+
+	activityComplete() {
+		busy.release();
+	}
+
+	eatAtRestaurant() {
+		myState = WantToEatAtRestaurant;
+	}
+
 	//-----------------------------------------------------------//
 
 	// Scheduler
 
-	if there exists a broken item (or list of brokenItems is not empty) and repairState = NeedsRepair
-		callRepairMan();
-	if repairState = RepairManIsHere and list of brokenItems is not empty
-		giveBrokenItems(List<Item> brokenItems);
-	if repairState = RepairDone
-		thankRepairMan();
+	if (!(this instanceof RepairMan)) {
+		if repairState = RepairDone
+			thankRepairMan();
+		if repairState = RepairManIsHere and list of brokenItems is not empty
+			giveBrokenItems(List<Item> brokenItems);
+		if there exists a broken item and repairState = NeedsRepair && myState != Sleeping
+			callRepairMan();
+	}
+	if (myState == FoodCooked)
+		eatFood();
+	if (myState == WantToCook && grill is not broken)
+		cookAtHome();
+	if (myState == WantToSleep && repairState != (RepairManIsHere || BeingRepaired || RepairDone))
+		sleep();
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
 	enum RepairState {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
+
+	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, WantToEatAtRestaurant};
 }
