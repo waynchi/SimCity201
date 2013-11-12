@@ -15,13 +15,13 @@ If current working capital < N but (bank balance + current working capital) >= N
 If current working capital < N and (bank balance + current working capital) < N,
 	Withdraw all the money, Request a loan from bank,
 	If loan is granted (msgGrantALoan), pay workers
-	If loan is refused (msgRefuseALoan), DOES NOT pay workers and deposit excess money 		if there is any
+	If loan is refused (msgRefuseALoan), DOES NOT pay workers and deposit excess money if there is any
 
 
 Pseudo code:
+in RestaurantPanel.java:
 
 DATA:
-in RestaurantPanel.java:
 Double min_working_capital, working_capital, bank_balance;
 Double waiter_salary, cook_salary, host_salary, cashier_salary;
 getters and setters for each
@@ -140,6 +140,7 @@ shared-data between cook and waiter:
 
 
 NEW DATA AND CLASSES
+
 in RestaurantPanel.java:
 class Order {
 	int table;
