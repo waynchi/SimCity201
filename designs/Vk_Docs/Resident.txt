@@ -41,6 +41,14 @@ class Resident extends Role {
 		// Animation implementation.
 	}
 
+	repairMyHomeItems() {
+		List<Item> brokenItems house.getItems();
+		for (Item i : brokenItems) {
+			i.repair();
+		}
+		repairState = None;
+	}
+
 	//-----------------------------------------------------------//
 
 	// Messages
@@ -90,6 +98,11 @@ class Resident extends Role {
 			giveBrokenItems(List<Item> brokenItems);
 		if there exists a broken item and repairState = (NeedsRepair || None) && myState != Sleeping
 			callRepairMan();
+	}
+	else {
+		if (repairState == NeedsRepair) {
+			repairMyHomeItems();
+		}
 	}
 	if (myState == FoodCooked)
 		eatFood();
