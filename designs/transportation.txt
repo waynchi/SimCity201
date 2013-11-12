@@ -11,7 +11,7 @@ class Passenger {
 }
 List<Passenger> myPassengers;
 BusGui busGui;
-State busState = {driving, newStopAndPassengersNotified, off};
+State busState = {driving, newStop, newStopAndPassengersNotified, off};
 BusStop currentStop;
 List<BusStop> myBusStops;
 Messages:
@@ -24,7 +24,7 @@ myPassengers.remove(toRemove);
 }
 AnimationFinishedArrivedAtStop(BusStop S){
 currentStop = S;
-busState= newStop;
+busState = newStop;
 stateChanged();
 }
 
