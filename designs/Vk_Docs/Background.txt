@@ -1,12 +1,13 @@
 class Apartments {
 	List<House> houses;
 	ApartmentsGui gui;
+	String name;
 }
 
 class House {
 	int number;
 	List<Item> items;
-	Person occupant;
+	Resident occupant;
 	HouseGui gui;
 	boolean isLocked;
 
@@ -28,16 +29,13 @@ class Item {
 	Dimension position;
 	boolean isBroken;
 	ItemGui gui;
-	Timer breakTimer;
-	int breakingTime;
 	House h;
 
 	public void repair() {
 		isBroken = false;
-		// resume breakTimer;
 	}
 
-	// The breakTimer breaks things if not broken already after
-	// breakingTime milliseconds. Then somethingBroke of the resident
-	// is called and breakTimer is paused.
+	public void breakIt() {
+		isBroken = true;
+	}
 }

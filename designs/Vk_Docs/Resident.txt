@@ -28,17 +28,17 @@ class Resident extends Role {
 
 	cookAtHome() {
 		myState = Cooking;
-		DoCook();
+		// Animation implementation.
 	}
 
 	eatFood() {
-		DoEatFood();
-		busy.acquire();
+		myState = Eating;
+		// Animation implementation.
 	}
 
 	sleep() {
 		myState = Sleeping;
-		DoSleep();
+		// Animation implementation.
 	}
 
 	//-----------------------------------------------------------//
@@ -74,6 +74,11 @@ class Resident extends Role {
 		myState = WantToEatAtRestaurant;
 	}
 
+	doneEating() {
+		myState = Idle;
+		activityComplete();
+	}
+
 	//-----------------------------------------------------------//
 
 	// Scheduler
@@ -81,9 +86,9 @@ class Resident extends Role {
 	if (!(this instanceof RepairMan)) {
 		if repairState = RepairDone
 			thankRepairMan();
-		if repairState = RepairManIsHere and list of brokenItems is not empty
+		if repairState = RepairManIsHere
 			giveBrokenItems(List<Item> brokenItems);
-		if there exists a broken item and repairState = NeedsRepair && myState != Sleeping
+		if there exists a broken item and repairState = (NeedsRepair || None) && myState != Sleeping
 			callRepairMan();
 	}
 	if (myState == FoodCooked)

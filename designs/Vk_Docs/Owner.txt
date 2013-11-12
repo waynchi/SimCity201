@@ -50,12 +50,12 @@ class Owner extends Resident {
 	}
 
 	hereIsPenalty(House h, double money) {
-		Myouse mh = find(h);
+		MyHouse mh = find(h);
 		this.money += money;
 		mh.penalty -= money;
 	}
 
-	generateRent(m) {
+	generateRent(MyHouse m) {
 		for (RentOrder ro : rents) {
 			if (ro.mh == m && ro.s == Due) {
 				ro.s = ApplyPenalty;
@@ -72,7 +72,7 @@ class Owner extends Resident {
 		applyPenaltyAndRemove(ro);
 	if there is RentOrder ro st ro.s = ApplyPenalty
 		applyPenalty(ro);
-	super.pickAndExecuteAnAction();
+	return super.pickAndExecuteAnAction();
 
 	//-----------------------------------------------------------//
 
@@ -80,7 +80,7 @@ class Owner extends Resident {
 
 	class MyHouse {
 		House h;
-		Resident r;
+		Renter r;
 		double penalty;
 		double rent;
 		Timer rentTimer;

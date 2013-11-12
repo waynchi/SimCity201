@@ -13,6 +13,7 @@ class RepairMan extends Resident{
 	int salaryTime;
 	List<Item> myBrokenItems;
 	boolean isJobActive;
+	MyHouse currentHouse;
 
 	//-----------------------------------------------------------//
 
@@ -22,6 +23,7 @@ class RepairMan extends Resident{
 		DoGoToHouse(mh);
 		if (mh.isLocked) {
 			mh.s = ToBeRechecked;
+			currentHouse = null;
 			GoBack();
 			mh.recheck.schedule(new Timertask() {
 				run() {
@@ -68,6 +70,7 @@ class RepairMan extends Resident{
 	thankYou(House h) {
 		MyHouse mh = find(h);
 		mh.s = None;
+		currentHouse = null;
 	}
 
 	timeToRecheck(MyHouse mh) {
@@ -86,15 +89,21 @@ class RepairMan extends Resident{
 
 	// Scheduler
 	if (isJobActive == true) {
-		if there is a MyHouse mh st mh.s = ItemsGiven
-			repairItems(mh)
-		if there is a MyHouse st mh.s = NeedsRepair
-			goToHouse(mh);
-		if myBrokenItems is not empty
-			repairMyHomeItems();
+		if (currentHouse == null) {
+			if there is a MyHouse mh st mh.s = NeedsRepair
+				currentHouse = mh;
+		}
+		if (currentHouse != null) {
+			if (currentHouse.s == NeedsRepair)
+				goToHouse(currentHouse);
+			if (currentHouse.s == Items.Given)
+				repairItems(currentHouse);
+		}
 	}
+	else if (!myBrokenItems.isEmpty())
+		repairMyHomeItems();
 	else {
-		super.pickAndExecuteAnAction();
+		return super.pickAndExecuteAnAction();
 	}
 
 	//-----------------------------------------------------------//
