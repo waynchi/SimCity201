@@ -36,6 +36,11 @@ class MyRole
 
 Messages
 
+msgDone(Role r)
+{
+	state == Idle;
+	r.msgIsInActive();
+}
 msgTimeIs(int Time)
 {
 	if(Time == 800 && state == sleep)
@@ -61,7 +66,6 @@ msgTimeIs(int Time)
 			1. do nothing();
 			2.{ event == GoingToRetrieveMoney();
 			return}
-			
 		}
 		else
 		{
@@ -222,7 +226,7 @@ GoToHouse()
 GoBuyCar()
 {
 	gui.GoToMarket();
-	roles.MarketCustomerAgent.msgBuyCar()
+	roles.MarketCustomerRole.msgBuyCar()
 }
 
 LeaveWork()
@@ -240,7 +244,7 @@ LeaveWork()
 GoToBank(Boolean retrieval)
 {
 	gui.GoToBank;
-	roles.BankCustomerAgent.msg(retrieval,this);
+	roles.BankCustomerRole.msgIsActive();
 }
 	
 
@@ -248,25 +252,27 @@ GoToWork()
 {
 	if(Job.job == "Waiter")
 	{
-		roles.WaiterAgent.msg(this);
+		roles.WaiterRole.msgIsActive();
 	}
 	if(Job.job == "Host")
 	{
-		roles.HostAgent.msg(this);
+		roles.HostRole.msgIsActive();
 	}
 	if(Job.job == "Cook")
 	{
-		roles.CookAgent.msg(this);
+		roles.CookRole.msgIsActive();
 	}
 	if(Job.job == "Vendor")
 	{
-		roles.VendorAgent.msg(this);
+		roles.VendorRole.msgIsActive();
 	}
 	if(Job.job == "Teller")
 	{
-		roles.TellerAgent.msg(this);
+		roles.TellerRole.msgIsActive();
 	}
 	if(Job.job == "RepairMan")
 	{
-		roles.RepairAgent.msg(this);
+		roles.RepairRole.msgIsActive();
 	}
+	roles.ResidentRole.msgIsInActive();
+}
