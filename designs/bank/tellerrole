@@ -1,0 +1,109 @@
+Data
+
+List<myCustomer> customers;
+Enum CustomerState{none, waiting, beingHelped, deposit, newAccount, withdraw, loan}
+myCustomer currentCustomer;
+class myCustomer{
+	BankCustomerRole b;
+	state s;
+	Account a;
+	double withdraw;
+	double deposit;
+	string name;
+}
+class Account{
+	int id;
+	double funds;
+	string customerName;
+}
+Map<int, Account> accounts;
+
+
+Scheduler 
+
+if customers != NULL {
+	if currentCustomer == NULL {
+		currentCustomer = customers.get(0);
+		CallCustomer(currentCustomer);
+	}
+	else {
+		if currentCustomer.state = newAccount{
+			newAccount(currentCustomer);
+		}
+		if currentCustomer.state = deposit{
+			DepositMoney(currentCustomer);
+		}
+		if currentCustomer.state = withdraw{
+			WithdrawMoney(currentCustomer);
+		}
+	}
+}
+
+Actions
+
+DepositMoney(myCustomer c){
+	c.a.funds += c.deposit;
+	c.deposit = 0;
+	c.b.msgDepositSuccessful(c.a.funds);
+	customers.remove(c);
+	currentCustomer = NULL;
+}
+
+WithdrawMoney(myCustomer c){
+	if c.withdraw > c.a.funds {
+		c.b.msgGiveLoan(c.withdraw);
+		c.a.funds -= c.withdraw;
+		c.withdraw = 0;
+	}
+	else {
+		c.b.msgWithdrawSuccessful(c.withdraw);
+		c.a.funds -= c.withdraw;
+		c.withdraw = 0;
+	}
+}
+
+NewAccount(myCustomer c){
+	c.a.funds += c.deposit;
+	c.deposit = 0;
+	c.b.msgAccountBalance(c.a.id, c.a.funds);
+	customers.remove(c);
+}
+
+CallCustomer(myCustomer c){
+	c.state = beingHelped;
+	c.b.msgReadyToHelp(this);
+}
+
+Messages
+
+msgIsActive(){
+	p.CustomerState = waiting;
+}
+
+msgCreateAccount(string name, double money){
+	currentCustomer.a = new Account(name, accounts.size+1);
+	currentCustomer.deposit = money;
+	currentCustomer.state = newAccount;
+}
+
+msgWithdraw(int acc, double money){
+	currentCustomer.a = accounts.get(acc);
+	currentCustomer.withdraw = money;
+	currentCustomer.state = withdraw;
+}
+
+msgDeposit(int acc, double money){
+	currentCustomer.a = accounts.get(acc);
+	currentCustomer.deposit = money;
+	currentCustomer.state = deposit;
+}
+
+msgDeposit(double money){
+	currentCustomer.deposit = money;
+	currentCustomer.state = newAccount;
+}
+
+
+
+
+  
