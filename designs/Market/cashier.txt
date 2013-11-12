@@ -30,4 +30,5 @@ Actions
 prepareCheck(Check check) {
 	change = check.totalPaid - check.totalDue;
 	check.w.msgHereIsChange(change);
+	checks.remove(check);
 }
