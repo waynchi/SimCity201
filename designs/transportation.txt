@@ -1,17 +1,89 @@
+BusPassengerRole
+Data:
+
+BusStop currentBusStop;
+BusStop destination;
+Bus myBus;
+State event = {busArrived,busArrivedAtDestination,
+Messages:
+
+msgIsActive(){
+currentBusStop.msgWaitingHere(this);
+myState = waitingAtBusStop;
+}
+
+msgBusArrived(Bus b){
+myBus = b;
+event = busArrived;
+stateChanged();
+}
+
+msgArrivedAtStop(BusStop bs){
+if (bs == destination){
+        event = busArrivedAtDestination;
+        stateChanged();        
+        }
+}
+
+Scheduler:
+
+if(event = busArrived && myState = waitingAtBusStop) {
+        myState = waitingInBus;
+        BoardBus();
+}
+
+if(event = busArrivedAtDestination && myState = waitingInBus) {
+        myState = leavingBus;
+        LeaveBus();
+}
+
+Actions:
+
+BoardBus(){
+myBus.msgImBoarding(this);
+currentBusStop.msgLeavingBusStop(this);
+}
+
+LeaveBus() {
+bus.msgImLeaving(this);
+
+}
+
+
+class BusStop {
+List<BusPassengerRole> waitingPassengers;
+
+msgWaitingHere(BusPassengerRole bpr){
+waitingPassengers.add(bpr);
+}
+
+msgBusArrived(Bus b){
+for passenger in waitingPassengers
+        passenger.msgBusArrived(b);
+b.msgAllBusStopPassengersNotified();
+}
+
+msgLeavingBusStop(BusPassengerRole bpr){
+waitingPassengers.remove(bpr);
+}
+
+}
+
+
 BUS
 Data:
 class Passenger {
-	State st = {waiting, waitingAndNotified};
-	BusPassengerRole bpr;
-	Passenger(BusPassengerRole p)
-	{
-		bpr = p;
-		st = waiting;
-	}
+        State st = {waiting, waitingAndNotified};
+        BusPassengerRole bpr;
+        Passenger(BusPassengerRole p)
+        {
+                bpr = p;
+                st = waiting;
+        }
 }
 List<Passenger> myPassengers;
 BusGui busGui;
-State busState = {driving, newStopAndPassengersNotified, off};
+State busState = {driving, newStop, newStopAndPassengersNotified, waitingForNewPassengers, readyToLeave, off};
 BusStop currentStop;
 List<BusStop> myBusStops;
 Messages:
@@ -22,9 +94,14 @@ ImLeaving(BusPassengerRole p){
 Passenger toRemove = findPassenger(p);
 myPassengers.remove(toRemove);
 }
+
 AnimationFinishedArrivedAtStop(BusStop S){
 currentStop = S;
-busState= newStop;
+busState = newStop;
+stateChanged();
+}
+msgAllBusStopPassengersNotified(){
+busState = readyToLeave;
 stateChanged();
 }
 
@@ -32,21 +109,35 @@ stateChanged();
 Scheduler:
 
 for passenger in myPassengers
-	if busState = newStop and passenger.st = waiting
-		NotifyPassengerAboutCurrentStop(passenger)
-		busState = newStopAndPassengersNotified;
-		passenger.st = waitingAndNotified;
+        if (busState = newStop and passenger.st = waiting) {
+                passenger.st = waitingAndNotified;
+                NotifyPassengerAboutCurrentStop(passenger)
+                }
 
-If(busState = newStopAndPassengersNotified)
-	GoToNextStop();
-	busState = driving;
 
+
+If(busState = newStopAndPassengersNotified){
+        busState = waitingForNewPassengers;
+        WaitForNewPassengers();
+        }
+
+if(busState = readyToLeave) {
+        busState = driving;
+        GoToNextStop();
+}
 
 Action:
+
+WaitForNewPassengers(){
+currentStop.msgBusArrived(this);
+}
+
 NotfyPassengersAboutCurrentStop(Passenger p){
 p.bpr.msgArrivedAtStop(currentStop);
+if(allBusPassengersNotified) //function that loops through passengers, checking if each state says notified
 busState = newStopAndPassengersNotified;
-stateChanged();
+        
+
 }
 
 GoToNextStop(){
@@ -55,32 +146,70 @@ busGui.msgGoToNextStop(myBusStops);
 
 
 
+CarPassengerRole
+
+Data:
+String destination;
+Car myCar;
+State myState;
+Messages:
+
+msgIsActive(){
+myState = readyToLeave;
+stateChanged();
+}
+
+msgArrivedToDestination(String place){
+if(destination = place){
+myState = readyToLeave;
+stateChanged();
+}
+
+Scheduler:
+
+if(myState = readyToLeave){
+myState = goingToDestination;
+GoToDestination();
+}
+
+if(myState = readyToLeave){
+myState = readyToLeave;
+LeaveCar();
+}
+
+Actions:
+GoToDestination(){
+myCar.msgTakeMeHere(this,destination);
+}
+LeaveCar(){
+myCar.msgImLeaving(this);
+}
 
 
 Car
-
 Data:
 class Passenger {
-	CarPassengerRole cpr;
-	State st = {};
-	String destination;
-	Passenger(CarPassengerRole c, String d)
-	{
-		cpr = c;
-		destination = d;
-	}
+        CarPassengerRole cpr;
+        State st = {waitingInCar, leaving};
+        String destination;
+        Passenger(CarPassengerRole c, String d)
+        {
+                cpr = c;
+                destination = d;
+        }
 }
 List<Passenger> myPassengers;
 CarGui carGui;
 State carState = {stopped, driving, arrivedToDestination};
 
 Messages:
-TakeMeHere(Customer c, String place) {
+TakeMeHere(CarPassengerRole c, String place) {
 myPassengers.add(new Passenger(c,place));
 }
 
 AnimationFinishedArrivedAtDestination(String place){
 carState = arrivedToDestination;
+stateChanged();
 }
 
 ImLeaving(CarPassengerRole cpr){
@@ -93,14 +222,14 @@ Scheduler:
 
 For myPassenger in myPassengers
 If myPassenger.st = waitingInCar & carState = stopped
-		carState = driving;
-		GoToDestination(myPassenger);
+                carState = driving;
+                GoToDestination(myPassenger);
 For myPassenger in myPassengers
 If carState = arrivedToDestination & myPassenger.st = waitingInCar
-	myPassenger.st = leaving;
-	TellPassengerWeArrived(myPassenger);
+        myPassenger.st = leaving;
+        TellPassengerWeArrived(myPassenger);
 
-	
+        
 Actions:
 
 GoToDestination(Passenger myPassenger){
