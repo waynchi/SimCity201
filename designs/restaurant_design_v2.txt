@@ -15,15 +15,18 @@ If current working capital < N but (bank balance + current working capital) >= N
 If current working capital < N and (bank balance + current working capital) < N,
 	Withdraw all the money, Request a loan from bank,
 	If loan is granted (msgGrantALoan), pay workers
-	If loan is refused (msgRefuseALoan), DOES NOT pay workers and deposit excess money if there is any
+	If loan is refused (msgRefuseALoan), DOES NOT pay workers and deposit excess money 		if there is any
+
 
 Pseudo code:
-RestaurantPanel.java
+
+DATA:
+in RestaurantPanel.java:
 Double min_working_capital, working_capital, bank_balance;
 Double waiter_salary, cook_salary, host_salary, cashier_salary;
 getters and setters for each
 
-RestaurantCashierRole.java
+in RestaurantCashierRole.java:
 Double min_working_capital, working_capital, bank_balance;
 Double waiter_salary, cook_salary, host_salary, cashier_salary;
 Semaphore depositCompleted, withdrawalCompleted;
@@ -38,7 +41,10 @@ restaurantCashierRole (String name, restaurantPanel rp) {
 	bank_balance = rp.getBankBalance();
 }
 
-messages:
+
+MESSAGES:
+
+in CashierRole.java
 depositCompleted(double amount){
 	working_capital -= amount;
 	bank_balance += amount;
@@ -58,7 +64,8 @@ loanRefused(){
 	loanRefused = true;
 }
 
-Scheduler:
+
+SCHEDULER:
 // other scheduler rules
 if (loanRequested and loanGranted) {
 	payWorkers();
@@ -72,7 +79,8 @@ if (onClose) {
 	prepareToClose();
 }
 
-Actions:
+
+ACTION:
 prepareToClose() {
 	double total = getTotalSalary() + min_working_capital;
 	If working_capital >= total {
@@ -122,7 +130,16 @@ depositExcessMoney() {
 		bank.deposit(working_capital - min_working_capital);
 		depositCompleted.acquire();
 }
+
+
+
+
+
+
 shared-data between cook and waiter:
+
+
+NEW DATA AND CLASSES
 in RestaurantPanel.java:
 class Order {
 	int table;
@@ -154,28 +171,33 @@ class CookWaiterMonitor extends Object {
 public CookWaiterMonitor theMonitor;
 CookRole c = new CookRole (“cook”, theMonitor);
 SpecialWaiterRole w = new SpecialWaiterRole(name, theMonitor);
-// constructors need to be changed respectively–
 
+in WaiterRole.interface
 Abstract Class WaiterRole extends Role {
 	// same data
 	// same message
 	// same actions except for placeOrder(MyCustomer customer)
 }
+
+in NormalWaiterRole.java:
 public class NormalWaiterRole extends WaiterRole implements Waiter {
 	// this is the normal type of waiter that we’ve been working on so far
 	// everything remains the same.
 }
+
+in SpecialWaiterRole.java:
 public class SpecialWaiterRole extends WaiterRole implements Waiter {
 	// same message and scheduler rules as the NormalWaiterAgent
 	// Action placeOrder needs to be changed:
 	public void placeOrder(MyCustomer customer) {
 		print ("Here's an order for table " + customer.tableNumber);
-		cook.msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		theMonitor.addOrder(customer.table, customer.food, this);
 		customer.state = customerState.waitingForFood;
 	}
 }
+
 in CookRole.java:
+
 private class MyOrder {
 		WaiterRole waiter; (if this doesn’t work, have both waiter types in the class)
 		int tableNumber;
@@ -189,9 +211,8 @@ private class MyOrder {
 		}
 	}
 public Boolean pickAndExecuteAnAction() {
-	// import Order class from restPanel
-	Order order = new Order(theMonitor.removeOrder());
 	// other scheduler rules
+	Order order = new Order(theMonitor.removeOrder());
 	if (order) {
 		orders.add(new myOrder(order.table, order.food, order.waiter))
 		return true; 
