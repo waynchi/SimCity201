@@ -1,0 +1,34 @@
+CASHIER
+
+Data
+-----
+List<Check> checks;
+Class Check {
+	Waiter w;
+	double totalPaid;
+	double totalDue;
+}
+double change;
+
+Messages
+-----
+msgHereIsPayment(double totalPaid, double totalDue, Waiter w) {
+	Check check = new Check(totalPaid, totalDue);
+	checks.add(check);
+}
+
+Scheduler
+-----
+for check in checks {
+	if(check.totalPaid >= check.totalDue) {
+		prepareCheck(check);
+	}
+}
+
+Actions
+------
+prepareCheck(Check check) {
+	change = check.totalPaid - check.totalDue;
+	check.w.msgHereIsChange(change);
+	checks.remove(check);
+}

@@ -2,7 +2,7 @@ EMPLOYEE
 
 Data
 ------
-Enum orderState = {New,ReadyToPay,PaymentReceived,DeliveringChange}
+Enum orderState = {New,OrderFulfilled,ReadyToPay,CheckDelivered,PaymentReceived,OrderPaid,DeliveringChange}
 List<Order> orders;
 List<Checks> checks;
 Class Order {
@@ -32,13 +32,6 @@ msgHereIsAnOrder(List<Integer>chosenItems) {
 	}
 	orders.add(newOrder);
 }
-msgReadyToPay(order) {
-	order.state = orderState.ReadyToPay;
-}
-msgHereIsTheCheck(double totalDue,order) {
-	order.totalDue = totalDue;
-	order.state = orderState.OutForPayment;	
-}
 msgHereIsPayment(double amount, order) {
 	order.totalPaid = order.totalPaid;
 	order.state = orderState.PaymentReceived;		
@@ -47,9 +40,6 @@ msgHereIsChange(double change, order) {
 	order.totalChange = change;
 	order.state = orderState.DeliveringChange;
 }
-msgIAmLeaving(order) {
-	orders.remove(order);	
-}
 
 Scheduler
 -----
@@ -57,11 +47,11 @@ for order in orders {
 	if order.state = orderState.New {
 		getOrder(order);
 	}
-	if order.state = orderState.ReadyToPay {
-		getBillFromCashier(order);
+	if order.state = orderState.OrderFulfilled {
+		giveOrderToCustomer(order);
 	}
-	if order.state = orderState.OutForPayment {
-		deliverCheckToCustomer(order);
+	if order.state = orderState.ReadyToPay {
+		giveCheckToCustomer(order);
 	}
 	if order.state = orderState.PaymentReceived {
 		getChangeFromCashier(order);
@@ -77,26 +67,33 @@ getOrder(Order order) {
 	for item in order.items {
 		DoGetItem(order.posX,order.posY);
 	}
+	order.state = OrderFulfilled;
 
 }
 
-getBillFromCashier(Order order) {
+giveOrderToCustomer(order) {
+	DoGoToCustomer();
+	order.customer.msgHereIsYourOrder(order.items);
+	order.state = ReadyToPay;
+}
+
+
+giveCheckToCustomer(Order order) {
 	for item in order.items {
 		double totalDue = totalDue + item.price;
 	}
 	order.totalDue = totalDue;
 	DoGoToCashier();
-	cashier.msgPrepareCheck(totalDue);
-}
-deliverCheckToCustomer(order) {
-	DoGoToCustomer();
-	order.customer.msgHereIsWhatsDue(order.totalDue);		
+	order.customer.msgHereIsWhatIsDue(order.customer,totalDue);
+	order.state = CheckDelivered;
 }
 getChangeFromCashier(order) {
 	DoGoToCashier();
-	cashier.msgHereIsPayment(order.totalPaid);
+	cashier.msgHereIsPayment(order.totalPaid, order.totalDue, this);
+	order.state = OrderPaid;
 }
 deliverChangeToCustomer(order) {
 	DoGoToCustomer();
 	order.customer.msgHereIsChange(order.totalChange);
+	orders.remove(order);
 }
