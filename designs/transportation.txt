@@ -20,21 +20,21 @@ stateChanged();
 
 msgArrivedAtStop(BusStop bs){
 if (bs == destination){
-	event = busArrivedAtDestination;
-	stateChanged();	
-	}
+        event = busArrivedAtDestination;
+        stateChanged();        
+        }
 }
 
 Scheduler:
 
 if(event = busArrived && myState = waitingAtBusStop) {
-	myState = waitingInBus;
-	BoardBus();
+        myState = waitingInBus;
+        BoardBus();
 }
 
 if(event = busArrivedAtDestination && myState = waitingInBus) {
-	myState = leavingBus;
-	LeaveBus();
+        myState = leavingBus;
+        LeaveBus();
 }
 
 Actions:
@@ -59,7 +59,7 @@ waitingPassengers.add(bpr);
 
 msgBusArrived(Bus b){
 for passenger in waitingPassengers
-	passenger.msgBusArrived(b);
+        passenger.msgBusArrived(b);
 b.msgAllBusStopPassengersNotified();
 }
 
@@ -73,13 +73,13 @@ waitingPassengers.remove(bpr);
 BUS
 Data:
 class Passenger {
-	State st = {waiting, waitingAndNotified};
-	BusPassengerRole bpr;
-	Passenger(BusPassengerRole p)
-	{
-		bpr = p;
-		st = waiting;
-	}
+        State st = {waiting, waitingAndNotified};
+        BusPassengerRole bpr;
+        Passenger(BusPassengerRole p)
+        {
+                bpr = p;
+                st = waiting;
+        }
 }
 List<Passenger> myPassengers;
 BusGui busGui;
@@ -109,21 +109,21 @@ stateChanged();
 Scheduler:
 
 for passenger in myPassengers
-	if (busState = newStop and passenger.st = waiting) {
-		passenger.st = waitingAndNotified;
-		NotifyPassengerAboutCurrentStop(passenger)
-		}
+        if (busState = newStop and passenger.st = waiting) {
+                passenger.st = waitingAndNotified;
+                NotifyPassengerAboutCurrentStop(passenger)
+                }
 
 
 
 If(busState = newStopAndPassengersNotified){
-	busState = waitingForNewPassengers;
-	WaitForNewPassengers();
-	}
+        busState = waitingForNewPassengers;
+        WaitForNewPassengers();
+        }
 
 if(busState = readyToLeave) {
-	busState = driving;
-	GoToNextStop();
+        busState = driving;
+        GoToNextStop();
 }
 
 Action:
@@ -136,7 +136,7 @@ NotfyPassengersAboutCurrentStop(Passenger p){
 p.bpr.msgArrivedAtStop(currentStop);
 if(allBusPassengersNotified) //function that loops through passengers, checking if each state says notified
 busState = newStopAndPassengersNotified;
-	
+        
 
 }
 
@@ -189,14 +189,14 @@ myCar.msgImLeaving(this);
 Car
 Data:
 class Passenger {
-	CarPassengerRole cpr;
-	State st = {waitingInCar, leaving};
-	String destination;
-	Passenger(CarPassengerRole c, String d)
-	{
-		cpr = c;
-		destination = d;
-	}
+        CarPassengerRole cpr;
+        State st = {waitingInCar, leaving};
+        String destination;
+        Passenger(CarPassengerRole c, String d)
+        {
+                cpr = c;
+                destination = d;
+        }
 }
 List<Passenger> myPassengers;
 CarGui carGui;
@@ -222,14 +222,14 @@ Scheduler:
 
 For myPassenger in myPassengers
 If myPassenger.st = waitingInCar & carState = stopped
-		carState = driving;
-		GoToDestination(myPassenger);
+                carState = driving;
+                GoToDestination(myPassenger);
 For myPassenger in myPassengers
 If carState = arrivedToDestination & myPassenger.st = waitingInCar
-	myPassenger.st = leaving;
-	TellPassengerWeArrived(myPassenger);
+        myPassenger.st = leaving;
+        TellPassengerWeArrived(myPassenger);
 
-	
+        
 Actions:
 
 GoToDestination(Passenger myPassenger){
