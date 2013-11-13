@@ -1,15 +1,17 @@
 class RepairMan extends Role{
-	// The salarTimer puts salary into homeMoney after salaryTime
+	// The salaryTimer puts salary into homeMoney after salaryTime
 	// milliseconds. This has to be implemented.
+	// The Person has to send two separate messages to shutdown job
+	// the repairman and shut down his Resident role.
 
 	// Data
 	List<MyHouse> houses;
-	House myHouse;
 	Timer salaryTimer;
 	double salary;
 	double money;
 	double homeMoney;
 	int salaryTime;
+	MyHouse currentHouse;
 
 	//-----------------------------------------------------------//
 
@@ -19,6 +21,7 @@ class RepairMan extends Role{
 		DoGoToHouse(mh);
 		if (mh.isLocked) {
 			mh.s = ToBeRechecked;
+			currentHouse = null;
 			GoBack();
 			mh.recheck.schedule(new Timertask() {
 				run() {
@@ -50,7 +53,7 @@ class RepairMan extends Role{
 		mh.s = NeedsRepair;
 	}
 
-	thingsAreBroken(House h, List<Item> brokenitems) {
+	thingsAreBroken(House h, List<Item> brokenItems) {
 		MyHouse mh = find(h);
 		mh.brokenItems = brokenItems;
 		mh.s = ItemsGiven;
@@ -59,6 +62,7 @@ class RepairMan extends Role{
 	thankYou(House h) {
 		MyHouse mh = find(h);
 		mh.s = None;
+		currentHouse = null;
 	}
 
 	timeToRecheck(MyHouse mh) {
@@ -72,10 +76,17 @@ class RepairMan extends Role{
 	//-----------------------------------------------------------//
 
 	// Scheduler
-	if there is a MyHouse mh st mh.s = ItemsGiven
-		repairItems(mh)
-	if there is a MyHouse st mh.s = NeedsRepair
-		goToHouse(mh);
+
+	if (currentHouse == null) {
+		if there is a MyHouse mh st mh.s = NeedsRepair
+			currentHouse = mh;
+	}
+	if (currentHouse != null) {
+		if (currentHouse.s == NeedsRepair)
+			goToHouse(currentHouse);
+		if (currentHouse.s == Items.Given)
+		repairItems(currentHouse);
+	}
 
 	//-----------------------------------------------------------//
 
