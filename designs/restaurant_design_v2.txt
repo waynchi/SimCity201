@@ -1,9 +1,9 @@
-Requirements:
+===============Requirements==============
 Excess money must be deposited in a Bank
 The restaurant must have working capital for the day
 Workers in the restaurant are paid
 
-Assumption:
+================Assumption===============
 Both working capital and bank balance could be negative:
 Working capital is like a credit card with some pre deposit. (it gets turned into negative when cashier doesn’t have enough money pay the market)
 Bank balance is like a bank account, a negative bank balance means there’s a loan
@@ -18,17 +18,26 @@ If current working capital < N and (bank balance + current working capital) < N,
 	If loan is refused (msgRefuseALoan), DOES NOT pay workers and deposit excess money if there is any
 
 
-Pseudo code:
+================Pseudo code===============
+
 in RestaurantPanel.java:
 
-DATA:
+—————————DATA—————————
 Double min_working_capital, working_capital, bank_balance;
 Double waiter_salary, cook_salary, host_salary, cashier_salary;
+BankTellerRole teller;
+int bankAccount;
 getters and setters for each
 
+
 in RestaurantCashierRole.java:
+
+————————-DATA——————————
+
 Double min_working_capital, working_capital, bank_balance;
 Double waiter_salary, cook_salary, host_salary, cashier_salary;
+BankTellerRole teller;
+int bankAccount;
 Semaphore depositCompleted, withdrawalCompleted;
 Boolean loanRequested, loanGranted, loanRefused;
 List<WaiterRoles> waiters;
@@ -42,15 +51,14 @@ restaurantCashierRole (String name, restaurantPanel rp) {
 }
 
 
-MESSAGES:
+————————MESSAGES—————————
 
-in CashierRole.java
-depositCompleted(double amount){
+depositSuccessful(double amount){
 	working_capital -= amount;
 	bank_balance += amount;
 	depositCompleted.release();
 }
-withdrawalCompleted(double amount){
+withdrawalSuccessful(double amount){
 	working_capital += amount;
 	bank_balance -= amount;
 	withdrawalCompleted.release();
@@ -65,7 +73,8 @@ loanRefused(){
 }
 
 
-SCHEDULER:
+————————SCHEDULER———————————
+
 // other scheduler rules
 if (loanRequested and loanGranted) {
 	payWorkers();
@@ -80,7 +89,8 @@ if (onClose) {
 }
 
 
-ACTION:
+———————————ACTION———————————
+
 prepareToClose() {
 	double total = getTotalSalary() + min_working_capital;
 	If working_capital >= total {
@@ -88,17 +98,17 @@ prepareToClose() {
 		depositExcessMoney();		
 		closeRestaurant();
 	}
-	else if (bank_balance + working_capital) >= total {
-		bank.withdraw(total - working_capital);
-		bank.withdrawalCompleted.acquire();
+	//else if (bank_balance + working_capital) >= total {
+	//	teller.msgWithdraw(bankAccount, total - working_capital);
+	//	withdrawalCompleted.acquire();
+	//	payWorkers();
+	//	closeRestaurant();
+	//}
+	else {
+		teller.msgWithdraw(bankAccount, total - working_capital);
+		withdrawalCompleted.acquire();
 		payWorkers();
 		closeRestaurant();
-	}
-	else {
-		bank.withdraw(bank_balance);
-		bank.withdrawalCompleted.acquire();
-		bank.requestALoan(total - working_capital);
-		loanRequested = true;
 }
 
 payWorkers() {
@@ -119,9 +129,10 @@ closeRestaurant() {
 	loanRefused = fals e;
 	onClose = false;
 	//deactivate roles;
+	DoCloseRestaurant(); //gui stuff
 }
 
-double getTotalSalary() {
+getTotalSalary() {
 	return waiters.size * waiter_salary + cooks.size * cook_salary + host_salary + cashier_salary;
 }
 
@@ -139,33 +150,21 @@ depositExcessMoney() {
 shared-data between cook and waiter:
 
 
-NEW DATA AND CLASSES
-
-in RestaurantPanel.java:
-class Order {
-	int table;
-	String food;
-	SpecialWaiterRole waiter;
-	Order (int t, String f,SpecialWaiterRole w) {
-		table  = t;
-		food = f;
-		waiter = w;
-	}
-}
+CookWaiterMonitor
 
 class CookWaiterMonitor extends Object {
-	private List<Order> orders;
+	private List<MyOrder> orders; // MyOrder class is declared as public in CookRole class
 	synchronized public void addOrder (int table, String food, SpecialWaiterRole waiter) {
-		orders.add (new Order (table, food, waiter))
-		cook.notify();
+		orders.add (new MyOrder (food, table, waiter))
 	}
-	synchronized public Order removeOrder () {
-		while (orders.size = 0)
-			try {cook.wait(5000);} catch (InterruptedException ex) {};
-		Order temp;
+	synchronized public MyOrder removeOrder () {
+		MyOrder temp;
 		temp = orders.firstElement();
 		orders.removeElementAt(0);
 		return temp;
+	}
+	public int getOrderSize() {
+		return orders.size();
 	}
 }
 
@@ -173,22 +172,22 @@ public CookWaiterMonitor theMonitor;
 CookRole c = new CookRole (“cook”, theMonitor);
 SpecialWaiterRole w = new SpecialWaiterRole(name, theMonitor);
 
-in WaiterRole.interface
+in RestaurantWaiterRole.java
 Abstract Class WaiterRole extends Role {
 	// same data
 	// same message
 	// same actions except for placeOrder(MyCustomer customer)
 }
 
-in NormalWaiterRole.java:
-public class NormalWaiterRole extends WaiterRole implements Waiter {
+in RestaurantNormalWaiterRole.java:
+public class RestaurantNormalWaiterRole extends RestaurantWaiterRole implements Waiter {
 	// this is the normal type of waiter that we’ve been working on so far
 	// everything remains the same.
 }
 
-in SpecialWaiterRole.java:
-public class SpecialWaiterRole extends WaiterRole implements Waiter {
-	// same message and scheduler rules as the NormalWaiterAgent
+in RestaurantSpecialWaiterRole.java:
+public class RestaurantSpecialWaiterRole extends RestaurantWaiterRole implements Waiter {
+	// same message and scheduler rules as the RestaurantNormalWaiterAgent
 	// Action placeOrder needs to be changed:
 	public void placeOrder(MyCustomer customer) {
 		print ("Here's an order for table " + customer.tableNumber);
@@ -200,22 +199,30 @@ public class SpecialWaiterRole extends WaiterRole implements Waiter {
 in CookRole.java:
 
 private class MyOrder {
-		WaiterRole waiter; (if this doesn’t work, have both waiter types in the class)
-		int tableNumber;
-		String food;
-		OrderState state;
-		public MyOrder (String f, WaiterRole w, int t) {
-			food = f;
-			waiter = w;
-			tableNumber = t;
-			state = OrderState.PENDING;
-		}
+	RestaurantWaiterRole waiter; 
+	int tableNumber;
+	String food;
+	OrderState state;
+	public MyOrder (String f,  int t, RestaurantWaiterRole w) {
+		food = f;
+		waiter = w;
+		tableNumber = t;
+		state = OrderState.PENDING;
 	}
+}
+
 public Boolean pickAndExecuteAnAction() {
 	// other scheduler rules
-	Order order = new Order(theMonitor.removeOrder());
-	if (order) {
-		orders.add(new myOrder(order.table, order.food, order.waiter))
-		return true; 
-	}
+	
+	new Timer().schedule(
+		new TimerTask(){
+			public void run(){
+				if (theMonitor.getOrderSize() != 0){
+					MyOrder order = new MyOrder(theMonitor.removeOrder());
+				}
+				return true;			
+			}
+		},5000};
+
+	return false;
 } 
