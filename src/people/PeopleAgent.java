@@ -12,4 +12,8 @@ public class PeopleAgent extends Agent{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void CallstateChanged(){
+		stateChanged();
+	}
 }
