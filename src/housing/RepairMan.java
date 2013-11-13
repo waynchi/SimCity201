@@ -124,10 +124,6 @@ public class RepairMan extends Role {
 		return null;
 	}
 
-	public boolean isJobActive() {
-		return isJobActive;
-	}
-
 	public MyHouse findMyHouseByState(HouseState s) {
 		for (MyHouse mh : houses) {
 			if (mh.s == s)
