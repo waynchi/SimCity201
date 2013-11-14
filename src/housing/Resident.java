@@ -1,6 +1,10 @@
+package housing;
+
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
+import people.PeopleAgent;
+import people.Role;
 
 public class Resident extends Role{
 	// Data
@@ -112,7 +116,7 @@ public class Resident extends Role{
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (!(this instanceof RepairMan)) {
+		if (this.myPerson != repairMan.getAgent()) {
 			if (repairState == RepairState.RepairDone) {
 				thankRepairMan();
 				return true;
@@ -165,6 +169,10 @@ public class Resident extends Role{
 		}
 		return result;
 	}
+	
+	public PeopleAgent getAgent() {
+		return myPerson;
+	}
 
 	//-----------------------------------------------------------//
 
@@ -174,3 +182,4 @@ public class Resident extends Role{
 
 	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, WantToEatAtRestaurant};
 }
+

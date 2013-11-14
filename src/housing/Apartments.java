@@ -1,3 +1,5 @@
+package housing;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,3 +14,4 @@ public class Apartments {
 		this.name = name;
 	}
 }
+

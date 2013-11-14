@@ -1,3 +1,5 @@
+package housing;
+
 import java.awt.Dimension;
 
 public class Item {
@@ -27,3 +29,4 @@ public class Item {
 		return isBroken;
 	}
 }
+

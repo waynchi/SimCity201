@@ -1,6 +1,9 @@
+package housing;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
+import people.PeopleAgent;
 
 public class Owner extends Resident {
 	// Data
@@ -113,6 +116,10 @@ public class Owner extends Resident {
 		}
 		return null;
 	}
+	
+	public PeopleAgent getAgent() {
+		return super.getAgent();
+	}
 
 	//-----------------------------------------------------------//
 
@@ -143,9 +150,10 @@ public class Owner extends Resident {
 			s = RentOrderState.Due;
 		}
 
-		// Have Separate thread to ue thr rentTimer to generate
+		// Have Separate thread to use the rentTimer to generate
 		// rent orders at regular intervals.
 	}
 
 	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
 }
+

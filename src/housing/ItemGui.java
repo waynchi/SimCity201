@@ -1,3 +1,5 @@
+package housing;
+
 public class ItemGui {
 	public Item i;
 
@@ -5,3 +7,4 @@ public class ItemGui {
 		this.i = i;
 	}
 }
+

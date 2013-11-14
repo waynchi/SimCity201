@@ -1,3 +1,5 @@
+package housing;
+
 public class HouseGui {
 	public House h;
 

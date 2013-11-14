@@ -1,7 +1,11 @@
+package housing;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import people.PeopleAgent;
+import people.Role;
 
 public class RepairMan extends Role {
 	// Data
@@ -135,6 +139,10 @@ public class RepairMan extends Role {
 	public void addHouse(House h, Resident r) {
 		houses.add(new MyHouse(h, r));
 	}
+	
+	public PeopleAgent getAgent() {
+		return myPerson;
+	}
 
 	//-----------------------------------------------------------//
 
@@ -157,3 +165,4 @@ public class RepairMan extends Role {
 
 	enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing};
 }
+

@@ -1,3 +1,5 @@
+package housing;
+
 public class ApartmentsGui {
 	public Apartments apartments;
 

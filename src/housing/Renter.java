@@ -1,6 +1,9 @@
+package housing;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
+import people.PeopleAgent;
 
 public class Renter extends Resident {
 	// Data
@@ -83,6 +86,10 @@ public class Renter extends Resident {
 		}
 		return null;
 	}
+	
+	public PeopleAgent getAgent() {
+		return super.getAgent();
+	}
 
 	//-----------------------------------------------------------//
 
@@ -92,3 +99,4 @@ public class Renter extends Resident {
 	// Agent code does. Modify its run() method. Make it use the rentTimer
 	// to generate reminder messages.
 }
+

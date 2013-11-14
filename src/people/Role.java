@@ -5,14 +5,21 @@ public class Role {
 	public Role() {
 		// TODO Auto-generated constructor stub
 	}
-	PeopleAgent myPerson; 
 
-	public void setPerson(PeopleAgent a) {myPerson=a;} 
+	protected PeopleAgent myPerson;
 
-	public PeopleAgent getPersonAgent() { 
+	public void setPerson(PeopleAgent a) {
+		myPerson = a;
+	}
 
-	return myPerson;} //so other agents or role players can send you Person messages. 
+	public PeopleAgent getPersonAgent() {
 
-	private void stateChanged(){ myPerson.CallstateChanged();}; 
-		 
+		return myPerson;
+	} // so other agents or role players can send you Person messages.
+
+	protected void stateChanged() {
+		myPerson.CallstateChanged();
+	}
+
 }
+
