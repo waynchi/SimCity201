@@ -91,7 +91,6 @@ public class CityGui extends JFrame implements ActionListener {
         
         infoPanel2.add(infoLabel2);
         infoPanel2.add(stateCB2);
-        ImageIcon image = new ImageIcon("picture.jpg");
 	
 
         
