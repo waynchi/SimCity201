@@ -8,10 +8,13 @@ public class Apartments {
 	public ApartmentsGui gui;
 	public String name;
 
-	public Apartments(ApartmentsGui gui, String name) {
+	public Apartments(String name) {
 		houses = new ArrayList<House>();
-		this.gui = gui;
 		this.name = name;
+	}
+	
+	public void setGui(ApartmentsGui gui) {
+		this.gui = gui;
 	}
 }
 
