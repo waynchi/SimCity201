@@ -41,6 +41,11 @@ public class PeopleAgent extends Agent{
 	{
 		Do(text);
 	}
+	
+	public void addJob(String job, int start, int end)
+	{
+		jobs.add(new Job(job, start, end));
+	}
 	//messages
 
 	public void msgDone(Role r)
@@ -56,13 +61,13 @@ public class PeopleAgent extends Agent{
 		if(Time == 0)
 		{
 			event = AgentEvent.GoingToRestaurant;
+			stateChanged();
 			print("GoingToCar");
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
 			
 		{
 			event = AgentEvent.WakingUp;
-			stateChanged();
 			return;
 		}
 		if(state == AgentState.Idle)
