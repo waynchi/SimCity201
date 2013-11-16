@@ -25,7 +25,7 @@ public class Role {
 	
 	public void msgIsActive() { }
 
-	public boolean pickAndExecuteAnAction() {
+	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		return false;
 	};
