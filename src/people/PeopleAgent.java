@@ -1,4 +1,5 @@
 package people;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -10,8 +11,8 @@ public class PeopleAgent extends Agent{
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<MyRole> roles;
-	public List<Job> jobs;
+	public List<MyRole> roles = new ArrayList<MyRole>();
+	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Boolean hasCar;
 	public enum HungerState
