@@ -8,10 +8,11 @@ import java.util.concurrent.*;
  * Base class for simple agents
  */
 public abstract class Agent {
-    Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
-    public Semaphore pausedSem = new Semaphore(0,true);
+    private Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
     private AgentThread agentThread;
-    public boolean paused = false;
+    
+    Semaphore pause = new Semaphore(0,true);
+    Boolean p = false;
 
     protected Agent() {
     }
@@ -21,7 +22,7 @@ public abstract class Agent {
      * the agent to do something.
      */
     protected void stateChanged() {
-        stateChange.release();
+        getStateChange().release();
     }
 
     /**
@@ -42,6 +43,17 @@ public abstract class Agent {
         return StringUtil.shortName(this);
     }
 
+    public void pause () {
+    	System.out.println("agents are paused");
+    	p = true;
+    }
+    
+    public void restart() {
+    	System.out.println("agents restarted");
+    	p = false;
+    	pause.release();
+    }
+    
     /**
      * The simulated action code
      */
@@ -70,7 +82,7 @@ public abstract class Agent {
         }
         System.out.print(sb.toString());
     }
-
+    
     /**
      * Start agent scheduler thread.  Should be called once at init time.
      */
@@ -95,7 +107,15 @@ public abstract class Agent {
         }
     }
 
-    /**
+    public Semaphore getStateChange() {
+		return stateChange;
+	}
+
+	public void setStateChange(Semaphore stateChange) {
+		this.stateChange = stateChange;
+	}
+
+	/**
      * Agent scheduler thread, calls respondToStateChange() whenever a state
      * change has been signalled.
      */
@@ -110,18 +130,14 @@ public abstract class Agent {
             goOn = true;
 
             while (goOn) {
-            	if(paused){
-            		try {
-						pausedSem.acquire();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            	}
+            	
                 try {
+                	if(p){
+                		pause.acquire();
+                	}
                     // The agent sleeps here until someone calls, stateChanged(),
                     // which causes a call to stateChange.give(), which wakes up agent.
-                    stateChange.acquire();
+                    getStateChange().acquire();
                     //The next while clause is the key to the control flow.
                     //When the agent wakes up it will call respondToStateChange()
                     //repeatedly until it returns FALSE.
