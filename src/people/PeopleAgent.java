@@ -27,6 +27,20 @@ public class PeopleAgent extends Agent{
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
 	
+	public void addRole(Role r, String description)
+	{
+		roles.add(new MyRole(r, description));
+	}
+	
+	public void CallPrint()
+	{
+		
+	}
+	
+	public void CallDo()
+	{
+		
+	}
 	//messages
 
 	public void msgDone(Role r)
@@ -35,8 +49,14 @@ public class PeopleAgent extends Agent{
 		r.msgIsInActive();
 	}
 	
+	
+	
 	public void msgTimeIs(int Time)
 	{
+		if(Time == 0)
+		{
+			
+		}
 		if(Time == 800 && state == AgentState.Sleeping)
 			
 		{
@@ -224,7 +244,7 @@ public class PeopleAgent extends Agent{
 		//roles.RestaurantCustomerAgent.msg(this);
 		for(MyRole r: roles)
 		{
-			if(r.job.equals("CustomerAgent"))
+			if(r.description.equals("CustomerAgent"))
 			{			
 				r.role.msgIsActive();
 			}
@@ -248,7 +268,7 @@ public class PeopleAgent extends Agent{
 	{
 		for(MyRole r: roles)
 		{
-			if(r.job == jobs.get(0).job)
+			if(r.description == jobs.get(0).job)
 			{
 				r.role.msgIsInActive();
 			}
@@ -267,7 +287,7 @@ public class PeopleAgent extends Agent{
 	{
 		for(MyRole r: roles)
 		{
-			if(r.job.equals("Resident"))
+			if(r.description.equals("Resident"))
 			{			
 				r.role.msgIsInActive();
 			}
@@ -277,7 +297,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Waiter"))
+				if(r.description.equals("Waiter"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -288,7 +308,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Host"))
+				if(r.description.equals("Host"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -299,7 +319,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Cook"))
+				if(r.description.equals("Cook"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -310,7 +330,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Vendor"))
+				if(r.description.equals("Vendor"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -321,7 +341,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Teller"))
+				if(r.description.equals("Teller"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -332,7 +352,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("RepairMan"))
+				if(r.description.equals("RepairMan"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -343,7 +363,7 @@ public class PeopleAgent extends Agent{
 		{
 			for(MyRole r: roles)
 			{
-				if(r.job.equals("Cashier"))
+				if(r.description.equals("Cashier"))
 				{			
 					r.role.msgIsActive();
 				}
@@ -375,11 +395,12 @@ public class PeopleAgent extends Agent{
 
 	class MyRole
 	{
-		String job;
+		String description;
 		Role role;
-		public void pickAndExecuteAnAction() {
-			// TODO Auto-generated method stub
-			
+		MyRole(Role r, String d)
+		{
+			role = r;
+			description = d;
 		}
 	}
 
