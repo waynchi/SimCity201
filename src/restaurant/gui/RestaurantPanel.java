@@ -209,7 +209,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     		waiter.pause();
     	}
     	for (RestaurantCustomerRole cust : customers){
-    		cust.pause();
+    		//cust.pause();
     	}
     }
     
@@ -224,7 +224,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     		waiter.restart();
     	}
     	for (RestaurantCustomerRole cust : customers){
-    		cust.restart();
+    		//cust.restart();
     	}
 	}
     
@@ -244,7 +244,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     		c.setHost(host);
     		c.setGui(g);
     		customers.add(c);
-    		c.startThread();
+    		//c.startThread();
     	}
     	
     	if (type.equals("Waiters")) {
