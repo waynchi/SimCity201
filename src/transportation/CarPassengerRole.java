@@ -1,19 +1,29 @@
 package transportation;
 
+import people.PeopleAgent;
 import people.Role;
 
 public class CarPassengerRole extends Role{
 
+	
+	
     String destination;
 	Car myCar;
 	public enum State {readyToLeave,goingToDestination,leaving};
 	public enum Event {carIsReady,carArrivedToDestination};
 	State myState;
 	Event event;
+	PeopleAgent myPerson;
+	
+	public CarPassengerRole(){
+		myPerson = getPersonAgent();
+		
+	}
 	
 	public void msgIsActive(){
 	myState = State.readyToLeave;
 	event = Event.carIsReady;
+	destination = myPerson.state.toString();
 	stateChanged();
 	}
 
@@ -47,6 +57,7 @@ public class CarPassengerRole extends Role{
 	
 	private void LeaveCar(){
 	myCar.msgImLeaving(this);
+	
 	}
 
 

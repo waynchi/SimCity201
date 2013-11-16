@@ -13,6 +13,7 @@ public class BusPassengerRole extends Role{
 	State myState;
 	
 	public void msgIsActive(){
+	
 	currentBusStop.msgWaitingHere(this);
 	myState = State.waitingAtBusStop;
 	}
