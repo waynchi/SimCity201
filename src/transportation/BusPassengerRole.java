@@ -1,0 +1,65 @@
+package transportation;
+
+import people.Role;
+
+public class BusPassengerRole extends Role{
+
+	BusStop currentBusStop;
+	BusStop destination;
+	Bus myBus;
+	public enum Event {busArrived,busArrivedAtDestination};
+	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
+	Event event;
+	State myState;
+	
+	public void msgIsActive(){
+	currentBusStop.msgWaitingHere(this);
+	myState = State.waitingAtBusStop;
+	}
+
+	public void msgBusArrived(Bus b){
+	myBus = b;
+	event = Event.busArrived;
+	stateChanged();
+	}
+	
+	
+
+	public void msgArrivedAtStop(BusStop bs){
+	if (bs == destination)
+	{
+		event = Event.busArrivedAtDestination;
+	    stateChanged();        
+	}
+	}
+
+	protected boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+	
+		if(event == Event.busArrived && myState == State.waitingAtBusStop) {
+		        myState = State.waitingInBus;
+		        BoardBus();
+		        return true;
+		}
+	
+		if(event == Event.busArrivedAtDestination && myState == State.waitingInBus) {
+		        myState = State.leavingBus;
+		        LeaveBus();
+		        return true;
+		}
+		return false;
+	}
+	
+	private void BoardBus(){
+	myBus.msgImBoarding(this);
+	currentBusStop.msgLeavingBusStop(this);
+	}
+
+	private void LeaveBus() {
+	myBus.msgImLeaving(this);
+	}
+
+	
+
+
+}
