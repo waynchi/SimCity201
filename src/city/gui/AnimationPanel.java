@@ -35,7 +35,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
 
-      
+        
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

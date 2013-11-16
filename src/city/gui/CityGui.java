@@ -37,6 +37,8 @@ public class CityGui extends JFrame implements ActionListener {
     private JButton stateCB2;//part of infoLabel
 
     private Object currentPerson;
+    private JTextField textField;
+    private JLabel lblMainCity;
    /* Holds the agent that the info is about.
     								Seems like a hack */
 
@@ -49,23 +51,24 @@ public class CityGui extends JFrame implements ActionListener {
         animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         animationFrame.setVisible(true);
         getContentPane().setLayout(null);
+        
+        lblMainCity = new JLabel("Main City");
+        lblMainCity.setBounds(0, 0, 59, 16);
+        getContentPane().add(lblMainCity);
         animationPanel.setBounds(6, 0, 750, 628);
         animationPanel.setAlignmentX(1.0f);
-        animationPanel.setBackground(Color.WHITE);
 
         getContentPane().add(animationPanel);
         FlowLayout fl_animationPanel = new FlowLayout(FlowLayout.CENTER, 5, 5);
         animationPanel.setLayout(fl_animationPanel);
     	
-    	setBounds(BOUNDSX, BOUNDSY, 1500, WINDOWY);
-
-        Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .50));
+    	setBounds(BOUNDSX, BOUNDSY, 1200, 900);
        
         // Now, setup the info panel
         Dimension infoDim = new Dimension(WINDOWX, (int) (WINDOWY * .15));
         
         infoPanel2 = new JPanel();
-        infoPanel2.setBounds(1113, 6, 321, 97);
+        infoPanel2.setBounds(803, 64, 321, 97);
         infoPanel2.setPreferredSize(infoDim);
         infoPanel2.setMinimumSize(infoDim);
         infoPanel2.setMaximumSize(infoDim);
@@ -84,16 +87,24 @@ public class CityGui extends JFrame implements ActionListener {
         getContentPane().add(infoPanel2);
         
         
-        stateCB2 = new JButton();
-        stateCB2.setVisible(false);
-        stateCB2.addActionListener(this);
-        
-        
+     
         infoPanel2.add(infoLabel2);
-        infoPanel2.add(stateCB2);
+        
+        textField = new JTextField();
+        textField.setBounds(803, 24, 134, 28);
+        getContentPane().add(textField);
+        textField.setColumns(10);
+        
+        JButton btnAddPerson = new JButton("Add Person");
+        btnAddPerson.setBounds(938, 23, 117, 29);
+        getContentPane().add(btnAddPerson);
+        
+        JLabel lblControlPanel = new JLabel("Control Panel");
+        lblControlPanel.setBounds(924, 6, 107, 16);
+        getContentPane().add(lblControlPanel);
 	
 
-        
+
 
         
     }
@@ -120,7 +131,7 @@ public class CityGui extends JFrame implements ActionListener {
      */
     public static void main(String[] args) {
         CityGui gui = new CityGui();
-        gui.setTitle("csci201 Restaurant");
+        gui.setTitle("csci201 Sim City");
         gui.setVisible(true);
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
