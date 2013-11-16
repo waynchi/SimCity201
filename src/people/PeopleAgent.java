@@ -10,18 +10,18 @@ public class PeopleAgent extends Agent{
 		// TODO Auto-generated constructor stub
 	}
 
-	List<MyRole> roles;
-	List<Job> jobs;
-	Double Money;
-	Boolean hasCar;
+	public List<MyRole> roles;
+	public List<Job> jobs;
+	public Double Money;
+	public Boolean hasCar;
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
 	//CityGui gui;
 	
-	enum AgentState 
+	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
-	enum AgentEvent 
+	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Idle;
@@ -222,6 +222,13 @@ public class PeopleAgent extends Agent{
 	{
 		//gui.GoToRestaurant();
 		//roles.RestaurantCustomerAgent.msg(this);
+		for(MyRole r: roles)
+		{
+			if(r.job.equals("CustomerAgent"))
+			{			
+				r.role.msgIsActive();
+			}
+		}
 		
 	}
 
