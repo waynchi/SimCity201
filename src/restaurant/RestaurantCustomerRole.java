@@ -29,8 +29,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
-	boolean turnActive;
-	boolean isActive;
 
 	// agent correspondents
 	private HostRole host;
@@ -41,8 +39,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private String choice;
 	private Random randomGenerator = new Random();
 	private Semaphore atCashier = new Semaphore(0,true);
-	private PeopleAgent person = null;
-
 	
 	private Double moneyOnMe = 12.00;
 	private Double due;
@@ -52,7 +48,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private Boolean orderFoodThatICanAfford = false;
 	private Boolean leaveIfCheapestFoodOutOfStock = false;
 	private Boolean reorderAcceptable = false;
-	
+		
+	private Boolean isActive = false;
 	
 	// State of a customer
 	public enum CustomerState
@@ -109,17 +106,23 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	// Messages
 
 	// from animation. Eventually messages the Host about wanting food...
-	
+
 	public void msgIsActive() {
-		isActive = true;
 		print("I'm hungry");
 		event = CustomerEvent.GOT_HUNGRY;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
+		isActive = true;
 	}
+	
+	//public void gotHungry() {
+	//	print("I'm hungry");
+	//	event = CustomerEvent.GOT_HUNGRY;
+	//	person.stateChanged();
+	//}
 
 	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
 		event = CustomerEvent.REST_IS_FULL;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	// handles waiter follow me message and eventually sits down at the correct table
@@ -128,62 +131,63 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		tableNum = tableNumber;
 		menu = m;
 		event = CustomerEvent.FOLLOW_WAITER;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
 		event = CustomerEvent.SEATED;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-		person.CallstateChanged();
+
+		getPersonAgent().CallstateChanged();
 	}
 	
 	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
 		event = CustomerEvent.MADE_DECISION;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgWhatWouldYouLike() {
 		event = CustomerEvent.ASKED_TO_ORDER;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgReorder(List<FoodOnMenu> newMenu) {
 		event = CustomerEvent.ASKED_TO_REORDER;
 		menu = newMenu;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgHereIsYourFood() {
 		event = CustomerEvent.FOOD_SERVED;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsCheck (Double d, Cashier c) {
 		event = CustomerEvent.GOT_CHECK;
 		cashier = c;
 		due = d;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsYourChange (Double change) {
 		moneyOnMe = change;
 		event = CustomerEvent.DONE_PAYING;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	//from animation
 	public void msgAnimationFinishedLeaveRestaurant() {
 		event = CustomerEvent.DONE_LEAVING;
-		person.CallstateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	
@@ -192,12 +196,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 */
 	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
-		
-		if (turnActive) {
-			RoleIsReady();
-			return true;
-		}
-
 
 		if (state == CustomerState.DOING_NOTHING && event == CustomerEvent.GOT_HUNGRY ){
 			state = CustomerState.COMING_TO_RESTAURANT;
@@ -373,7 +371,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		timer.schedule(new TimerTask() {
 			public void run() {
 				event = CustomerEvent.MADE_DECISION;
-				stateChanged();
+				getPersonAgent().CallstateChanged();
 			}
 		},
 		3000);
@@ -440,7 +438,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 			public void run() {
 				print("Done eating, the " + choice + " is so good: )");
 				event = CustomerEvent.DONE_EATING;
-				stateChanged();
+				getPersonAgent().CallstateChanged();
 			}
 		},
 		5000);//getHungerLevel() * 1000);//how long to wait before running task
@@ -463,14 +461,10 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private void leaveTable() {
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
+		getPersonAgent().msgDone(this);
 	}
 
 	
-	public void RoleIsReady() {
-		person.msgDone(this);
-		turnActive = false;
-	}
-
 	// Accessors, etc.
 	
 	public String getName() {
@@ -512,15 +506,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 
 	
-	public void setPerson(PeopleAgent p){
-		person = p;
-	}
-	
-	public PeopleAgent getPerson() {
-		return person;
-	}
-	
-	public Boolean getActive() {
+	public Boolean getActiveStatus() {
 		return isActive;
 	}
 
