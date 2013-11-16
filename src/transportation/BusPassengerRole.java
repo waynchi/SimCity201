@@ -13,6 +13,7 @@ public class BusPassengerRole extends Role{
 	State myState;
 	
 	public void msgIsActive(){
+	
 	currentBusStop.msgWaitingHere(this);
 	myState = State.waitingAtBusStop;
 	}
@@ -33,7 +34,7 @@ public class BusPassengerRole extends Role{
 	}
 	}
 
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 	
 		if(event == Event.busArrived && myState == State.waitingAtBusStop) {

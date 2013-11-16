@@ -15,17 +15,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import people.PeopleAgent;
+import people.Role;
+
 /**
  * Restaurant customer agent.
  */
 // Customers are created by user, and could be set hungry when created.
 // Customers behave differently upon situations, which depends on the name they have
 
-public class RestaurantCustomerRole extends Agent implements Customer{
+public class RestaurantCustomerRole extends Role implements Customer{
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
+	boolean turnActive;
+	boolean isActive;
 
 	// agent correspondents
 	private HostRole host;
@@ -104,15 +109,17 @@ public class RestaurantCustomerRole extends Agent implements Customer{
 	// Messages
 
 	// from animation. Eventually messages the Host about wanting food...
-	public void gotHungry() {
+	
+	public void msgIsActive() {
+		isActive = true;
 		print("I'm hungry");
 		event = CustomerEvent.GOT_HUNGRY;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 
 	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
 		event = CustomerEvent.REST_IS_FULL;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	// handles waiter follow me message and eventually sits down at the correct table
@@ -121,62 +128,62 @@ public class RestaurantCustomerRole extends Agent implements Customer{
 		tableNum = tableNumber;
 		menu = m;
 		event = CustomerEvent.FOLLOW_WAITER;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 
 	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
 		event = CustomerEvent.SEATED;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
 		event = CustomerEvent.MADE_DECISION;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgWhatWouldYouLike() {
 		event = CustomerEvent.ASKED_TO_ORDER;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgReorder(List<FoodOnMenu> newMenu) {
 		event = CustomerEvent.ASKED_TO_REORDER;
 		menu = newMenu;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgHereIsYourFood() {
 		event = CustomerEvent.FOOD_SERVED;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	public void msgHereIsCheck (Double d, Cashier c) {
 		event = CustomerEvent.GOT_CHECK;
 		cashier = c;
 		due = d;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	public void msgHereIsYourChange (Double change) {
 		moneyOnMe = change;
 		event = CustomerEvent.DONE_PAYING;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 
 	//from animation
 	public void msgAnimationFinishedLeaveRestaurant() {
 		event = CustomerEvent.DONE_LEAVING;
-		person.stateChanged();
+		person.CallstateChanged();
 	}
 	
 	
@@ -460,7 +467,7 @@ public class RestaurantCustomerRole extends Agent implements Customer{
 
 	
 	public void RoleIsReady() {
-		person.msgDone();
+		person.msgDone(this);
 		turnActive = false;
 	}
 
@@ -505,11 +512,11 @@ public class RestaurantCustomerRole extends Agent implements Customer{
 	}
 
 	
-	public setPerson(PeopleAgent p){
+	public void setPerson(PeopleAgent p){
 		person = p;
 	}
 	
-	public PeosonAgent getPerson() {
+	public PeopleAgent getPerson() {
 		return person;
 	}
 	

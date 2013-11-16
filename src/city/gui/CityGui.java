@@ -47,6 +47,7 @@ public class CityGui extends JFrame implements ActionListener {
      * Sets up all the gui components.
      */
     public CityGui() {
+    	
 
         animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         animationFrame.setVisible(true);
