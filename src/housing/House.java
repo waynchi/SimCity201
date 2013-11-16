@@ -12,12 +12,11 @@ public class House {
 	public HouseGui gui;
 	public boolean isLocked;
 
-	public House(int houseNum, TestGui testGui) {
+	public House(int houseNum) {
 		number = houseNum;
 		items = new ArrayList<Item>();
 		occupant = null;
 		isLocked = false;
-		setItems(testGui);
 	}
 
 	public boolean isLocked() {
@@ -48,7 +47,7 @@ public class House {
 		this.gui = gui;
 	}
 	
-	private void setItems(TestGui testGui) {
+	public void setItems(TestGui testGui) {
 		Item i1 = new Item("Bed", new Dimension(15, 15), this);
 		ItemGui g1 = new ItemGui(i1, 15, 15, 40, 90, Color.blue, testGui);
 		i1.setGui(g1);
@@ -142,6 +141,65 @@ public class House {
 		Item i19 = new Item("Chair4", new Dimension(280, 275), this);
 		ItemGui g19 = new ItemGui(i19, 280, 275, 20, 20, Color.RED, testGui);
 		i19.setGui(g19);
+		items.add(i19);
+	}
+	
+	public void setItemsWithoutGui() {
+		Item i1 = new Item("Bed", new Dimension(15, 15), this);
+		items.add(i1);
+		
+		Item i2 = new Item("Table", new Dimension(70, 15), this);
+		items.add(i2);
+		
+		Item i3 = new Item("Fridge", new Dimension(15, 425), this);
+		items.add(i3);
+		
+		Item i4 = new Item("TV", new Dimension(15, 270), this);
+		items.add(i4);
+		
+		Item i5 = new Item("CookingSlab1", new Dimension(100, 435), this);
+		items.add(i5);
+		
+		Item i6 = new Item("CookingGrill", new Dimension(170, 435), this);
+		items.add(i6);
+		
+		Item i7 = new Item("CookingSlab2", new Dimension(210, 435), this);
+		items.add(i7);
+		
+		Item i8 = new Item("Basin", new Dimension(280, 435), this);
+		items.add(i8);
+		
+		Item i9 = new Item("Shelves", new Dimension(320, 435), this);
+		items.add(i9);
+		
+		Item i10 = new Item("FussballTable", new Dimension(380, 220), this);
+		items.add(i10);
+		
+		Item i11 = new Item("Sofa1", new Dimension(150, 250), this);
+		items.add(i11);
+		
+		Item i12 = new Item("Sofa2", new Dimension(100, 210), this);
+		items.add(i12);
+		
+		Item i13 = new Item("Sofa3", new Dimension(100, 340), this);
+		items.add(i13);
+		
+		Item i14 = new Item("CenterTable", new Dimension(90, 260), this);
+		items.add(i14);
+		
+		Item i15 = new Item("DiningTable", new Dimension(310, 260), this);
+		items.add(i15);
+		
+		Item i16 = new Item("Chair1", new Dimension(325, 230), this);
+		items.add(i16);
+		
+		Item i17 = new Item("Chair2", new Dimension(325, 320), this);
+		items.add(i17);
+		
+		Item i18 = new Item("Chair3", new Dimension(370, 275), this);
+		items.add(i18);
+		
+		Item i19 = new Item("Chair4", new Dimension(280, 275), this);
 		items.add(i19);
 	}
 }
