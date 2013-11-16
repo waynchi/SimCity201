@@ -8,14 +8,12 @@ public class Item {
 	public boolean isBroken;
 	public ItemGui gui;
 	public House h;
-	public TestGui testGui;
 
-	public Item(String name, Dimension pos, House h, TestGui g) {
+	public Item(String name, Dimension pos, House h) {
 		this.name = name;
 		this.position = pos;
 		this.h = h;
 		isBroken = false;
-		testGui = g;
 	}
 
 	public void breakIt() {
@@ -32,7 +30,6 @@ public class Item {
 	
 	public void setGui(ItemGui gui) {
 		this.gui = gui;
-		testGui.addGui(gui);
 	}
 	
 	public ItemGui getGui() {

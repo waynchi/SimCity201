@@ -7,14 +7,16 @@ public class ItemGui implements HGui{
 	public Item i;
 	int x, y, width, height;
 	Color c;
+	TestGui testGui;
 
-	public ItemGui(Item i, int x, int y, int width, int height, Color c) {
+	public ItemGui(Item i, int x, int y, int width, int height, Color c, TestGui g) {
 		this.i = i;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.c = c;
+		testGui = g;
 	}
 
 	@Override
