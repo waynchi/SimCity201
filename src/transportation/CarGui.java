@@ -12,6 +12,7 @@ public class CarGui {
 	
 	public void msgGoToThisPlace(Car carAgent,String place)
 	{
+		System.out.println("CarGui recieved message to go to " + place);
 		carAgent.msgAnimationFinishedArrivedAtDestination(place);
 	}
 

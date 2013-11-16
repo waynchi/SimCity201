@@ -21,6 +21,7 @@ public class CarPassengerRole extends Role{
 	}
 	
 	public void msgIsActive(){
+	System.out.println("CarPassenger is now active");
 	myState = State.readyToLeave;
 	event = Event.carIsReady;
 	destination = myPerson.state.toString();
@@ -28,6 +29,7 @@ public class CarPassengerRole extends Role{
 	}
 
 	public void msgArrivedToDestination(String place){
+		System.out.println("Car arrived to destination");
 	if(destination.equals(place)){
 	event = Event.carArrivedToDestination;
 	stateChanged();
