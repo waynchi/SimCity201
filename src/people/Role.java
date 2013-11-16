@@ -17,6 +17,11 @@ public class Role {
 	
 	public void msgIsInActive(){ };
 	
-	public void msgIsActive() { };
+	public void msgIsActive() { }
+
+	public boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+		return false;
+	};
 		 
 }

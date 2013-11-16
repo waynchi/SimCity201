@@ -20,7 +20,7 @@ public class PeopleAgent extends Agent{
 	//CityGui gui;
 	
 	enum AgentState 
-	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome}
+	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
 	public HungerState hunger = HungerState.NotHungry;
@@ -148,62 +148,62 @@ public class PeopleAgent extends Agent{
 		{
 			if(true /*m.isActive*/)
 			{
-				Roles = m.pickAndExecuteAnAction();
+				Roles = m.role.pickAndExecuteAnAction();
 			}
 		}
 		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
 		{
 			state = AgentState.Idle;
-			return true;
+			Person = true;
 		}
 		if(state == AgentState.Idle && event == AgentEvent.GoingToWork)
 		{
 			state = AgentState.Working;
 			GoToWork();
-			return true;
+			Person = true;
 		}
-		if(state == Working && event == LeavingWork)
+		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
 		{
-			state == Idle;
+			state = AgentState.Idle;
 			LeaveWork();
-			return true;
+			Person = true;
 		}
-		if(state == Idle && event == GoingToRestaurant)
+		if(state == AgentState.Idle && event == AgentEvent.GoingToRestaurant)
 		{
-			state == EatingAtRestaurant;
-			GoingToRestaurant();
-			return true;
+			state = AgentState.EatingAtRestaurant;
+			GoToRestaurant();
+			Person = true;
 		}
-		if(state == Idle && event == GoingHome)
+		if(state == AgentState.Idle && event == AgentEvent.GoingHome)
 		{
-			if(hunger == Hungry)
+			if(hunger == HungerState.Hungry)
 			{
-			state == EatingAtHome;
+			state = AgentState.EatingAtHome;
 			}
 			else
 			{
-			state == RestingAtHome;
+			state = AgentState.RestingAtHome;
 			}
 			GoToHouse();
-			return true;
+			Person = true;
 		}
-		if(state == Idle && event == GoingToBuyCar)
+		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
 		{
-			state == BuyingCar;
+			state = AgentState.BuyingCar;
 			GoBuyCar();
-			return true;
+			Person = true;
 		}
-		if(state == Idle && event == GoingToRetrieveMoney)
+		if(state == AgentState.Idle && event == AgentEvent.GoingToRetrieveMoney)
 		{
-			state == GoingToBank;
-			GoToBank(true);
-			return true;
+			state = AgentState.GoingToBank;
+			GoToBank();
+			Person = true;
 		}
-		if(state == Idle && event == GoingToDepositMoney)
+		if(state == AgentState.Idle && event == AgentEvent.GoingToDepositMoney)
 		{
-			state == GoingToBank;
-			GoToBank(false);
-			return true;
+			state = AgentState.GoingToBank;
+			GoToBank();
+			Person = true;
 		}
 
 		
