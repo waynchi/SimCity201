@@ -29,6 +29,14 @@ public class Role {
 		// TODO Auto-generated method stub
 		return false;
 	};
+	
+	protected void print() {
+		myPerson.CallPrint();
+	}
+	
+	protected void Do(){
+		myPerson.CallDo();
+	}
 		 
 
 }
