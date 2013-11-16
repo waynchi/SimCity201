@@ -6,6 +6,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import people.PeopleAgent;
+import people.Role;
+import transportation.Car;
+import transportation.CarGui;
+import transportation.CarPassengerRole;
+
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -47,8 +53,23 @@ public class CityGui extends JFrame implements ActionListener {
      * Sets up all the gui components.
      */
     public CityGui() {
+    	CarPassengerRole carPassengerRole = new CarPassengerRole(); //Create Role
     	
-
+    	Car car = new Car();
+    	CarGui carGui = new CarGui();
+    	car.startThread(); //Start Car Thread
+    	car.setGui(carGui);
+    	
+    	PeopleAgent person = new PeopleAgent();
+    	person.startThread();
+    	person.hasCar = true;
+    	carPassengerRole.setCar(car);
+    	carPassengerRole.setPerson(person);
+    	person.addJob("Car Passenger",0,0);
+    	person.addRole(carPassengerRole,"carPassenger");
+    	person.msgTimeIs(0);
+    	
+    	
         animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         animationFrame.setVisible(true);
         getContentPane().setLayout(null);

@@ -13,14 +13,14 @@ public class CarPassengerRole extends Role{
 	public enum Event {carIsReady,carArrivedToDestination};
 	State myState;
 	Event event;
-	PeopleAgent myPerson;
 	
 	public CarPassengerRole(){
-		myPerson = getPersonAgent();
+		
 		
 	}
 	
 	public void msgIsActive(){
+	print("Is Active");
 	myState = State.readyToLeave;
 	event = Event.carIsReady;
 	destination = myPerson.state.toString();
@@ -28,6 +28,7 @@ public class CarPassengerRole extends Role{
 	}
 
 	public void msgArrivedToDestination(String place){
+	print("Arrived at Destination");
 	if(destination.equals(place)){
 	event = Event.carArrivedToDestination;
 	stateChanged();
@@ -58,6 +59,10 @@ public class CarPassengerRole extends Role{
 	private void LeaveCar(){
 	myCar.msgImLeaving(this);
 	
+	}
+	
+	public void setCar(Car car) {
+		myCar = car;
 	}
 
 

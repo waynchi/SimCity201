@@ -17,7 +17,7 @@ public class Car extends Agent{
 	                destination = d;
 	        }
 	}
-	List<Passenger> myCarPassengers;
+	List<Passenger> myCarPassengers = new ArrayList<Passenger>();
 	CarGui carGui;
 	CarState carState;
 

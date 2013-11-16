@@ -64,6 +64,7 @@ public class PeopleAgent extends Agent{
 			event = AgentEvent.GoingToRestaurant;
 			stateChanged();
 			print("GoingToCar");
+			return;
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
 			
