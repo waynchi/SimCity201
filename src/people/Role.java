@@ -21,5 +21,15 @@ public class Role {
 		myPerson.CallstateChanged();
 	}
 
+	public void msgIsInActive(){ };
+	
+	public void msgIsActive() { }
+
+	public boolean pickAndExecuteAnAction() {
+		// TODO Auto-generated method stub
+		return false;
+	};
+		 
+
 }
 
