@@ -30,12 +30,12 @@ public class Role {
 		return false;
 	};
 	
-	protected void print() {
-		myPerson.CallPrint();
+	protected void print(String text) {
+		myPerson.CallPrint(text);
 	}
 	
-	protected void Do(){
-		myPerson.CallDo();
+	protected void Do(String text){
+		myPerson.CallDo(text);
 	}
 		 
 
