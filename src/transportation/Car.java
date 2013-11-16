@@ -22,6 +22,10 @@ public class Car extends Agent{
 	CarState carState;
 
 	
+	public Car(){
+		
+	}
+	
 	public void msgTakeMeHere(CarPassengerRole c, String place) {
 	myCarPassengers.add(new Passenger(c,place));
 	}
@@ -82,4 +86,7 @@ public class Car extends Agent{
 		return null;
 	}
 
+	public void setGui(CarGui cg){
+		carGui = cg;
+	}
 }
