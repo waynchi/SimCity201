@@ -6,7 +6,7 @@ public class Item {
 	public String name;
 	public Dimension position;
 	public boolean isBroken;
-	public ItemGui gui;
+	public ItemGui gui = null;
 	public House h;
 
 	public Item(String name, Dimension pos, House h) {
@@ -17,6 +17,7 @@ public class Item {
 	}
 
 	public void breakIt() {
+		h.occupant.somethingBroke();
 		isBroken = true;
 	}
 

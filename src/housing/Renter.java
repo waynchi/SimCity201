@@ -3,6 +3,8 @@ package housing;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
+
 import people.PeopleAgent;
 
 public class Renter extends Resident {
@@ -13,6 +15,7 @@ public class Renter extends Resident {
 	private double rent;
 	private boolean rentDue;
 	private int timesRentDue;
+	private int period = 10000;
 	private Timer rentTimer;
 	private List<Double> penalties = new ArrayList<Double>();
 
@@ -89,6 +92,14 @@ public class Renter extends Resident {
 	
 	public PeopleAgent getAgent() {
 		return super.getAgent();
+	}
+	
+	public void startRentTimer() {
+		rentTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				rentReminder();
+			}
+		}, 0, period);
 	}
 
 	//-----------------------------------------------------------//

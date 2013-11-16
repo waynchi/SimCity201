@@ -3,6 +3,8 @@ package housing;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
+
 import people.PeopleAgent;
 
 public class Owner extends Resident {
@@ -74,6 +76,16 @@ public class Owner extends Resident {
 		}
 		rents.add(new RentOrder(m));
 	}
+	
+	public void addHouse(House h, Renter r) {
+		MyHouse mh = new MyHouse(h, r);
+		myHouses.add(mh);
+	}
+	
+	public void addRenterToHouse(House h, Renter r) {
+		MyHouse mh = find(h);
+		mh.setOccupant(r);
+	}
 
 	//-----------------------------------------------------------//
 
@@ -127,17 +139,37 @@ public class Owner extends Resident {
 
 	private class MyHouse {
 		House h;
-		Renter r;
+		Renter r = null;
 		double penalty;
 		double rent;
 		Timer rentTimer;
+		long period;
 
 		public MyHouse(House h, Renter r) {
 			this.h = h;
+			this.period = 10000;
 			this.r = r;
 			this.penalty = 0.0;
 			rent = 600.0;
 			rentTimer = new Timer();
+//			final MyHouse mh = this;
+//			if (r != null) {
+//				rentTimer.scheduleAtFixedRate(new TimerTask() {
+//					public void run() {
+//						generateRent(mh);
+//					}
+//				}, 0, period);
+//			}
+		}
+		
+		public void setOccupant(Renter r) {
+			this.r = r;
+//			final MyHouse mh = this;
+//			rentTimer.scheduleAtFixedRate(new TimerTask() {
+//				public void run() {
+//					generateRent(mh);
+//				}
+//			}, 0, period);
 		}
 	}
 
@@ -149,9 +181,6 @@ public class Owner extends Resident {
 			this.mh = mh;
 			s = RentOrderState.Due;
 		}
-
-		// Have Separate thread to use the rentTimer to generate
-		// rent orders at regular intervals.
 	}
 
 	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
