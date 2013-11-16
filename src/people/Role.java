@@ -13,6 +13,10 @@ public class Role {
 
 	return myPerson;} //so other agents or role players can send you Person messages. 
 
-	private void stateChanged(){ myPerson.CallstateChanged();}; 
+	private void stateChanged(){ myPerson.CallstateChanged();}
+	
+	public void msgIsInActive(){ };
+	
+	public void msgIsActive() { };
 		 
 }
