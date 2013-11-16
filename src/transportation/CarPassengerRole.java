@@ -24,7 +24,7 @@ public class CarPassengerRole extends Role{
 	}
 	}
 
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 	if(myState == State.readyToLeave && event == Event.carIsReady){
 	myState = State.goingToDestination;
