@@ -32,14 +32,14 @@ public class PeopleAgent extends Agent{
 		roles.add(new MyRole(r, description));
 	}
 	
-	public void CallPrint()
+	public void CallPrint(String text)
 	{
-		
+		print(text);
 	}
 	
-	public void CallDo()
+	public void CallDo(String text)
 	{
-		
+		Do(text);
 	}
 	//messages
 
@@ -55,7 +55,8 @@ public class PeopleAgent extends Agent{
 	{
 		if(Time == 0)
 		{
-			
+			event = AgentEvent.GoingToRestaurant;
+			print("GoingToCar");
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
 			
@@ -242,12 +243,19 @@ public class PeopleAgent extends Agent{
 	{
 		//gui.GoToRestaurant();
 		//roles.RestaurantCustomerAgent.msg(this);
+		if(hasCar)
+		{
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("CustomerAgent"))
-			{			
+			if(r.description.equals("carPassenger"))
+			{
 				r.role.msgIsActive();
 			}
+			/*if(r.description.equals("CustomerAgent"))
+			{			
+				r.role.msgIsActive();
+			}*/
+		}
 		}
 		
 	}

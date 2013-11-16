@@ -523,5 +523,11 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	public Boolean getActive() {
 		return isActive;
 	}
+
+	@Override
+	public void gotHungry() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
