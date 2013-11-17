@@ -47,6 +47,14 @@ public class House {
 		this.gui = gui;
 	}
 	
+	public Item findItem(String name) {
+		for (Item i : items) {
+			if (i.name.equals(name))
+				return i;
+		}
+		return null;
+	}
+	
 	public void setItems(TestGui testGui) {
 		Item i1 = new Item("Bed", new Dimension(15, 15), this);
 		ItemGui g1 = new ItemGui(i1, 15, 15, 40, 90, Color.blue, testGui);

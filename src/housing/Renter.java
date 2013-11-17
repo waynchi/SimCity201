@@ -101,13 +101,29 @@ public class Renter extends Resident {
 			}
 		}, 0, period);
 	}
-
-	//-----------------------------------------------------------//
-
-	// Helper Data Structures
-
-	// Create a class that extends Thread. Make it run in the same way as the
-	// Agent code does. Modify its run() method. Make it use the rentTimer
-	// to generate reminder messages.
+	
+	public void setMoney(double m) {
+		this.money = m;
+	}
+	
+	public double getMoney() {
+		return money;
+	}
+	
+	public int getTimesRentDue() {
+		return timesRentDue;
+	}
+	
+	public boolean isRentDue() {
+		return rentDue;
+	}
+	
+	public List<Double> getPenalties() {
+		return penalties;
+	}
+	
+	public void setOwner(Owner o) {
+		this.owner = o;
+	}
 }
 
