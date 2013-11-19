@@ -9,7 +9,7 @@ public class HousingPanel extends JPanel {
 	public HousingPanel(TestGui g, HouseAnimationPanel p) {
 		testGui = g;
 		this.p = p;
-		House h = new House(44);
+		House h = new House("Residence", 44);
 		h.setItems(testGui);
 		HouseGui gui1 = new HouseGui(h, testGui);
 		h.setGui(gui1);

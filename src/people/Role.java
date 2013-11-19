@@ -18,7 +18,9 @@ public class Role {
 	} // so other agents or role players can send you Person messages.
 
 	protected void stateChanged() {
-		myPerson.CallstateChanged();
+		if (myPerson != null) {
+			myPerson.CallstateChanged();
+		}
 	}
 
 	public void msgIsInActive(){ };
