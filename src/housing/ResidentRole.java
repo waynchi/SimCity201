@@ -1,5 +1,7 @@
 package housing;
 
+import housing.interfaces.RepairMan;
+
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import people.People;
 import people.Role;
 
-public class Resident extends Role{
+public class ResidentRole extends Role{
 	// Data
 
 	protected House house;
@@ -16,7 +18,7 @@ public class Resident extends Role{
 	private State myState;
 	private Semaphore busy = new Semaphore(0, true);
 
-	public Resident() {
+	public ResidentRole() {
 		house = null;
 		repairMan = null;
 		repairStage = RepairStage.None;
@@ -117,7 +119,7 @@ public class Resident extends Role{
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (this.myPerson != repairMan.getAgent()) {
+		if (this.myPerson != repairMan.getPersonAgent()) {
 			if (repairStage == RepairStage.RepairDone) {
 				thankRepairMan();
 				return true;
@@ -156,7 +158,7 @@ public class Resident extends Role{
 
 	// Utilities
 
-	public void setRepairMan(RepairMan r) {
+	public void setRepairMan(RepairManRole r) {
 		this.repairMan = r;
 	}
 

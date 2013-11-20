@@ -1,5 +1,8 @@
 package housing;
 
+import housing.interfaces.RepairMan;
+import housing.interfaces.Resident;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -8,7 +11,7 @@ import java.util.TimerTask;
 import people.People;
 import people.Role;
 
-public class RepairMan extends Role {
+public class RepairManRole extends Role implements RepairMan {
 	// Data
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
@@ -19,7 +22,7 @@ public class RepairMan extends Role {
 	private int salaryTime;
 	private MyHouse currentHouse = null;
 
-	public RepairMan() {
+	public RepairManRole() {
 		super();
 	}
 
@@ -177,6 +180,6 @@ public class RepairMan extends Role {
 		}
 	}
 
-	enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing};
+	public enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing}
 }
 
