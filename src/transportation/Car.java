@@ -15,6 +15,7 @@ public class Car extends Agent{
 	        {
 	                cpr = c;
 	                destination = d;
+	                st = PassState.waitingInCar;
 	        }
 	}
 	List<Passenger> myCarPassengers = new ArrayList<Passenger>();
@@ -23,19 +24,22 @@ public class Car extends Agent{
 
 	
 	public Car(){
-		
+		carState = CarState.stopped;
 	}
 	
 	public void msgTakeMeHere(CarPassengerRole c, String place) {
+	System.out.println("Car recieved message to go to: " + place);
 	myCarPassengers.add(new Passenger(c,place));
 	}
 
 	public void msgAnimationFinishedArrivedAtDestination(String place){
+	System.out.println("Car reieved message cargui arrived to destination");
 	carState = CarState.arrivedToDestination;
 	stateChanged();
 	}
 
 	public void msgImLeaving(CarPassengerRole cpr){
+	System.out.println("Car recieved message that carpassenger is leaving");
 	Passenger p = findPassenger(cpr);
 	myCarPassengers.remove(p);
 	carState = CarState.stopped;
