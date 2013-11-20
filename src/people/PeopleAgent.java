@@ -1,4 +1,5 @@
 package people;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -10,8 +11,8 @@ public class PeopleAgent extends Agent{
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<MyRole> roles;
-	public List<Job> jobs;
+	public List<MyRole> roles = new ArrayList<MyRole>();
+	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Boolean hasCar;
 	public enum HungerState
@@ -23,6 +24,8 @@ public class PeopleAgent extends Agent{
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
+	public enum AgentLocation
+	{Home, Bank, 	}
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
@@ -54,6 +57,12 @@ public class PeopleAgent extends Agent{
 		r.msgIsInActive();
 	}
 	
+	public PeopleAgent(double Money, boolean hasCar)
+	{
+		super();
+		this.Money = Money;
+		this.hasCar = hasCar;
+	}
 	
 	
 	public void msgTimeIs(int Time)
@@ -63,6 +72,7 @@ public class PeopleAgent extends Agent{
 			event = AgentEvent.GoingToRestaurant;
 			stateChanged();
 			print("GoingToCar");
+			return;
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
 			
@@ -233,7 +243,7 @@ public class PeopleAgent extends Agent{
 		}
 
 		
-		return false;
+		return (Roles || Person);
 	}
 
 	
