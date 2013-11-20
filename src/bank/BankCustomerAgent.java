@@ -96,132 +96,30 @@ public class BankCustomerAgent extends Agent {
 		state = CustomerState.done;
 	}
 	
-	public void msgRestFull() {
-		event = AgentEvent.fullHouse;
-		stateChanged();
-	}
-
-	public void msgSitAtTable(WaiterAgent waiter, Menu m) {
-		this.waiter = waiter;
-		this.menu = m;
-		print("Received msgSitAtTable");
-		event = AgentEvent.followHost;
-		stateChanged();
-	}
-
-	public void msgAnimationFinishedGoToSeat() {
-		//from animation
-		event = AgentEvent.seated;
-		stateChanged();
-	}
-	public void msgAnimationFinishedLeaveRestaurant() {
-		//from animation
-		event = AgentEvent.doneLeaving;
-		stateChanged();
-	}
 	
-	public void msgWhatDoYouWant(){
-		print("Received msgWhatDoYouWant");
-		event = AgentEvent.ordering;
-		stateChanged();
-	}
-	
-	public void msgHereIsYourFood(String choice) {
-		print("Received msgHereIsYourFood");
-		event = AgentEvent.eating;
-		stateChanged();
-	}
-	
-	public void msgChoiceNotAvailable(Menu menu) {
-		this.menu = menu;
-		print("Received reorder request");
-		event = AgentEvent.reordering;
-		stateChanged();
-	}
-	
-	public void msgHereIsCheck(Check c) {
-		print("Received check for: " + c.balance);
-		this.check = c;
-		stateChanged();
-	}
-	
-	public void msgCanLeave() {
-		print("Allowed to leave");
-		event = AgentEvent.donePaying;
-		stateChanged();
-	}
-	
-	public void msgPayNextTime() {
-		print("Allowed to leave but have to pay remaining bill next time");
-		event = AgentEvent.donePaying;
-		mustPay = true;
-		stateChanged();
-	}
-
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 
-		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
-			state = AgentState.WaitingInRestaurant;
-			goToRestaurant();
-			return true;
+		if (state == CustomerState.ready) {
+	        if (action == CustomerAction.deposit) {
+	        	DepositMoney();
+	        	return true;
+	        }
+	        if (action == CustomerAction.withdraw) {
+	            WithdrawMoney();
+	            return true;
+	        }
 		}
-		if (state == AgentState.WaitingInRestaurant && event == AgentEvent.fullHouse && !wait){
-			leaveRest();
-			return true;
+		if (state == CustomerState.done) {
+	        LeaveBank();
+	        return true;
 		}
-		if (state == AgentState.WaitingInRestaurant && event == AgentEvent.fullHouse && wait){
-			return true;
-		}
-		if (state == AgentState.WaitingInRestaurant && event == AgentEvent.followHost ){
-			state = AgentState.BeingSeated;
-			SitDown();
-			return true;
-		}
-		if (state == AgentState.BeingSeated && event == AgentEvent.seated){
-			state = AgentState.WaitingAtTable;
-			HailWaiter();
-			return true;
-		}
-		
-		if (state == AgentState.WaitingAtTable && event == AgentEvent.ordering) {
-			state = AgentState.Ordered;
-			chooseItem();
-			return true;
-		}
-		if (state == AgentState.Ordered && event == AgentEvent.reordering) {
-			state = AgentState.ReOrdered;
-		    chooseOtherItem();
-		    return true;
-		}
-		
-		if (state == AgentState.Ordered && event == AgentEvent.eating) {
-			state = AgentState.Eating;
-			EatFood();
-			return true;
-		}
-		if (state == AgentState.ReOrdered && event == AgentEvent.eating) {
-			state = AgentState.Eating;
-			EatFood();
-			return true;
-		}
-		if (state == AgentState.Eating && event == AgentEvent.doneEating){
-			state = AgentState.Paying;
-			payCheck();
-			return true;
-		}
-		if (state == AgentState.Paying && event == AgentEvent.donePaying){
-			state = AgentState.Leaving;
-			leaveTable();
-			return true;
-		}
-		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
-			state = AgentState.DoingNothing;
-			//no action
-			return true;
+		if (state == CustomerState.needAccount) {
+	        CreateAccount();
+	        return true;
 		}
 		return false;
 	}
