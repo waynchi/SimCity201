@@ -48,6 +48,11 @@ public class ResidentRepairManTest {
 		setUp();
 	}
 	
+	@Test
+	public void test3() {
+		setUp();
+	}
+	
 	public void setUp() {
 		h1 = null;
 		h2 = null;
