@@ -1,10 +1,8 @@
 package bank;
 
-import restaurant.gui.CustomerGui;
-import restaurant.gui.RestaurantGui;
-import restaurant.interfaces.Customer;
-import restaurant.WaiterAgent;
+
 import agent.Agent;
+import bank.gui.BankCustomerGui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,36 +11,31 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Restaurant customer agent.
+ * Bank customer agent.
  */
-public class BankCustomerAgent extends Agent implements Customer {
+public class BankCustomerAgent extends Agent {
 	private String name;
-	private int hungerLevel = 5;        // determines length of meal
-	private int waitLevel = 5;			// determines how long the customer will sit before ordering
+
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private BankCustomerGui bankCustomerGui;
 
 	// agent correspondents
-	private HostAgent host;
-	private WaiterAgent waiter;
-	private CashierAgent cashier;
+	private TellerAgent teller;
 	
-	private String choice;
-	private Menu menu;
-	private Check check;
-	private double money;
-	private Boolean mustPay = false; //flag set after the customer leaves restauraunt without paying
-	private Boolean dash = false; //flag to allow grader to determine whether the customer will leave when he has no money or if he will dine and dash
-	private Boolean wait = false; //flag for waiting for opening
+	private double wallet;
+	private int accountID;
 	
-	//    private boolean isHungry = false; //hack for gui
-	public enum AgentState
-	{DoingNothing, WaitingInRestaurant, BeingSeated, Seated, WaitingAtTable, Ordered, ReOrdered, Eating, Paying, DoneEating, Leaving};
-	private AgentState state = AgentState.DoingNothing;//The start state
-
-	public enum AgentEvent 
-	{none, gotHungry, fullHouse, followHost, seated, ordering, reordering, eating, doneEating, donePaying, doneLeaving};
-	AgentEvent event = AgentEvent.none;
+	public enum CustomerState
+	{none, waiting, ready, needAccount, done};
+	
+	public enum CustomerAction 
+	{deposit, withdraw}
+	
+	private CustomerState state;
+	private CustomerAction action;
+	
+	private double withdraw;
+	private double deposit;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -53,49 +46,54 @@ public class BankCustomerAgent extends Agent implements Customer {
 	public BankCustomerAgent(String name){
 		super();
 		this.name = name;
-		money = 100;
 	}
 
-	/**
-	 * hack to establish connection to Host agent.
-	 */
-	public void setHost(HostAgent host) {
-		this.host = host;
-	}
-
-	public void setCashier(CashierAgent cashier) {
-		this.cashier = cashier;
-	}
-	
 	public String getCustomerName() {
 		return name;
 	}
 	// Messages
 
-	public void gotHungry() {//from animation
-		print("I'm hungry");
-		event = AgentEvent.gotHungry;
+	public void needMoney(double money) {//from animation
+		print("I need money");
+		action = CustomerAction.withdraw;
+		withdraw = money;
 		stateChanged();
 	}
 	
-	public void msgNoMoney() {
-		this.money = 0;
+	public void depositMoney(double money) {//from animation
+		print("I need to deposit money");
+		action = CustomerAction.deposit;
+		deposit = money;
+		stateChanged();
 	}
 	
-	public void msgDash() {
-		dash = true;
+	public void msgReadyToHelp(TellerAgent t) {
+		this.teller = t;
+		state = CustomerState.ready;
+		stateChanged();
 	}
 	
-	public void msgCheapDinner() {
-		this.money = 6.00;
+	public void msgAccountBalance(int accountID, double balance) {
+		this.accountID = accountID;
+		print("Account created. Account has a balance of: " + balance);
+		state = CustomerState.done;
 	}
 	
-	public void msgBigDinner() {
-		this.money = 100.00;
+	public void msgGiveLoan(double balance, double money) {
+		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
+		wallet += money;
+		state = CustomerState.done;
 	}
 	
-	public void msgWait() {
-		wait = true;
+	public void msgWithdrawSuccessful(double balance, double money) {
+		wallet += money;
+		print("Withdraw successful. Account has a balance of: " + balance);
+		state = CustomerState.done;
+	}
+	
+	public void msgDepositSuccessful(double balance) {
+		print("Deposit successful. Account has a balance of: " + balance);
+		state = CustomerState.done;
 	}
 	
 	public void msgRestFull() {
