@@ -10,7 +10,7 @@ public class House extends Item{
 	public int number;
 	public Resident occupant;
 	public HouseGui gui;
-	public boolean isLocked;
+	public boolean isLocked = false;
 	public boolean isBroken = false;
 
 	public House(String name, int houseNum) {

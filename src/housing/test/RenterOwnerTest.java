@@ -157,6 +157,13 @@ public class RenterOwnerTest {
 	}
 	
 	public void setUp() {
+		h1 = null;
+		h2 = null;
+		r1 = null;
+		r2 = null;
+		o = null;
+		r = null;
+		
 		h1 = new House("R1Residence", 1);
 		r1 = new Renter(200.0);
 		h2 = new House("R2Residence", 2);
