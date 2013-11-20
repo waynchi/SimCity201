@@ -25,6 +25,8 @@ public class PeopleAgent extends Agent{
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
+	public enum AgentLocation
+	{Home, Bank, 	}
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
@@ -56,6 +58,12 @@ public class PeopleAgent extends Agent{
 		r.msgIsInActive();
 	}
 	
+	public PeopleAgent(double Money, boolean hasCar)
+	{
+		super();
+		this.Money = Money;
+		this.hasCar = hasCar;
+	}
 	
 	
 	public void msgTimeIs(int Time)
@@ -236,7 +244,7 @@ public class PeopleAgent extends Agent{
 		}
 
 		
-		return false;
+		return (Roles || Person);
 	}
 
 	
