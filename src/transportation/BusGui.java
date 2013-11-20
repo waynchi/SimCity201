@@ -6,9 +6,11 @@ public class BusGui {
 	/**
 	 * @param args
 	 */
-	public void msgGoToNextStop(Bus busAgent,List<BusStop> busStops)
+	List<BusStop> busStops = new ArrayList<BusStop>();
+	
+	public void msgGoToNextStop(Bus busAgent,BusStop currentStop)
 	{
-		busAgent.AnimationFinishedArrivedAtStop(null);
+		//busAgent.msgAnimationFinishedArrivedAtStop(null);
 	}
 
 }
