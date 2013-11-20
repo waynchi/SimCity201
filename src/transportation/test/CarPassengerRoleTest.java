@@ -1,6 +1,9 @@
-package transportation;
+package transportation.test;
 
 import static org.junit.Assert.*;
+import transportation.CarAgent;
+import transportation.CarGui;
+import transportation.CarPassengerRole;
 import transportation.CarPassengerRole.State;
 import junit.framework.TestCase;
 
@@ -12,7 +15,7 @@ public class CarPassengerRoleTest extends TestCase{
 
 	CarPassengerRole cpr = new CarPassengerRole();
 	PeopleAgent p = new PeopleAgent();
-	Car c = new Car();
+	CarAgent c = new CarAgent();
 	CarGui cg = new CarGui();
 	public void setUp() throws Exception{
 		super.setUp();

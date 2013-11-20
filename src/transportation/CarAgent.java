@@ -1,17 +1,20 @@
 package transportation;
 import java.util.*;
 
+import transportation.interfaces.Car;
+import transportation.interfaces.CarPassenger;
+
 import agent.Agent;
-public class Car extends Agent{
+public class CarAgent extends Agent implements Car{
 
 	public enum PassState {waitingInCar,leaving};
 	public enum CarState {stopped,driving,arrivedToDestination};
 	
 	class Passenger {
-	        CarPassengerRole cpr;
+	        CarPassenger cpr;
 	        PassState st;
 	        String destination;
-	        Passenger(CarPassengerRole c, String d)
+	        Passenger(CarPassenger c, String d)
 	        {
 	                cpr = c;
 	                destination = d;
@@ -23,22 +26,34 @@ public class Car extends Agent{
 	CarState carState;
 
 	
-	public Car(){
+	public CarAgent(){
 		carState = CarState.stopped;
 	}
 	
-	public void msgTakeMeHere(CarPassengerRole c, String place) {
+	/* (non-Javadoc)
+	 * @see transportation.Car#msgTakeMeHere(transportation.CarPassengerRole, java.lang.String)
+	 */
+	@Override
+	public void msgTakeMeHere(CarPassenger c, String place) {
 	System.out.println("Car recieved message to go to: " + place);
 	myCarPassengers.add(new Passenger(c,place));
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.Car#msgAnimationFinishedArrivedAtDestination(java.lang.String)
+	 */
+	@Override
 	public void msgAnimationFinishedArrivedAtDestination(String place){
 	System.out.println("Car reieved message cargui arrived to destination");
 	carState = CarState.arrivedToDestination;
 	stateChanged();
 	}
 
-	public void msgImLeaving(CarPassengerRole cpr){
+	/* (non-Javadoc)
+	 * @see transportation.Car#msgImLeaving(transportation.CarPassengerRole)
+	 */
+	@Override
+	public void msgImLeaving(CarPassenger cpr){
 	System.out.println("Car recieved message that carpassenger is leaving");
 	Passenger p = findPassenger(cpr);
 	myCarPassengers.remove(p);
@@ -80,7 +95,7 @@ public class Car extends Agent{
 	myPassenger.cpr.msgArrivedToDestination(myPassenger.destination);
 	}
 
-	private Passenger findPassenger(CarPassengerRole cpr) {
+	private Passenger findPassenger(CarPassenger cpr) {
 		// TODO Auto-generated method stub
 		for(Passenger p : myCarPassengers)
 		{
@@ -90,6 +105,10 @@ public class Car extends Agent{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.Car#setGui(transportation.CarGui)
+	 */
+	@Override
 	public void setGui(CarGui cg){
 		carGui = cg;
 	}

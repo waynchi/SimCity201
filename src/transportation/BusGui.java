@@ -1,6 +1,8 @@
 package transportation;
 import java.util.*;
 
+import transportation.interfaces.Bus;
+
 public class BusGui {
 
 	/**

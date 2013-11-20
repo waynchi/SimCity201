@@ -1,6 +1,8 @@
 package bank;
 
 import agent.Agent;
+import bank.interfaces.BankCustomer;
+import bank.interfaces.Teller;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -10,7 +12,7 @@ import java.util.concurrent.Semaphore;
  * Bank Host Agent
  */
 
-public class TellerAgent extends Agent {
+public class TellerAgent extends Agent implements Teller {
 
 	public List<myBankCustomer> waitingCustomers
 	= Collections.synchronizedList(new ArrayList<myBankCustomer>()); //For this prototype there is one teller who will store every waiting customer
@@ -43,6 +45,11 @@ public class TellerAgent extends Agent {
 	}
 
 	// Messages
+	
+	public void msgHere(BankCustomer cust) {
+		waitingCustomers.add(new myBankCustomer(cust));
+		stateChanged();
+	}
 
 	public void msgCreateAccount(String name, double initialFund) {
 		currentCustomer.account = new Account(name, accounts.size()+1); //Initializes an account with a customer name and a unique account id.
@@ -166,17 +173,16 @@ public class TellerAgent extends Agent {
 	}
 	
 	private class myBankCustomer {
-		BankCustomerAgent customer;
+		BankCustomer customer;
 		private CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
 		double depositAmount = 0;
 		String name;
 		
-		myBankCustomer(BankCustomerAgent customer, String name) {
+		myBankCustomer(BankCustomer customer) {
 			this.customer = customer;
 			this.state = CustomerState.none;
-			this.name = name;
 		}
 	}
 }
