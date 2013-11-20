@@ -6,6 +6,8 @@ package bank.interfaces;
 
 public interface Teller {
 
+	public abstract void msgHere(BankCustomer cust);
+	
 	public abstract void msgCreateAccount(String name, double initialFund);
 	
 	public abstract void msgWithdraw(int accountID, double moneyNeeded);

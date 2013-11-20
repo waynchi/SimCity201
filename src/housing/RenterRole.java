@@ -1,5 +1,7 @@
 package housing;
 
+import housing.interfaces.Owner;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -7,7 +9,7 @@ import java.util.TimerTask;
 
 import people.People;
 
-public class Renter extends Resident {
+public class RenterRole extends ResidentRole {
 	// Data
 
 	private Owner owner;
@@ -19,7 +21,7 @@ public class Renter extends Resident {
 	private Timer rentTimer;
 	private List<Double> penalties = new ArrayList<Double>();
 
-	public Renter(double rent) {
+	public RenterRole(double rent) {
 		super();
 		this.rent = rent;
 		rentDue = false;
@@ -123,7 +125,7 @@ public class Renter extends Resident {
 		return penalties;
 	}
 	
-	public void setOwner(Owner o) {
+	public void setOwner(OwnerRole o) {
 		this.owner = o;
 	}
 }
