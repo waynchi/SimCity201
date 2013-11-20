@@ -10,7 +10,7 @@ public class ResidentRole extends Role{
 	// Data
 
 	protected House house;
-	private RepairManRole repairMan;
+	private RepairMan repairMan;
 	private RepairStage repairStage;
 	private State myState;
 	private Semaphore busy = new Semaphore(0, true);

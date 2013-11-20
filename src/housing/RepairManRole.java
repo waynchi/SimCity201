@@ -1,6 +1,7 @@
 package housing;
 
 import housing.interfaces.RepairMan;
+import housing.interfaces.Resident;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -138,7 +139,7 @@ public class RepairManRole extends Role implements RepairMan {
 		return null;
 	}
 
-	public void addHouse(House h, ResidentRole r) {
+	public void addHouse(House h, Resident r) {
 		houses.add(new MyHouse(h, r));
 	}
 	
@@ -161,12 +162,12 @@ public class RepairManRole extends Role implements RepairMan {
 
 	private class MyHouse {
 		House h;
-		ResidentRole r;
+		Resident r;
 		List<Item> brokenItems;
 		HouseState s;
 		Timer recheck;
 
-		public MyHouse(House h, ResidentRole r) {
+		public MyHouse(House h, Resident r) {
 			this.h = h;
 			this.r = r;
 			s = HouseState.None;
@@ -174,6 +175,6 @@ public class RepairManRole extends Role implements RepairMan {
 		}
 	}
 
-	enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing};
+	public enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing}
 }
 
