@@ -23,10 +23,10 @@ public class BankCustomerAgent extends Agent {
 	private TellerAgent teller;
 	
 	private double wallet;
-	private int accountID;
+	private int accountID = -1; //Initialize with an impossible value that will be checked later
 	
 	public enum CustomerState
-	{none, waiting, ready, needAccount, done};
+	{none, waiting, ready, needAccount, finished, done};
 	
 	public enum CustomerAction 
 	{deposit, withdraw}
@@ -77,23 +77,27 @@ public class BankCustomerAgent extends Agent {
 		this.accountID = accountID;
 		print("Account created. Account has a balance of: " + balance);
 		state = CustomerState.done;
+		stateChanged();
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
 		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
 		wallet += money;
 		state = CustomerState.done;
+		stateChanged();
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
 		wallet += money;
 		print("Withdraw successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
+		stateChanged();
 	}
 	
 	public void msgDepositSuccessful(double balance) {
 		print("Deposit successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
+		stateChanged();
 	}
 	
 	
@@ -126,141 +130,41 @@ public class BankCustomerAgent extends Agent {
 
 	// Actions
 
-	private void goToRestaurant() {
-		Do("Going to restaurant");
-		host.msgIWantFood(this);//send our instance, so he can respond to us
-	}
-
-	private void SitDown() {
-		Do("Being seated. Going to table");
-		customerGui.DoGoToSeat();//hack; only one table
-	}
-
-	private void EatFood() {
-		print(" " + choice);
-		customerGui.setChoice(choice);
-		Do("Eating Food");
-		//This next complicated line creates and starts a timer thread.
-		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
-		//When that time elapses, it will call back to the run routine
-		//located in the anonymous class created right there inline:
-		//TimerTask is an interface that we implement right there inline.
-		//Since Java does not all us to pass functions, only objects.
-		//So, we use Java syntactic mechanism to create an
-		//anonymous inner class that has the public method run() in it.
-		timer.schedule(new TimerTask() {
-			public void run() {
-				print("Done eating, " + choice);
-				event = AgentEvent.doneEating;
-				//isHungry = false;
-				stateChanged();
-			}
-		},
-		hungerLevel*1000);
-	}
-	
-	private void HailWaiter() {
-		//This next complicated line creates and starts a timer thread.
-		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
-		//When that time elapses, it will call back to the run routine
-		//located in the anonymous class created right there inline:
-		//TimerTask is an interface that we implement right there inline.
-		//Since Java does not all us to pass functions, only objects.
-		//So, we use Java syntactic mechanism to create an
-		//anonymous inner class that has the public method run() in it.
-		timer.schedule(new TimerTask() {
-			public void run() {
-				CallWaiter();
-			}
-		},
-		waitLevel*1000);
-	}
-	
-	private void CallWaiter() {
-		Do("Calling " + waiter.getName());
-		waiter.msgReadyToOrder(this);
-	}
-	
-	private void chooseItem(){
-		Do("Choosing item");
-		if (money > menu.getCost("Salad") && money < menu.getCost("Chicken") ) {
-			customerGui.setChoice("Salad" + "?");
-			choice = "Salad";
-			waiter.msgHereIsChoice(this, choice);
+	private void DepositMoney(){
+		if (accountID == -1) {
+			wallet -= deposit;
+			teller.msgDeposit(deposit);
+			deposit = 0;
+			state = CustomerState.finished;
 		}
 		else {
-			if (money == 0 && dash) {
-				customerGui.setChoice(name + "?"); //hack for testing. the agent name will be his choice until that food runs out of inventory
-				choice = name;
-				waiter.msgHereIsChoice(this, name);
-			}
-			else if (money == 0 && !dash) {
-				print("No money, leaving restaurant");
-				leaveTable();
-			}
-			else {
-				customerGui.setChoice(name + "?"); //hack for testing. the agent name will be his choice until that food runs out of inventory
-				choice = name;
-				waiter.msgHereIsChoice(this, name);
-			}
-		}
-	}
-	
-	private void chooseOtherItem(){
-		Do("Choosing new item");
-		if (menu.outOfStock("Salad")) {
-			print("Can't afford anything else");
-			leaveTable();
-		}
-		else {
-			if (money == 0 && dash) {
-				Random rand = new Random();
-				int randomChoice = rand.nextInt(menu.choices.size());
-				choice = menu.choices.get(randomChoice);
-				customerGui.setChoice(choice + "?");
-				waiter.msgHereIsChoice(this, menu.choices.get(randomChoice));
-			}
-			else {
-				Random rand = new Random();
-				int randomChoice = rand.nextInt(menu.choices.size());
-				choice = menu.choices.get(randomChoice);
-				customerGui.setChoice(choice + "?");
-				waiter.msgHereIsChoice(this, menu.choices.get(randomChoice));
-			}
+			wallet -= deposit;
+			teller.msgDeposit(accountID, deposit);
+			deposit = 0;
+			state = CustomerState.finished;
 		}
 	}
 
-	private void leaveTable() {
-		customerGui.setChoice(null);
-		Do("Leaving.");
-		waiter.msgDoneAndLeaving(this);
-		customerGui.DoExitRestaurant();
-		state = AgentState.Leaving;
-	}
-	
-	private void leaveRest() {
-		Do("Leaving restaurant.");
-		customerGui.DoExitRestaurant();
-		host.msgNoWait(this);
-		state = AgentState.Leaving;
-	}
-	
-	private void payCheck() {
-		if (mustPay) {
-			cashier.msgHereIsMoney(this, check.balance);
-			money = 0;
+	private void WithdrawMoney(){
+		if (accountID == -1) {
+			print("Cannot withdraw money without an account");
+			state = CustomerState.done;
 		}
 		else {
-			if (money < check.balance) {
-				cashier.msgHereIsMoney(this, money);
-				money = 0;
-			}
-			else {
-				double amount = check.balance;
-				money -= check.balance;
-				cashier.msgHereIsMoney(this, amount);
-			}
+			teller.msgWithdraw(accountID, withdraw);
+			withdraw = 0;
+			state = CustomerState.finished;
 		}
+	}
+
+	private void LeaveBank(){
+		//Do Leave Bank
+		teller.msgDoneAndLeaving();
+	}
+
+	private void CreateAccount(){
+		teller.msgCreateAccount(name, deposit);
+		state = CustomerState.finished;
 	}
 
 	// Accessors, etc.
@@ -268,27 +172,17 @@ public class BankCustomerAgent extends Agent {
 	public String getName() {
 		return name;
 	}
-	
-	public int getHungerLevel() {
-		return hungerLevel;
-	}
-
-	public void setHungerLevel(int hungerLevel) {
-		this.hungerLevel = hungerLevel;
-		//could be a state change. Maybe you don't
-		//need to eat until hunger lever is > 5?
-	}
 
 	public String toString() {
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
-		customerGui = g;
+	public void setGui(BankCustomerGui g) {
+		bankCustomerGui = g;
 	}
 
-	public CustomerGui getGui() {
-		return customerGui;
+	public BankCustomerGui getGui() {
+		return bankCustomerGui;
 	}
 	
 }
