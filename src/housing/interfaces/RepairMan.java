@@ -29,4 +29,5 @@ public interface RepairMan {
 	public boolean doesItNeedRepair(House h);
 	public boolean anyCurrentHouse();
 	public People getPersonAgent();
+	public void setPerson(People p);
 }

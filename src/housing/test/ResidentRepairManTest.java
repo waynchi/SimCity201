@@ -1,16 +1,14 @@
 package housing.test;
 
 import static org.junit.Assert.*;
-
 import java.util.List;
-
 import housing.House;
 import housing.RepairManRole;
 import housing.ResidentRole;
 import housing.Item;
-
+import housing.interfaces.RepairMan;
+import housing.interfaces.Resident;
 import org.junit.Test;
-
 import people.People;
 import people.PeopleAgent;
 
@@ -20,10 +18,6 @@ public class ResidentRepairManTest {
 	Resident r2;
 	RepairMan r;
 	People p = new PeopleAgent();
-	ResidentRole r1;
-	ResidentRole r2;
-	RepairManRole r;
-	PeopleAgent p = new PeopleAgent();
 	House h1;
 	House h2;
 	List<Item> h1Items;

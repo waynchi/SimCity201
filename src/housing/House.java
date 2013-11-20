@@ -1,5 +1,7 @@
 package housing;
 
+import housing.interfaces.Resident;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class House extends Item{
 	public List<Item> items;
 	public int number;
-	public ResidentRole occupant;
+	public Resident occupant;
 	public HouseGui gui;
 	public boolean isLocked = false;
 	public boolean isBroken = false;
@@ -33,7 +35,7 @@ public class House extends Item{
 		isLocked = false;
 	}
 
-	public void setOccupant(ResidentRole occ) {
+	public void setOccupant(Resident occ) {
 		this.occupant = occ;
 	}
 

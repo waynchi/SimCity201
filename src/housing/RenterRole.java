@@ -125,7 +125,7 @@ public class RenterRole extends ResidentRole {
 		return penalties;
 	}
 	
-	public void setOwner(OwnerRole o) {
+	public void setOwner(Owner o) {
 		this.owner = o;
 	}
 }
