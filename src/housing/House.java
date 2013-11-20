@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class House extends Item{
 	public List<Item> items;
 	public int number;
-	public Resident occupant;
+	public ResidentRole occupant;
 	public HouseGui gui;
 	public boolean isLocked = false;
 	public boolean isBroken = false;
@@ -33,7 +33,7 @@ public class House extends Item{
 		isLocked = false;
 	}
 
-	public void setOccupant(Resident occ) {
+	public void setOccupant(ResidentRole occ) {
 		this.occupant = occ;
 	}
 
