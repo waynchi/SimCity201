@@ -15,15 +15,16 @@ public class Car extends Agent{
 	        {
 	                cpr = c;
 	                destination = d;
+	                st = PassState.waitingInCar;
 	        }
 	}
-	List<Passenger> myCarPassengers;
+	List<Passenger> myCarPassengers = new ArrayList<Passenger>();
 	CarGui carGui;
 	CarState carState;
 
 	
 	public Car(){
-		
+		carState = CarState.stopped;
 	}
 	
 	public void msgTakeMeHere(CarPassengerRole c, String place) {

@@ -14,32 +14,36 @@ class Passenger {
             st = PassState.waiting;
     }
 }
-List<Passenger> myBusPassengers;
+List<Passenger> myBusPassengers = new ArrayList<Passenger>();
 BusGui busGui;
 public enum BusState {driving, newStop, newStopAndPassengersNotified, waitingForNewPassengers, readyToLeave, off};
 BusState busState;
 BusStop currentStop;
-List<BusStop> myBusStops;
+List<BusStop> myBusStops = new ArrayList<BusStop>();
 
 
 public void msgImBoarding(BusPassengerRole p){ //remove place
+	System.out.println("Bus recieved message that passenger is boarding");
 myBusPassengers.add(new Passenger(p));
 }
 
 public void msgImLeaving(BusPassengerRole p){
+	System.out.println("Bus recieved message that passenger is leaving");
 Passenger toRemove = findPassenger(p);
 myBusPassengers.remove(toRemove);
 }
 
 
 
-public void AnimationFinishedArrivedAtStop(BusStop S){
+public void msgAnimationFinishedArrivedAtStop(BusStop S){
+	System.out.println("Recieved message that bus arrived to new stop");
 currentStop = S;
 busState = BusState.newStop;
 stateChanged();
 }
 
 public void msgAllBusStopPassengersNotified(){
+	System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }
@@ -87,7 +91,7 @@ if(areAllBusPassengersNotified()) //function that loops through passengers, chec
 }
 
 private void GoToNextStop(){
-busGui.msgGoToNextStop(this,myBusStops);
+busGui.msgGoToNextStop(this,currentStop);
 }
 
 private Passenger findPassenger(BusPassengerRole target) {
@@ -106,6 +110,10 @@ private boolean areAllBusPassengersNotified(){
 			return false;
 	}
 	return true;
+}
+
+public void setGui(BusGui bg){
+	busGui = bg;
 }
 }
 
