@@ -1,5 +1,6 @@
 package test;
 
+import people.People;
 import people.PeopleAgent;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -20,7 +21,7 @@ public class CashierTest extends TestCase {
 	MockMarket market2;
 	enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
 	RestaurantPanel restaurantPanel;
-	PeopleAgent person;
+	People person;
 
 
 	public static void main(String args[]) {

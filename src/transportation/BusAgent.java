@@ -2,13 +2,14 @@ package transportation;
 import java.util.*;
 
 import agent.Agent;
-import transportation.BusPassengerRole;
-public class Bus extends Agent{
+import transportation.interfaces.Bus;
+import transportation.interfaces.BusPassenger;
+public class BusAgent extends Agent implements Bus{
 	public enum PassState {waiting,waitingAndNotified};
 class Passenger {
 	PassState st;
-    BusPassengerRole bpr;
-    Passenger(BusPassengerRole p)
+    BusPassenger bpr;
+    Passenger(BusPassenger p)
     {
             bpr = p;
             st = PassState.waiting;
@@ -22,12 +23,20 @@ BusStop currentStop;
 List<BusStop> myBusStops = new ArrayList<BusStop>();
 
 
-public void msgImBoarding(BusPassengerRole p){ //remove place
-	System.out.println("Bus recieved message that passenger is boarding");
+/* (non-Javadoc)
+ * @see transportation.Bus#msgImBoarding(transportation.BusPassengerRole)
+ */
+@Override
+public void msgImBoarding(BusPassenger p){ //remove place
+System.out.println("Bus recieved message that passenger is boarding");
 myBusPassengers.add(new Passenger(p));
 }
 
-public void msgImLeaving(BusPassengerRole p){
+/* (non-Javadoc)
+ * @see transportation.Bus#msgImLeaving(transportation.BusPassengerRole)
+ */
+@Override
+public void msgImLeaving(BusPassenger p){
 	System.out.println("Bus recieved message that passenger is leaving");
 Passenger toRemove = findPassenger(p);
 myBusPassengers.remove(toRemove);
@@ -35,22 +44,30 @@ myBusPassengers.remove(toRemove);
 
 
 
+/* (non-Javadoc)
+ * @see transportation.Bus#msgAnimationFinishedArrivedAtStop(transportation.BusStop)
+ */
+@Override
 public void msgAnimationFinishedArrivedAtStop(BusStop S){
-	System.out.println("Recieved message that bus arrived to new stop");
+System.out.println("Recieved message that bus arrived to new stop");
 currentStop = S;
 busState = BusState.newStop;
 stateChanged();
 }
 
+/* (non-Javadoc)
+ * @see transportation.Bus#msgAllBusStopPassengersNotified()
+ */
+@Override
 public void msgAllBusStopPassengersNotified(){
-	System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
+System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }
 
 
 
-protected boolean pickAndExecuteAnAction() {
+public boolean pickAndExecuteAnAction() {
 for (Passenger passenger : myBusPassengers)
 {
     if (busState == BusState.newStop && passenger.st == PassState.waiting)
@@ -90,11 +107,11 @@ if(areAllBusPassengersNotified()) //function that loops through passengers, chec
 
 }
 
-private void GoToNextStop(){
+public void GoToNextStop(){
 busGui.msgGoToNextStop(this,currentStop);
 }
 
-private Passenger findPassenger(BusPassengerRole target) {
+private Passenger findPassenger(BusPassenger target) {
 	// TODO Auto-generated method stub
 	for(Passenger p : myBusPassengers)
 	{
@@ -112,6 +129,10 @@ private boolean areAllBusPassengersNotified(){
 	return true;
 }
 
+/* (non-Javadoc)
+ * @see transportation.Bus#setGui(transportation.BusGui)
+ */
+@Override
 public void setGui(BusGui bg){
 	busGui = bg;
 }

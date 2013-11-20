@@ -11,7 +11,7 @@ import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import people.PeopleAgent;
+import people.People;
 import people.Role;
 
 /**
@@ -38,7 +38,7 @@ public class CookRole extends Role{
 	private Boolean onOpen;
 	private Timer schedulerTimer = new Timer();
 	private Cashier cashier;
-	private PeopleAgent people;
+	private People people;
 
 	private CookGui cookGui = null;
 	

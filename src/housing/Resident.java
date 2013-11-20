@@ -3,7 +3,8 @@ package housing;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
-import people.PeopleAgent;
+
+import people.People;
 import people.Role;
 
 public class Resident extends Role{
@@ -172,7 +173,7 @@ public class Resident extends Role{
 		return result;
 	}
 	
-	public PeopleAgent getAgent() {
+	public People getAgent() {
 		return myPerson;
 	}
 	

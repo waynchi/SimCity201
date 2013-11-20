@@ -2,8 +2,10 @@ package transportation;
 
 import people.PeopleAgent;
 import people.Role;
+import transportation.interfaces.Car;
+import transportation.interfaces.CarPassenger;
 
-public class CarPassengerRole extends Role{
+public class CarPassengerRole extends Role implements CarPassenger{
 
 	
 	
@@ -20,6 +22,10 @@ public class CarPassengerRole extends Role{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see transportation.CarPassenger#msgIsActive()
+	 */
+	@Override
 	public void msgIsActive(){
 	System.out.println("CarPassenger is now active");
 	myState = State.readyToLeave;
@@ -28,6 +34,10 @@ public class CarPassengerRole extends Role{
 	stateChanged();
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.CarPassenger#msgArrivedToDestination(java.lang.String)
+	 */
+	@Override
 	public void msgArrivedToDestination(String place){
  	System.out.println("Received message that Car arrived to destination: " + place);
 	if(destination.equals(place)){
@@ -36,6 +46,10 @@ public class CarPassengerRole extends Role{
 	}
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.CarPassenger#pickAndExecuteAnAction()
+	 */
+	@Override
 	public boolean pickAndExecuteAnAction() {
 		
 	if(myState == State.readyToLeave && event == Event.carIsReady){
@@ -64,11 +78,19 @@ public class CarPassengerRole extends Role{
 	
 	
 
+	/* (non-Javadoc)
+	 * @see transportation.CarPassenger#setCar(transportation.interfaces.Car)
+	 */
+	@Override
 	public void setCar(Car c)
 	{
 		myCar = c;
 	}
 	
+	/* (non-Javadoc)
+	 * @see transportation.CarPassenger#setPersonAgent(people.PeopleAgent)
+	 */
+	@Override
 	public void setPersonAgent(PeopleAgent p)
 	{
 		myPerson = p;

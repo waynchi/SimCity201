@@ -1,13 +1,16 @@
 package transportation;
 import transportation.BusPassengerRole;
+import transportation.interfaces.Bus;
+import transportation.interfaces.BusPassenger;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 public class BusStop {
-List<BusPassengerRole> waitingPassengers = new ArrayList<BusPassengerRole>();
-List<BusPassengerRole> boardingPassengers = new ArrayList<BusPassengerRole>();
+public List<BusPassengerRole> waitingPassengers = new ArrayList<BusPassengerRole>();
+public List<BusPassengerRole> boardingPassengers = new ArrayList<BusPassengerRole>();
 Bus currentBus;
-BusStop(){
+public BusStop(){
 	
 }
 
@@ -18,14 +21,14 @@ waitingPassengers.add(bpr);
 }
 
 public void msgBusArrived(Bus b){
-	System.out.println("Recieved message that bus has arrived");
+	System.out.println("BusStop recieved message that bus has arrived");
 	currentBus = b;
 	boardingPassengers = waitingPassengers;
-for(BusPassengerRole passenger : boardingPassengers) 
+for(BusPassenger passenger : boardingPassengers) 
         passenger.msgBusArrived(b);
 }
 
-public void msgLeavingBusStop(BusPassengerRole bpr){
+public void msgLeavingBusStop(BusPassenger bpr){
 if(boardingPassengers.contains(bpr))
 	boardingPassengers.remove(bpr);
 waitingPassengers.remove(bpr);

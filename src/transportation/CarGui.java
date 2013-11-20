@@ -1,5 +1,7 @@
 package transportation;
 
+import transportation.interfaces.Car;
+
 public class CarGui {
 
 	/**
