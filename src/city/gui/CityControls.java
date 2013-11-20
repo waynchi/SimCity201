@@ -25,6 +25,9 @@ public class CityControls extends JPanel implements ActionListener {
 		JButton btnAddPerson = new JButton("Add Person");
 		add(btnAddPerson);
 		
+		setBackground( Color.ORANGE );
+		setPreferredSize( new Dimension(300, 77) );
+		
 	}
 
 	@Override
