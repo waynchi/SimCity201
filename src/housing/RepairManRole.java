@@ -1,5 +1,7 @@
 package housing;
 
+import housing.interfaces.RepairMan;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -7,7 +9,7 @@ import java.util.TimerTask;
 import people.PeopleAgent;
 import people.Role;
 
-public class RepairManRole extends Role {
+public class RepairManRole extends Role implements RepairMan {
 	// Data
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
@@ -138,10 +140,6 @@ public class RepairManRole extends Role {
 
 	public void addHouse(House h, ResidentRole r) {
 		houses.add(new MyHouse(h, r));
-	}
-	
-	public PeopleAgent getAgent() {
-		return myPerson;
 	}
 	
 	public boolean doesItNeedRepair(House h) {

@@ -116,7 +116,7 @@ public class ResidentRole extends Role{
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (this.myPerson != repairMan.getAgent()) {
+		if (this.myPerson != repairMan.getPersonAgent()) {
 			if (repairStage == RepairStage.RepairDone) {
 				thankRepairMan();
 				return true;
