@@ -47,7 +47,8 @@ public class TellerAgent extends Agent implements Teller {
 	// Messages
 	
 	public void msgHere(BankCustomer cust) {
-		
+		waitingCustomers.add(new myBankCustomer(cust));
+		stateChanged();
 	}
 
 	public void msgCreateAccount(String name, double initialFund) {
@@ -179,10 +180,9 @@ public class TellerAgent extends Agent implements Teller {
 		double depositAmount = 0;
 		String name;
 		
-		myBankCustomer(BankCustomer customer, String name) {
+		myBankCustomer(BankCustomer customer) {
 			this.customer = customer;
 			this.state = CustomerState.none;
-			this.name = name;
 		}
 	}
 }

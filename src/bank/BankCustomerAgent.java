@@ -22,7 +22,7 @@ public class BankCustomerAgent extends Agent implements BankCustomer {
 	private BankCustomerGui bankCustomerGui;
 
 	// agent correspondents
-	private TellerAgent teller;
+	private Teller teller;
 	
 	private double wallet;
 	private int accountID = -1; //Initialize with an impossible value that will be checked later
