@@ -2,12 +2,14 @@ package transportation;
 
 import people.PeopleAgent;
 import people.Role;
+import transportation.interfaces.Bus;
+import transportation.interfaces.BusPassenger;
 
-public class BusPassengerRole extends Role{
+public class BusPassengerRole extends Role implements BusPassenger{
 
-	BusStop currentBusStop;
-	BusStop destination;
-	Bus myBus;
+	public BusStop currentBusStop;
+	public BusStop destination;
+	public Bus myBus;
 	public enum Event {busArrived,busArrivedAtDestination};
 	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
 	Event event;
@@ -18,12 +20,20 @@ public class BusPassengerRole extends Role{
 		myPerson = getPersonAgent();
 	}
 	
+	/* (non-Javadoc)
+	 * @see transportation.BusPassenger#msgIsActive()
+	 */
+	@Override
 	public void msgIsActive(){
 	
 	currentBusStop.msgWaitingHere(this);
 	myState = State.waitingAtBusStop;
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.BusPassenger#msgBusArrived(transportation.interfaces.Bus)
+	 */
+	@Override
 	public void msgBusArrived(Bus b){
 	System.out.println("Bus passenger recieved message that bus arrived");
 	myBus = b;
@@ -33,7 +43,12 @@ public class BusPassengerRole extends Role{
 	
 	
 
+	/* (non-Javadoc)
+	 * @see transportation.BusPassenger#msgArrivedAtStop(transportation.BusStop)
+	 */
+	@Override
 	public void msgArrivedAtStop(BusStop bs){
+	System.out.println("Bus passenger recieved message that bus arrived at new bus stop");
 	if (bs == destination)
 	{
 		event = Event.busArrivedAtDestination;
@@ -41,6 +56,10 @@ public class BusPassengerRole extends Role{
 	}
 	}
 
+	/* (non-Javadoc)
+	 * @see transportation.BusPassenger#pickAndExecuteAnAction()
+	 */
+	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 	
@@ -59,6 +78,7 @@ public class BusPassengerRole extends Role{
 	}
 	
 	private void BoardBus(){
+	System.out.println("Bus passenger preparing to board bus");
 	myBus.msgImBoarding(this);
 	currentBusStop.msgLeavingBusStop(this);
 	}
@@ -67,6 +87,10 @@ public class BusPassengerRole extends Role{
 	myBus.msgImLeaving(this);
 	}
 	
+	/* (non-Javadoc)
+	 * @see transportation.BusPassenger#setPersonAgent(people.PeopleAgent)
+	 */
+	@Override
 	public void setPersonAgent(PeopleAgent p){
 		myPerson = p;
 	}
