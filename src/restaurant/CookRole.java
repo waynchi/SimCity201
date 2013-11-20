@@ -6,9 +6,13 @@ import restaurant.gui.CookGui;
 import restaurant.gui.HostGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Cashier;
+
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import people.PeopleAgent;
+import people.Role;
 
 /**
  * Restaurant Cook Agent
@@ -22,7 +26,7 @@ import java.util.concurrent.Semaphore;
 //has not been ordered for now.
 
 
-public class CookRole extends Agent{
+public class CookRole extends Role{
 
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
 	private List<MarketRole> markets = Collections.synchronizedList(new ArrayList<MarketRole>());
@@ -34,6 +38,7 @@ public class CookRole extends Agent{
 	private Boolean onOpen;
 	private Timer schedulerTimer = new Timer();
 	private Cashier cashier;
+	private PeopleAgent people;
 
 	private CookGui cookGui = null;
 	
@@ -74,14 +79,14 @@ public class CookRole extends Agent{
 	public void msgHereIsAnOrder (String food, BaseWaiterRole w,int tableNum) {
 		orders.add( new MyOrder(food, w, tableNum));
 		print("Receiving order, " + food + " for table #"+tableNum);
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	// Food order is cooked, managed by timer
 	public void timerDone(MyOrder order)
 	{
 		order.state = OrderState.DONE;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}	
 
 
@@ -95,7 +100,7 @@ public class CookRole extends Agent{
 						foods.get(entry.getKey()).amount += supplyList.get(entry.getKey());
 					}
 					mo.isResponded = true;
-					stateChanged();
+					getPersonAgent().CallstateChanged();
 				}
 			}
 		}
@@ -103,7 +108,7 @@ public class CookRole extends Agent{
 
 	public void addMarket (MarketRole m) {
 		markets.add(m);
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.

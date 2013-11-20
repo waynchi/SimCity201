@@ -25,6 +25,7 @@ public class Renter extends Resident {
 		rentDue = false;
 		timesRentDue = 0;
 		rentTimer = new Timer();
+//		startRentTimer();
 	}
 
 	//-----------------------------------------------------------//

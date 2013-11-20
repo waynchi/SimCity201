@@ -10,7 +10,7 @@ import people.Role;
 public class RepairMan extends Role {
 	// Data
 
-	private List<MyHouse> houses;
+	private List<MyHouse> houses = new ArrayList<MyHouse>();
 	private Timer salaryTimer;
 	private double salary;
 	private double money;
@@ -142,6 +142,19 @@ public class RepairMan extends Role {
 	
 	public PeopleAgent getAgent() {
 		return myPerson;
+	}
+	
+	public boolean doesItNeedRepair(House h) {
+		MyHouse mh = find(h);
+		if (mh.s == HouseState.NeedsRepair)
+			return true;
+		return false;
+	}
+	
+	public boolean anyCurrentHouse() {
+		if (currentHouse != null)
+			return true;
+		return false;
 	}
 
 	//-----------------------------------------------------------//

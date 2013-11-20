@@ -1,6 +1,5 @@
 package restaurant;
 
-import agent.Agent;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
@@ -9,6 +8,8 @@ import restaurant.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import people.Role;
 /**
  * Restaurant Host Agent
  * @param <MyCustomer>
@@ -17,7 +18,7 @@ import java.util.concurrent.Semaphore;
 
 // waiter can go on break if the gui button is pushed (as long as there are more than one waiter available)
 // that's why customer must negotiate with host and host might deny his request.
-public abstract class BaseWaiterRole extends Agent implements Waiter {
+public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
@@ -32,11 +33,10 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 	private Semaphore atCook = new Semaphore(0,true);
 	private Semaphore atWaitingCustomer = new Semaphore(0,true);
 	private Semaphore atCashier = new Semaphore(0,true);
-	private Boolean isActive = false;
-	private Boolean turnActive = false;
 	protected int currentCustomerNum;
 
-
+	private Boolean isActive = false;
+	
 	protected enum customerState {waiting, seated, readyToOrder, askedToOrder, ordered, 
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
@@ -80,7 +80,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 		return name;
 	}
 
-	public List getCustomers() {
+	public List<MyCustomer> getCustomers() {
 		return customers;
 	}
 
@@ -94,9 +94,8 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 	//	
 	//}
 	
-	public void msgActive() {
+	public void msgIsActive() {
 		isActive = true;
-		turnActive = true;
 	}
 	
 	public void msgIsInActive () {
@@ -105,51 +104,52 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 	
 	public void msgAtTable() {//from animation
 		atTable.release();// = true;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	public void msgAtCook() {
 		atCook.release();
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtWaitingCustomer() {
 		atWaitingCustomer.release();
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAskForBreak() { //from gui onBreak button
 		state = agentState.ASKING_FOR_BREAK;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgOffBreak() { // from gui
 		state = agentState.WORKING;
 		onBreak = false;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgBreakApproved() { // from host Agent
 		state = agentState.ON_BREAK;
 		onBreak = true;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgBreakDenied() { // from host agent
 		state = agentState.WORKING;
 		onBreak = false;
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void SitAtTable(Customer customer, int table) {
 		currentCustomerNum++;
 		customers.add(new MyCustomer(customer, table, "waiting"));
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 
@@ -159,7 +159,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.state = customerState.readyToOrder;
 			}
 		}
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgHereIsMyOrder (Customer cust, String choice) {
@@ -169,7 +169,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.choice = choice;
 			}
 		}
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 
 	}
 	
@@ -179,7 +179,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.state = customerState.foodIsReady;
 			}
 		}
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 
 	}
 	
@@ -189,7 +189,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.state = customerState.outOfChoice;
 			}
 		}
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsCheck (Customer customer2, Double d) {
@@ -199,7 +199,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.state = customerState.checkIsReady;
 			}
 		}
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgDoneEatingAndLeaving (Customer cust){
@@ -208,8 +208,7 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 				customer.state = customerState.doneLeaving;
 			}
 		}
-		stateChanged();
-
+		getPersonAgent().CallstateChanged();
 	}
 	
 	
@@ -457,6 +456,8 @@ public abstract class BaseWaiterRole extends Agent implements Waiter {
 		}	
 	}
 
-	
+	public Boolean isActive() {
+		return isActive;
+	}
 	
 }

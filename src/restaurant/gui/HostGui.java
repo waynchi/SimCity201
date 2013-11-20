@@ -1,8 +1,8 @@
 package restaurant.gui;
 
 
-import restaurant.RestaurantCustomerRole;
 import restaurant.HostRole;
+import restaurant.RestaurantCustomerRole;
 
 import java.awt.*;
 

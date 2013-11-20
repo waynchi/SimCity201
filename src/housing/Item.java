@@ -9,9 +9,8 @@ public class Item {
 	public ItemGui gui = null;
 	public House h;
 
-	public Item(String name, Dimension pos, House h) {
+	public Item(String name, House h) {
 		this.name = name;
-		this.position = pos;
 		this.h = h;
 		isBroken = false;
 	}

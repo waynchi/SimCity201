@@ -44,12 +44,10 @@ public abstract class Agent {
     }
 
     public void pause () {
-    	System.out.println("agents are paused");
     	p = true;
     }
     
     public void restart() {
-    	System.out.println("agents restarted");
     	p = false;
     	pause.release();
     }

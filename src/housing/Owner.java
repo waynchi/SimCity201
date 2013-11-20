@@ -1,5 +1,7 @@
 package housing;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -77,14 +79,14 @@ public class Owner extends Resident {
 		rents.add(new RentOrder(m));
 	}
 	
-	public void addHouse(House h, Renter r) {
-		MyHouse mh = new MyHouse(h, r);
-		myHouses.add(mh);
-	}
-	
 	public void addRenterToHouse(House h, Renter r) {
 		MyHouse mh = find(h);
 		mh.setOccupant(r);
+	}
+	
+	public MyHouse getMyHouse(House h) {
+		MyHouse mh = find(h);
+		return mh;
 	}
 
 	//-----------------------------------------------------------//
@@ -115,8 +117,9 @@ public class Owner extends Resident {
 
 	private MyHouse find(House h1) {
 		for (MyHouse mh : myHouses) {
-			if (mh.h == h1)
+			if (h1 == mh.h) {
 				return mh;
+			}
 		}
 		return null;
 	}
@@ -132,12 +135,41 @@ public class Owner extends Resident {
 	public PeopleAgent getAgent() {
 		return super.getAgent();
 	}
+	
+	public int getTimesRentDue(House h) {
+		MyHouse mh = find(h);
+		int result = 0;
+		for (RentOrder ro : rents) {
+			if (ro.mh == mh) {
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	public int getHousesNumber() {
+		return myHouses.size();
+	}
+	
+	public void generate(House h) {
+		MyHouse mh = find(h);
+		generateRent(mh);
+	}
+	
+	public int getTotalRents() {
+		return rents.size();
+	}
+	
+	public void addHouse(House h, Renter r) {
+		MyHouse mh = new MyHouse(h, r);
+		myHouses.add(mh);
+	}
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
-	private class MyHouse {
+	public class MyHouse {
 		House h;
 		Renter r = null;
 		double penalty;

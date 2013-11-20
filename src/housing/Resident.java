@@ -11,14 +11,14 @@ public class Resident extends Role{
 
 	protected House house;
 	private RepairMan repairMan;
-	private RepairState repairState;
+	private RepairStage repairStage;
 	private State myState;
 	private Semaphore busy = new Semaphore(0, true);
 
 	public Resident() {
 		house = null;
 		repairMan = null;
-		repairState = RepairState.None;
+		repairStage = RepairStage.None;
 		myState = State.Idle;
 	}
 
@@ -28,17 +28,17 @@ public class Resident extends Role{
 
 	public void callRepairMan() {
 		repairMan.needHelp(house);
-		repairState = RepairState.HelpRequested;
+		repairStage = RepairStage.HelpRequested;
 	}
 
 	public void giveBrokenItems(List<Item> brokenItems) {
 		repairMan.thingsAreBroken(house, getBrokenItems());
-		repairState = RepairState.BeingRepaired;
+		repairStage = RepairStage.BeingRepaired;
 	}
 
 	public void thankRepairMan() {
 		repairMan.thankYou(house);
-		repairState = RepairState.None;
+		repairStage = RepairStage.None;
 	}
 
 	public void cookAtHome() {
@@ -61,7 +61,7 @@ public class Resident extends Role{
 		for (Item i : brokenItems) {
 			i.repair();
 		}
-		repairState = RepairState.None;
+		repairStage = RepairStage.None;
 	}
 
 	//-----------------------------------------------------------//
@@ -69,19 +69,19 @@ public class Resident extends Role{
 	// Messages
 
 	public void somethingBroke() {
-		if (repairState == RepairState.None) {
-			repairState = RepairState.NeedsRepair;
+		if (repairStage == RepairStage.None) {
+			repairStage = RepairStage.NeedsRepair;
 		}
 		stateChanged();
 	}
 
 	public void ImHere() {
-		repairState = RepairState.RepairManIsHere;
+		repairStage = RepairStage.RepairManIsHere;
 		stateChanged();
 	}
 
 	public void repairDone() {
-		repairState = RepairState.RepairDone;
+		repairStage = RepairStage.RepairDone;
 		stateChanged();
 	}
 
@@ -117,21 +117,21 @@ public class Resident extends Role{
 
 	public boolean pickAndExecuteAnAction() {
 		if (this.myPerson != repairMan.getAgent()) {
-			if (repairState == RepairState.RepairDone) {
+			if (repairStage == RepairStage.RepairDone) {
 				thankRepairMan();
 				return true;
 			}
-			if (repairState == RepairState.RepairManIsHere) {
+			if (repairStage == RepairStage.RepairManIsHere) {
 				giveBrokenItems(getBrokenItems());
 				return true;
 			}
-			if (!getBrokenItems().isEmpty() && (repairState == RepairState.None || repairState == RepairState.NeedsRepair) && myState != State.Sleeping) {
+			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
 				callRepairMan();
 				return true;
 			}
 		}
 		else {
-			if (!getBrokenItems().isEmpty() && (repairState == RepairState.None || repairState == RepairState.NeedsRepair) && myState != State.Sleeping) {
+			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
 				repairMyHomeItems();
 				return true;
 			}
@@ -144,7 +144,7 @@ public class Resident extends Role{
 			cookAtHome();
 			return true;
 		}
-		if (myState == State.WantToSleep && repairState != RepairState.RepairManIsHere && repairState != RepairState.BeingRepaired && repairState != RepairState.RepairDone){
+		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere && repairStage != RepairStage.BeingRepaired && repairStage != RepairStage.RepairDone){
 			sleep();
 			return true;
 		}
@@ -167,18 +167,24 @@ public class Resident extends Role{
 				result.add(i);
 			}
 		}
+		if (this.house.isBroken())
+			result.add(house);
 		return result;
 	}
 	
 	public PeopleAgent getAgent() {
 		return myPerson;
 	}
+	
+	public void setHouse(House h) {
+		this.house = h;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
-	enum RepairState {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
+	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
 
 	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, WantToEatAtRestaurant};
 }

@@ -8,6 +8,7 @@ import agent.Agent;
 public class PeopleAgent extends Agent{
 
 	public PeopleAgent() {
+		Money = 10.0;
 		// TODO Auto-generated constructor stub
 	}
 
