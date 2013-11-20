@@ -12,29 +12,22 @@ import java.util.concurrent.Semaphore;
 
 public class TellerAgent extends Agent {
 
-	public List<BankCustomerAgent> waitingCustomers
-	= Collections.synchronizedList(new ArrayList<BankCustomerAgent>()); //For this prototype there is one teller who will store every waiting customer
+	public List<myBankCustomer> waitingCustomers
+	= Collections.synchronizedList(new ArrayList<myBankCustomer>()); //For this prototype there is one teller who will store every waiting customer
 
 	private String name;
 	
-	public enum WaiterState
-	{none, atFront, away, wantBreak, onBreak};
+	public enum CustomerState
+	{none, waiting, beingHelped, deposit, newAccount, withdraw, loan, done};
+	
+	private myBankCustomer currentCustomer = null;
+	
+	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 
 	public TellerAgent(String name) {
 		super();
 
 		this.name = name;
-		// make some tables
-		tables = Collections.synchronizedList(new ArrayList<Table>(NTABLES));
-		for (int ix = 1; ix <= NTABLES; ix++) {
-			tables.add(new Table(ix));//how you add to a collections
-		}
-	}
-	
-	//Hack to establish connection to waiter
-	public void addWaiter(WaiterAgent waiter) {
-		waiters.add(new myWaiter(waiter));
-		stateChanged();
 	}
 
 	public String getMaitreDName() {
@@ -49,109 +42,67 @@ public class TellerAgent extends Agent {
 		return waitingCustomers;
 	}
 
-	public Collection getTables() {
-		return tables;
-	}
 	// Messages
 
-	public void msgIWantFood(CustomerAgent cust) {
-		waitingCustomers.add(cust);
+	public void msgCreateAccount(String name, double initialFund) {
+		currentCustomer.account = new Account(name, accounts.size()+1); //Initializes an account with a customer name and a unique account id.
+		currentCustomer.depositAmount = initialFund;
+		currentCustomer.state = CustomerState.deposit;
 		stateChanged();
 	}
 	
-	public void msgNoWait(CustomerAgent cust) {
-		waitingCustomers.remove(cust);
+	public void msgWithdraw(int accountID, double moneyNeeded) {
+		currentCustomer.account = accounts.get(accountID);
+		currentCustomer.withdrawAmount = moneyNeeded;
+		currentCustomer.state = CustomerState.withdraw;
 		stateChanged();
 	}
 	
-	public void msgReadyToSeat(WaiterAgent waiter) {
-		synchronized(waiters) {
-			for (myWaiter mywaiter : waiters) {
-				if (mywaiter.waiter.equals(waiter)) {
-					mywaiter.state = WaiterState.atFront;
-					stateChanged();
-				}
-			}
-		}
-	}
-
-	public void msgTableFree(int tableNumber) {
-		synchronized(tables) {
-			for (Table table : tables) {
-				if (table.tableNumber == tableNumber) {
-					table.setUnoccupied();
-					stateChanged();
-				}
-			}
-		}
+	public void msgDeposit(int accountID, double moneyGiven) {
+		currentCustomer.account = accounts.get(accountID);
+		currentCustomer.depositAmount = moneyGiven;
+		currentCustomer.state = CustomerState.deposit;
+		stateChanged();
 	}
 	
-	public void msgCanIGoOnBreak(WaiterAgent waiter) {
-		print("Waiter" + waiter + "asked for break");
-		synchronized(waiters) {
-			for (myWaiter mywaiter : waiters) {
-				if (mywaiter.waiter.equals(waiter)) {
-					mywaiter.state = WaiterState.wantBreak;
-					stateChanged();
-				}
-			}
-		}
+	public void msgDeposit(double moneyGiven) {
+		currentCustomer.depositAmount = moneyGiven;
+		currentCustomer.state = CustomerState.newAccount;
+		stateChanged();
 	}
 	
-	public void msgOffBreak(WaiterAgent waiter) {
-		synchronized(waiters) {
-			for (myWaiter mywaiter : waiters) {
-				if (mywaiter.waiter.equals(waiter)) {
-					mywaiter.state = WaiterState.atFront;
-					stateChanged();
-				}
-			}
-		}
+	public void msgDoneAndLeaving() {
+		currentCustomer.state = CustomerState.done;
+		stateChanged();
 	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	protected boolean pickAndExecuteAnAction() {
-		/* Think of this next rule as:
-            Does there exist a table and customer,
-            so that table is unoccupied and customer is waiting.
-            If so seat him at the table.
-		 */
-		
-		if (!waiters.isEmpty()) {
-			freeWaiter();
-			int open = 0;
-			synchronized(tables) {
-				for (Table table : tables) {
-					if (!table.isOccupied()) {
-						if (!waitingCustomers.isEmpty()) {
-							seatCustomer(waitingCustomers.get(0), table, currentWaiter);//the action
-							return true;//return true to the abstract agent to reinvoke the scheduler.
-						}
-					}
-					if (table.isOccupied()) {
-						open++;
-					}
-				}
-			}
-			synchronized(waiters) {
-				for (myWaiter mywaiter : waiters) {
-					if (mywaiter.state == WaiterState.wantBreak) {
-						if (waiters.size() > 1) {
-							allowBreak(mywaiter);
-							return true;
-						}
-						else {
-							denyBreak(mywaiter);
-							return true;
-						}
-					}
-				}
-			}
-			if (open == 3 && !waitingCustomers.isEmpty()) {
-				restFull(waitingCustomers.get(0));
+		if (waitingCustomers.size() != 0) {
+			if (currentCustomer == null) {
+				currentCustomer = waitingCustomers.get(0);
+				callCustomer(currentCustomer);
 				return true;
+			}
+			else {
+				if (currentCustomer.state == CustomerState.newAccount) {
+					newAccount(currentCustomer);
+					return true;
+				}
+				if (currentCustomer.state == CustomerState.deposit) {
+					depositMoney(currentCustomer);
+					return true;
+				}
+				if (currentCustomer.state == CustomerState.withdraw) {
+					withdrawMoney(currentCustomer);
+					return true;
+				}
+				if (currentCustomer.state == CustomerState.done) {
+					removeCustomer(currentCustomer);
+					return true;
+				}
 			}
 		}
 
@@ -163,96 +114,69 @@ public class TellerAgent extends Agent {
 
 	// Actions
 
-	private void seatCustomer(CustomerAgent customer, Table table, myWaiter mywaiter) {
-		print("Sent seat");
-		mywaiter.customers++;
-		print("Messaging waiter");
-		mywaiter.state = WaiterState.away;
-		mywaiter.waiter.msgSeatCustomer(customer, table.tableNumber);
-		table.setOccupant(customer);
+	private void callCustomer(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		customer.customer.msgReadyToHelp(this);
+	}
+	
+	private void newAccount(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		customer.account.funds += customer.depositAmount;
+		customer.depositAmount = 0;
+		customer.customer.msgAccountBalance(customer.account.id, customer.account.funds);
+	}
+	
+	private void withdrawMoney(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		if (customer.withdrawAmount > customer.account.funds) {
+			customer.account.funds -= customer.withdrawAmount;
+			customer.customer.msgGiveLoan(customer.account.funds, customer.withdrawAmount);
+			customer.withdrawAmount = 0;
+		}
+		else {
+			customer.account.funds -= customer.withdrawAmount;
+			customer.customer.msgWithdrawSuccessful(customer.account.funds, customer.withdrawAmount);
+			customer.withdrawAmount = 0;
+		}
+	}
+	
+	private void depositMoney(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		customer.account.funds += customer.depositAmount;
+		customer.depositAmount = 0;
+		customer.customer.msgDepositSuccessful(customer.account.funds);
+	}
+	
+	private void removeCustomer(myBankCustomer customer) {
 		waitingCustomers.remove(customer);
-	}
-	
-	private void allowBreak(myWaiter waiter) {
-		waiter.state = WaiterState.onBreak;
-		waiter.waiter.msgGoOnBreak();
-	}
-	
-	private void denyBreak(myWaiter waiter) {
-		print("Waiter cannot go on break");
-		waiter.state = WaiterState.away;
-		waiter.waiter.msgNoBreak();
-	}
-	
-	private void restFull(CustomerAgent c) {
-		c.msgRestFull();
+		currentCustomer = null;
 	}
 	
 	//Utilities
-	
-	private void freeWaiter() {
-		if (waiters.size() == 1) {
-			currentWaiter = waiters.get(0);
-			return;
-		}
-		else {
-			synchronized(waiters) {
-				for (myWaiter waiter : waiters) {
-					if (waiter.state != WaiterState.onBreak) {
-						currentWaiter = waiter;
-						break;
-					}
-				}
-			}
-			synchronized(waiters) {
-				for (myWaiter waiter1 : waiters) {
-					if (waiter1.customers < currentWaiter.customers && waiter1.state != WaiterState.onBreak) {
-						currentWaiter = waiter1;
-					}
-				}
-			}
-		}
-	}
 
-
-	private class Table {
-		CustomerAgent occupiedBy;
-		int tableNumber;
-
-		Table(int tableNumber) {
-			this.tableNumber = tableNumber;
-		}
-
-		void setOccupant(CustomerAgent cust) {
-			occupiedBy = cust;
-		}
-
-		void setUnoccupied() {
-			occupiedBy = null;
-		}
-
-		CustomerAgent getOccupant() {
-			return occupiedBy;
-		}
-
-		boolean isOccupied() {
-			return occupiedBy != null;
-		}
-
-		public String toString() {
-			return "table " + tableNumber;
-		}
-	}
-	
-	private class myWaiter {
-		WaiterAgent waiter;
-		private WaiterState state = WaiterState.none;
-		int customers;
+	private class Account {
+		int id;
+		double funds;
+		String customerName;
 		
-		myWaiter(WaiterAgent waiter) {
-			this.waiter = waiter;
-			this.state = WaiterState.atFront;
-			customers = 0;
+		Account(String name, int id) {
+			this.id = id;
+			this.customerName = name;
+		}
+	}
+	
+	private class myBankCustomer {
+		BankCustomerAgent customer;
+		private CustomerState state = CustomerState.none;
+		Account account;
+		double withdrawAmount = 0;
+		double depositAmount = 0;
+		String name;
+		
+		myBankCustomer(BankCustomerAgent customer, String name) {
+			this.customer = customer;
+			this.state = CustomerState.none;
+			this.name = name;
 		}
 	}
 }
