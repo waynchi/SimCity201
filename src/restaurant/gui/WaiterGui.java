@@ -1,11 +1,10 @@
 package restaurant.gui;
 
 
-import restaurant.RestaurantCustomerRole;
-import restaurant.BaseWaiterRole;
-
 import java.util.*;
 
+import restaurant.BaseWaiterRole;
+import restaurant.RestaurantCustomerRole;
 import restaurant.interfaces.Customer;
 
 import java.awt.*;

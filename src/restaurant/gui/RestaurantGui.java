@@ -1,7 +1,7 @@
 package restaurant.gui;
 //this is the main class for gui stuff
-import restaurant.RestaurantCustomerRole;
 import restaurant.BaseWaiterRole;
+import restaurant.RestaurantCustomerRole;
 
 import javax.swing.*;
 

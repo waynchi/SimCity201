@@ -2,8 +2,8 @@ package restaurant.interfaces;
 
 import java.util.List;
 
-import restaurant.CashierRole;
 import restaurant.BaseWaiterRole;
+import restaurant.CashierRole;
 import restaurant.BaseWaiterRole.FoodOnMenu;
 import restaurant.gui.CustomerGui;
 

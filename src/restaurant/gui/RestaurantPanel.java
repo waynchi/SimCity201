@@ -1,15 +1,14 @@
 package restaurant.gui;
 
+import restaurant.BaseWaiterRole;
 import restaurant.CashierRole;
 import restaurant.CookRole;
-import restaurant.CookRole.MyOrder;
-import restaurant.RestaurantCustomerRole;
 import restaurant.HostRole;
 import restaurant.MarketRole;
-import restaurant.BaseWaiterRole;
-import restaurant.BaseWaiterRole.MyCustomer;
 import restaurant.NormalWaiterRole;
+import restaurant.RestaurantCustomerRole;
 import restaurant.SpecialWaiterRole;
+import restaurant.CookRole.MyOrder;
 
 import javax.swing.*;
 
@@ -32,20 +31,23 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     private HostGui hostGui = new HostGui(host);
 	private CookRole cook = new CookRole("Cook", theMonitor);
 	private CookGui cookGui = new CookGui(cook);
-	private CashierRole cashier = new CashierRole("Cashier");
 	
 	private MarketRole market1 = new MarketRole("Market 1");
 	private MarketRole market2 = new MarketRole("Market 2");
 	private MarketRole market3 = new MarketRole("Market 3");
 	
-	private Double min_working_capital = 500.00;
-	private Double working_capital;
-	private Double bank_balance;
+	private Double min_working_capital = 10.00;
+	private Double working_capital = 100.00;
+	private Double bank_balance = 0.0;
+	private int bank_account = 0;
 	
 
     private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
     private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
+	private CashierRole cashier = new CashierRole("Cashier", this);
+
+    
     private JPanel restLabel = new JPanel();
 
     private RestaurantGui gui; //reference to main gui
@@ -97,12 +99,12 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         //market2.setCook(cook);
         //market3.setCook(cook);
                 
-        host.startThread();
-        cook.startThread();
+        //host.startThread();
+        //cook.startThread();
         market1.startThread();
         market2.startThread();
         market3.startThread();
-        cashier.startThread();
+        //cashier.startThread();
         
         setLayout(new GridLayout(1, 2, 20, 20));
         
@@ -116,7 +118,13 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     
     
 
-    private void initImagePanel() {
+    public RestaurantPanel() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	private void initImagePanel() {
     	 
     	ImageIcon image = new ImageIcon(getClass().getResource("saber.jpg"));
         JLabel imageLabel = new JLabel(image);
@@ -178,7 +186,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
 	public void actionPerformed(ActionEvent e) {
-
+/*
 	    if (e.getSource() == pauseButton){
 	    	System.out.println("pause button pressed");
 	    	if (agentPaused == false) {
@@ -189,12 +197,12 @@ public class RestaurantPanel extends JPanel implements ActionListener{
 	    		restartAgents();
 	    		agentPaused = false;
 	    	}
-	    }
+	    }*/
 	  
 	}
     
     // pause all the agents when pause button is clicked
-    public void pauseAgents(){
+    /*public void pauseAgents(){
     	host.pause();
     	cook.pause();
     	cashier.pause();
@@ -209,11 +217,11 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     		waiter.pause();
     	}
     	for (RestaurantCustomerRole cust : customers){
-    		//cust.pause();
+    		cust.pause();
     	}
-    }
+    }*/
     
-    public void restartAgents() {
+    /*public void restartAgents() {
 		host.restart();
     	cook.restart();
     	cashier.restart();
@@ -227,6 +235,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     		//cust.restart();
     	}
 	}
+	/*
     
     /**
      * Adds a customer or waiter to the appropriate list
@@ -264,7 +273,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         		w.setCook(cook);
         		w.setCashier(cashier);
         		
-                w.startThread();
+                //w.startThread();
     		//}
     	
     	}
@@ -293,6 +302,28 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public CookRole getCook() {
     	return cook;
     }
+
+    public HostRole getHost() {
+    	return host;
+    }
+
+
+	public Double getMinWorkingCapital() {
+		return min_working_capital;
+	}
+
+
+
+	public void setMinWorkingCapital(Double min_working_capital) {
+		this.min_working_capital = min_working_capital;
+	}
+
+
+
+	public int getBankAccount() {
+		// TODO Auto-generated method stub
+		return bank_account;
+	}
 
     
 

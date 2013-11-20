@@ -2,20 +2,16 @@ package restaurant;
 
 import restaurant.BaseWaiterRole.FoodOnMenu;
 import restaurant.gui.CustomerGui;
-import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import agent.Agent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
-import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -113,6 +109,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		getPersonAgent().CallstateChanged();
 		isActive = true;
 	}
+	
 	
 	//public void gotHungry() {
 	//	print("I'm hungry");
