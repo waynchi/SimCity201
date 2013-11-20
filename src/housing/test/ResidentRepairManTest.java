@@ -41,6 +41,9 @@ public class ResidentRepairManTest {
 		r.pickAndExecuteAnAction();
 		
 		assertTrue(r.anyCurrentHouse());
+		assertFalse(r.doesItNeedRepair(h1));
+		
+		r1.pickAndExecuteAnAction();
 	}
 	
 	@Test
