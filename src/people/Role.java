@@ -6,13 +6,13 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected PeopleAgent myPerson;
+	protected People myPerson;
 
-	public void setPerson(PeopleAgent a) {
+	public void setPerson(People a) {
 		myPerson = a;
 	}
 
-	public PeopleAgent getPersonAgent() {
+	public People getPersonAgent() {
 
 		return myPerson;
 	} // so other agents or role players can send you Person messages.

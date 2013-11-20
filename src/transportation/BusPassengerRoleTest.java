@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import people.People;
 import people.PeopleAgent;
 import transportation.Bus.BusState;
 
@@ -14,7 +15,7 @@ public class BusPassengerRoleTest extends TestCase{
 	BusGui bg = new BusGui();
 	BusPassengerRole bpr = new BusPassengerRole();
 	BusStop bs = new BusStop();
-	PeopleAgent p = new PeopleAgent();
+	People p = new PeopleAgent();
 	BusStop destinationBusStop = new BusStop();
 	
 	public void setUp() throws Exception{

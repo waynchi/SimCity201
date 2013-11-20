@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import people.PeopleAgent;
+import people.People;
 
 public class Owner extends Resident {
 	// Data
@@ -132,7 +132,7 @@ public class Owner extends Resident {
 		return null;
 	}
 	
-	public PeopleAgent getAgent() {
+	public People getAgent() {
 		return super.getAgent();
 	}
 	

@@ -1,6 +1,6 @@
 package transportation;
 
-import people.PeopleAgent;
+import people.People;
 import people.Role;
 
 public class BusPassengerRole extends Role{
@@ -12,7 +12,7 @@ public class BusPassengerRole extends Role{
 	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
 	Event event;
 	State myState;
-	PeopleAgent myPerson;
+	People myPerson;
 	
 	public BusPassengerRole(){
 		myPerson = getPersonAgent();
@@ -67,7 +67,7 @@ public class BusPassengerRole extends Role{
 	myBus.msgImLeaving(this);
 	}
 	
-	public void setPersonAgent(PeopleAgent p){
+	public void setPersonAgent(People p){
 		myPerson = p;
 	}
 

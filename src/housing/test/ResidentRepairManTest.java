@@ -11,6 +11,7 @@ import housing.Item;
 
 import org.junit.Test;
 
+import people.People;
 import people.PeopleAgent;
 
 public class ResidentRepairManTest {
@@ -18,7 +19,7 @@ public class ResidentRepairManTest {
 	Resident r1;
 	Resident r2;
 	RepairMan r;
-	PeopleAgent p = new PeopleAgent();
+	People p = new PeopleAgent();
 	House h1;
 	House h2;
 	List<Item> h1Items;

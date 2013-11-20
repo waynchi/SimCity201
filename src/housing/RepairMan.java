@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import people.PeopleAgent;
+
+import people.People;
 import people.Role;
 
 public class RepairMan extends Role {
@@ -140,7 +141,7 @@ public class RepairMan extends Role {
 		houses.add(new MyHouse(h, r));
 	}
 	
-	public PeopleAgent getAgent() {
+	public People getAgent() {
 		return myPerson;
 	}
 	
