@@ -7,11 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import people.PeopleAgent;
-import people.Role;
-import transportation.Car;
-import transportation.CarGui;
-import transportation.CarPassengerRole;
 
 public class CityControls extends JPanel implements ActionListener {
 	private JTextField textField;

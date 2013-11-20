@@ -1,0 +1,2 @@
+5,Cook
+10,Waiter

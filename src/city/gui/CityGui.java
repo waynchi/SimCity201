@@ -34,7 +34,7 @@ public class CityGui extends JFrame {
 			for(String item : configParams) {
 				if(isInteger(item)) {
 					int currIndex = configParams.indexOf(item);
-					PeopleAgent person = new PeopleAgent(1000, 0);
+					PeopleAgent person = new PeopleAgent(1000,0);
 					person.startThread();
 					normalWaiterRole.setGui(g);
 					person.addJob("Waiter", 0, 1200);
