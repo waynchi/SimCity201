@@ -8,18 +8,6 @@ import java.util.List;
 import people.PeopleAgent;
 
 public interface Resident {
-	// Actions
-
-	public void callRepairMan();
-	public void giveBrokenItems(List<Item> brokenItems);
-	public void thankRepairMan();
-	public void cookAtHome();
-	public void eatFood();
-	public void sleep();
-	public void repairMyHomeItems();
-	
-	//-----------------------------------------------------------//
-
 	// Messages
 
 	public void somethingBroke();

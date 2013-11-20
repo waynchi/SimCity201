@@ -1,5 +1,7 @@
 package housing;
 
+import housing.interfaces.Owner;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -10,7 +12,7 @@ import people.People;
 public class RenterRole extends ResidentRole {
 	// Data
 
-	private OwnerRole owner;
+	private Owner owner;
 	private double money;
 	private double rent;
 	private boolean rentDue;
