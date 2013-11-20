@@ -5,12 +5,14 @@ import restaurant.gui.HostGui;
 
 import java.util.*;
 
+import people.Role;
+
 /**
  * Restaurant Host Agent
  */
 //A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Agent {
+public class HostRole extends Role {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.

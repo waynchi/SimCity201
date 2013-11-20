@@ -5,12 +5,13 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import housing.House;
-import housing.RepairMan;
-import housing.Resident;
+import housing.RepairManRole;
+import housing.ResidentRole;
 import housing.Item;
 
 import org.junit.Test;
 
+import people.People;
 import people.PeopleAgent;
 
 public class ResidentRepairManTest {
@@ -18,6 +19,10 @@ public class ResidentRepairManTest {
 	Resident r1;
 	Resident r2;
 	RepairMan r;
+	People p = new PeopleAgent();
+	ResidentRole r1;
+	ResidentRole r2;
+	RepairManRole r;
 	PeopleAgent p = new PeopleAgent();
 	House h1;
 	House h2;
@@ -66,10 +71,10 @@ public class ResidentRepairManTest {
 		h2Items = null;
 		
 		h1 = new House("R1Residence", 1);
-		r1 = new Resident();
+		r1 = new ResidentRole();
 		h2 = new House("R2Residence", 2);
-		r2 = new Resident();
-		r = new RepairMan();
+		r2 = new ResidentRole();
+		r = new RepairManRole();
 		r.setPerson(p);
 		
 		h1.setOccupant(r1);

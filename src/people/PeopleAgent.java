@@ -5,9 +5,10 @@ import java.util.Random;
 
 import agent.Agent;
 
-public class PeopleAgent extends Agent{
+public class PeopleAgent extends Agent implements People{
 
 	public PeopleAgent() {
+		Money = 10.0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,39 +25,71 @@ public class PeopleAgent extends Agent{
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
+	public enum AgentLocation
+	{Home, Bank, 	}
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
 	
+	/* (non-Javadoc)
+	 * @see people.People#addRole(people.Role, java.lang.String)
+	 */
+	@Override
 	public void addRole(Role r, String description)
 	{
 		roles.add(new MyRole(r, description));
 	}
 	
+	/* (non-Javadoc)
+	 * @see people.People#CallPrint(java.lang.String)
+	 */
+	@Override
 	public void CallPrint(String text)
 	{
 		print(text);
 	}
 	
+	/* (non-Javadoc)
+	 * @see people.People#CallDo(java.lang.String)
+	 */
+	@Override
 	public void CallDo(String text)
 	{
 		Do(text);
 	}
 	
+	/* (non-Javadoc)
+	 * @see people.People#addJob(java.lang.String, int, int)
+	 */
+	@Override
 	public void addJob(String job, int start, int end)
 	{
 		jobs.add(new Job(job, start, end));
 	}
 	//messages
 
+	/* (non-Javadoc)
+	 * @see people.People#msgDone(people.Role)
+	 */
+	@Override
 	public void msgDone(Role r)
 	{
 		state = AgentState.Idle;
 		r.msgIsInActive();
 	}
 	
+	public PeopleAgent(double Money, boolean hasCar)
+	{
+		super();
+		this.Money = Money;
+		this.hasCar = hasCar;
+	}
 	
 	
+	/* (non-Javadoc)
+	 * @see people.People#msgTimeIs(int)
+	 */
+	@Override
 	public void msgTimeIs(int Time)
 	{
 		if(Time == 0)
@@ -235,7 +268,7 @@ public class PeopleAgent extends Agent{
 		}
 
 		
-		return false;
+		return (Roles || Person);
 	}
 
 	
@@ -246,6 +279,10 @@ public class PeopleAgent extends Agent{
 
 //Actions
 
+	/* (non-Javadoc)
+	 * @see people.People#GoToRestaurant()
+	 */
+	@Override
 	public void GoToRestaurant()
 	{
 		//gui.GoToRestaurant();
@@ -267,18 +304,30 @@ public class PeopleAgent extends Agent{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see people.People#GoToHouse()
+	 */
+	@Override
 	public void GoToHouse()
 	{
 		//gui.GoToHouse();
 		//roles.HouseAgent.msg(this);	
 	}
 
+	/* (non-Javadoc)
+	 * @see people.People#GoBuyCar()
+	 */
+	@Override
 	public void GoBuyCar()
 	{
 		//gui.GoToMarket();
 		//roles.MarketCustomerRole.msgBuyCar()
 	}
 
+	/* (non-Javadoc)
+	 * @see people.People#LeaveWork()
+	 */
+	@Override
 	public void LeaveWork()
 	{
 		for(MyRole r: roles)
@@ -291,6 +340,10 @@ public class PeopleAgent extends Agent{
 		msgTimeIs( jobs.get(0).end);
 	}
 
+	/* (non-Javadoc)
+	 * @see people.People#GoToBank()
+	 */
+	@Override
 	public void GoToBank()
 	{
 		//gui.GoToBank;
@@ -298,6 +351,10 @@ public class PeopleAgent extends Agent{
 	}
 		
 
+	/* (non-Javadoc)
+	 * @see people.People#GoToWork()
+	 */
+	@Override
 	public void GoToWork()
 	{
 		for(MyRole r: roles)
@@ -390,6 +447,10 @@ public class PeopleAgent extends Agent{
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see people.People#CallstateChanged()
+	 */
+	@Override
 	public void CallstateChanged(){
 		stateChanged();
 	}

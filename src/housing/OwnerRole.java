@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import people.PeopleAgent;
+import people.People;
 
-public class Owner extends Resident {
+public class OwnerRole extends ResidentRole {
 	// Data
 
 	private List<MyHouse> myHouses = new ArrayList<MyHouse>();
@@ -17,7 +17,7 @@ public class Owner extends Resident {
 	private double money;
 	private double PEN_INCREMENT = 50.0;
 
-	public Owner() {
+	public OwnerRole() {
 		super();
 	}
 
@@ -79,7 +79,7 @@ public class Owner extends Resident {
 		rents.add(new RentOrder(m));
 	}
 	
-	public void addRenterToHouse(House h, Renter r) {
+	public void addRenterToHouse(House h, RenterRole r) {
 		MyHouse mh = find(h);
 		mh.setOccupant(r);
 	}
@@ -132,7 +132,7 @@ public class Owner extends Resident {
 		return null;
 	}
 	
-	public PeopleAgent getAgent() {
+	public People getAgent() {
 		return super.getAgent();
 	}
 	
@@ -160,7 +160,7 @@ public class Owner extends Resident {
 		return rents.size();
 	}
 	
-	public void addHouse(House h, Renter r) {
+	public void addHouse(House h, RenterRole r) {
 		MyHouse mh = new MyHouse(h, r);
 		myHouses.add(mh);
 	}
@@ -171,13 +171,13 @@ public class Owner extends Resident {
 
 	public class MyHouse {
 		House h;
-		Renter r = null;
+		RenterRole r = null;
 		double penalty;
 		double rent;
 		Timer rentTimer;
 		long period;
 
-		public MyHouse(House h, Renter r) {
+		public MyHouse(House h, RenterRole r) {
 			this.h = h;
 			this.period = 10000;
 			this.r = r;
@@ -194,7 +194,7 @@ public class Owner extends Resident {
 //			}
 		}
 		
-		public void setOccupant(Renter r) {
+		public void setOccupant(RenterRole r) {
 			this.r = r;
 //			final MyHouse mh = this;
 //			rentTimer.scheduleAtFixedRate(new TimerTask() {
