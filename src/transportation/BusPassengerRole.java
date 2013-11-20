@@ -1,5 +1,6 @@
 package transportation;
 
+import people.PeopleAgent;
 import people.Role;
 
 public class BusPassengerRole extends Role{
@@ -11,6 +12,11 @@ public class BusPassengerRole extends Role{
 	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
 	Event event;
 	State myState;
+	PeopleAgent myPerson;
+	
+	public BusPassengerRole(){
+		myPerson = getPersonAgent();
+	}
 	
 	public void msgIsActive(){
 	
@@ -19,6 +25,7 @@ public class BusPassengerRole extends Role{
 	}
 
 	public void msgBusArrived(Bus b){
+	System.out.println("Bus passenger recieved message that bus arrived");
 	myBus = b;
 	event = Event.busArrived;
 	stateChanged();
@@ -58,6 +65,10 @@ public class BusPassengerRole extends Role{
 
 	private void LeaveBus() {
 	myBus.msgImLeaving(this);
+	}
+	
+	public void setPersonAgent(PeopleAgent p){
+		myPerson = p;
 	}
 
 	
