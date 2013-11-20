@@ -3,6 +3,8 @@ package bank;
 
 import agent.Agent;
 import bank.gui.BankCustomerGui;
+import bank.interfaces.BankCustomer;
+import bank.interfaces.Teller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.TimerTask;
 /**
  * Bank customer agent.
  */
-public class BankCustomerAgent extends Agent {
+public class BankCustomerAgent extends Agent implements BankCustomer {
 	private String name;
 
 	Timer timer = new Timer();
@@ -67,7 +69,7 @@ public class BankCustomerAgent extends Agent {
 		stateChanged();
 	}
 	
-	public void msgReadyToHelp(TellerAgent t) {
+	public void msgReadyToHelp(Teller t) {
 		this.teller = t;
 		state = CustomerState.ready;
 		stateChanged();
