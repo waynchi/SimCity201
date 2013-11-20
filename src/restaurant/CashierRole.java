@@ -1,8 +1,8 @@
 package restaurant;
 
-import agent.Agent;
 import restaurant.BaseWaiterRole;
-import restaurant.gui.HostGui;
+import restaurant.gui.RestaurantPanel;
+import restaurant.interfaces.BankTeller;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Market;
@@ -10,9 +10,8 @@ import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
-import java.awt.Dimension;
 import java.util.*;
-import java.util.concurrent.Semaphore;
+import people.Role;
 
 
 // Cashier keeps track of the balance of every customer that once comes to the restaurant
@@ -20,18 +19,35 @@ import java.util.concurrent.Semaphore;
 // waiter needs to go to cashier to take the bill
 // customer needs to go to cashier to pay
 
-public class CashierRole extends Agent implements Cashier {
+public class CashierRole extends Role implements Cashier {
 
-	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
-	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 	private String name;
-	private double myMoney = 107;
-	private Map<Customer, Double> balance = Collections.synchronizedMap(new HashMap<Customer, Double>());
-	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
-	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
 	public EventLog log = new EventLog();
-	
-	
+	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
+
+	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
+
+	private Map<Customer, Double> balance = Collections.synchronizedMap(new HashMap<Customer, Double>());
+	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
+	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
+
+	private RestaurantPanel restaurantPanel;
+	private double min_working_capital, working_capital, bank_balance;
+	private double waiter_salary, cook_salary, host_salary, cashier_salary;
+
+	private BankTeller teller;
+	private int bankAccount;
+	//private Semaphore depositCompleted = new Semaphore(0,true);
+	//private Semaphore withdrawalCompleted = new Semaphore(0,true);
+	private Boolean loanRequested, loanGranted, loanRefused;
+
+	private Vector<BaseWaiterRole> waiters = null;
+
+	public Boolean onClose;
+	private Boolean isActive;
+	private Boolean depositSuccessful = false;
+	private Boolean withdrawalSuccessful = false;
+
 
 	public class Check {
 		Waiter waiter;
@@ -74,11 +90,31 @@ public class CashierRole extends Agent implements Cashier {
 
 
 
-	/**
-	 * Constructor for CookAgent class
-	 *
-	 * @param name name of the cook
-	 */
+
+	public CashierRole(String name, RestaurantPanel rp) {
+		super();
+		this.name = name;
+		price.put("Steak", 15.99);
+		price.put("Chicken", 10.99);
+		price.put("Salad", 5.99);
+		price.put("Pizza", 8.99);
+
+		restaurantPanel = rp;
+
+		min_working_capital = rp.getMinWorkingCapital();
+		working_capital = rp.getWorkingCapital();
+		bank_balance = rp.getBankBalance();
+		waiter_salary = cook_salary = host_salary = cashier_salary = 10;
+		//BankTellerRole teller;
+		bankAccount = rp.getBankAccount();
+		loanRequested = loanGranted = loanRefused = false;
+		onClose = false;
+		isActive = false;
+	}
+
+
+	// Messages
+
 	public CashierRole(String name) {
 		super();
 		this.name = name;
@@ -87,20 +123,32 @@ public class CashierRole extends Agent implements Cashier {
 		price.put("Salad", 5.99);
 		price.put("Pizza", 8.99);
 
+		waiter_salary = cook_salary = host_salary = cashier_salary = 10;
+		working_capital = 100;
 
-
+		//BankTellerRole teller;
+		loanRequested = loanGranted = loanRefused = false;
+		onClose = false;
+		isActive = false;
 	}
 
 
-	// Messages
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
 
-	// Cook receives an order from the waiter and stores it into a list
+	public void msgIsInActive() {
+		// onClose = true
+		isActive = false;
+	}
+
 
 	public void msgHereIsMarketBill (Market m, double price){
 		log.add(new LoggedEvent("Received msgHereIsMarketBill from Market " + m.getName() + " and the "
 				+ "amount is " + price));
 		marketBills.add(new MarketBill(m,price));
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
@@ -114,7 +162,7 @@ public class CashierRole extends Agent implements Cashier {
 			}
 		}
 		checks.add(new Check (c, w, getBalance().get(c)));
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgPayMyCheck (Customer c, Double amount) {
@@ -127,9 +175,35 @@ public class CashierRole extends Agent implements Cashier {
 				}
 			}
 		}
-		myMoney+=amount;
+		working_capital+=amount;
 
-		stateChanged();
+		getPersonAgent().CallstateChanged();
+	}
+
+	// from BankTellerRole
+	public void msgDepositSuccessful(double balance){
+		working_capital -= (balance - bank_balance);
+		bank_balance = balance;
+		//depositCompleted.release();
+		depositSuccessful = true;
+		getPersonAgent().CallstateChanged();
+	}
+	public void msgWithdrawalSuccessful(double balance){
+		working_capital += (bank_balance - balance);
+		bank_balance -= balance;
+		//withdrawalCompleted.release();
+		withdrawalSuccessful = true;
+		getPersonAgent().CallstateChanged();
+	}
+	public void loanGranted(double amount) {
+		working_capital += amount;
+		bank_balance -= amount;
+		loanGranted = true;
+		getPersonAgent().CallstateChanged();
+	}
+	public void loanRefused(){
+		loanRefused = true;
+		getPersonAgent().CallstateChanged();
 	}
 
 	/**
@@ -159,6 +233,29 @@ public class CashierRole extends Agent implements Cashier {
 			return true;
 		}
 
+		if (loanRequested && loanGranted) {
+			payWorkers();
+			closeRestaurant();
+			return true;
+		}
+		if (loanRequested && loanRefused) {
+			depositExcessMoney();
+			closeRestaurant();	
+			return true;
+		}
+		if (onClose) {
+			if (depositSuccessful) {
+				closeRestaurant();
+				return true;
+			}
+			if (withdrawalSuccessful) {
+				payWorkers();
+				closeRestaurant();
+				return true;
+			} 
+			prepareToClose();
+			return true;
+		}
 
 		return false;
 		//we have tried all our rules and found
@@ -190,7 +287,7 @@ public class CashierRole extends Agent implements Cashier {
 		}
 		else if (c.due < c.amountPaid){
 			c.customer.msgHereIsYourChange(c.amountPaid-c.due);
-			myMoney-=c.amountPaid-c.due;
+			working_capital-=c.amountPaid-c.due;
 			balance.put(c.customer, 0.00);
 		}
 		else if (c.due == c.amountPaid) {
@@ -202,15 +299,15 @@ public class CashierRole extends Agent implements Cashier {
 
 	private void payMarket(MarketBill bill){
 		log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
-		if (myMoney > bill.amount) {
+		if (working_capital > bill.amount) {
 			print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
 			bill.market.msgPayMarketBill(bill.amount, this);
-			setMyMoney(myMoney - bill.amount);
+			setMyMoney(working_capital - bill.amount);
 
 		}
 		else {
 			print ("Paying " + bill.market.getName()+" , not able to pay full bill");
-			bill.market.msgPayMarketBill(myMoney,this);
+			bill.market.msgPayMarketBill(working_capital,this);
 			setMyMoney(0);
 
 		}
@@ -218,6 +315,80 @@ public class CashierRole extends Agent implements Cashier {
 		marketBills.remove(bill);
 
 
+	}
+
+	private void prepareToClose() {
+				
+		log.add(new LoggedEvent("In action prepareToClose"));
+		double total = getTotalSalary() + min_working_capital;
+		if (working_capital >= total) {
+			payWorkers(); 	
+			depositExcessMoney();	
+		
+			//closeRestaurant();
+		}
+		//else if (bank_balance + working_capital) >= total {
+		//	teller.msgWithdraw(bankAccount, total - working_capital);
+		//	withdrawalCompleted.acquire();
+		//	payWorkers();
+		//	closeRestaurant();
+		//}
+		else {
+			teller.msgWithdraw(bankAccount, total - working_capital);
+			/*try {
+				withdrawalCompleted.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			//payWorkers();
+			//closeRestaurant();
+		}
+	}
+
+	private void payWorkers() {
+		working_capital -= getTotalSalary();
+		//waiters = restaurantPanel.getWaiters();
+
+		//for (BaseWaiterRole w : restaurantPanel.getWaiters()){
+		//	w.getPersonAgent().Money += waiter_salary;
+		//}
+		
+		for (int i=0; i<restaurantPanel.getWaiters().size(); i++) {
+			restaurantPanel.getWaiters().get(i).getPersonAgent().Money += waiter_salary;
+		}
+		restaurantPanel.getCook().getPersonAgent().Money+= cook_salary;
+		restaurantPanel.getHost().getPersonAgent().Money+= host_salary;
+		this.getPersonAgent().Money +=cashier_salary;
+	}
+
+	private void closeRestaurant() {
+		log.add(new LoggedEvent("In action closeRestaurant"));
+		restaurantPanel.setWorkingCapital (working_capital);
+		restaurantPanel.setBankBalance (bank_balance);
+		loanRequested = false;
+		loanGranted = false;
+		loanRefused = false;
+		onClose = false;
+		getPersonAgent().msgDone(this);
+		//deactivate roles;
+		//DoCloseRestaurant(); //gui stuff
+	}
+
+	private double getTotalSalary() {
+		return (restaurantPanel.getWaiters().size()) * waiter_salary + cook_salary + host_salary + cashier_salary;
+	}
+
+	private void depositExcessMoney() {
+		if (working_capital - min_working_capital >0){
+			teller.msgDeposit(bankAccount, working_capital - min_working_capital);
+			/*try {
+				depositCompleted.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		}
 	}
 
 
@@ -248,6 +419,9 @@ public class CashierRole extends Agent implements Cashier {
 		return balance;
 	}
 
+	public double getBankBalance() {
+		return bank_balance;
+	}
 
 	public void setBalance(Map<Customer, Double> balance) {
 		this.balance = balance;
@@ -255,12 +429,20 @@ public class CashierRole extends Agent implements Cashier {
 
 
 	public double getMyMoney() {
-		return myMoney;
+		return working_capital;
 	}
 
 
 	public void setMyMoney(double myMoney) {
-		this.myMoney = myMoney;
+		this.working_capital = myMoney;
+	}
+
+	public Boolean isActive(){
+		return isActive;
+	}
+	
+	public void setTeller (BankTeller t) {
+		teller = t;
 	}
 
 }
