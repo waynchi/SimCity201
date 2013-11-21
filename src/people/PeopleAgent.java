@@ -11,6 +11,7 @@ public class PeopleAgent extends Agent implements People{
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Boolean hasCar;
+	public String name;
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
@@ -70,7 +71,7 @@ public class PeopleAgent extends Agent implements People{
 	public void msgDone(Role r)
 	{
 		state = AgentState.Idle;
-		r.msgIsInActive();
+		event = AgentEvent.Idle;
 	}
 	
 	public PeopleAgent(String name, double Money, boolean hasCar)
@@ -221,7 +222,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
 		{
-			state = AgentState.Idle;
+			event = AgentEvent.Idle;
 			LeaveWork();
 			Person = true;
 		}
@@ -296,6 +297,32 @@ public class PeopleAgent extends Agent implements People{
 				r.role.msgIsActive();
 			}*/
 		}
+		}
+		else
+		{
+			/*if(rand.nextInt(1) == 1)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description.equals("busPassenger"))
+					{
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else*/
+			{
+				//GUI WALK
+				print("Walking to Restaurant");
+				//Semaphore
+				for(MyRole r: roles)
+				{
+					if(r.description.equals("RestaurantCustomer"))
+					{
+						r.role.msgIsActive();
+					}
+				}
+			}
 		}
 		
 	}
