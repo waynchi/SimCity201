@@ -2,7 +2,10 @@ package city.gui;
 import javax.swing.*;
 
 import people.PeopleAgent;
-import restaurant.NormalWaiterRole;
+import restaurant.*;
+import transportation.*;
+import housing.*;
+import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.WaiterGui;
 
 import java.awt.*;
@@ -19,8 +22,26 @@ public class CityGui extends JFrame {
 	CardLayout cardLayout;
 	CityControls cityControls;
 	ArrayList<String> configParams = new ArrayList<String>();
-	NormalWaiterRole normalWaiterRole = new NormalWaiterRole("Waiter");
-	WaiterGui g = new WaiterGui(normalWaiterRole);
+	//Restaurant Role Setup
+	CookWaiterMonitor RestaurantCookWaiterMonitor = new CookWaiterMonitor();
+	NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
+	WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
+	SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
+	CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
+	MarketRole RestaurantMarketRole = new MarketRole("Market");
+	CashierRole RestaurantCashierRole = new CashierRole("Cashier");
+	RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
+	//Transportation Role Setup
+	BusPassengerRole BusPassengerRole = new BusPassengerRole();
+	CarPassengerRole CarPassengerRole = new CarPassengerRole();
+	//Housing Role Setup
+	OwnerRole HousingOwnerRole = new OwnerRole();
+	RenterRole HousingRenterRole = new RenterRole(0); //wtf is the double?
+	RepairManRole HousingRepairManRole = new RepairManRole();
+	ResidentRole HousingResidentRole = new ResidentRole();
+	//Bank Role Setup
+	
+	
 	
 	public CityGui() {
 		FileReader input;
