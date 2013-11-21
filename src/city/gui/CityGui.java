@@ -1,10 +1,12 @@
 package city.gui;
 import javax.swing.*;
 
+import city.Restaurant;
 import people.PeopleAgent;
 import restaurant.*;
 import transportation.*;
 import housing.*;
+import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
@@ -23,7 +25,8 @@ public class CityGui extends JFrame {
 	CardLayout cardLayout;
 	CityControls cityControls;
 	ArrayList<String> configParams = new ArrayList<String>();
-	RestaurantPanel restPanel = new RestaurantPanel();
+	RestaurantGui restaurantGui = new RestaurantGui();
+	RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
 
 	
 	
@@ -41,14 +44,10 @@ public class CityGui extends JFrame {
 				if(isInteger(item)) {
 					//Restaurant Role Setup
 					CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-					NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
-					WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-					HostRole RestaurantHostRole = new HostRole("Host");
 					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
-					CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
 					MarketRole RestaurantMarketRole = new MarketRole("Market");
 					CashierRole RestaurantCashierRole = new CashierRole("Cashier");
-					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
+			
 					//Transportation Role Setup
 //					BusPassengerRole BusPassengerRole = new BusPassengerRole();
 //					CarPassengerRole CarPassengerRole = new CarPassengerRole();
@@ -64,6 +63,8 @@ public class CityGui extends JFrame {
 					PeopleAgent person = new PeopleAgent(configParams.get(currIndex + 2),1000.0,false);
 					person.startThread();
 					if(configParams.get(currIndex + 1).equals("RestaurantNormalWaiter")) {
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
+						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", 0, 1200);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
@@ -72,12 +73,27 @@ public class CityGui extends JFrame {
 
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantCook")) {
+						CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
 						person.addJob("RestaurantCook", 0, 1200);
 						person.addRole(RestaurantCookRole,"RestaurantNormalWaiter");
 						person.msgTimeIs(0);
 						System.out.println("Created" + RestaurantCookRole);
+					}
+					if(configParams.get(currIndex + 1).equals("RestaurantHost")) {
+						HostRole RestaurantHostRole = new HostRole("Host");
+						person.addJob("RestaurantHost",0,1200);
+						person.addRole(RestaurantHostRole, "RestaurantHost");
+						restPanel.setHost(RestaurantHostRole);
+						Restaurant restaurant = new Restaurant(RestaurantHostRole,new Dimension(100,100),"Restaurant 1");
+						
+						
+						System.out.println("Created" + RestaurantHostRole);
 
-
+					}
+					if(configParams.get(currIndex + 1).equals("RestaurantCustomer")) {
+						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
+						person.addJob("RestaurantCustomer",0,1200);
+						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					}
 					
 					
