@@ -1,4 +1,5 @@
-package housing;
+package housing.gui;
+
 
 import java.awt.Color;
 import java.awt.Graphics;

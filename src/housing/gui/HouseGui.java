@@ -1,4 +1,7 @@
-package housing;
+package housing.gui;
+
+import housing.House;
+import housing.Item;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

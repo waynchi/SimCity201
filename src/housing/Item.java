@@ -1,5 +1,7 @@
 package housing;
 
+import housing.gui.ItemGui;
+
 import java.awt.Dimension;
 
 public class Item {

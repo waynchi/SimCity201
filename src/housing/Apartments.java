@@ -1,5 +1,7 @@
 package housing;
 
+import housing.gui.ApartmentsGui;
+
 import java.util.List;
 import java.util.ArrayList;
 

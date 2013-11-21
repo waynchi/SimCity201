@@ -1,5 +1,8 @@
 package housing;
 
+import housing.gui.HouseGui;
+import housing.gui.ItemGui;
+import housing.gui.TestGui;
 import housing.interfaces.Resident;
 
 import java.awt.Color;
