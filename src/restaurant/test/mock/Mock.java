@@ -1,7 +1,7 @@
 package restaurant.test.mock;
 
 public class Mock {
-        protected String name;
+        public String name;
         public EventLog log = new EventLog();
 
         //have a log here in order to check message send by cashier to the other mocks
