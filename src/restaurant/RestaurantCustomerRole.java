@@ -68,23 +68,23 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		super();
 		this.name = name;
 		String temp = name;
-		// parsing customer name string to get desirable customer behavior
-		String delims = "[ ]+";
-		String[] tokens = temp.split(delims);
-		choice = tokens[0];
-		moneyOnMe = Double.parseDouble(tokens[1]);
-		if (tokens[2].equalsIgnoreCase("y")) {
-			leaveIfRestIsFull = true;	
-		}
-		if (tokens[3].equalsIgnoreCase("y")) {
-			orderFoodThatICanAfford = true;	
-		}
-		if (tokens[4].equalsIgnoreCase("y")) {
-			leaveIfCheapestFoodOutOfStock = true;	
-		}
-		if (tokens[5].equalsIgnoreCase("y")) {
-			reorderAcceptable = true;
-		}
+//		// parsing customer name string to get desirable customer behavior
+//		String delims = "[ ]+";
+//		String[] tokens = temp.split(delims);
+//		choice = tokens[0];
+//		moneyOnMe = Double.parseDouble(tokens[1]);
+//		if (tokens[2].equalsIgnoreCase("y")) {
+//			leaveIfRestIsFull = true;	
+//		}
+//		if (tokens[3].equalsIgnoreCase("y")) {
+//			orderFoodThatICanAfford = true;	
+//		}
+//		if (tokens[4].equalsIgnoreCase("y")) {
+//			leaveIfCheapestFoodOutOfStock = true;	
+//		}
+//		if (tokens[5].equalsIgnoreCase("y")) {
+//			reorderAcceptable = true;
+//		}
 	}
 
 	/**

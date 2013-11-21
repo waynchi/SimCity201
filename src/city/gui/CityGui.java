@@ -6,6 +6,7 @@ import restaurant.*;
 import transportation.*;
 import housing.*;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
 
 import java.awt.*;
@@ -22,28 +23,18 @@ public class CityGui extends JFrame {
 	CardLayout cardLayout;
 	CityControls cityControls;
 	ArrayList<String> configParams = new ArrayList<String>();
-	//Restaurant Role Setup
-	CookWaiterMonitor RestaurantCookWaiterMonitor = new CookWaiterMonitor();
-	NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
-	WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-	SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
-	CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
-	MarketRole RestaurantMarketRole = new MarketRole("Market");
-	CashierRole RestaurantCashierRole = new CashierRole("Cashier");
-	RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
-	//Transportation Role Setup
-	BusPassengerRole BusPassengerRole = new BusPassengerRole();
-	CarPassengerRole CarPassengerRole = new CarPassengerRole();
-	//Housing Role Setup
-	OwnerRole HousingOwnerRole = new OwnerRole();
-	RenterRole HousingRenterRole = new RenterRole(0); //wtf is the double?
-	RepairManRole HousingRepairManRole = new RepairManRole();
-	ResidentRole HousingResidentRole = new ResidentRole();
-	//Bank Role Setup
+	RestaurantPanel restPanel = new RestaurantPanel();
+
 	
 	
 	
 	public CityGui() {
+	      	restPanel.setBounds(768, 0, 666, 215);
+			restPanel.setMinimumSize( new Dimension( 500, 250 ) );
+			restPanel.setMaximumSize( new Dimension( 500, 250 ) );
+			restPanel.setPreferredSize( new Dimension( 500, 250 ) );
+			
+	        getContentPane().add(restPanel);
 		FileReader input;
 		try {
 			input = new FileReader("config.txt");
@@ -54,13 +45,43 @@ public class CityGui extends JFrame {
 			}
 			for(String item : configParams) {
 				if(isInteger(item)) {
+					//Restaurant Role Setup
+					//CookWaiterMonitor RestaurantCookWaiterMonitor = new CookWaiterMonitor();
+					NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
+					WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
+//					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
+//					CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
+					MarketRole RestaurantMarketRole = new MarketRole("Market");
+					CashierRole RestaurantCashierRole = new CashierRole("Cashier");
+					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
+					//Transportation Role Setup
+//					BusPassengerRole BusPassengerRole = new BusPassengerRole();
+//					CarPassengerRole CarPassengerRole = new CarPassengerRole();
+					//Housing Role Setup
+					OwnerRole HousingOwnerRole = new OwnerRole();
+					RenterRole HousingRenterRole = new RenterRole(0); //wtf is the double?
+					RepairManRole HousingRepairManRole = new RepairManRole();
+					ResidentRole HousingResidentRole = new ResidentRole();
+					//Bank Role Setup
+					
 					int currIndex = configParams.indexOf(item);
-					PeopleAgent person = new PeopleAgent(1000,0);
+					System.out.println(item + " " + configParams.get(currIndex + 1) + " " + configParams.get(currIndex + 2));
+					PeopleAgent person = new PeopleAgent(configParams.get(currIndex + 2),1000.0,false);
 					person.startThread();
-					RestaurantNormalWaiterRole.setGui(g);
-					person.addJob("Waiter", 0, 1200);
-					person.addRole(RestaurantNormalWaiterRole,"Waiter");
-					person.msgTimeIs(0);
+					if(configParams.get(currIndex + 1) == "RestaurantNormalWaiter") {
+						RestaurantNormalWaiterRole.setGui(g);
+						person.addJob("RestaurantNormalWaiter", 0, 1200);
+						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
+						person.msgTimeIs(0);
+
+					}
+					if(configParams.get(currIndex + 1) == "RestaurantCook") {
+						RestaurantNormalWaiterRole.setGui(g);
+						person.addJob("RestaurantCook", 0, 1200);
+						//person.addRole(RestaurantCook,"RestaurantNormalWaiter");
+						person.msgTimeIs(0);
+
+					}
 					
 					
 				}

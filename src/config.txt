@@ -1,2 +1,2 @@
-5,Cook
-10,Waiter
+2,RestaurantNormalWaiter,John
+1,RestaurantCook,James
