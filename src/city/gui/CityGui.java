@@ -28,6 +28,7 @@ public class CityGui extends JFrame {
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole("Host");
+	MarketRole market = new MarketRole("Market 1");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100,100),"Restaurant 1");
 	
 
@@ -51,7 +52,6 @@ public class CityGui extends JFrame {
 					CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
 					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
 					MarketRole RestaurantMarketRole = new MarketRole("Market");
-					CashierRole RestaurantCashierRole = new CashierRole("Cashier");
 			
 					//Transportation Role Setup
 //					BusPassengerRole BusPassengerRole = new BusPassengerRole();
@@ -71,29 +71,39 @@ public class CityGui extends JFrame {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
-						person.addJob("RestaurantNormalWaiter", 0, 1200);
+						person.addJob("RestaurantNormalWaiter", 100, 1200);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						person.msgTimeIs(0);
-						System.out.println("Created" + RestaurantNormalWaiterRole);
-
+						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
-						person.addJob("RestaurantCook", 0, 1200);
-						person.addRole(RestaurantCookRole,"RestaurantNormalWaiter");
+						person.addJob("RestaurantCook", 100, 1200);
+						person.addRole(RestaurantCookRole,"RestaurantCook");
 						person.msgTimeIs(0);
-						System.out.println("Created" + RestaurantCookRole);
+						RestaurantCookRole.setPerson(person);
+						RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantHost")) {
-						person.addJob("RestaurantHost",0,1200);
-						person.addRole(RestaurantHostRole, "RestaurantHost");					
-						System.out.println("Created" + RestaurantHostRole);
-
+						person.addJob("RestaurantHost",100,1200);
+						person.addRole(RestaurantHostRole, "RestaurantHost");	
+						person.msgTimeIs(0);
+						RestaurantHostRole.setPerson(person);
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantCustomer")) {
 						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
-						person.addJob("RestaurantCustomer",0,1200);
+						person.addJob("RestaurantCustomer",100,1200);
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
+						person.msgTimeIs(0);
+						RestaurantCustomerRole.setPerson(person);
+					}
+					if(configParams.get(currIndex + 1).equals("RestaurantCashier")) {
+						CashierRole RestaurantCashierRole = new CashierRole("Cashier");
+						person.addJob("RestaurantCashier",100,1200);
+						person.addRole(RestaurantCashierRole,"RestaurantCashier");
+						person.msgTimeIs(0);
+						RestaurantCashierRole.setPerson(person);
+						
 					}
 					
 					people.add(person);	
