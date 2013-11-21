@@ -25,7 +25,7 @@ public class CityGui extends JFrame {
 	public CityGui() {
 		FileReader input;
 		try {
-			input = new FileReader("/Users/zacktanner/EclipseProjects/team30/src/config.txt");
+			input = new FileReader("config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while((line = bufRead.readLine()) != null) {
