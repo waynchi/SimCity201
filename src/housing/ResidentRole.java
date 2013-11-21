@@ -1,5 +1,6 @@
 package housing;
 
+import housing.gui.ResidentGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
 import java.util.concurrent.Semaphore;
@@ -16,6 +17,8 @@ public class ResidentRole extends Role implements Resident {
 	private RepairStage repairStage;
 	private State myState;
 	private Semaphore busy = new Semaphore(0, true);
+	public ResidentGui gui = null;
+	public Semaphore activity = new Semaphore(0, true);
 
 	public ResidentRole() {
 		house = null;
@@ -65,6 +68,16 @@ public class ResidentRole extends Role implements Resident {
 		}
 		repairStage = RepairStage.None;
 	}
+	
+	public void watchTV() {
+		// Animation
+	}
+	
+	public void doMorningStuff() {
+		// Poop
+		// Take a shower
+		// Masturbate
+	}
 
 	//-----------------------------------------------------------//
 
@@ -111,6 +124,10 @@ public class ResidentRole extends Role implements Resident {
 		myState = State.Idle;
 		activityComplete();
 		stateChanged();
+	}
+	
+	public void activityDone() {
+		activity.release();
 	}
 
 	//-----------------------------------------------------------//
@@ -184,6 +201,10 @@ public class ResidentRole extends Role implements Resident {
 	
 	public void setRepairMan(RepairMan r) {
 		this.repairMan = r;
+	}
+	
+	public void setGui(ResidentGui g) {
+		this.gui = g;
 	}
 
 	//-----------------------------------------------------------//

@@ -10,6 +10,7 @@ public class ItemGui implements HGui{
 	int x, y, width, height;
 	Color c;
 	TestGui testGui;
+	boolean isBroken = false;
 
 	public ItemGui(Item i, int x, int y, int width, int height, Color c, TestGui g) {
 		this.i = i;
@@ -31,12 +32,28 @@ public class ItemGui implements HGui{
 	public void draw(Graphics2D g) {
 		g.setColor(c);
 		g.fillRect(x, y, width, height);
+		if (isBroken()) {
+			g.setColor(Color.WHITE);
+			g.drawLine(x, ((height / 2) + y), x + width, ((height / 2) + y));
+		}
 	}
 
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public void breakIt() {
+		isBroken = true;
+	}
+	
+	public void repair() {
+		isBroken = false;
+	}
+	
+	public boolean isBroken() {
+		return isBroken;
 	}
 }
 
