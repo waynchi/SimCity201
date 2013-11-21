@@ -29,12 +29,6 @@ public class CityGui extends JFrame {
 	
 	
 	public CityGui() {
-	      	restPanel.setBounds(768, 0, 666, 215);
-			restPanel.setMinimumSize( new Dimension( 500, 250 ) );
-			restPanel.setMaximumSize( new Dimension( 500, 250 ) );
-			restPanel.setPreferredSize( new Dimension( 500, 250 ) );
-			
-	        getContentPane().add(restPanel);
 		FileReader input;
 		try {
 			input = new FileReader("config.txt");
@@ -46,11 +40,12 @@ public class CityGui extends JFrame {
 			for(String item : configParams) {
 				if(isInteger(item)) {
 					//Restaurant Role Setup
-					//CookWaiterMonitor RestaurantCookWaiterMonitor = new CookWaiterMonitor();
+					CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
 					NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
 					WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-//					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
-//					CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
+					HostRole RestaurantHostRole = new HostRole("Host");
+					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
+					CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
 					MarketRole RestaurantMarketRole = new MarketRole("Market");
 					CashierRole RestaurantCashierRole = new CashierRole("Cashier");
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
@@ -68,18 +63,20 @@ public class CityGui extends JFrame {
 					System.out.println(item + " " + configParams.get(currIndex + 1) + " " + configParams.get(currIndex + 2));
 					PeopleAgent person = new PeopleAgent(configParams.get(currIndex + 2),1000.0,false);
 					person.startThread();
-					if(configParams.get(currIndex + 1) == "RestaurantNormalWaiter") {
+					if(configParams.get(currIndex + 1).equals("RestaurantNormalWaiter")) {
 						RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", 0, 1200);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						person.msgTimeIs(0);
+						System.out.println("Created" + RestaurantNormalWaiterRole);
 
 					}
-					if(configParams.get(currIndex + 1) == "RestaurantCook") {
-						RestaurantNormalWaiterRole.setGui(g);
+					if(configParams.get(currIndex + 1).equals("RestaurantCook")) {
 						person.addJob("RestaurantCook", 0, 1200);
-						//person.addRole(RestaurantCook,"RestaurantNormalWaiter");
+						person.addRole(RestaurantCookRole,"RestaurantNormalWaiter");
 						person.msgTimeIs(0);
+						System.out.println("Created" + RestaurantCookRole);
+
 
 					}
 					
@@ -126,6 +123,11 @@ public class CityGui extends JFrame {
 		getContentPane().add( BorderLayout.EAST, cityControls);
 		getContentPane().add( BorderLayout.NORTH, cityPanel );
 		getContentPane().add( BorderLayout.SOUTH, buildingPanels );
+		buildingPanels.add(restPanel, "name_1385002139901999000");
+		restPanel.setBounds(768, 0, 666, 215);
+		restPanel.setMinimumSize( new Dimension( 500, 250 ) );
+		restPanel.setMaximumSize( new Dimension( 500, 250 ) );
+		restPanel.setPreferredSize( new Dimension( 500, 250 ) );
 	}
 	
 	public void displayBuildingPanel( BuildingPanel bp ) {
