@@ -1,15 +1,16 @@
 package housing;
 
 import static org.junit.Assert.assertEquals;
+import housing.interfaces.Owner;
+import housing.interfaces.Renter;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import people.People;
 
-public class OwnerRole extends ResidentRole {
+public class OwnerRole extends ResidentRole implements Owner {
 	// Data
 
 	private List<MyHouse> myHouses = new ArrayList<MyHouse>();
@@ -79,7 +80,7 @@ public class OwnerRole extends ResidentRole {
 		rents.add(new RentOrder(m));
 	}
 	
-	public void addRenterToHouse(House h, RenterRole r) {
+	public void addRenterToHouse(House h, Renter r) {
 		MyHouse mh = find(h);
 		mh.setOccupant(r);
 	}
@@ -160,7 +161,7 @@ public class OwnerRole extends ResidentRole {
 		return rents.size();
 	}
 	
-	public void addHouse(House h, RenterRole r) {
+	public void addHouse(House h, Renter r) {
 		MyHouse mh = new MyHouse(h, r);
 		myHouses.add(mh);
 	}
@@ -171,13 +172,13 @@ public class OwnerRole extends ResidentRole {
 
 	public class MyHouse {
 		House h;
-		RenterRole r = null;
+		Renter r = null;
 		double penalty;
 		double rent;
 		Timer rentTimer;
 		long period;
 
-		public MyHouse(House h, RenterRole r) {
+		public MyHouse(House h, Renter r) {
 			this.h = h;
 			this.period = 10000;
 			this.r = r;
@@ -194,7 +195,7 @@ public class OwnerRole extends ResidentRole {
 //			}
 		}
 		
-		public void setOccupant(RenterRole r) {
+		public void setOccupant(Renter r) {
 			this.r = r;
 //			final MyHouse mh = this;
 //			rentTimer.scheduleAtFixedRate(new TimerTask() {

@@ -16,17 +16,12 @@ public interface RepairMan {
 	public void salaryArrives();
 
 	//-----------------------------------------------------------//
-
-	// Scheduler
-
-	public boolean pickAndExecuteAnAction();
-
-	//-----------------------------------------------------------//
-
+	
 	// Utilities
 
 	public void addHouse(House h, Resident r);
 	public boolean doesItNeedRepair(House h);
 	public boolean anyCurrentHouse();
 	public People getPersonAgent();
+	public void setPerson(People p);
 }
