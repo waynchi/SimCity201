@@ -26,15 +26,17 @@ public class CityGui extends JFrame {
 	CityControls cityControls;
 	ArrayList<String> configParams = new ArrayList<String>();
 	RestaurantGui restaurantGui = new RestaurantGui();
-	RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole("Host");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100,100),"Restaurant 1");
+	
 
 	
 	
 	
 	public CityGui() {
+		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui,RestaurantHostRole);
+		restPanel.setHost(RestaurantHostRole);
 		FileReader input;
 		try {
 			input = new FileReader("config.txt");
@@ -84,8 +86,7 @@ public class CityGui extends JFrame {
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantHost")) {
 						person.addJob("RestaurantHost",0,1200);
-						person.addRole(RestaurantHostRole, "RestaurantHost");
-						restPanel.setHost(RestaurantHostRole);					
+						person.addRole(RestaurantHostRole, "RestaurantHost");					
 						System.out.println("Created" + RestaurantHostRole);
 
 					}
