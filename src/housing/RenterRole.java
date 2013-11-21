@@ -1,15 +1,14 @@
 package housing;
 
 import housing.interfaces.Owner;
-
+import housing.interfaces.Renter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import people.People;
 
-public class RenterRole extends ResidentRole {
+public class RenterRole extends ResidentRole implements Renter{
 	// Data
 
 	private Owner owner;
@@ -125,7 +124,7 @@ public class RenterRole extends ResidentRole {
 		return penalties;
 	}
 	
-	public void setOwner(OwnerRole o) {
+	public void setOwner(Owner o) {
 		this.owner = o;
 	}
 }

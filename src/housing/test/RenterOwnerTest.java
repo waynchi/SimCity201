@@ -7,14 +7,18 @@ import housing.OwnerRole;
 import housing.OwnerRole.MyHouse;
 import housing.RenterRole;
 import housing.RepairManRole;
+import housing.interfaces.Owner;
+import housing.interfaces.Renter;
+import housing.interfaces.RepairMan;
+import housing.interfaces.Resident;
 
 public class RenterOwnerTest {
 	House h1;
 	House h2;
-	RenterRole r1;
-	RenterRole r2;
-	OwnerRole o;
-	RepairManRole r;
+	Renter r1;
+	Renter r2;
+	Owner o;
+	RepairMan r;
 	
 	@Test
 	public void testNormative1() {
@@ -171,22 +175,22 @@ public class RenterOwnerTest {
 		o = new OwnerRole();
 		r = new RepairManRole();
 		
-		h1.setOccupant(r1);
+		h1.setOccupant((Resident)r1);
 		h1.setItemsWithoutGui();
-		h2.setOccupant(r2);
+		h2.setOccupant((Resident)r2);
 		h2.setItemsWithoutGui();
 		
-		o.addHouse(h1, r1);
-		o.addHouse(h2, r2);
+		o.addHouse(h1, (Renter)r1);
+		o.addHouse(h2, (Renter)r2);
 		
-		r.addHouse(h1, r1);
-		r.addHouse(h2, r2);
+		r.addHouse(h1, (Resident)r1);
+		r.addHouse(h2, (Resident)r2);
 		
 		r1.setOwner(o);
-		r1.setHouse(h1);
-		r1.setRepairMan(r);
+		((Resident)r1).setHouse(h1);
+		((Resident)r1).setRepairMan(r);
 		r2.setOwner(o);
-		r2.setHouse(h2);
-		r2.setRepairMan(r);
+		((Resident)r2).setHouse(h2);
+		((Resident)r2).setRepairMan(r);
 	}
 }

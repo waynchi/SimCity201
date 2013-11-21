@@ -1,15 +1,14 @@
 package housing;
 
 import housing.interfaces.RepairMan;
-
+import housing.interfaces.Resident;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
-
 import people.People;
 import people.Role;
 
-public class ResidentRole extends Role{
+public class ResidentRole extends Role implements Resident {
 	// Data
 
 	protected House house;
@@ -181,6 +180,10 @@ public class ResidentRole extends Role{
 	
 	public void setHouse(House h) {
 		this.house = h;
+	}
+	
+	public void setRepairMan(RepairMan r) {
+		this.repairMan = r;
 	}
 
 	//-----------------------------------------------------------//
