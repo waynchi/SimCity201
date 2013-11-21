@@ -27,9 +27,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     //Host, cook, waiters and customers
 	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
 
-    private HostRole host = new HostRole("Sarah");
+    private HostRole host;
     private HostGui hostGui = new HostGui(host);
-	private CookRole cook = new CookRole("Cook", theMonitor);
+	private CookRole cook;
 	private CookGui cookGui = new CookGui(cook);
 	
 	private MarketRole market1 = new MarketRole("Market 1");
@@ -297,6 +297,14 @@ public class RestaurantPanel extends JPanel implements ActionListener{
 
     public Vector<BaseWaiterRole> getWaiters () {
     	return waiters;
+    }
+    
+    public void setCook (CookRole c) {
+    	cook = c;
+    }
+    
+    public void setHost (HostRole h) {
+    	host = h;
     }
     
     public CookRole getCook() {
