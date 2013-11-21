@@ -38,9 +38,13 @@ public class CookRole extends Role{
 	private Boolean onOpen;
 	private Timer schedulerTimer = new Timer();
 	private Cashier cashier;
-	private People people;
 
 	private CookGui cookGui = null;
+	
+	private Boolean isActive;
+	private Boolean turnActive;
+	private HostRole host;
+	
 	
 	private class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
@@ -70,12 +74,20 @@ public class CookRole extends Role{
 		foods.put("Salad", new Food("Salad"));
 		foods.put("Pizza", new Food("Pizza"));
 		theMonitor = monitor;
+		isActive = false;
+		turnActive = false;
 	}
 
 
 	// Messages
 
 	// Cook receives an order from the waiter and stores it into a list
+	public void msgIsActive() {
+		isActive = true;
+		turnActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgHereIsAnOrder (String food, BaseWaiterRole w,int tableNum) {
 		orders.add( new MyOrder(food, w, tableNum));
 		print("Receiving order, " + food + " for table #"+tableNum);
@@ -116,6 +128,11 @@ public class CookRole extends Role{
 	public boolean pickAndExecuteAnAction() {
 		if (onOpen) {
 			orderFoodThatIsLow();
+			return true;
+		}
+		
+		if (turnActive) {
+			clockIn();
 			return true;
 		}
 
@@ -248,9 +265,14 @@ public class CookRole extends Role{
 			}		
 		}
 
-
-
+		
 	}
+	
+	private void clockIn() {
+		host.setCook(this);
+		turnActive = false;
+	}
+
 	//utilities
 
 	public String getMaitreDName() {
@@ -325,6 +347,10 @@ public class CookRole extends Role{
 	
 	public CookGui getGui() {
 		return cookGui;
+	}
+	
+	public void setHost(HostRole h) {
+		host = h;
 	}
 
 }

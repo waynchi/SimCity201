@@ -35,6 +35,8 @@ public class CashierRole extends Role implements Cashier {
 	private double min_working_capital, working_capital, bank_balance;
 	private double waiter_salary, cook_salary, host_salary, cashier_salary;
 
+	private HostRole host;
+	
 	private BankTeller teller;
 	private int bankAccount;
 	//private Semaphore depositCompleted = new Semaphore(0,true);
@@ -45,6 +47,7 @@ public class CashierRole extends Role implements Cashier {
 
 	public Boolean onClose;
 	private Boolean isActive;
+	private Boolean turnActive;
 	private Boolean depositSuccessful = false;
 	private Boolean withdrawalSuccessful = false;
 
@@ -110,6 +113,7 @@ public class CashierRole extends Role implements Cashier {
 		loanRequested = loanGranted = loanRefused = false;
 		onClose = false;
 		isActive = false;
+		turnActive = false;
 	}
 
 
@@ -130,10 +134,12 @@ public class CashierRole extends Role implements Cashier {
 		loanRequested = loanGranted = loanRefused = false;
 		onClose = false;
 		isActive = false;
+		turnActive = false;
 	}
 
 
 	public void msgIsActive() {
+		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -227,6 +233,11 @@ public class CashierRole extends Role implements Cashier {
 				}
 			}
 		}
+		
+		if (turnActive) {
+			clockIn();
+			return true;
+		}
 
 		if (!marketBills.isEmpty()) {
 			payMarket(marketBills.get(0));
@@ -264,6 +275,12 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	// Actions
+	
+	private void clockIn() {
+		host.setCashier(this);
+		turnActive = false;
+	}
+	
 	private void sendCheckToWaiter (final Check c) {
 		log.add(new LoggedEvent("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
 				". Customer " + c.customer.getName() + " needs to pay " + c.due));
@@ -443,6 +460,10 @@ public class CashierRole extends Role implements Cashier {
 	
 	public void setTeller (BankTeller t) {
 		teller = t;
+	}
+	
+	public void setHost (HostRole h) {
+		host = h;
 	}
 
 }
