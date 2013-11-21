@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import city.Restaurant;
+import city.gui.CityGui;
 import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
@@ -17,7 +18,7 @@ public class PeopleAgent extends Agent implements People{
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
-	//CityGui gui;
+	CityGui cityGui;
 	
 	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
@@ -29,6 +30,14 @@ public class PeopleAgent extends Agent implements People{
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
 	
+	
+	public void addCityGui(CityGui gui)
+	{
+		cityGui = gui;
+	}
+	
+	//public void addPeopleGui()
+	//TODO
 	/* (non-Javadoc)
 	 * @see people.People#addRole(people.Role, java.lang.String)
 	 */
@@ -89,6 +98,12 @@ public class PeopleAgent extends Agent implements People{
 	 * @see people.People#msgTimeIs(int)
 	 */
 	@Override
+	
+	/*public int msgWhatIsTime()
+	{
+		//TODO
+		return cityGui.Time;
+	}*/
 	public void msgTimeIs(int Time)
 	{
 		if(Time == 0)
@@ -118,6 +133,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingToRetrieveMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -126,6 +142,7 @@ public class PeopleAgent extends Agent implements People{
 				if(Money >= 50000)
 				{
 					event = AgentEvent.GoingToDepositMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -155,10 +172,12 @@ public class PeopleAgent extends Agent implements People{
 				if(rand.nextInt() < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
+					stateChanged();
 				}
 				else
 				{
 					event = AgentEvent.GoingHome;
+					stateChanged();
 				}
 				return;
 			}
@@ -365,7 +384,7 @@ public class PeopleAgent extends Agent implements People{
 				r.role.msgIsInActive();
 			}
 		}
-		msgTimeIs( jobs.get(0).end);
+		msgTimeIs( jobs.get(0).end); //TODO I probably need to get the actual time here
 	}
 
 	/* (non-Javadoc)
@@ -383,8 +402,10 @@ public class PeopleAgent extends Agent implements People{
 	 * @see people.People#GoToWork()
 	 */
 	@Override
+	//Going to Work
 	public void GoToWork()
 	{
+		print("I am going to work now!");
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -393,38 +414,49 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		//gui
-		if(jobs.get(0).job.equals("Waiter"))
+		if(jobs.get(0).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Waiter"))
+				if(r.description.equals("RestaurantNormalWaiter"))
 				{			
 					r.role.msgIsActive();
 				}
 			}
 			//roles.WaiterRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Host"))
+		if(jobs.get(0).job.equals("RestaurantHost"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Host"))
+				if(r.description.equals("RestaurantHost"))
 				{			
 					r.role.msgIsActive();
 				}
 			}
 			//roles.HostRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Cook"))
+		if(jobs.get(0).job.equals("RestaurantCook"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Cook"))
+				if(r.description.equals("RestaurantCook"))
 				{			
 					r.role.msgIsActive();
 				}
 			}
 			//roles.CookRole.msgIsActive();
+		}
+		if(jobs.get(0).job.equals("RestaurantCashier"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCashier"))
+				{			
+					r.role.msgIsActive();
+				}
+			}
+			//roles.RepairRole.msgIsActive();
 		}
 		if(jobs.get(0).job.equals("Vendor"))
 		{
@@ -453,17 +485,6 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RepairMan"))
-				{			
-					r.role.msgIsActive();
-				}
-			}
-			//roles.RepairRole.msgIsActive();
-		}
-		if(jobs.get(0).job.equals("Cashier"))
-		{
-			for(MyRole r: roles)
-			{
-				if(r.description.equals("Cashier"))
 				{			
 					r.role.msgIsActive();
 				}
