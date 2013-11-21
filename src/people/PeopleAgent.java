@@ -31,6 +31,14 @@ public class PeopleAgent extends Agent implements People{
 	public AgentEvent event = AgentEvent.Idle;
 	
 	
+	public String getMaitreDName() {
+		return name;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
 	public void addCityGui(CityGui gui)
 	{
 		cityGui = gui;
@@ -420,6 +428,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(r.description.equals("RestaurantNormalWaiter"))
 				{			
+					print("I am now a RestaurantNormalWaiter");
 					r.role.msgIsActive();
 				}
 			}
@@ -431,6 +440,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(r.description.equals("RestaurantHost"))
 				{			
+					print("I am now a RestaurantHost");
 					r.role.msgIsActive();
 				}
 			}
@@ -442,6 +452,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(r.description.equals("RestaurantCook"))
 				{			
+					print("I am now a RestaurantCook");
 					r.role.msgIsActive();
 				}
 			}
@@ -452,7 +463,8 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RestaurantCashier"))
-				{			
+				{		
+					print("I am now a RestaurantCashier");
 					r.role.msgIsActive();
 				}
 			}
