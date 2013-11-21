@@ -99,9 +99,9 @@ public class PeopleAgent extends Agent implements People{
 			return;
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
-			
 		{
 			event = AgentEvent.WakingUp;
+			stateChanged();
 			return;
 		}
 		if(state == AgentState.Idle)
@@ -170,6 +170,7 @@ public class PeopleAgent extends Agent implements People{
 				if(!(Time >= 1700) && Money >= 30000)
 				{
 					event = AgentEvent.GoingToBuyCar;
+					stateChanged();
 					return;
 				}
 				if(!(Time>= 1700 && Money <= 30000))
@@ -186,6 +187,7 @@ public class PeopleAgent extends Agent implements People{
 				if(Money >= 1000000)
 				{
 					event = AgentEvent.GoingToDepositMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -194,6 +196,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == 2330)
 		{
 			event = AgentEvent.GoingToSleep;
+			stateChanged();
 			return;
 		}
 		
@@ -242,7 +245,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-			state = AgentState.RestingAtHome;
+			state = AgentState.Idle;
 			}
 			GoToHouse();
 			Person = true;
