@@ -3,11 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import city.Restaurant;
 import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
 
 	public List<MyRole> roles = new ArrayList<MyRole>();
+	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Boolean hasCar;
