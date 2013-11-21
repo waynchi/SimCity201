@@ -2,10 +2,8 @@ package housing.interfaces;
 
 import housing.House;
 import housing.Item;
-
 import java.util.List;
-
-import people.PeopleAgent;
+import people.People;
 
 public interface Resident {
 	// Messages
@@ -31,7 +29,7 @@ public interface Resident {
 
 	public void setRepairMan(RepairMan r);
 	public List<Item> getBrokenItems();
-	public PeopleAgent getAgent();
+	public People getAgent();
 	public void setHouse(House h);
 
 
