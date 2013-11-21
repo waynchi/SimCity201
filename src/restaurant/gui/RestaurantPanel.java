@@ -84,7 +84,8 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
     
-    public RestaurantPanel(RestaurantGui gui) {
+    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    	host = h;
         this.gui = gui;
 		//gui.animationPanel.addGui(cookGui);
         //host.setGui(hostGui);
@@ -116,7 +117,18 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         //add(customerPanel);
     }
     
-    
+    public RestaurantPanel(RestaurantGui gui) {
+        this.gui = gui;
+        
+        setLayout(new GridLayout(1, 2, 20, 20));
+        
+
+        initRestLabel();
+        initImagePanel();
+        add(restLabel);
+        add(imagePanel);
+        //add(customerPanel);
+    }
 
     public RestaurantPanel() {
 		// TODO Auto-generated constructor stub
