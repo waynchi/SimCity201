@@ -7,11 +7,6 @@ import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
 
-	public PeopleAgent() {
-		Money = 10.0;
-		// TODO Auto-generated constructor stub
-	}
-
 	public List<MyRole> roles = new ArrayList<MyRole>();
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
@@ -26,7 +21,7 @@ public class PeopleAgent extends Agent implements People{
 	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
 	public enum AgentLocation
-	{Home, Bank, 	}
+	{Home, Bank, Market, Restaurant, Road}
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
@@ -78,9 +73,10 @@ public class PeopleAgent extends Agent implements People{
 		r.msgIsInActive();
 	}
 	
-	public PeopleAgent(double Money, boolean hasCar)
+	public PeopleAgent(String name, double Money, boolean hasCar)
 	{
 		super();
+		this.name = name;
 		this.Money = Money;
 		this.hasCar = hasCar;
 	}
