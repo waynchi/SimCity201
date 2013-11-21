@@ -27,6 +27,9 @@ public class CityGui extends JFrame {
 	ArrayList<String> configParams = new ArrayList<String>();
 	RestaurantGui restaurantGui = new RestaurantGui();
 	RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
+	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
+	HostRole RestaurantHostRole = new HostRole("Host");
+	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100,100),"Restaurant 1");
 
 	
 	
@@ -80,13 +83,9 @@ public class CityGui extends JFrame {
 						System.out.println("Created" + RestaurantCookRole);
 					}
 					if(configParams.get(currIndex + 1).equals("RestaurantHost")) {
-						HostRole RestaurantHostRole = new HostRole("Host");
 						person.addJob("RestaurantHost",0,1200);
 						person.addRole(RestaurantHostRole, "RestaurantHost");
-						restPanel.setHost(RestaurantHostRole);
-						Restaurant restaurant = new Restaurant(RestaurantHostRole,new Dimension(100,100),"Restaurant 1");
-						
-						
+						restPanel.setHost(RestaurantHostRole);					
 						System.out.println("Created" + RestaurantHostRole);
 
 					}
@@ -96,7 +95,10 @@ public class CityGui extends JFrame {
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					}
 					
-					
+					people.add(person);	
+					for(PeopleAgent p : people) {
+						p.Restaurants.add(restaurant);
+					}
 				}
 			}
 			bufRead.close();
