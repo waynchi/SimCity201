@@ -53,6 +53,10 @@ public class BankCustomerAgent extends Agent implements BankCustomer {
 	public String getCustomerName() {
 		return name;
 	}
+	
+	public void setTeller(Teller t) {
+		teller = t;
+	}
 	// Messages
 
 	public void needMoney(double money) {//from animation

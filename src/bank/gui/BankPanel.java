@@ -1,14 +1,10 @@
 package bank.gui;
 
-import bank.CashierAgent;
-import bank.CustomerAgent;
-import bank.MarketAgent;
-import bank.WaiterAgent;
-import bank.HostAgent;
-import bank.CookAgent;
 
 import javax.swing.*;
 
+import bank.BankCustomerAgent;
+import bank.TellerAgent;
 import agent.Agent;
 
 import java.awt.*;
@@ -23,15 +19,16 @@ public class BankPanel extends JPanel {
 
     //Host, cook, waiters and customers
 
-    private HostAgent host = new HostAgent("Host");
+    private TellerAgent host = new TellerAgent("Teller");
 
     public Vector<Agent> agents = new Vector<Agent>();
+    public Vector<BankCustomerAgent> customers = new Vector<BankCustomerAgent>();
 
     private JPanel restLabel = new JPanel();
     private ListPanel customerPanel = new ListPanel(this, "Customers");
     private JPanel group = new JPanel();
 
-    private RestaurantGui gui; //reference to main gui
+    private BankGui gui; //reference to main gui
 
     public BankPanel(BankGui gui) {
     	agents.add(host);
@@ -79,7 +76,7 @@ public class BankPanel extends JPanel {
         if (type.equals("Customers")) {
 
             for (int i = 0; i < customers.size(); i++) {
-                CustomerAgent temp = customers.get(i);
+                BankCustomerAgent temp = customers.get(i);
                 if (temp.getName() == name)
                     gui.updateInfoPanel(temp);
             }
@@ -96,22 +93,22 @@ public class BankPanel extends JPanel {
 
     	if (type.equals("Customers")) {
     		if (status.equals("Hungry")) {
-    			CustomerAgent c = new CustomerAgent(name);	
-    			CustomerGui g = new CustomerGui(c, gui, customers.size());
+    			BankCustomerAgent c = new BankCustomerAgent(name);	
+    			BankCustomerGui g = new BankCustomerGui(c, gui, customers.size());
 
     			gui.animationPanel.addGui(g);// dw
-    			c.setHost(host);
+    			c.setTeller(host);
     			c.setGui(g);
     			agents.add(c);
     			c.startThread();
     			c.getGui().setHungry();
     		}
     		else {
-    			CustomerAgent c = new CustomerAgent(name);	
-    			CustomerGui g = new CustomerGui(c, gui, customers.size());
+    			BankCustomerAgent c = new BankCustomerAgent(name);	
+    			BankCustomerGui g = new BankCustomerGui(c, gui, customers.size());
 
     			gui.animationPanel.addGui(g);// dw
-    			c.setHost(host);
+    			c.setTeller(host);
     			c.setGui(g);
     			agents.add(c);
     			c.startThread();
