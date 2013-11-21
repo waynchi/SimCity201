@@ -19,12 +19,6 @@ public interface Resident {
 
 	//-----------------------------------------------------------//
 
-	// Scheduler
-
-	public boolean pickAndExecuteAnAction();
-
-	//-----------------------------------------------------------//
-
 	// Utilities
 
 	public void setRepairMan(RepairMan r);

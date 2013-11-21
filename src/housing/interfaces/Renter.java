@@ -12,12 +12,6 @@ public interface Renter {
 	
 	//-----------------------------------------------------------//
 
-	// Scheduler
-
-	public boolean pickAnExecuteAnAction();
-
-	//-----------------------------------------------------------//
-
 	// Utilities
 
 	public People getAgent();		

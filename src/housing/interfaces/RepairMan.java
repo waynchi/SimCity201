@@ -16,13 +16,7 @@ public interface RepairMan {
 	public void salaryArrives();
 
 	//-----------------------------------------------------------//
-
-	// Scheduler
-
-	public boolean pickAndExecuteAnAction();
-
-	//-----------------------------------------------------------//
-
+	
 	// Utilities
 
 	public void addHouse(House h, Resident r);

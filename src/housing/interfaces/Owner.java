@@ -16,12 +16,6 @@ public interface Owner {
 
 	//-----------------------------------------------------------//
 
-	// Scheduler
-
-	public boolean pickAndExecuteAnAction();
-
-	//-----------------------------------------------------------//
-
 	// Utilities
 	
 	public People getAgent();
