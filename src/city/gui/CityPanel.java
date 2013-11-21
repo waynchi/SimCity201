@@ -24,7 +24,6 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 
 		public void paintComponent( Graphics g ) {
-			System.out.println("hello1");
 
 			Graphics2D g2 = (Graphics2D)g;
 			g2.setColor( Color.black );

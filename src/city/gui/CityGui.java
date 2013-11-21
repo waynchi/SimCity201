@@ -57,16 +57,15 @@ public class CityGui extends JFrame {
 					int currIndex = configParams.indexOf(item);
 					PeopleAgent person = new PeopleAgent(1000,0);
 					person.startThread();
-					normalWaiterRole.setGui(g);
+					RestaurantNormalWaiterRole.setGui(g);
 					person.addJob("Waiter", 0, 1200);
-					person.addRole(normalWaiterRole,"Waiter");
+					person.addRole(RestaurantNormalWaiterRole,"Waiter");
 					person.msgTimeIs(0);
 					
 					
 				}
 			}
 			bufRead.close();
-			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
