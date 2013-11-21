@@ -1,12 +1,19 @@
 package housing.test;
 
 import java.util.List;
-
 import people.People;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 
 public class MockRenter implements Renter {
+	
+	// Data
+	
+	EventLog log = new EventLog();
+	
+	//-----------------------------------------------------------//
 
 	// Messages
 	

@@ -5,8 +5,16 @@ import housing.House;
 import housing.OwnerRole.MyHouse;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 
 public class MockOwner implements Owner {
+	
+	// Data
+	
+	EventLog log = new EventLog();
+	
+	//-----------------------------------------------------------//
 
 	// Messages
 	
