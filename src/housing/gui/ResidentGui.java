@@ -107,6 +107,11 @@ public class ResidentGui implements HGui{
 		goToLocation(d);
 	}
 	
+	public void DoRead() {
+		Dimension d = hGui.getPosition("StudyChair");
+		goToLocation(d);
+	}
+	
 	public void goToLocation(Dimension d) {
 		xDestination = d.width;
 		yDestination = d.height;

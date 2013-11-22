@@ -66,10 +66,23 @@ public class ItemGui implements HGui{
 			g.fillRoundRect(x, y, width, height, wArc, hArc);
 		if (isBroken()) {
 			g.setColor(Color.WHITE);
-			if (shape == Shape.Rectangle || shape == Shape.RoundRectangle)
-				g.drawLine(x, ((height / 2) + y), x + width, ((height / 2) + y));
-			else if (shape == Shape.Circle)
-				g.drawLine(x, y + (d / 2), x + d, y + (d / 2));
+			if (shape == Shape.Rectangle || shape == Shape.RoundRectangle) {
+				g.drawLine(x, y, x + width, y + height);
+				g.drawLine(x + width, y, x, y + height);
+			}
+			else if (shape == Shape.Circle) {
+				g.drawLine(x, y, x + d, y + d);
+				g.drawLine(x + d, y, x, y + d);
+			}
+		}
+		if (this.i.name.equals("CookingGrill")) {
+			g.setColor(Color.BLACK);
+			g.drawLine(x, y + (height / 2), x + width, y + (height / 2));
+			g.drawLine(x + (width / 2), y, x + (width / 2), y + height);
+			g.drawOval(x + 4, y + 7, 10, 10);
+			g.drawOval(x + 25, y + 7, 10, 10);
+			g.drawOval(x + 4, y + 32, 10, 10);
+			g.drawOval(x + 25, y + 32, 10, 10);
 		}
 	}
 

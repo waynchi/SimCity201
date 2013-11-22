@@ -80,6 +80,10 @@ public class HousingResidentRole extends Role implements Resident {
 		// Take a shower
 		// Masturbate
 	}
+	
+	public void read() {
+		// Go to study table and read stuff.
+	}
 
 	//-----------------------------------------------------------//
 

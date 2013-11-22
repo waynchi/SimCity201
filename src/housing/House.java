@@ -4,9 +4,7 @@ import housing.gui.HouseGui;
 import housing.gui.ItemGui;
 import housing.gui.TestGui;
 import housing.interfaces.Resident;
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -86,7 +84,7 @@ public class House extends Item{
 	
 	public void setItems(TestGui testGui) {
 		Item i1 = new Item("Bed", this);
-		ItemGui g1 = new ItemGui(i1, 15, 135, 120, 60, Color.blue, testGui);
+		ItemGui g1 = new ItemGui(i1, 15, 135, 120, 60, new Color(150, 0, 100), testGui);
 		i1.setGui(g1);
 		items.add(i1);
 		
@@ -181,7 +179,7 @@ public class House extends Item{
 		items.add(i19);
 		
 		Item i20 = new Item("BathTub", this);
-		ItemGui g20 = new ItemGui(i20, 295, 15, 40, 100, 20, 20, Color.CYAN, testGui);
+		ItemGui g20 = new ItemGui(i20, 295, 15, 40, 100, 20, 20, Color.lightGray, testGui);
 		i20.setGui(g20);
 		items.add(i20);
 		
@@ -191,22 +189,22 @@ public class House extends Item{
 		items.add(i21);
 		
 		Item i22 = new Item("ToiletPaperDispenser", this);
-		ItemGui g22 = new ItemGui(i22, 440, 175, 10, 20, Color.CYAN, testGui);
+		ItemGui g22 = new ItemGui(i22, 440, 175, 10, 20, Color.GRAY, testGui);
 		i22.setGui(g22);
 		items.add(i22);
 		
 		Item i23 = new Item("MirrorBasin", this);
-		ItemGui g23 = new ItemGui(i23, 380, 15, 50, 30, 10, 10, Color.blue, testGui);
+		ItemGui g23 = new ItemGui(i23, 380, 15, 50, 30, 10, 10, Color.CYAN, testGui);
 		i23.setGui(g23);
 		items.add(i23);
 		
 		Item i24 = new Item("TowelHanger", this);
-		ItemGui g24 = new ItemGui(i24, 345, 15, 25, 10, Color.black, testGui);
+		ItemGui g24 = new ItemGui(i24, 345, 15, 25, 10, new Color(0, 150, 255), testGui);
 		i24.setGui(g24);
 		items.add(i24);
 		
 		Item i25 = new Item("BathroomShelves", this);
-		ItemGui g25 = new ItemGui(i25, 420, 70, 30, 70, Color.CYAN, testGui);
+		ItemGui g25 = new ItemGui(i25, 420, 70, 30, 70, new Color(10, 100, 110), testGui);
 		i25.setGui(g25);
 		items.add(i25);
 		
@@ -215,28 +213,28 @@ public class House extends Item{
 		i26.setGui(g26);
 		items.add(i26);
 		
-		Item i27 = new Item("Study", this);
-		ItemGui g27 = new ItemGui(i27, 70, 15, 60, 40, 10, 10, Color.darkGray, testGui);
+		Item i27 = new Item("StudyTable", this);
+		ItemGui g27 = new ItemGui(i27, 70, 15, 60, 40, 10, 10, new Color(200, 100, 0), testGui);
 		i27.setGui(g27);
 		items.add(i27);
 		
 		Item i28 = new Item("StudyChair", this);
-		ItemGui g28 = new ItemGui(i28, 90, 65, 20, 20, Color.darkGray, testGui);
+		ItemGui g28 = new ItemGui(i28, 90, 65, 20, 20, new Color(200, 100, 0), testGui);
 		i28.setGui(g28);
 		items.add(i28);
 		
 		Item i29 = new Item("Dustbin1", this);
-		ItemGui g29 = new ItemGui(i29, 15, 15, 20, Color.green, testGui);
+		ItemGui g29 = new ItemGui(i29, 15, 15, 20, new Color(0, 200, 100), testGui);
 		i29.setGui(g29);
 		items.add(i29);
 		
 		Item i30 = new Item("Dustbin2", this);
-		ItemGui g30 = new ItemGui(i30, 430, 380, 20, Color.green, testGui);
+		ItemGui g30 = new ItemGui(i30, 430, 380, 20, new Color(0, 200, 100), testGui);
 		i30.setGui(g30);
 		items.add(i30);
 		
 		Item i31 = new Item("ShoeRack", this);
-		ItemGui g31 = new ItemGui(i31, 420, 210, 30, 60, Color.darkGray, testGui);
+		ItemGui g31 = new ItemGui(i31, 420, 210, 30, 60, new Color(150, 200, 0), testGui);
 		i31.setGui(g31);
 		items.add(i31);
 	}
@@ -298,6 +296,41 @@ public class House extends Item{
 		
 		Item i19 = new Item("Chair4", this);
 		items.add(i19);
+		
+		Item i20 = new Item("BathTub", this);
+		items.add(i20);
+		
+		Item i21 = new Item("Toilet", this);
+		items.add(i21);
+		
+		Item i22 = new Item("ToiletPaperDispenser", this);
+		items.add(i22);
+		
+		Item i23 = new Item("MirrorBasin", this);
+		items.add(i23);
+		
+		Item i24 = new Item("TowelHanger", this);
+		items.add(i24);
+		
+		Item i25 = new Item("BathroomShelves", this);
+		items.add(i25);
+		
+		Item i26 = new Item("Cupboard", this);
+		items.add(i26);
+		
+		Item i27 = new Item("StudyTable", this);
+		items.add(i27);
+		
+		Item i28 = new Item("StudyChair", this);
+		items.add(i28);
+		
+		Item i29 = new Item("Dustbin1", this);
+		items.add(i29);
+		
+		Item i30 = new Item("Dustbin2", this);
+		items.add(i30);
+		
+		Item i31 = new Item("ShoeRack", this);
+		items.add(i31);
 	}
 }
-
