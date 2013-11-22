@@ -7,10 +7,13 @@ import java.awt.Graphics2D;
 
 public class ItemGui implements HGui{
 	public Item i;
-	int x, y, width, height;
+	int x, y, width, height, d, wArc, hArc;
 	Color c;
 	TestGui testGui;
 	boolean isBroken = false;
+	Shape shape;
+	
+	enum Shape {Circle, Rectangle, RoundRectangle};
 
 	public ItemGui(Item i, int x, int y, int width, int height, Color c, TestGui g) {
 		this.i = i;
@@ -20,6 +23,30 @@ public class ItemGui implements HGui{
 		this.height = height;
 		this.c = c;
 		testGui = g;
+		shape = Shape.Rectangle;
+	}
+	
+	public ItemGui(Item i, int x, int y, int d, Color c, TestGui g) {
+		this.i = i;
+		this.x = x;
+		this.y = y;
+		this.d = d;
+		this.c = c;
+		testGui = g;
+		shape = Shape.Circle;
+	}
+	
+	public ItemGui(Item i, int x, int y, int width, int height, int wArc, int hArc, Color c, TestGui g) {
+		this.i = i;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.wArc = wArc;
+		this.hArc = hArc;
+		this.c = c;
+		testGui = g;
+		shape = Shape.RoundRectangle;
 	}
 
 	@Override
@@ -31,10 +58,18 @@ public class ItemGui implements HGui{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(c);
-		g.fillRect(x, y, width, height);
+		if (shape == Shape.Rectangle)
+			g.fill3DRect(x, y, width, height, true);
+		else if (shape == Shape.Circle)
+			g.fillOval(x, y, d, d);
+		else if (shape == Shape.RoundRectangle)
+			g.fillRoundRect(x, y, width, height, wArc, hArc);
 		if (isBroken()) {
 			g.setColor(Color.WHITE);
-			g.drawLine(x, ((height / 2) + y), x + width, ((height / 2) + y));
+			if (shape == Shape.Rectangle || shape == Shape.RoundRectangle)
+				g.drawLine(x, ((height / 2) + y), x + width, ((height / 2) + y));
+			else if (shape == Shape.Circle)
+				g.drawLine(x, y + (d / 2), x + d, y + (d / 2));
 		}
 	}
 

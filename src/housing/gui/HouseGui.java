@@ -37,7 +37,6 @@ public class HouseGui implements HGui{
 		g.fillRect(280, 15, 15, 145);
 		g.fillRect(280, 195, 170, 15);
 		
-		g.fillRect(220, 15, 15, 145);
 		g.fillRect(15, 195, 220, 15);
 		for (ItemGui gui : items) {
 			gui.draw(g);
