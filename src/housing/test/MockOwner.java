@@ -2,7 +2,7 @@ package housing.test;
 
 import people.People;
 import housing.House;
-import housing.OwnerRole.MyHouse;
+import housing.HousingOwnerRole.MyHouse;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
 import restaurant.test.mock.EventLog;

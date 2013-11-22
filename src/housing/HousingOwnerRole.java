@@ -10,7 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import people.People;
 
-public class OwnerRole extends ResidentRole implements Owner {
+public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Data
 
 	private List<MyHouse> myHouses = new ArrayList<MyHouse>();
@@ -18,7 +18,7 @@ public class OwnerRole extends ResidentRole implements Owner {
 	private double money;
 	private double PEN_INCREMENT = 50.0;
 
-	public OwnerRole() {
+	public HousingOwnerRole() {
 		super();
 	}
 

@@ -1,5 +1,8 @@
 package housing;
 
+import housing.gui.HouseGui;
+import housing.gui.ItemGui;
+import housing.gui.TestGui;
 import housing.interfaces.Resident;
 
 import java.awt.Color;
@@ -70,6 +73,15 @@ public class House extends Item{
 				return i;
 		}
 		return null;
+	}
+	
+	public List<Item> getBrokenItems() {
+		List<Item> result = new ArrayList<Item>();
+		for (Item i : items) {
+			if (i.isBroken())
+				result.add(i);
+		}
+		return result;
 	}
 	
 	public void setItems(TestGui testGui) {

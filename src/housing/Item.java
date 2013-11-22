@@ -1,11 +1,13 @@
 package housing;
 
+import housing.gui.ItemGui;
+
 import java.awt.Dimension;
 
 public class Item {
 	public String name;
 	public Dimension position;
-	public boolean isBroken;
+	public boolean isBroken = false;
 	public ItemGui gui = null;
 	public House h;
 
@@ -18,10 +20,12 @@ public class Item {
 	public void breakIt() {
 		h.occupant.somethingBroke();
 		isBroken = true;
+		gui.breakIt();
 	}
 
 	public void repair() {
 		isBroken = false;
+		gui.repair();
 	}
 
 	public boolean isBroken() {
@@ -34,6 +38,11 @@ public class Item {
 	
 	public ItemGui getGui() {
 		return gui;
+	}
+	
+	public void testBreak() {
+		isBroken = true;
+		gui.breakIt();
 	}
 }
 

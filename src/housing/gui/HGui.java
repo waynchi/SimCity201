@@ -1,4 +1,4 @@
-package housing;
+package housing.gui;
 
 import java.awt.*;
 
