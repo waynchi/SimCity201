@@ -2,9 +2,12 @@ package people.mock;
 
 import people.People;
 import people.Role;
+import restaurant.test.mock.EventLog;
 import restaurant.test.mock.Mock;
 
 public class MockPeople extends Mock implements People{
+	
+	public EventLog log = new EventLog();
 
 	public MockPeople(String name, double Money, boolean hasCar)
 	{
