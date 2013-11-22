@@ -6,7 +6,12 @@ import housing.interfaces.Resident;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
+
 import people.People;
+import people.PeopleAgent.AgentEvent;
+import people.PeopleAgent.AgentState;
+import people.PeopleAgent.HungerState;
 import people.Role;
 
 public class HousingResidentRole extends Role implements Resident {
@@ -16,7 +21,6 @@ public class HousingResidentRole extends Role implements Resident {
 	private RepairMan repairMan;
 	private RepairStage repairStage;
 	private State myState;
-	private Semaphore busy = new Semaphore(0, true);
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
 
@@ -53,6 +57,8 @@ public class HousingResidentRole extends Role implements Resident {
 
 	public void eatFood() {
 		myState = State.Eating;
+		// Also needs to call a message to myPerson to change hunger state from hungry.
+		// Else "infinite" loop till a different event takes place.
 		// Animation implementation.
 	}
 
@@ -76,6 +82,7 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void doMorningStuff() {
+		myState = State.DoingMorningStuff;
 		// Poop
 		// Take a shower
 		// Masturbate
@@ -83,6 +90,10 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void read() {
 		// Go to study table and read stuff.
+	}
+	
+	public void relaxOnSofa() {
+		// Animation of relaxing on sofa.
 	}
 
 	//-----------------------------------------------------------//
@@ -107,23 +118,13 @@ public class HousingResidentRole extends Role implements Resident {
 		stateChanged();
 	}
 
-	public void eatAtHome() {
-		myState = State.WantToCook;
-		stateChanged();
-	}
+//	public void eatAtHome() {
+//		myState = State.WantToCook;
+//		stateChanged();
+//	}
 
 	public void foodCooked() {
 		myState = State.FoodCooked;
-		stateChanged();
-	}
-
-	public void activityComplete() {
-		busy.release();
-		stateChanged();
-	}
-
-	public void eatAtRestaurant() {
-		myState = State.WantToEatAtRestaurant;
 		stateChanged();
 	}
 
@@ -134,6 +135,7 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void activityDone() {
+		myState = State.Idle;
 		activity.release();
 	}
 
@@ -142,45 +144,48 @@ public class HousingResidentRole extends Role implements Resident {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
+		if (myPerson.getEvent() == AgentEvent.WakingUp && myState == State.Sleeping) {
+			doMorningStuff();
+			return true;
+		}
+		if (myPerson.getEvent() == AgentEvent.GoingToSleep && myState == State.Idle) {
+			sleep();
+			return true;
+		}
+		if (myPerson.getState == AgentState.EatingAtHome && myState == State.Idle) {
+			cookAtHome();
+			return true;
+		}
+		if (myPerson.getState == AgentState.EatingAtHome && myState == State.FoodCooked && myPerson.getHunger() == HungerState.Hungry) {
+			eatFood();
+			return true;
+		}
 		if (this.myPerson != repairMan.getPersonAgent()) {
-//			if (repairStage == RepairStage.RepairDone) {
-//				thankRepairMan();
-//				return true;
-//			}
-//			if (repairStage == RepairStage.RepairManIsHere) {
-//				giveBrokenItems(getBrokenItems());
-//				return true;
-//			}
-//			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
-//				callRepairMan();
-//				return true;
-//			}
-			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
+			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && (myState != State.Sleeping && myState != State.DoingMorningStuff)) {
 				callRepairMan();
 				return true;
 			}
 		}
 		else {
-			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
+			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && (myState != State.Sleeping && myState != State.DoingMorningStuff)) {
 				repairMyHomeItems();
 				return true;
 			}
 		}
-		if (myState == State.FoodCooked) {
-			eatFood();
-			return true;
-		}
-		if (myState == State.WantToCook) {// And grill is not broken
-			cookAtHome();
-			return true;
-		}
-//		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere && repairStage != RepairStage.BeingRepaired && repairStage != RepairStage.RepairDone){
-//			sleep();
-//			return true;
-//		}
-		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere){
-			sleep();
-			return true;
+		if (myState == State.Idle) {
+			Activity a = selectRandomActivity();
+			if (a == Activity.RelaxOnSofa) {
+				relaxOnSofa();
+				return true;
+			}
+			if (a == Activity.Read) {
+				read();
+				return true;
+			}
+			if (a == Activity.WatchTV) {
+				watchTV();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -221,6 +226,16 @@ public class HousingResidentRole extends Role implements Resident {
 	public void setGui(ResidentGui g) {
 		this.gui = g;
 	}
+	
+	public Activity selectRandomActivity() {
+		Random generator = new Random();
+		int num = generator.nextInt(3);
+		if (num == 0)
+			return Activity.RelaxOnSofa;
+		if (num == 1)
+			return Activity.Read;
+		return Activity.WatchTV;
+	}
 
 	//-----------------------------------------------------------//
 
@@ -229,6 +244,9 @@ public class HousingResidentRole extends Role implements Resident {
 //	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
 	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, WantToEatAtRestaurant};
+//	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, DoingMorningStuff};
+	enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
+	
+	enum Activity {RelaxOnSofa, Read, WatchTV};
 }
 
