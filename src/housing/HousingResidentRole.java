@@ -40,60 +40,57 @@ public class HousingResidentRole extends Role implements Resident {
 		repairStage = RepairStage.HelpRequested;
 	}
 
-//	public void giveBrokenItems(List<Item> brokenItems) {
-//		repairMan.thingsAreBroken(house, getBrokenItems());
-//		repairStage = RepairStage.BeingRepaired;
-//	}
-//
-//	public void thankRepairMan() {
-//		repairMan.thankYou(house);
-//		repairStage = RepairStage.None;
-//	}
-
 	public void cookAtHome() {
 		myState = State.Cooking;
-		// Animation implementation.
+		gui.DoCook();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	public void eatFood() {
 		myState = State.Eating;
-		// Also needs to call a message to myPerson to change hunger state from hungry.
-		// Else "infinite" loop till a different event takes place.
-		// Animation implementation.
+		gui.DoEat();
 	}
 
 	public void sleep() {
 		myState = State.Sleeping;
-		// Animation implementation.
+		gui.DoSleep();
 	}
 
 	public void repairMyHomeItems() {
 		List<Item> brokenItems = house.getBrokenItems();
-//		List<Item> brokenItems = getBrokenItems();
 		for (Item i : brokenItems) {
 			i.repair();
 		}
 		brokenItems.clear();
 		repairStage = RepairStage.None;
+		System.out.println("Repaired my own items.");
 	}
 	
 	public void watchTV() {
-		// Animation
+		gui.DoWatchTV();
 	}
 	
 	public void doMorningStuff() {
 		myState = State.DoingMorningStuff;
-		// Poop
-		// Take a shower
-		// Masturbate
+		gui.DoPoop();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+		
+		gui.DoBathe();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 	
 	public void read() {
-		// Go to study table and read stuff.
+		gui.DoRead();
 	}
 	
 	public void relaxOnSofa() {
-		// Animation of relaxing on sofa.
+		gui.DoRelaxOnSofa();
 	}
 
 	//-----------------------------------------------------------//
@@ -113,30 +110,20 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 
 	public void repairDone() {
-//		repairStage = RepairStage.RepairDone;
 		repairStage = RepairStage.None;
 		stateChanged();
 	}
 
-//	public void eatAtHome() {
-//		myState = State.WantToCook;
-//		stateChanged();
-//	}
-
 	public void foodCooked() {
 		myState = State.FoodCooked;
-		stateChanged();
-	}
-
-	public void doneEating() {
-		myState = State.Idle;
-		activityComplete();
+		activity.release();
 		stateChanged();
 	}
 	
 	public void activityDone() {
 		myState = State.Idle;
 		activity.release();
+		stateChanged();
 	}
 
 	//-----------------------------------------------------------//
@@ -152,11 +139,11 @@ public class HousingResidentRole extends Role implements Resident {
 			sleep();
 			return true;
 		}
-		if (myPerson.getState == AgentState.EatingAtHome && myState == State.Idle) {
+		if (myPerson.getState == AgentState.EatingAtHome && myState == State.Idle  && myPerson.getHunger() == HungerState.Hungry) {
 			cookAtHome();
 			return true;
 		}
-		if (myPerson.getState == AgentState.EatingAtHome && myState == State.FoodCooked && myPerson.getHunger() == HungerState.Hungry) {
+		if (myPerson.getState == AgentState.EatingAtHome && myState == State.FoodCooked) {
 			eatFood();
 			return true;
 		}
@@ -197,19 +184,6 @@ public class HousingResidentRole extends Role implements Resident {
 	public void setRepairMan(HousingRepairManRole r) {
 		this.repairMan = r;
 	}
-
-//	public List<Item> getBrokenItems() {
-//		List<Item> result = new ArrayList<Item>();
-//		List<Item> list = house.getItems();
-//		for (Item i : list) {
-//			if (i.isBroken()) {
-//				result.add(i);
-//			}
-//		}
-//		if (this.house.isBroken())
-//			result.add(house);
-//		return result;
-//	}
 	
 	public People getAgent() {
 		return myPerson;
@@ -241,10 +215,8 @@ public class HousingResidentRole extends Role implements Resident {
 
 	// Helper Data Structures
 
-//	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
 	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-//	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, DoingMorningStuff};
 	enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV};
