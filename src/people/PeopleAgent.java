@@ -30,6 +30,20 @@ public class PeopleAgent extends Agent implements People{
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
 	
+	public double getMoney()
+	{
+		return Money;
+	}
+	
+	public List<Role> getRoles()
+	{
+		List<Role> temp = new ArrayList<Role>();
+		for(MyRole a: roles)
+		{
+			temp.add(a.role);
+		}
+		return temp;
+	}
 	
 	public String getMaitreDName() {
 		return name;
