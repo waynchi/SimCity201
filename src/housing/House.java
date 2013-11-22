@@ -75,6 +75,15 @@ public class House extends Item{
 		return null;
 	}
 	
+	public List<Item> getBrokenItems() {
+		List<Item> result = new ArrayList<Item>();
+		for (Item i : items) {
+			if (i.isBroken())
+				result.add(i);
+		}
+		return result;
+	}
+	
 	public void setItems(TestGui testGui) {
 		Item i1 = new Item("Bed", this);
 		ItemGui g1 = new ItemGui(i1, 15, 15, 40, 90, Color.blue, testGui);

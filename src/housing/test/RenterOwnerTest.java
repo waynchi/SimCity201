@@ -3,10 +3,10 @@ package housing.test;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import housing.House;
-import housing.OwnerRole;
-import housing.OwnerRole.MyHouse;
-import housing.RenterRole;
-import housing.RepairManRole;
+import housing.HousingOwnerRole;
+import housing.HousingOwnerRole.MyHouse;
+import housing.HousingRenterRole;
+import housing.HousingRepairManRole;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
 import housing.interfaces.RepairMan;
@@ -169,11 +169,11 @@ public class RenterOwnerTest {
 		r = null;
 		
 		h1 = new House("R1Residence", 1);
-		r1 = new RenterRole(200.0);
+		r1 = new HousingRenterRole(200.0);
 		h2 = new House("R2Residence", 2);
-		r2 = new RenterRole(200.0);
-		o = new OwnerRole();
-		r = new RepairManRole();
+		r2 = new HousingRenterRole(200.0);
+		o = new HousingOwnerRole();
+		r = new HousingRepairManRole();
 		
 		h1.setOccupant((Resident)r1);
 		h1.setItemsWithoutGui();

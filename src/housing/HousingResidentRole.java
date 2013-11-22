@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import people.People;
 import people.Role;
 
-public class ResidentRole extends Role implements Resident {
+public class HousingResidentRole extends Role implements Resident {
 	// Data
 
 	protected House house;
@@ -20,7 +20,7 @@ public class ResidentRole extends Role implements Resident {
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
 
-	public ResidentRole() {
+	public HousingResidentRole() {
 		house = null;
 		repairMan = null;
 		repairStage = RepairStage.None;
@@ -36,15 +36,15 @@ public class ResidentRole extends Role implements Resident {
 		repairStage = RepairStage.HelpRequested;
 	}
 
-	public void giveBrokenItems(List<Item> brokenItems) {
-		repairMan.thingsAreBroken(house, getBrokenItems());
-		repairStage = RepairStage.BeingRepaired;
-	}
-
-	public void thankRepairMan() {
-		repairMan.thankYou(house);
-		repairStage = RepairStage.None;
-	}
+//	public void giveBrokenItems(List<Item> brokenItems) {
+//		repairMan.thingsAreBroken(house, getBrokenItems());
+//		repairStage = RepairStage.BeingRepaired;
+//	}
+//
+//	public void thankRepairMan() {
+//		repairMan.thankYou(house);
+//		repairStage = RepairStage.None;
+//	}
 
 	public void cookAtHome() {
 		myState = State.Cooking;
@@ -62,10 +62,12 @@ public class ResidentRole extends Role implements Resident {
 	}
 
 	public void repairMyHomeItems() {
-		List<Item> brokenItems = getBrokenItems();
+		List<Item> brokenItems = house.getBrokenItems();
+//		List<Item> brokenItems = getBrokenItems();
 		for (Item i : brokenItems) {
 			i.repair();
 		}
+		brokenItems.clear();
 		repairStage = RepairStage.None;
 	}
 	
@@ -96,7 +98,8 @@ public class ResidentRole extends Role implements Resident {
 	}
 
 	public void repairDone() {
-		repairStage = RepairStage.RepairDone;
+//		repairStage = RepairStage.RepairDone;
+		repairStage = RepairStage.None;
 		stateChanged();
 	}
 
@@ -136,21 +139,25 @@ public class ResidentRole extends Role implements Resident {
 
 	public boolean pickAndExecuteAnAction() {
 		if (this.myPerson != repairMan.getPersonAgent()) {
-			if (repairStage == RepairStage.RepairDone) {
-				thankRepairMan();
-				return true;
-			}
-			if (repairStage == RepairStage.RepairManIsHere) {
-				giveBrokenItems(getBrokenItems());
-				return true;
-			}
-			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
+//			if (repairStage == RepairStage.RepairDone) {
+//				thankRepairMan();
+//				return true;
+//			}
+//			if (repairStage == RepairStage.RepairManIsHere) {
+//				giveBrokenItems(getBrokenItems());
+//				return true;
+//			}
+//			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
+//				callRepairMan();
+//				return true;
+//			}
+			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
 				callRepairMan();
 				return true;
 			}
 		}
 		else {
-			if (!getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
+			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && myState != State.Sleeping) {
 				repairMyHomeItems();
 				return true;
 			}
@@ -163,7 +170,11 @@ public class ResidentRole extends Role implements Resident {
 			cookAtHome();
 			return true;
 		}
-		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere && repairStage != RepairStage.BeingRepaired && repairStage != RepairStage.RepairDone){
+//		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere && repairStage != RepairStage.BeingRepaired && repairStage != RepairStage.RepairDone){
+//			sleep();
+//			return true;
+//		}
+		if (myState == State.WantToSleep && repairStage != RepairStage.RepairManIsHere){
 			sleep();
 			return true;
 		}
@@ -174,22 +185,22 @@ public class ResidentRole extends Role implements Resident {
 
 	// Utilities
 
-	public void setRepairMan(RepairManRole r) {
+	public void setRepairMan(HousingRepairManRole r) {
 		this.repairMan = r;
 	}
 
-	public List<Item> getBrokenItems() {
-		List<Item> result = new ArrayList<Item>();
-		List<Item> list = house.getItems();
-		for (Item i : list) {
-			if (i.isBroken()) {
-				result.add(i);
-			}
-		}
-		if (this.house.isBroken())
-			result.add(house);
-		return result;
-	}
+//	public List<Item> getBrokenItems() {
+//		List<Item> result = new ArrayList<Item>();
+//		List<Item> list = house.getItems();
+//		for (Item i : list) {
+//			if (i.isBroken()) {
+//				result.add(i);
+//			}
+//		}
+//		if (this.house.isBroken())
+//			result.add(house);
+//		return result;
+//	}
 	
 	public People getAgent() {
 		return myPerson;
@@ -211,7 +222,8 @@ public class ResidentRole extends Role implements Resident {
 
 	// Helper Data Structures
 
-	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
+//	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere, BeingRepaired, RepairDone};
+	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
 	enum State {Idle, WantToSleep, Sleeping, WantToCook, Cooking, FoodCooked, Eating, WantToEatAtRestaurant};
 }

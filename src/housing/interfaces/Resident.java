@@ -22,7 +22,7 @@ public interface Resident {
 	// Utilities
 
 	public void setRepairMan(RepairMan r);
-	public List<Item> getBrokenItems();
+//	public List<Item> getBrokenItems();
 	public People getAgent();
 	public void setHouse(House h);
 
