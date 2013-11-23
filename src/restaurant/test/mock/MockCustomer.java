@@ -2,19 +2,20 @@ package restaurant.test.mock;
 
 import java.util.List;
 
+import people.Role;
 import restaurant.BaseWaiterRole.FoodOnMenu;
 import restaurant.gui.CustomerGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 
-public class MockCustomer extends Mock implements Customer{
+public class MockCustomer extends Role implements Customer{
 
 	private String choice;
 	private CustomerGui gui;
 	
 	public MockCustomer(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -65,7 +66,7 @@ public class MockCustomer extends Mock implements Customer{
 	}
 	
 	public void msgHereIsYourChange (Double change){
-		log.add(new LoggedEvent("Received msgHereIsYourChange from cashier and the amount is " + change));
+	//	log.add(new LoggedEvent("Received msgHereIsYourChange from cashier and the amount is " + change));
 	}
 
 	//from animation
@@ -81,6 +82,12 @@ public class MockCustomer extends Mock implements Customer{
 	public CustomerGui getGui(){
 		return gui;
 		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

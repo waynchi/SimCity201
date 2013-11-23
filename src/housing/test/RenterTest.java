@@ -12,7 +12,7 @@ import housing.interfaces.Renter;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
 
-public class RenterOwnerTest {
+public class RenterTest {
 	House h1;
 	House h2;
 	Renter r1;

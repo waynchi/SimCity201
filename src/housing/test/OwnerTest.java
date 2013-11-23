@@ -12,7 +12,7 @@ import org.junit.Test;
 import people.People;
 import people.PeopleAgent;
 
-public class ResidentRepairManTest {
+public class OwnerTest {
 
 	Resident r1;
 	Resident r2;

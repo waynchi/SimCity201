@@ -106,9 +106,11 @@ currentStop.msgBusArrived(this);
 private void NotifyPassengerAboutCurrentStop(Passenger p){
 p.bpr.msgArrivedAtStop(currentStop);
 if(areAllBusPassengersNotified()) //function that loops through passengers, checking if each state says notified
+{
 	busState = BusState.newStopAndPassengersNotified;
+	stateChanged();
+}
     
-
 }
 
 public void GoToNextStop(){

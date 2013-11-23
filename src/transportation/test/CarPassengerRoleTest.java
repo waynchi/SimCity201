@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 import people.People;
 import people.mock.MockPeople;
+import transportation.interfaces.*;
 
 public class CarPassengerRoleTest extends TestCase{
 
