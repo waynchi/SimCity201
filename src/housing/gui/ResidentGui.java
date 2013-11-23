@@ -22,10 +22,11 @@ public class ResidentGui implements HGui{
 	private final int COOKING_TIME = 2000;
 	private boolean readingBook = false;
 	private boolean videoGames = false;
+	private boolean isAtHome = false;
 	public Resident r;
 	public HouseGui hGui;
 	
-	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames};
+	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, Leaving};
 	
 	// Use timers to implement cooking, and then call
 	// r.activityDone().
@@ -89,6 +90,13 @@ public class ResidentGui implements HGui{
 				state = State.Idle;
 				videoGames = true;
 			}
+			else if (state == State.Leaving) {
+				state = State.Idle;
+				videoGames = false;
+				readingBook = false;
+				isAtHome = false;
+				r.activityDone();
+			}
 		}
 	}
 
@@ -108,7 +116,7 @@ public class ResidentGui implements HGui{
 
 	@Override
 	public boolean isPresent() {
-		return false;
+		return isAtHome;
 	}
 	
 	public void setHouseGui(HouseGui hGui) {
@@ -182,9 +190,31 @@ public class ResidentGui implements HGui{
 		goToLocation(d);
 	}
 	
+	public void DoEnterHome() {
+		state = State.Idle;
+		// Temporary
+		xPos = hGui.entranceCoordinates.width;
+		yPos = hGui.entranceCoordinates.height;
+		Random generator = new Random();
+		int num = generator.nextInt(4);
+		num++;
+		Dimension d = hGui.getPosition("Chair" + num);
+		goToLocation(d);
+		isAtHome = true;
+	}
+	
+	public void DoLeaveHome() {
+		state = State.Leaving;
+		goToLocation(new Dimension(hGui.entranceCoordinates.width, hGui.entranceCoordinates.height));
+	}
+	
 	public void goToLocation(Dimension d) {
 		xDestination = d.width;
 		yDestination = d.height;
+	}
+	
+	public boolean isAtHome() {
+		return isAtHome;
 	}
 	
 	private TimerTask getTimerTask(State s) {

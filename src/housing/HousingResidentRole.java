@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import people.People;
-import people.PeopleAgent.AgentEvent;
-import people.PeopleAgent.AgentState;
-import people.PeopleAgent.HungerState;
+import people.PeopleAgent;
 import people.Role;
 
 public class HousingResidentRole extends Role implements Resident {
@@ -21,6 +19,8 @@ public class HousingResidentRole extends Role implements Resident {
 	private RepairStage repairStage;
 	protected State myState;
 	private boolean leisure = false;
+	protected boolean isActive = false;
+	private boolean needToLeave = false;
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
 
@@ -96,6 +96,17 @@ public class HousingResidentRole extends Role implements Resident {
 	public void playVideoGames() {
 		gui.DoPlayVideoGames();
 	}
+	
+	public void leaveHome() {
+		leisure = false;
+		needToLeave = false;
+		isActive = false;
+		gui.DoLeaveHome();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+		myPerson.msgDone(this);
+	}
 
 	//-----------------------------------------------------------//
 
@@ -129,28 +140,43 @@ public class HousingResidentRole extends Role implements Resident {
 		activity.release();
 		stateChanged();
 	}
+	
+	@Override
+	public void msgIsActive() {
+		isActive = true;
+		gui.DoEnterHome();
+	}
+	
+	@Override
+	public void msgIsInActive() {
+		needToLeave = true;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (myPerson.getEvent() == AgentEvent.WakingUp && myState == State.Sleeping) {
+		if (((PeopleAgent)myPerson).getAgentEvent().equals("WakingUp") && myState == State.Sleeping) {
 			doMorningStuff();
 			leisure = false;
 			return true;
 		}
-		if (myPerson.getEvent() == AgentEvent.GoingToSleep && myState == State.Idle) {
+		if (((PeopleAgent)myPerson).getAgentEvent().equals("GoingToSleep") && myState == State.Idle) {
 			sleep();
 			leisure = false;
 			return true;
 		}
-		if (myPerson.getState == AgentState.EatingAtHome && myState == State.Idle  && myPerson.getHunger() == HungerState.Hungry) {
+		if (needToLeave == true) {
+			leaveHome();
+			return true;
+		}
+		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Hungry")) {
 			cookAtHome();
 			leisure = false;
 			return true;
 		}
-		if (myPerson.getState == AgentState.EatingAtHome && myState == State.FoodCooked) {
+		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.FoodCooked) {
 			eatFood();
 			leisure = false;
 			return true;
@@ -238,4 +264,3 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames};
 }
-
