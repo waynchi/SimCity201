@@ -1,17 +1,18 @@
 package transportation.mock;
 
+import people.Role;
 import test.EventLog;
 import test.LoggedEvent;
 import transportation.CarGui;
 import transportation.interfaces.Car;
 import transportation.interfaces.CarPassenger;
 
-public class MockCar extends Mock implements Car {
+public class MockCar extends Role implements Car {
 
 	public EventLog log = new EventLog();
 	
 	public MockCar(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

@@ -1,13 +1,14 @@
 package transportation.mock;
 
 import people.People;
+import people.Role;
 import transportation.interfaces.Car;
 import transportation.interfaces.CarPassenger;
 
-public class MockCarPassenger extends Mock implements CarPassenger {
+public class MockCarPassenger extends Role implements CarPassenger {
 
-	public MockCarPassenger(String name) {
-		super(name);
+	public MockCarPassenger() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
