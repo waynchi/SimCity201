@@ -70,7 +70,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(),1);
 
 		//post condition for messaging and precondition for scheduler
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
@@ -110,7 +110,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(),1);
 
 		//received message from market1
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
@@ -120,7 +120,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(), 2);
 
 		//received another message from market2
-		cashier.msgHereIsMarketBill(market2, 3.99);
+		cashier.msgHereIsWhatIsDue(market2, 3.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket2 and the amount is 3.99"));
@@ -214,7 +214,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(), cashier.getStateChange().availablePermits(),2);
 
 		//received message from market
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
@@ -326,7 +326,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(), cashier.getStateChange().availablePermits(),2);
 
 		//received message from market
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
@@ -552,7 +552,7 @@ public class CashierTest extends TestCase {
 						+ "needs to pay 8.99"));
 
 		//have market send us a bill
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
@@ -727,7 +727,7 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(),3);
 
 		//got message from market
-		cashier.msgHereIsMarketBill(market1, 14.99);
+		cashier.msgHereIsWhatIsDue(market1, 14.99);
 		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));

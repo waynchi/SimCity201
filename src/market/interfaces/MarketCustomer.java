@@ -2,16 +2,24 @@ package market.interfaces;
 
 import java.util.Map;
 
-import people.PeopleAgent;
+
+import people.People;
 
 public interface MarketCustomer {
 
-	void msgHereIsYourOrder(Map<String, Integer> items);
+	public abstract void msgIsActive ();
+	
+	public abstract void msgIsInActive();
+	
+	public abstract void msgBuy(Map<String,Integer> items);
 
-	void msgHereIsWhatIsDue(double totalDue, MarketCashier marketCashier);
+	public abstract void msgHereIsYourOrder(Map<String, Integer> _itemsReceived);
 
-	void msgHereIsChange(double change);
+	public abstract void msgHereIsWhatIsDue(double _totalDue, MarketCashier c);
 
-	//PeopleAgent getPersonAgent();
+	public abstract void msgHereIsChange(double totalChange);
+	
+	public abstract People getPerson();
+
 
 }

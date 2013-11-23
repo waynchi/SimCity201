@@ -11,6 +11,9 @@ import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
+
+import market.MarketCashierRole;
+import market.interfaces.MarketCashier;
 import people.Role;
 
 
@@ -77,17 +80,17 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public class MarketBill {
-		public Market market;
+		public MarketCashier marketCashier;
 		Double amount;
 
-		public MarketBill (Market m , double a) {
-			market = m;
+		public MarketBill (MarketCashier marketCashier , double a) {
+			marketCashier = marketCashier;
 			amount = a;
 		}
 
-		public String toString () {
-			return market.getName() + " " + amount;
-		}
+		//public String toString () {
+		//	return market.getName() + " " + amount;
+		//}
 
 	}
 
@@ -150,11 +153,26 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public void msgHereIsMarketBill (Market m, double price){
+	/*public void msgHereIsMarketBill (Market m, double price){
 		log.add(new LoggedEvent("Received msgHereIsMarketBill from Market " + m.getName() + " and the "
 				+ "amount is " + price));
 		marketBills.add(new MarketBill(m,price));
 		getPersonAgent().CallstateChanged();
+	}*/
+	
+
+
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
+		marketBills.add(new MarketBill(marketCashier, price));
+		getPersonAgent().CallstateChanged();
+		
+	}
+	
+
+	public void msgHereIsChange(double change) {
+		working_capital += change;
+		getPersonAgent().CallstateChanged();
+		
 	}
 
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
@@ -315,19 +333,19 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
+		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
 		if (working_capital > bill.amount) {
-			print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.market.msgPayMarketBill(bill.amount, this);
-			setMyMoney(working_capital - bill.amount);
+			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
+			bill.marketCashier.msgHereIsPayment(working_capital, this);
+			setMyMoney(0);
 
 		}
-		else {
+		/*else {
 			print ("Paying " + bill.market.getName()+" , not able to pay full bill");
 			bill.market.msgPayMarketBill(working_capital,this);
 			setMyMoney(0);
 
-		}
+		}*/
 
 		marketBills.remove(bill);
 
@@ -465,5 +483,6 @@ public class CashierRole extends Role implements Cashier {
 	public void setHost (HostRole h) {
 		host = h;
 	}
+
 
 }

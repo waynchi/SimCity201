@@ -2,6 +2,7 @@ package market.gui;
 
 import java.awt.Graphics2D;
 
+import people.People;
 import market.MarketTruckAgent;
 
 public class MarketTruckGui implements Gui{
@@ -30,8 +31,9 @@ public class MarketTruckGui implements Gui{
 		return true;
 	}
 	
-	public void deliver() {
+	public void deliver(People person) {
 		// deliver items to customer at specific location
+		//GoToPosition (person.getPosition);
 	}
 
 }

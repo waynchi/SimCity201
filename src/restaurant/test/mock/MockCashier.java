@@ -1,5 +1,6 @@
 package restaurant.test.mock;
 
+import market.interfaces.MarketCashier;
 import people.Role;
 import restaurant.BaseWaiterRole;
 import restaurant.interfaces.Cashier;
@@ -32,5 +33,17 @@ public class MockCashier extends Role implements Cashier {
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsChange(double change) {
+		// TODO Auto-generated method stub
+		
 	}
 }
