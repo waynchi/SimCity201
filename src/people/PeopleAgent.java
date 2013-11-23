@@ -275,13 +275,13 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		boolean Roles = false, Person = false;
-		/*for(MyRole m : roles)
+		for(MyRole m : roles)
 		{
-			if(m)
+			if(m.role.isActive)
 			{
 				Roles = m.role.pickAndExecuteAnAction();
 			}
-		}*/
+		}
 		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
 		{
 			state = AgentState.Idle;
@@ -294,7 +294,6 @@ public class PeopleAgent extends Agent implements People{
 			log.add(new LoggedEvent("Going To Work. New State is " + state.toString()));
 			
 			GoToWork();
-			System.out.println("testing");
 			Person = true;
 		}
 		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
@@ -499,7 +498,6 @@ public class PeopleAgent extends Agent implements People{
 				{			
 					print("I am now a RestaurantCook");
 					//r.role.msgIsActive();
-					System.out.println("Testing123");
 				}
 			}
 			//roles.CookRole.msgIsActive();

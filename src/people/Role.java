@@ -6,10 +6,10 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected People myPerson;
-	protected boolean isActive = false;
+	protected PeopleAgent myPerson;
+	public boolean isActive = false;
 
-	public void setPerson(People a) {
+	public void setPerson(PeopleAgent a) {
 		myPerson = a;
 	}
 
