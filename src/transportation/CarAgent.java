@@ -21,9 +21,9 @@ public class CarAgent extends Agent implements Car{
 	                st = PassState.waitingInCar;
 	        }
 	}
-	List<Passenger> myCarPassengers = new ArrayList<Passenger>();
+	public List<Passenger> myCarPassengers = new ArrayList<Passenger>();
 	CarGui carGui;
-	CarState carState;
+	public CarState carState;
 
 	
 	public CarAgent(){
@@ -62,7 +62,7 @@ public class CarAgent extends Agent implements Car{
 
 	
 
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 	for(Passenger myPassenger : myCarPassengers)
 	{
@@ -88,6 +88,7 @@ public class CarAgent extends Agent implements Car{
 
 	
 	private void GoToDestination(Passenger myPassenger){
+		System.out.println("Driving to " + myPassenger.destination);
 	carGui.msgGoToThisPlace(this,myPassenger.destination);
 	}
 
