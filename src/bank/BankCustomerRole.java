@@ -39,8 +39,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private CustomerState state;
 	private CustomerAction action;
 	
-	private double withdraw;
-	private double deposit;
+	private double withdraw = 100;
+	private double deposit = 100;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -121,7 +121,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 					DepositMoney();
 					return true;
 				}
-				if (action == CustomerAction.withdraw) {
+				if (myPerson.event == AgentEvent.GoingToRetrieveMoney) {
 					WithdrawMoney();
 					return true;
 				}
