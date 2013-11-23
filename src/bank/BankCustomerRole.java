@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import people.PeopleAgent.AgentEvent;
 import people.Role;
 
 /**
@@ -60,20 +61,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		teller = t;
 	}
 	// Messages
-
-	public void needMoney(double money) {//from animation
-		print("I need money");
-		action = CustomerAction.withdraw;
-		withdraw = money;
-		stateChanged();
-	}
-	
-	public void depositMoney(double money) {//from animation
-		print("I need to deposit money");
-		action = CustomerAction.deposit;
-		deposit = money;
-		stateChanged();
-	}
 	
 	public void msgIsActive() {
 		isActive = true;
@@ -96,6 +83,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		print("Account created. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
+	}
+	
+	public void msgAccountAndLoan(int accountID, double balance, double money) {
+		
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
@@ -126,7 +117,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//	CustomerAgent is a finite state machine
 		if (isActive) {
 			if (state == CustomerState.ready) {
-				if (action == CustomerAction.deposit) {
+				if (myPerson.event == AgentEvent.GoingToDepositMoney) {
 					DepositMoney();
 					return true;
 				}
@@ -137,10 +128,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			}
 			if (state == CustomerState.done) {
 				LeaveBank();
-				return true;
-			}
-			if (state == CustomerState.needAccount) {
-				CreateAccount();
 				return true;
 			}
 		}
@@ -180,11 +167,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void LeaveBank(){
 		//Do Leave Bank
 		teller.msgDoneAndLeaving();
-	}
-
-	private void CreateAccount(){
-		teller.msgCreateAccount(name, deposit);
-		state = CustomerState.finished;
 	}
 
 	// Accessors, etc.

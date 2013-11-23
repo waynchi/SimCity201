@@ -22,7 +22,7 @@ public class TellerRole extends Role implements Teller {
 	private String name;
 	
 	public enum CustomerState
-	{none, waiting, beingHelped, deposit, newAccount, withdraw, loan, done};
+	{none, waiting, beingHelped, deposit, newAccount, newAccountLoan, withdraw, loan, done};
 	
 	private myBankCustomer currentCustomer = null;
 	
@@ -58,15 +58,8 @@ public class TellerRole extends Role implements Teller {
 		stateChanged();
 	}
 	
-	public void msgHere(BankCustomer cust) {
-		waitingCustomers.add(new myBankCustomer(cust));
-		stateChanged();
-	}
-
-	public void msgCreateAccount(String name, double initialFund) {
-		currentCustomer.account = new Account(name, accounts.size()+1); //Initializes an account with a customer name and a unique account id.
-		currentCustomer.depositAmount = initialFund;
-		currentCustomer.state = CustomerState.deposit;
+	public void msgHere(BankCustomer cust, String name) {
+		waitingCustomers.add(new myBankCustomer(cust, name));
 		stateChanged();
 	}
 	
@@ -74,6 +67,12 @@ public class TellerRole extends Role implements Teller {
 		currentCustomer.account = accounts.get(accountID);
 		currentCustomer.withdrawAmount = moneyNeeded;
 		currentCustomer.state = CustomerState.withdraw;
+		stateChanged();
+	}
+	
+	public void msgWithdraw(double moneyNeeded) {
+		currentCustomer.withdrawAmount = moneyNeeded;
+		currentCustomer.state = CustomerState.newAccountLoan;
 		stateChanged();
 	}
 	
@@ -111,6 +110,10 @@ public class TellerRole extends Role implements Teller {
 						newAccount(currentCustomer);
 						return true;
 					}
+					if (currentCustomer.state == CustomerState.newAccountLoan) {
+						newAccountLoan(currentCustomer);
+						return true;
+					}
 					if (currentCustomer.state == CustomerState.deposit) {
 						depositMoney(currentCustomer);
 						return true;
@@ -142,9 +145,20 @@ public class TellerRole extends Role implements Teller {
 	
 	private void newAccount(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
+		customer.account = new Account(customer.name, accounts.size()+1); //Initializes an account with a customer name and a unique account id.
+		accounts.put(customer.account.id, customer.account);
 		customer.account.funds += customer.depositAmount;
 		customer.depositAmount = 0;
 		customer.customer.msgAccountBalance(customer.account.id, customer.account.funds);
+	}
+	
+	private void newAccountLoan(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		customer.account = new Account(customer.name, accounts.size()+1); //Initializes an account with a customer name and a unique account id.
+		accounts.put(customer.account.id, customer.account);
+		customer.account.funds -= customer.withdrawAmount;
+		customer.customer.msgAccountAndLoan(customer.account.id, customer.account.funds, customer.withdrawAmount);
+		customer.withdrawAmount = 0;
 	}
 	
 	private void withdrawMoney(myBankCustomer customer) {
@@ -194,9 +208,10 @@ public class TellerRole extends Role implements Teller {
 		double depositAmount = 0;
 		String name;
 		
-		myBankCustomer(BankCustomer customer) {
+		myBankCustomer(BankCustomer customer, String name) {
 			this.customer = customer;
 			this.state = CustomerState.none;
+			this.name = name;
 		}
 	}
 }
