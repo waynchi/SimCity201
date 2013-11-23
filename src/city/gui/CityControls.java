@@ -21,7 +21,7 @@ public class CityControls extends JPanel implements ActionListener {
 		add(btnAddPerson);
 		
 		setBackground( Color.ORANGE );
-		setPreferredSize( new Dimension(300, 77) );
+		setPreferredSize( new Dimension(200, 77) );
 		
 	}
 

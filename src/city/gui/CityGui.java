@@ -122,10 +122,10 @@ public class CityGui extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());
 
 		cityPanel = new CityPanel();
-		cityPanel.setPreferredSize(new Dimension(500, 250));
-		cityPanel.setMaximumSize(new Dimension(500, 250));
-		cityPanel.setMinimumSize(new Dimension(500, 250));
-
+		cityPanel.setPreferredSize(new Dimension(400, 250));
+		cityPanel.setMaximumSize(new Dimension(400, 250));
+		cityPanel.setMinimumSize(new Dimension(400, 250));
+		
 		cardLayout = new CardLayout();
 
 		buildingPanels = new JPanel();
@@ -145,9 +145,10 @@ public class CityGui extends JFrame implements ActionListener {
 			b.setBuildingPanel(bp);
 			buildingPanels.add(bp, "" + i);
 		}
-		getContentPane().add(BorderLayout.EAST, cityControls);
+		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
+		
 		buildingPanels.add(restPanel, "name_1385002139901999000");
 		restPanel.setBounds(768, 0, 666, 215);
 		restPanel.setMinimumSize(new Dimension(500, 250));
