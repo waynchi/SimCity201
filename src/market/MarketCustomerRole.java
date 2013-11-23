@@ -5,15 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
 import people.Role;
 
-public class MarketCustomerRole extends Role{
+public class MarketCustomerRole extends Role implements MarketCustomer{
 	// data
-	enum marketCustomerState {IN_MARKET, MADE_ORDER, WAIT_FOR_CHECK, WAIT_FOR_ORDER, PAYING, PAID, DONE};
+	enum marketCustomerState {IN_MARKET, MADE_ORDER, WAITING_FOR_CHECK, WAITING_FOR_ORDER, PAYING, PAID, DONE};
 	enum marketCustomerEvent {NONE, RECEIVED_ORDER, RECEIVED_CHECK, RECEIVED_CHANGE};
 	
-	MarketEmployeeRole employee = new MarketEmployeeRole();//should know it from PeopleAgent
-	MarketCashierRole cashier;
+	MarketEmployee employee;//should know it from PeopleAgent
+	MarketCashier cashier;
 	marketCustomerState state;
 	marketCustomerEvent event;
 	Dimension location; // should get from PeopleAgent
@@ -49,7 +52,7 @@ public class MarketCustomerRole extends Role{
 	}
 	
 
-	public void msgHereIsWhatIsDue(double _totalDue, MarketCashierRole c) {
+	public void msgHereIsWhatIsDue(double _totalDue, MarketCashier c) {
 		totalDue = _totalDue;
 		cashier = c;
 		event = marketCustomerEvent.RECEIVED_CHECK;
@@ -72,27 +75,27 @@ public class MarketCustomerRole extends Role{
 		}
 		
 		if (state == marketCustomerState.MADE_ORDER && event == marketCustomerEvent.RECEIVED_ORDER) {
-			state = marketCustomerState.WAIT_FOR_CHECK;
+			state = marketCustomerState.WAITING_FOR_CHECK;
 			return true;
 		}
 		
 		if (state == marketCustomerState.MADE_ORDER && event == marketCustomerEvent.RECEIVED_CHECK) {
-			state = marketCustomerState.WAIT_FOR_ORDER;
+			state = marketCustomerState.WAITING_FOR_ORDER;
 			return true;
 		}
 		
-		if (state == marketCustomerState.WAIT_FOR_CHECK && event == marketCustomerEvent.RECEIVED_CHECK) {
+		if (state == marketCustomerState.WAITING_FOR_CHECK && event == marketCustomerEvent.RECEIVED_ORDER) {
 			state = marketCustomerState.PAYING;
 			payBill();
 			return true;
 		}
 		
-		if (state == marketCustomerState.WAIT_FOR_ORDER && event == marketCustomerEvent.RECEIVED_ORDER) {
+		if (state == marketCustomerState.WAITING_FOR_ORDER && event == marketCustomerEvent.RECEIVED_CHECK) {
 			state = marketCustomerState.PAYING;
 			payBill();
 			return true;
 		}
-		
+				
 		if (state == marketCustomerState.PAID && event == marketCustomerEvent.RECEIVED_CHANGE) {
 			doneShopping();
 			return true;
@@ -103,13 +106,13 @@ public class MarketCustomerRole extends Role{
 
 	//action
 	private void orderItem() {
-		employee.msgHereIsAnOrder(itemsNeeded);
+		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
 	
 
 	private void payBill() {
-		//cashier.msgHereIsPayment(this, getPersonAgent().Money);
+		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		state = marketCustomerState.PAID;	
 	}
 

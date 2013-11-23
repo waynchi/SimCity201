@@ -8,6 +8,7 @@ import java.util.Map;
 
 import people.Role;
 import market.gui.MarketEmployeeGui;
+import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
@@ -17,7 +18,7 @@ import restaurant.CookRole;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	Map <String, Item> items = new HashMap<String, Item>();
-	MarketCashierRole cashier;
+	MarketCashier cashier;
 	MarketEmployeeGui gui;
 		
 	class Item {
