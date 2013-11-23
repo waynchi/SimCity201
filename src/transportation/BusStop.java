@@ -4,18 +4,17 @@ import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 public class BusStop {
-public List<BusPassengerRole> waitingPassengers = new ArrayList<BusPassengerRole>();
-public List<BusPassengerRole> boardingPassengers = new ArrayList<BusPassengerRole>();
+public List<BusPassenger> waitingPassengers = new ArrayList<BusPassenger>();
+public List<BusPassenger> boardingPassengers = new ArrayList<BusPassenger>();
 Bus currentBus;
 public BusStop(){
 	
 }
 
 
-public void msgWaitingHere(BusPassengerRole bpr){
+public void msgWaitingHere(BusPassenger bpr){
 System.out.println("BusStop recieved message that a bus passenger arrived");
 waitingPassengers.add(bpr);
 }
@@ -24,6 +23,12 @@ public void msgBusArrived(Bus b){
 	System.out.println("BusStop recieved message that bus has arrived");
 	currentBus = b;
 	boardingPassengers = waitingPassengers;
+	if(boardingPassengers.isEmpty())
+	{
+		currentBus.msgAllBusStopPassengersNotified();
+		currentBus = null;
+		return;
+	}
 for(BusPassenger passenger : boardingPassengers) 
         passenger.msgBusArrived(b);
 }

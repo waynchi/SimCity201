@@ -1,6 +1,6 @@
 package transportation.interfaces;
 
-import people.PeopleAgent;
+import people.People;
 
 public interface CarPassenger {
 
@@ -12,6 +12,8 @@ public interface CarPassenger {
 
 	public abstract void setCar(Car c);
 
-	public abstract void setPersonAgent(PeopleAgent p);
+	public abstract void setPerson(People p);
+
+	public abstract void msgAnimationFinishedDoLeaveCar();
 
 }

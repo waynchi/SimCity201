@@ -1,9 +1,7 @@
 package housing;
 
-//import static org.junit.Assert.assertEquals;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -30,12 +28,20 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		ro.s = RentOrderState.AppliedPenalty;
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	public void applyPenaltyAndRemove(RentOrder ro) {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		rents.remove(ro);
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	//-----------------------------------------------------------//
@@ -95,20 +101,21 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		RentOrder ro =  null;
+		if (super.myState != State.Sleeping) {
+			RentOrder ro =  null;
 
-		ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
-		if (ro != null) {
-			applyPenaltyAndRemove(ro);
-			return true;
-		}
-		
-		ro = findRentOrderByState(RentOrderState.ApplyPenalty);
-		if (ro != null) {
-			applyPenalty(ro);
-			return true;
-		}
+			ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
+			if (ro != null) {
+				applyPenaltyAndRemove(ro);
+				return true;
+			}
 
+			ro = findRentOrderByState(RentOrderState.ApplyPenalty);
+			if (ro != null) {
+				applyPenalty(ro);
+				return true;
+			}
+		}
 		return super.pickAndExecuteAnAction();
 	}
 

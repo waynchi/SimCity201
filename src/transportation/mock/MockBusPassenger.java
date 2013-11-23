@@ -1,14 +1,19 @@
 package transportation.mock;
 
-import people.PeopleAgent;
+import people.People;
+import people.Role;
 import transportation.BusStop;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
+import test.EventLog;
+import test.LoggedEvent;
 
-public class MockBusPassenger extends Mock implements BusPassenger {
+public class MockBusPassenger extends Role implements BusPassenger {
 
+	public EventLog log = new EventLog();
+	
 	public MockBusPassenger(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,13 +26,13 @@ public class MockBusPassenger extends Mock implements BusPassenger {
 	@Override
 	public void msgBusArrived(Bus b) {
 		// TODO Auto-generated method stub
-
+		log.add(new LoggedEvent("Receieved message that bus arrived to the bus stop im waiting in"));
 	}
 
 	@Override
 	public void msgArrivedAtStop(BusStop bs) {
 		// TODO Auto-generated method stub
-
+		log.add(new LoggedEvent("Recieved message that bus arrived at new stop"));
 	}
 
 	@Override
@@ -37,7 +42,7 @@ public class MockBusPassenger extends Mock implements BusPassenger {
 	}
 
 	@Override
-	public void setPersonAgent(PeopleAgent p) {
+	public void setPerson(People p) {
 		// TODO Auto-generated method stub
 
 	}

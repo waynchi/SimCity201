@@ -39,6 +39,12 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		if (timesRentDue == 0)
 			rentDue = false;
 		money -= rent;
+		if (gui != null) {
+			gui.DoUseCellPhone();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 
 	public void payPenalty(Double p) {
@@ -46,6 +52,10 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		owner.hereIsPenalty(house, amount);
 		money -= amount;
 		penalties.remove(p);
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	//-----------------------------------------------------------//
@@ -67,15 +77,17 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 
 	// Scheduler
 
-	public boolean pickAnExecuteAnAction() {
-		if (rentDue == true && money >= rent) {
-			payRent();
-			return true;
-		}
-		Double p = findPayablePenalty();
-		if (p != null) {
-			payPenalty(p);
-			return true;
+	public boolean pickAndExecuteAnAction() {
+		if (myState != State.Sleeping) {
+			if (rentDue == true && money >= rent) {
+				payRent();
+				return true;
+			}
+			Double p = findPayablePenalty();
+			if (p != null) {
+				payPenalty(p);
+				return true;
+			}
 		}
 		return super.pickAndExecuteAnAction();
 	}

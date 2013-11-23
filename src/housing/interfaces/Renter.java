@@ -11,6 +11,12 @@ public interface Renter {
 	public void rentReminder();
 	
 	//-----------------------------------------------------------//
+	
+	// Scheduler
+	
+	public boolean pickAndExecuteAnAction();
+	
+	//-----------------------------------------------------------//
 
 	// Utilities
 

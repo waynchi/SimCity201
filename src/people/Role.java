@@ -6,9 +6,10 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected People myPerson;
+	protected PeopleAgent myPerson;
+	public boolean isActive = false;
 
-	public void setPerson(People a) {
+	public void setPerson(PeopleAgent a) {
 		myPerson = a;
 	}
 
@@ -25,7 +26,7 @@ public class Role {
 
 	public void msgIsInActive(){ };
 	
-	public void msgIsActive() { }
+	public void msgIsActive(){ };
 
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub

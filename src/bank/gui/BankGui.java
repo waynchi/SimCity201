@@ -1,12 +1,8 @@
 package bank.gui;
 
-import restaurant.CookAgent;
-import restaurant.CustomerAgent;
-import restaurant.MarketAgent;
-import restaurant.WaiterAgent;
-
 import javax.swing.*;
 
+import bank.BankCustomerAgent;
 import agent.Agent;
 
 import java.awt.*;
@@ -116,10 +112,10 @@ public class BankGui extends JFrame implements ActionListener {
     public void updateInfoPanel(Object person) {
         currentPerson = person;
 
-        if (person instanceof CustomerAgent) {
+        if (person instanceof BankCustomerAgent) {
         	stateWB.setVisible(false);
         	stateCB.setVisible(true);
-            CustomerAgent customer = (CustomerAgent) person;
+            BankCustomerAgent customer = (BankCustomerAgent) person;
             stateCB.setText("Hungry?");
           //Should checkmark be there? 
             stateCB.setSelected(customer.getGui().isHungry());
@@ -138,20 +134,20 @@ public class BankGui extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == stateCB) {
-            if (currentPerson instanceof CustomerAgent) {
-                CustomerAgent c = (CustomerAgent) currentPerson;
+            if (currentPerson instanceof BankCustomerAgent) {
+                BankCustomerAgent c = (BankCustomerAgent) currentPerson;
                 c.getGui().setHungry();
                 stateCB.setEnabled(false);
             }
         }
         if (e.getSource() == pause) {
         	if (pause.isSelected()) {
-        		for(Agent agent : restPanel.agents) {
+        		for(Agent agent : bankPanel.agents) {
         			agent.pause();
         		}
         	}
         	if (!pause.isSelected()) {
-        		for(Agent agent : restPanel.agents) {
+        		for(Agent agent : bankPanel.agents) {
         			agent.restart();
         		}        		
         	}
@@ -163,9 +159,9 @@ public class BankGui extends JFrame implements ActionListener {
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(CustomerAgent c) {
-        if (currentPerson instanceof CustomerAgent) {
-            CustomerAgent cust = (CustomerAgent) currentPerson;
+    public void setCustomerEnabled(BankCustomerAgent c) {
+        if (currentPerson instanceof BankCustomerAgent) {
+            BankCustomerAgent cust = (BankCustomerAgent) currentPerson;
             if (c.equals(cust)) {
                 stateCB.setEnabled(true);
                 stateCB.setSelected(false);

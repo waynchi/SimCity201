@@ -14,19 +14,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
-    
-    private static final int COOKX = 300;
-    private static final int COOKY = 0;
-    private static final int COOKSIZE = 25;
-    
-    private static final int PLATEX = 300;
-    private static final int PLATEY = 50;
-    private static final int PLATESIZE = 25;
-    
-    private static final int TABLEX = 100;
-    private static final int TABLEY = 250;
-    private static final int TABLESIZE = 50;
-    static final int NTABLES = 3;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
@@ -54,17 +41,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //Here are the tables
         g2.setColor(Color.ORANGE);
         
-        for(int i = 0; i < NTABLES; i++) {
-        	g2.fillRect(TABLEX*(i + 1), TABLEY, TABLESIZE, TABLESIZE); //Draw all of the tables with a 50px gap in between them
-        }
-        
-        g2.setColor(Color.RED);
-        g2.fillRect(COOKX, COOKY, 100, COOKSIZE);
-        
-        g2.setColor(Color.BLUE);
-        g2.fillRect(PLATEX, PLATEY, 100, PLATESIZE);
-
-
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();

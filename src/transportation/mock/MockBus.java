@@ -1,18 +1,19 @@
 package transportation.mock;
 
+import people.Role;
 import test.*;
 import transportation.BusGui;
 import transportation.BusStop;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
-public class MockBus extends Mock implements Bus{
+public class MockBus extends Role implements Bus{
 
 	public BusGui busGui;
 	public EventLog log = new EventLog();
 	
 	public MockBus(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,14 +25,13 @@ public class MockBus extends Mock implements Bus{
 	@Override
 	public void msgImBoarding(BusPassenger p) {
 		// TODO Auto-generated method stub
-		//System.out.println("Bus recieved message that busPassenger is boarding");
 		log.add(new LoggedEvent("Recieved message that busPassenger is boarding"));
 	}
 
 	@Override
 	public void msgImLeaving(BusPassenger p) {
 		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Recieved message that busPassenger is leaving"));
 	}
 
 	@Override
@@ -44,7 +44,6 @@ public class MockBus extends Mock implements Bus{
 	@Override
 	public void msgAllBusStopPassengersNotified() {
 		// TODO Auto-generated method stub
-		//System.out.println("Bus recieved message that all passengers have been notified");
 		log.add(new LoggedEvent("Recieved message that all passengers have been notified"));
 	}
 
@@ -56,7 +55,7 @@ public class MockBus extends Mock implements Bus{
 	
 	@Override
 	public void GoToNextStop(){
-		//System.out.println("Driving to next stop");
+		//\\System.out.println("Driving to next stop");
 	}
 	
 	

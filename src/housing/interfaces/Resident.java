@@ -11,18 +11,14 @@ public interface Resident {
 	public void somethingBroke();
 	public void ImHere();
 	public void repairDone();
-	public void eatAtHome();
 	public void foodCooked();
-	public void activityComplete();
-	public void eatAtRestaurant();
-	public void doneEating();
+	public void activityDone();
 
 	//-----------------------------------------------------------//
 
 	// Utilities
 
 	public void setRepairMan(RepairMan r);
-//	public List<Item> getBrokenItems();
 	public People getAgent();
 	public void setHouse(House h);
 

@@ -1,11 +1,10 @@
 package bank.gui;
 
-import restaurant.CustomerAgent;
-import restaurant.HostAgent;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import bank.BankCustomerAgent;
 
 public class BankCustomerGui implements Gui{
 
@@ -42,14 +41,6 @@ public class BankCustomerGui implements Gui{
 		this.gui = gui;
 		setPresent(true);
 		
-		foodLabels.put("Steak", "ST");
-		foodLabels.put("Steak?", "ST?");
-		foodLabels.put("Salad", "SD");
-		foodLabels.put("Salad?", "SD?");
-		foodLabels.put("Chicken", "CH");
-		foodLabels.put("Chicken?", "CH?");
-		foodLabels.put("Pizza", "PZ");
-		foodLabels.put("Pizza?", "PZ?");
 	}
 
 	public void updatePosition() {
@@ -64,12 +55,10 @@ public class BankCustomerGui implements Gui{
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination) {
-			if (command==Command.GoToSeat) agent.msgAnimationFinishedGoToSeat();
+			if (command==Command.GoToSeat) {}
 			else if (command==Command.LeaveRestaurant) {
-				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}
@@ -93,7 +82,6 @@ public class BankCustomerGui implements Gui{
 	}
 	public void setHungry() {
 		isHungry = true;
-		agent.gotHungry();
 		xDestination = 0;
 		yDestination = 100 + (CUST_SIZE +10)*custNum;
 	}

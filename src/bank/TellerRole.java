@@ -7,12 +7,14 @@ import bank.interfaces.Teller;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 
 /**
  * Bank Host Agent
  */
 
-public class TellerAgent extends Agent implements Teller {
+public class TellerRole extends Role implements Teller {
 
 	public List<myBankCustomer> waitingCustomers
 	= Collections.synchronizedList(new ArrayList<myBankCustomer>()); //For this prototype there is one teller who will store every waiting customer
@@ -26,7 +28,7 @@ public class TellerAgent extends Agent implements Teller {
 	
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 
-	public TellerAgent(String name) {
+	public TellerRole(String name) {
 		super();
 
 		this.name = name;

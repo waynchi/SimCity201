@@ -1,18 +1,19 @@
 package restaurant.test.mock;
 
+import people.Role;
 import restaurant.interfaces.BankTeller;
 
-public class MockTeller extends Mock implements BankTeller{
+public class MockTeller extends Role implements BankTeller{
 
 	public MockTeller(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public void msgDeposit(int id, double money) {
 		// TODO Auto-generated method stub
-		log.add(new LoggedEvent("received message from customer id " + id + ". Customer wants to deposit " + money));
+		//log.add(new LoggedEvent("received message from customer id " + id + ". Customer wants to deposit " + money));
 		
 	}
 
