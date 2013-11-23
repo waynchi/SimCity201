@@ -2,6 +2,7 @@ package market.mock;
 
 import java.util.Map;
 
+import people.Role;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketTruck;
 

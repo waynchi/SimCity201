@@ -2,14 +2,15 @@ package restaurant.test.mock;
 
 import java.util.Map;
 
+import people.Role;
 import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Market;
 
-public class MockMarket extends Mock implements Market{
+public class MockMarket extends Role implements Market{
 
 	public MockMarket(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -22,10 +23,16 @@ public class MockMarket extends Mock implements Market{
 	@Override
 	public void msgPayMarketBill(double amount, Cashier ca) {
 		// TODO Auto-generated method stub
-		log.add(new LoggedEvent("Received msgPayMarketBill from Cashier " + ca.getName() + " and the amount"
-				+ " is " + amount));
+		//log.add(new LoggedEvent("Received msgPayMarketBill from Cashier " + ca.getName() + " and the amount"
+		//		+ " is " + amount));
 
 		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

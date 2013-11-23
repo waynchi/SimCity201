@@ -353,5 +353,8 @@ public class CookRole extends Role{
 		host = h;
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
 }
 

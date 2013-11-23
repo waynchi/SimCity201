@@ -89,7 +89,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private void giveOrderToCustomer(Order order) {
 		getOrder(order.items);
 		//if customer is in market, give it the order
-		if (getPersonAgent().getLocation().equals("market")) {
+		if (getPersonAgent().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
 			gui.doWalkToCustomer(order.customer);
 			order.customer.msgHereIsYourOrder(order.items);
 		}

@@ -2,13 +2,14 @@ package market.mock;
 
 import java.util.Map;
 
+import people.Role;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 
-public class MockMarketCustomer extends Mock implements MarketCustomer {
+public class MockMarketCustomer extends Role implements MarketCustomer {
 
 	public MockMarketCustomer(String name) {
-		super(name);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

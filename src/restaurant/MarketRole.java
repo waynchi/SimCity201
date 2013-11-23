@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 /**
  * Restaurant Market Agent
  */
@@ -19,10 +21,11 @@ import java.util.concurrent.Semaphore;
 // Market and Cook pass each other maps that are not semantic enough, will be changed to lists if there's time
 
 
-public class MarketRole extends Agent implements Market{
+public class MarketRole extends Role implements Market{
 
 
 	private String name;
+	private boolean isActive;
 	//private CookAgent cook;
 	private class MyOrder {
 		CookRole cook;
@@ -80,7 +83,7 @@ public class MarketRole extends Agent implements Market{
 		cashierBalance.put(ca, cashierBalance.get(ca)-amount);
 		if (cashierBalance.get(ca) == 0.0) print ("Thanks for paying! Welcome next time!");
 		else print("You still need to pay " +String.format("%.2f",cashierBalance.get(ca),2) + ". Please pay next time!");
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	/**
@@ -149,6 +152,10 @@ public class MarketRole extends Agent implements Market{
 
 	public String getName() {
 		return name;
+	}
+	
+	public boolean isActive() {
+		return isActive;
 	}
 
 }
