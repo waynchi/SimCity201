@@ -7,6 +7,7 @@ public class Role {
 	}
 
 	protected People myPerson;
+	protected boolean isActive = false;
 
 	public void setPerson(People a) {
 		myPerson = a;
@@ -25,7 +26,7 @@ public class Role {
 
 	public void msgIsInActive(){ };
 	
-	public void msgIsActive() { }
+	public void msgIsActive(){ };
 
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
