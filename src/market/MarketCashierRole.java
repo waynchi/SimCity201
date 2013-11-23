@@ -1,63 +1,98 @@
 package market;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MarketCashierRole {
+import people.Role;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketCustomer;
+
+public class MarketCashierRole extends Role implements MarketCashier{
 
 	// data
-	enum checkState {PENDING, SENT, PAID, DONE};
-	List<Check> checks;
+	private Boolean isActive = false;
+	Map<String, Double> priceList = new HashMap<String, Double>();
+	enum checkState {PENDING, SENT, PAID};
+	List<Check> checks = new ArrayList<Check>();
 	class Check {
-		MarketCustomerRole customer;
+		MarketCustomer customer;
+		Map<String, Integer> items = new HashMap<String, Integer>();
 		double totalPaid;
 		double totalDue;
+		checkState state;
 		
-		public Check (MarketCustomerRole cust, double due) {
+		public Check (MarketCustomer cust, Map<String, Integer> _items) {
 			customer = cust;
-			totalDue = due;
+			items = _items;
+			state = checkState.PENDING;
+			totalPaid = totalDue = 0.0;
 		}
 	}
-	double change;
-	private Boolean isActive;
 	
 	// messages
-	public void msgHereIsACheck(MarketCustomerRole customer, List<Integer> items){
-		double totalDue = 0;
-		for (int item : items) {
-			totalDue = totalDue + itemPrice.price; //itemPrice is a map
-		}
-		checks.add(new Check(customer, totalDue));
+	
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
+		checks.add(new Check(customer, items));
+		getPersonAgent().CallstateChanged();
 	}
 	
 	
-	public void msgHereIsPayment(MarketCustomerRole cust, double totalPaid) {
-        if there exists Check c in checks such that c.customer = cust
+	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
+        for (Check c : checks) {
+        	if (c.customer == customer) {
+        		c.state = checkState.PAID;
         		c.totalPaid = totalPaid;
-        		c.state = paid;
+        		break;
+        	}
+        }
+        getPersonAgent().CallstateChanged();
 }
 	
 	
 	// scheduler
-	public void pickAndExecuteAnAction(){
-		if (there exists check c in checks such that c.state = pending) {
-			askCustomerToPay(c);
+	public boolean pickAndExecuteAnAction(){
+		for (Check c : checks) {
+			if (c.state == checkState.PENDING) {
+				computeAndSendCheck(c);
+				return true;
+			}
 		}
 		
-		if (there exists check c in checks such that c.state = paid) {
-			giveChangeToCustomer(c);
+		for (Check c : checks) {
+			if (c.state == checkState.PAID) {
+				giveChangeToCustomer(c);
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
-	
+
+
+
 	// action
-	private void askCustomerToPay(Check check) {
-		check.customer.msgHereIsWhatIsDue(c.totalDue, this);
-		check.state = SENT;
+	
+	private void computeAndSendCheck(Check check) {
+		//compute the total amount
+		for (Map.Entry<String,Integer> entry : check.items.entrySet()) {
+			check.totalDue += priceList.get(entry.getKey());
+		}
+		
+		check.customer.msgHereIsWhatIsDue(check.totalDue, this);
+		check.state = checkState.SENT;
 	}
 	
 	
 	private void giveChangeToCustomer(Check check) {
-        change = check.totalPaid - check.totalDue;
+        double change = check.totalPaid - check.totalDue;
         check.customer.msgHereIsChange(change);
         checks.remove(check);
 }

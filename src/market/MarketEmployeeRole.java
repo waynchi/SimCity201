@@ -1,40 +1,53 @@
 package market;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import people.Role;
+import market.gui.MarketEmployeeGui;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
+import market.interfaces.MarketTruck;
 import restaurant.CashierRole;
 import restaurant.CookRole;
 
-public class MarketEmployeeRole {
+public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	Map <String, Item> items = new HashMap<String, Item>();
-	MarketCashierRole cashier;
+	MarketCashier cashier;
+	MarketEmployeeGui gui;
 		
 	class Item {
-		int ID;
-		Dimension location;
+		//Dimension location;
 		String name;
+		int inventory;
 		
-		public Item (int id, Dimension loc, String n) {
-			ID = id;
-			location = loc;
+		public Item (Dimension loc, String n, int i) {
+			//location = loc;
 			name = n;
+			inventory = i;
 		}
 	}
 	
-	List<MarketTruckAgent> trucks;
-	List<Order> orders;
+	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
+	List<Order> orders = new ArrayList<Order>();
 
 	class Order {
 		Map<String, Integer> items = new HashMap<String, Integer>();
-		MarketCustomerRole customer = null;
+		MarketCustomer customer = null;
 		CookRole cook = null;
 		CashierRole restaurantCashier = null;
 		//boolean customerAtMarket;
 		//boolean customerIsRestaurantCashier;
+		
+		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
+			customer = cust;
+			items = itemsNeeded;
+		}
 	}
 
 	
@@ -45,14 +58,10 @@ public class MarketEmployeeRole {
 	
 	
 	// messages
-	public void msgHereIsAnOrder(Map<String, Integer> chosenItems) {
-		/*newOrder = new Order(order);
-		newOrder.state = orderState.New;
-		for(item in chosenItems) {
-			newOrder.items.add(item);
-		}
-		newOrder.customerAtRestaurant = isAtRestaurant;
-		orders.add(newOrder);*/
+	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
+		 orders.add(new Order(customer, chosenItems));
+		getPersonAgent().CallstateChanged();
+
 	}
 
 	// scheduler
@@ -67,26 +76,34 @@ public class MarketEmployeeRole {
 
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
-		//for (int i : itemList) {
-			//DoGetItem(items.get(i).location);
-		//}
+		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
+			gui.doGetItem(entry.getKey(), entry.getValue());
+			items.get(entry.getKey()).inventory -= entry.getValue();
+		}
 	}
 
 	
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
 		getOrder(order.items);
-		//DoGoToCustomer(); //gui
-		//if(order.customer.getPersonAgent().getPosition().equals("market")) {
-		//	order.customer.msgHereIsYourOrder(order.items);
-		//} 
-		//else {
-		//	for truck in trucks where truck is available {
-		//		truck.msgHereIsAnOrder(order.items,order.customer.location);
-		//	}
-		//}
-		//cashier.msgHereIsACheck(order.customer, order.items);
-		//orders.remove(order);
+		//if customer is in market, give it the order
+		if (getPersonAgent().getLocation().equals("market")) {
+			gui.doWalkToCustomer(order.customer);
+			order.customer.msgHereIsYourOrder(order.items);
+		}
+		
+		//if customer is at somewhere else, send a truck to the place
+		else {
+			for (MarketTruck mt : trucks) {
+				if (mt.isAvailable()) {
+					mt.msgHereIsAnOrder(order.customer,order.items);
+					break;
+				}
+			}
+		}
+		
+		cashier.msgHereIsACheck(order.customer, order.items);
+		orders.remove(order);
 	}
 
 
