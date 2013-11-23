@@ -5,7 +5,6 @@ import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
 import java.util.concurrent.Semaphore;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Random;
 import people.People;
 import people.PeopleAgent;
@@ -38,6 +37,10 @@ public class HousingResidentRole extends Role implements Resident {
 	public void callRepairMan() {
 		repairMan.needHelp(house);
 		repairStage = RepairStage.HelpRequested;
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	public void cookAtHome() {

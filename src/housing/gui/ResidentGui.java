@@ -14,7 +14,9 @@ public class ResidentGui implements HGui{
 	private int xPos;
 	private int yPos;
 	private State state = State.Idle;;
-	private Timer timer;
+	private Timer timer = new Timer();
+	private Timer cellPhoneTimer = new Timer();
+	private final int CELLPHONE_TIME = 2000;
 	private final int POOPING_TIME = 5000;
 	private final int PEEING_TIME = 2000;
 	private final int BATHING_TIME = 7000;
@@ -22,6 +24,7 @@ public class ResidentGui implements HGui{
 	private final int COOKING_TIME = 2000;
 	private boolean readingBook = false;
 	private boolean videoGames = false;
+	private boolean cellPhone = false;
 	private boolean isAtHome = false;
 	public Resident r;
 	public HouseGui hGui;
@@ -111,6 +114,10 @@ public class ResidentGui implements HGui{
 		if (videoGames == true) {
 			g.setColor(Color.darkGray);
 			g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+		}
+		if (cellPhone == true) {
+			g.setColor(Color.black);
+			g.fillRoundRect(xPos - 3, yPos - 6, 3, 6, 1, 2);
 		}
 	}
 
@@ -206,6 +213,15 @@ public class ResidentGui implements HGui{
 	public void DoLeaveHome() {
 		state = State.Leaving;
 		goToLocation(new Dimension(hGui.entranceCoordinates.width, hGui.entranceCoordinates.height));
+	}
+	
+	public void DoUseCellPhone() {
+		cellPhone = true;
+		cellPhoneTimer.schedule(new TimerTask() {
+			public void run() {
+				cellPhone = false;
+			}
+		}, CELLPHONE_TIME);
 	}
 	
 	public void goToLocation(Dimension d) {

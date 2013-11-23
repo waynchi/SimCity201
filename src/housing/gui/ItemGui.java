@@ -104,4 +104,3 @@ public class ItemGui implements HGui{
 		return isBroken;
 	}
 }
-
