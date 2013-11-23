@@ -52,7 +52,7 @@ public class PeopleAgent extends Agent implements People{
 	public String getAgentState()
 	{
 		return state.toString();
-	}
+	} 
 	
 	public String getAgentEvent()
 	{
