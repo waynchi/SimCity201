@@ -1,9 +1,7 @@
 package housing;
 
-//import static org.junit.Assert.assertEquals;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;

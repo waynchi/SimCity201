@@ -39,10 +39,12 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		if (timesRentDue == 0)
 			rentDue = false;
 		money -= rent;
-		gui.DoUseCellPhone();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (gui != null) {
+			gui.DoUseCellPhone();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 
 	public void payPenalty(Double p) {
@@ -75,8 +77,8 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 
 	// Scheduler
 
-	public boolean pickAnExecuteAnAction() {
-		if (super.myState != State.Sleeping) {
+	public boolean pickAndExecuteAnAction() {
+		if (myState != State.Sleeping) {
 			if (rentDue == true && money >= rent) {
 				payRent();
 				return true;
