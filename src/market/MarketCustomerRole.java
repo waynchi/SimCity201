@@ -1,89 +1,127 @@
 package market;
 
-public class MarketCustomerRole {
+import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import people.Role;
+
+public class MarketCustomerRole extends Role{
 	// data
-	enum customerState = {GotHungry,AtRestaurant,Paying,Paid,OrderCompleted,LeftRestaurant};
-	Order order;
-	double wallet;
-	class Order {
-		List<Integer> itemsNeeded; //each "item" is a unique ID that corresponds with a certain item.
-		Waiter w;
-		double totalDue;
-		double totalReceived;
-	}
-	MarketEmployeeRole employee;
+	enum marketCustomerState {IN_MARKET, MADE_ORDER, WAIT_FOR_CHECK, WAIT_FOR_ORDER, PAYING, PAID, DONE};
+	enum marketCustomerEvent {NONE, RECEIVED_ORDER, RECEIVED_CHECK, RECEIVED_CHANGE};
+	
+	MarketEmployeeRole employee = new MarketEmployeeRole();//should know it from PeopleAgent
+	MarketCashierRole cashier;
+	marketCustomerState state;
+	marketCustomerEvent event;
+	Dimension location; // should get from PeopleAgent
 
+	// one shopping list at a time
+	private	Map<String, Integer> itemsNeeded = new HashMap<String, Integer>();
+	private	Map<String, Integer> itemsReceived = new HashMap<String, Integer>();
+	private	double totalDue;
+
+	Boolean isActive;
+
+	
+	
 	// messages
-	public void msgGotHungry(List<Integer> itemsNeeded){ //From Gui 
-	order = new Order(itemsNeeded);
-	if(this.location == "market") {
-		customerState = GotHungryCustomer;
-	} else {
-		customerState = GotHungryRestaurant;
-	}
+	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
+		isActive = true;
+		itemsNeeded = items;
+		state = marketCustomerState.IN_MARKET;
+		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgHereIsWhatIsDue(totalDue) {
-		order.totalDue = totalDue;
-		customerState = Paying;
-	}
-	
-	public void msgHereIsYourOrder(List<Integer>itemsReceived) {
-		if(itemsNeeded.size() != itemsReceived.size() {
+
+	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
+		itemsReceived = _itemsReceived;
+		event = marketCustomerEvent.RECEIVED_ORDER;
+		// need to tell People what we've got
+		//if(itemsNeeded.size() != itemsReceived.size() {
 			//Didn't receive the right number of items (how to handle?)
-		} else {
-			customerState = OrderCompleted;
-		}
+		//} else {
+		//	customerState = OrderCompleted;
+		//}
+		getPersonAgent().CallstateChanged();
 	}
 	
+
+	public void msgHereIsWhatIsDue(double _totalDue, MarketCashierRole c) {
+		totalDue = _totalDue;
+		cashier = c;
+		event = marketCustomerEvent.RECEIVED_CHECK;
+		getPersonAgent().CallstateChanged();
+
+	}
+
 	public void msgHereIsChange(double totalChange) {
-		customerState = OrderCompleted;
-		order.totalReceived = totalChange;
+		//getPersonAgent().Money += totalChange;
+		event = marketCustomerEvent.RECEIVED_CHANGE;
+		getPersonAgent().CallstateChanged();
 	}
 
 	// scheduler
-	public void pickAndExecuteAnAction{
-	if(customerState = GotHungryCustomer) {
-		beginScenarioCustomer();
-	}
-	if(customerState = GotHungryRestarant) {
-		beginScenarioRestaurant();
-	}
-
-	if(customerState = Paying) {
-		payBill();
-	}
-	if(customerState = OrderCompleted) {
-		returnHome();
-	}
+	public boolean pickAndExecuteAnAction(){
+		
+		if (state == marketCustomerState.IN_MARKET) {
+			orderItem();
+			return true;
+		}
+		
+		if (state == marketCustomerState.MADE_ORDER && event == marketCustomerEvent.RECEIVED_ORDER) {
+			state = marketCustomerState.WAIT_FOR_CHECK;
+			return true;
+		}
+		
+		if (state == marketCustomerState.MADE_ORDER && event == marketCustomerEvent.RECEIVED_CHECK) {
+			state = marketCustomerState.WAIT_FOR_ORDER;
+			return true;
+		}
+		
+		if (state == marketCustomerState.WAIT_FOR_CHECK && event == marketCustomerEvent.RECEIVED_CHECK) {
+			state = marketCustomerState.PAYING;
+			payBill();
+			return true;
+		}
+		
+		if (state == marketCustomerState.WAIT_FOR_ORDER && event == marketCustomerEvent.RECEIVED_ORDER) {
+			state = marketCustomerState.PAYING;
+			payBill();
+			return true;
+		}
+		
+		if (state == marketCustomerState.PAID && event == marketCustomerEvent.RECEIVED_CHANGE) {
+			doneShopping();
+			return true;
+		}
+		
+		return false;
 	}
 
 	//action
-	private void beginScenarioCustomer() {
-		DoGoToRestaurant();
-		customerState = AtRestaurant;
-		employee.msgHereIsAnOrder(order.itemsNeeded,true);
-
+	private void orderItem() {
+		employee.msgHereIsAnOrder(itemsNeeded);
+		state = marketCustomerState.MADE_ORDER;
 	}
 	
-	private void beginScenarioRestaurant() {
-		DoGoToRestaurant();
-		employee.msgHereIsAnOrder(order.itemsNeeded,false);
-	}
 
 	private void payBill() {
-		if(this.location == "market") {
-			employee.msgHereIsPayment(order.totalDue);
-		} else {
-			employee.msgHereIsPayment(wallet);
-		}
-		customerState = Paid;	
+		//cashier.msgHereIsPayment(this, getPersonAgent().Money);
+		state = marketCustomerState.PAID;	
 	}
-	
-	private void returnHome() {
-		wallet = wallet + order.totalReceived;
-		DoGoHome();
-		CustomerState = LeftRestaurant;
+
+	private void doneShopping() {
+		getPersonAgent().msgDone(this);
+		state = marketCustomerState.DONE;
+	}
+
+
+	// unitilies
+	public Boolean isActive() {
+		return isActive;
 	}
 
 }

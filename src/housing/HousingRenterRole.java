@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import people.People;
 
-public class RenterRole extends ResidentRole implements Renter{
+public class HousingRenterRole extends HousingResidentRole implements Renter{
 	// Data
 
 	private Owner owner;
@@ -20,7 +20,7 @@ public class RenterRole extends ResidentRole implements Renter{
 	private Timer rentTimer;
 	private List<Double> penalties = new ArrayList<Double>();
 
-	public RenterRole(double rent) {
+	public HousingRenterRole(double rent) {
 		super();
 		this.rent = rent;
 		rentDue = false;

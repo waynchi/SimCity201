@@ -32,6 +32,8 @@ public class HostRole extends Role {
 
 	private String name;
 	public HostGui hostGui = null;
+	private CashierRole cashier;
+	private CookRole cook;
 
 	public HostRole(String name) {
 		super();
@@ -275,8 +277,22 @@ public class HostRole extends Role {
 		return tables;
 	}
 
+	public void setCashier(CashierRole c) {
+		cashier = c;
+	}
 
-
+	public CashierRole getCashier() {
+		return cashier;
+	}
+	
+	public void setCook(CookRole c) {
+		cook = c;
+	}
+	
+	public CookRole getCook() {
+		return cook;
+	}
+	
 	public void setGui(HostGui gui) {
 		hostGui = gui;
 	}

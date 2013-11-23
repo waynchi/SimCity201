@@ -1,4 +1,5 @@
-package housing;
+package housing.gui;
+
 
 import javax.swing.JFrame;
 

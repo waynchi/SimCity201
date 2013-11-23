@@ -1,116 +1,103 @@
 package market;
 
+import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import restaurant.CashierRole;
+import restaurant.CookRole;
 
 public class MarketEmployeeRole {
 	// data
-	enum orderState = {New,OrderFulfilled,ReadyToPay,CheckDelivered,PaymentReceived,OrderPaid,DeliveringChange};
-	List<MarketTruckRole> trucks;
-	List<Order> orders;
-	List<Checks> checks;
-	
-	class Order {
-		enum state;
-		List<Item> items;
-		double totalDue;
-		double totalPaid;
-		double totalChange;
-		Customer customer;
-		boolean customerAtRestaurant;
-	};
-	
+	Map <String, Item> items = new HashMap<String, Item>();
+	MarketCashierRole cashier;
+		
 	class Item {
+		int ID;
+		Dimension location;
 		String name;
-		double price;
-	};
+		
+		public Item (int id, Dimension loc, String n) {
+			ID = id;
+			location = loc;
+			name = n;
+		}
+	}
+	
+	List<MarketTruckAgent> trucks;
+	List<Order> orders;
+
+	class Order {
+		Map<String, Integer> items = new HashMap<String, Integer>();
+		MarketCustomerRole customer = null;
+		CookRole cook = null;
+		CashierRole restaurantCashier = null;
+		//boolean customerAtMarket;
+		//boolean customerIsRestaurantCashier;
+	}
+
+	
+	private Boolean isActive;
+
+	// constructor
+	public MarketEmployeeRole(){}
 	
 	
 	// messages
-	public void msgHereIsAnOrder (List<Integer>chosenItems, boolean isAtRestaurant) {
-		newOrder = new Order(order);
+	public void msgHereIsAnOrder(Map<String, Integer> chosenItems) {
+		/*newOrder = new Order(order);
 		newOrder.state = orderState.New;
 		for(item in chosenItems) {
 			newOrder.items.add(item);
 		}
 		newOrder.customerAtRestaurant = isAtRestaurant;
-		orders.add(newOrder);
+		orders.add(newOrder);*/
 	}
-	
-	public void msgHereIsPayment(double amount, order) {
-		order.totalPaid = order.totalPaid;
-		order.state = orderState.PaymentReceived;		
-	}
-	public void msgHereIsChange(double change, order) {
-		order.totalChange = change;
-		order.state = orderState.DeliveringChange;
-	}
-	
+
 	// scheduler
-	for order in orders {
-		if order.state = orderState.New {
-			getOrder(order);
+	public boolean pickAndExecuteAnAction() {
+		if (!orders.isEmpty()) {
+			giveOrderToCustomer(orders.get(0));
+			return true;
 		}
-		if order.state = orderState.OrderFulfilled {
-			giveOrderToCustomer(order);
-		}
-		if order.state = orderState.ReadyToPay {
-			giveCheckToCustomer(order);
-		}
-		if order.state = orderState.PaymentReceived {
-			getChangeFromCashier(order);
-		}
-		if(order.state = orderState.DeliveringChange) {
-			deliverChangeToCustomer(order);
-		}
+		return false;
 	}
-	
-	
+
+
 	// action
-	getOrder(Order order) {
-		for item in order.items {
-			DoGetItem(order.posX,order.posY);
-		}
-		order.state = OrderFulfilled;
-
+	private void getOrder(Map<String, Integer> itemList) { //gui
+		//for (int i : itemList) {
+			//DoGetItem(items.get(i).location);
+		//}
 	}
 
-	giveOrderToCustomer(order) {
-		DoGoToCustomer();
-		if(order.customerAtRestaurant == true) {
-			order.customer.msgHereIsYourOrder(order.items);
-			order.state = ReadyToPay;
-
-		} 
-		else {
-			for truck in trucks where truck is available {
-				truck.msgHereIsAnOrder(order.items,this.location);
-
-			}
-			order.state = ReadyToPay;
-		}
-	}
-
-
-	giveCheckToCustomer(Order order) {
-		for item in order.items {
-			double totalDue = totalDue + item.price;
-		}
-		order.totalDue = totalDue;
-		DoGoToCashier();
-		order.customer.msgHereIsWhatIsDue(order.customer,totalDue);
-		order.state = CheckDelivered;
-	}
-	getChangeFromCashier(order) {
-		DoGoToCashier();
-		cashier.msgHereIsPayment(order.totalPaid, order.totalDue, this);
-		order.state = OrderPaid;
-	}
-	deliverChangeToCustomer(order) {
-		DoGoToCustomer();
-		order.customer.msgHereIsChange(order.totalChange);
-		orders.remove(order);
-	}
 	
-	
+	// if customer is at the Market, give it the items; otherwise send a truck to its place
+	private void giveOrderToCustomer(Order order) {
+		getOrder(order.items);
+		//DoGoToCustomer(); //gui
+		//if(order.customer.getPersonAgent().getPosition().equals("market")) {
+		//	order.customer.msgHereIsYourOrder(order.items);
+		//} 
+		//else {
+		//	for truck in trucks where truck is available {
+		//		truck.msgHereIsAnOrder(order.items,order.customer.location);
+		//	}
+		//}
+		//cashier.msgHereIsACheck(order.customer, order.items);
+		//orders.remove(order);
+	}
+
+
+
+	//utilities
+	public Boolean isActive() {
+		return isActive;
+	}
+
+	public void setCashier(MarketCashierRole c) {
+		cashier = c;
+	}
 	
 }

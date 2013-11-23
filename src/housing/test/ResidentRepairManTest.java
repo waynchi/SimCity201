@@ -3,8 +3,8 @@ package housing.test;
 import static org.junit.Assert.*;
 import java.util.List;
 import housing.House;
-import housing.RepairManRole;
-import housing.ResidentRole;
+import housing.HousingRepairManRole;
+import housing.HousingResidentRole;
 import housing.Item;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
@@ -65,10 +65,10 @@ public class ResidentRepairManTest {
 		h2Items = null;
 		
 		h1 = new House("R1Residence", 1);
-		r1 = new ResidentRole();
+		r1 = new HousingResidentRole();
 		h2 = new House("R2Residence", 2);
-		r2 = new ResidentRole();
-		r = new RepairManRole();
+		r2 = new HousingResidentRole();
+		r = new HousingRepairManRole();
 		r.setPerson(p);
 		
 		h1.setOccupant(r1);

@@ -28,13 +28,13 @@ public class RestaurantPanel extends JPanel implements ActionListener{
 	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
 
     private HostRole host;
-    private HostGui hostGui = new HostGui(host);
+    //private HostGui hostGui = new HostGui(host);
 	private CookRole cook;
-	private CookGui cookGui = new CookGui(cook);
+	//private CookGui cookGui = new CookGui(cook);
 	
-	private MarketRole market1 = new MarketRole("Market 1");
-	private MarketRole market2 = new MarketRole("Market 2");
-	private MarketRole market3 = new MarketRole("Market 3");
+	//private MarketRole market1 = new MarketRole("Market 1");
+	//private MarketRole market2 = new MarketRole("Market 2");
+	//private MarketRole market3 = new MarketRole("Market 3");
 	
 	private Double min_working_capital = 10.00;
 	private Double working_capital = 100.00;
@@ -45,7 +45,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
     private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
-	private CashierRole cashier = new CashierRole("Cashier", this);
+	//private CashierRole cashier = new CashierRole("Cashier", this);
 
     
     private JPanel restLabel = new JPanel();
@@ -84,16 +84,17 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
     
-    public RestaurantPanel(RestaurantGui gui) {
+    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    	host = h;
         this.gui = gui;
-		gui.animationPanel.addGui(cookGui);
-        host.setGui(hostGui);
-        cook.setGui(cookGui);
+		//gui.animationPanel.addGui(cookGui);
+        //host.setGui(hostGui);
+        //cook.setGui(cookGui);
         
-        cook.addMarket(market1);
-        cook.addMarket(market2);
-        cook.addMarket(market3);
-        cook.setCashier(cashier);
+        //cook.addMarket(market1);
+        //cook.addMarket(market2);
+        //cook.addMarket(market3);
+        //cook.setCashier(cashier);
         
         //market1.setCook(cook);
         //market2.setCook(cook);
@@ -101,9 +102,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
                 
         //host.startThread();
         //cook.startThread();
-        market1.startThread();
-        market2.startThread();
-        market3.startThread();
+        //market1.startThread();
+        //market2.startThread();
+        //market3.startThread();
         //cashier.startThread();
         
         setLayout(new GridLayout(1, 2, 20, 20));
@@ -116,7 +117,18 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         //add(customerPanel);
     }
     
-    
+    public RestaurantPanel(RestaurantGui gui) {
+        this.gui = gui;
+        
+        setLayout(new GridLayout(1, 2, 20, 20));
+        
+
+        initRestLabel();
+        initImagePanel();
+        add(restLabel);
+        add(imagePanel);
+        //add(customerPanel);
+    }
 
     public RestaurantPanel() {
 		// TODO Auto-generated constructor stub
@@ -149,8 +161,8 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     private void initRestLabel() {
         JLabel label = new JLabel();
         restLabel.setLayout(new BorderLayout());
-        label.setText(
-                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
+//        label.setText(
+//                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
 
         restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
         restLabel.add(label, BorderLayout.CENTER);
@@ -271,7 +283,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         		w.setHost(host);
         		w.setGui(g);
         		w.setCook(cook);
-        		w.setCashier(cashier);
+        		//w.setCashier(cashier);
         		
                 //w.startThread();
     		//}

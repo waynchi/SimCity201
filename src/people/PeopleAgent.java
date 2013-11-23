@@ -3,11 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import city.Restaurant;
+import city.gui.CityGui;
 import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
 
 	public List<MyRole> roles = new ArrayList<MyRole>();
+	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Boolean hasCar;
@@ -15,7 +18,7 @@ public class PeopleAgent extends Agent implements People{
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
-	//CityGui gui;
+	CityGui cityGui;
 	
 	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
@@ -27,6 +30,36 @@ public class PeopleAgent extends Agent implements People{
 	public AgentState state = AgentState.Idle;
 	public AgentEvent event = AgentEvent.Idle;
 	
+	public double getMoney()
+	{
+		return Money;
+	}
+	
+	public List<Role> getRoles()
+	{
+		List<Role> temp = new ArrayList<Role>();
+		for(MyRole a: roles)
+		{
+			temp.add(a.role);
+		}
+		return temp;
+	}
+	
+	public String getMaitreDName() {
+		return name;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public void addCityGui(CityGui gui)
+	{
+		cityGui = gui;
+	}
+	
+	//public void addPeopleGui()
+	//TODO
 	/* (non-Javadoc)
 	 * @see people.People#addRole(people.Role, java.lang.String)
 	 */
@@ -87,6 +120,12 @@ public class PeopleAgent extends Agent implements People{
 	 * @see people.People#msgTimeIs(int)
 	 */
 	@Override
+	
+	/*public int msgWhatIsTime()
+	{
+		//TODO
+		return cityGui.Time;
+	}*/
 	public void msgTimeIs(int Time)
 	{
 		if(Time == 0)
@@ -97,9 +136,9 @@ public class PeopleAgent extends Agent implements People{
 			return;
 		}
 		if(Time == 800 && state == AgentState.Sleeping)
-			
 		{
 			event = AgentEvent.WakingUp;
+			stateChanged();
 			return;
 		}
 		if(state == AgentState.Idle)
@@ -116,6 +155,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingToRetrieveMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -124,6 +164,7 @@ public class PeopleAgent extends Agent implements People{
 				if(Money >= 50000)
 				{
 					event = AgentEvent.GoingToDepositMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -153,10 +194,12 @@ public class PeopleAgent extends Agent implements People{
 				if(rand.nextInt() < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
+					stateChanged();
 				}
 				else
 				{
 					event = AgentEvent.GoingHome;
+					stateChanged();
 				}
 				return;
 			}
@@ -168,6 +211,7 @@ public class PeopleAgent extends Agent implements People{
 				if(!(Time >= 1700) && Money >= 30000)
 				{
 					event = AgentEvent.GoingToBuyCar;
+					stateChanged();
 					return;
 				}
 				if(!(Time>= 1700 && Money <= 30000))
@@ -184,6 +228,7 @@ public class PeopleAgent extends Agent implements People{
 				if(Money >= 1000000)
 				{
 					event = AgentEvent.GoingToDepositMoney;
+					stateChanged();
 					return;
 				}
 			}
@@ -192,6 +237,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == 2330)
 		{
 			event = AgentEvent.GoingToSleep;
+			stateChanged();
 			return;
 		}
 		
@@ -240,7 +286,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-			state = AgentState.RestingAtHome;
+			state = AgentState.Idle;
 			}
 			GoToHouse();
 			Person = true;
@@ -360,7 +406,7 @@ public class PeopleAgent extends Agent implements People{
 				r.role.msgIsInActive();
 			}
 		}
-		msgTimeIs( jobs.get(0).end);
+		msgTimeIs( jobs.get(0).end); //TODO I probably need to get the actual time here
 	}
 
 	/* (non-Javadoc)
@@ -378,8 +424,10 @@ public class PeopleAgent extends Agent implements People{
 	 * @see people.People#GoToWork()
 	 */
 	@Override
+	//Going to Work
 	public void GoToWork()
 	{
+		print("I am going to work now!");
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -388,38 +436,53 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		//gui
-		if(jobs.get(0).job.equals("Waiter"))
+		if(jobs.get(0).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Waiter"))
+				if(r.description.equals("RestaurantNormalWaiter"))
 				{			
+					print("I am now a RestaurantNormalWaiter");
 					r.role.msgIsActive();
 				}
 			}
 			//roles.WaiterRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Host"))
+		if(jobs.get(0).job.equals("RestaurantHost"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Host"))
+				if(r.description.equals("RestaurantHost"))
 				{			
+					print("I am now a RestaurantHost");
 					r.role.msgIsActive();
 				}
 			}
 			//roles.HostRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Cook"))
+		if(jobs.get(0).job.equals("RestaurantCook"))
 		{
 			for(MyRole r: roles)
 			{
-				if(r.description.equals("Cook"))
+				if(r.description.equals("RestaurantCook"))
 				{			
+					print("I am now a RestaurantCook");
 					r.role.msgIsActive();
 				}
 			}
 			//roles.CookRole.msgIsActive();
+		}
+		if(jobs.get(0).job.equals("RestaurantCashier"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCashier"))
+				{		
+					print("I am now a RestaurantCashier");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.RepairRole.msgIsActive();
 		}
 		if(jobs.get(0).job.equals("Vendor"))
 		{
@@ -448,17 +511,6 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RepairMan"))
-				{			
-					r.role.msgIsActive();
-				}
-			}
-			//roles.RepairRole.msgIsActive();
-		}
-		if(jobs.get(0).job.equals("Cashier"))
-		{
-			for(MyRole r: roles)
-			{
-				if(r.description.equals("Cashier"))
 				{			
 					r.role.msgIsActive();
 				}

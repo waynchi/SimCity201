@@ -1,4 +1,7 @@
-package housing;
+package housing.gui;
+
+import housing.Apartments;
+import housing.House;
 
 import javax.swing.JPanel;
 

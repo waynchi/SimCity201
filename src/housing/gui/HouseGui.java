@@ -1,6 +1,10 @@
-package housing;
+package housing.gui;
+
+import housing.House;
+import housing.Item;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,7 @@ import java.util.List;
 public class HouseGui implements HGui{
 	public House h;
 	List<ItemGui> items = new ArrayList<ItemGui>();
+	List<HGui> guis = new ArrayList<HGui>();
 	TestGui testGui;
 
 	public HouseGui(House h, TestGui g) {
@@ -32,10 +37,14 @@ public class HouseGui implements HGui{
 		g.fillRect(280, 15, 15, 145);
 		g.fillRect(280, 195, 170, 15);
 		
-		g.fillRect(220, 15, 15, 145);
 		g.fillRect(15, 195, 220, 15);
 		for (ItemGui gui : items) {
 			gui.draw(g);
+		}
+		for (HGui gui : guis) {
+			if (gui.isPresent()) {
+				gui.draw(g);
+			}
 		}
 	}
 
@@ -49,5 +58,20 @@ public class HouseGui implements HGui{
 		for (Item i : list) {
 			items.add(i.getGui());
 		}
+	}
+	
+	public Dimension getPosition(String s) {
+		Dimension d = null;
+		for (ItemGui g : items) {
+			if (g.i.name.equals(s)) {
+				d = new Dimension(g.x, g.y);
+				return d;
+			}
+		}
+		return null;
+	}
+	
+	public void add(HGui g) {
+		guis.add(g);
 	}
 }

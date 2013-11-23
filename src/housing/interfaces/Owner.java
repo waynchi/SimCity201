@@ -1,8 +1,8 @@
 package housing.interfaces;
 
 import housing.House;
-import housing.RenterRole;
-import housing.OwnerRole.MyHouse;
+import housing.HousingRenterRole;
+import housing.HousingOwnerRole.MyHouse;
 import people.People;
 
 public interface Owner {
