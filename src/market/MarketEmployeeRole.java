@@ -34,6 +34,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 	
 	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
+	int marketTruckCount = 0;
+	
 	List<Order> orders = new ArrayList<Order>();
 
 	class Order {
@@ -94,18 +96,27 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		//if customer is at somewhere else, send a truck to the place
 		else {
-			for (MarketTruck mt : trucks) {
-				if (mt.isAvailable()) {
-					mt.msgHereIsAnOrder(order.customer,order.items);
-					break;
-				}
-			}
+			getNextMarketTruck().msgHereIsAnOrder(order.customer,order.items); 
+			
 		}
 		
 		cashier.msgHereIsACheck(order.customer, order.items);
 		orders.remove(order);
 	}
 
+
+
+	private MarketTruck getNextMarketTruck() {
+		MarketTruck temp;
+		if (marketTruckCount == trucks.size()-1) {
+			marketTruckCount = 0;
+			return trucks.get(0);
+		}
+		else {
+			marketTruckCount ++;
+			return trucks.get(marketTruckCount);
+		}
+	}
 
 
 	//utilities
