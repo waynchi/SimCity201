@@ -1,7 +1,9 @@
 package market;
 
 import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import people.Role;
 
@@ -17,8 +19,8 @@ public class MarketCustomerRole extends Role{
 	Dimension location; // should get from PeopleAgent
 
 	// one shopping list at a time
-	private	List<Integer> itemsNeeded; //each "item" is a unique ID that corresponds with a certain item.
-	private List<Integer> itemsReceived;
+	private	Map<String, Integer> itemsNeeded = new HashMap<String, Integer>();
+	private	Map<String, Integer> itemsReceived = new HashMap<String, Integer>();
 	private	double totalDue;
 
 	Boolean isActive;
@@ -26,7 +28,7 @@ public class MarketCustomerRole extends Role{
 	
 	
 	// messages
-	public void msgBuy(List<Integer> items){ //From PeopleAgent 
+	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
 		isActive = true;
 		itemsNeeded = items;
 		state = marketCustomerState.IN_MARKET;
@@ -34,7 +36,7 @@ public class MarketCustomerRole extends Role{
 	}
 
 
-	public void msgHereIsYourOrder(List<Integer> _itemsReceived) { //from MarketEmployee
+	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
 		itemsReceived = _itemsReceived;
 		event = marketCustomerEvent.RECEIVED_ORDER;
 		// need to tell People what we've got
@@ -56,10 +58,8 @@ public class MarketCustomerRole extends Role{
 	}
 
 	public void msgHereIsChange(double totalChange) {
-		getPersonAgent().Money += totalChange;
+		//getPersonAgent().Money += totalChange;
 		event = marketCustomerEvent.RECEIVED_CHANGE;
-		//customerState = OrderCompleted;
-		//order.totalReceived = totalChange;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -103,29 +103,13 @@ public class MarketCustomerRole extends Role{
 
 	//action
 	private void orderItem() {
-		employee.msgHereIsAnOrder(itemsNeeded, false);
+		employee.msgHereIsAnOrder(itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
 	
-	
-	/*private void beginScenarioCustomer() {
-		DoGoToRestaurant();
-		customerState = AtRestaurant;
-		employee.msgHereIsAnOrder(order.itemsNeeded,true);
-
-	}
-
-	private void beginScenarioRestaurant() {
-		DoGoToRestaurant();
-		employee.msgHereIsAnOrder(order.itemsNeeded,false);
-	}*/
 
 	private void payBill() {
-		//if(this.location == "market") {
-		cashier.msgHereIsPayment(this, getPersonAgent().Money);
-		//} else {
-		//	cashier.msgHereIsPayment(wallet);
-		//}
+		//cashier.msgHereIsPayment(this, getPersonAgent().Money);
 		state = marketCustomerState.PAID;	
 	}
 
