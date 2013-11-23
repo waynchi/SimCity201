@@ -84,6 +84,21 @@ public class ItemGui implements HGui{
 			g.drawOval(x + 4, y + 32, 10, 10);
 			g.drawOval(x + 25, y + 32, 10, 10);
 		}
+		if (this.i.name.equals("Bed")) {
+			g.setColor(Color.BLACK);
+			g.drawRoundRect(x + 10, y + 15, 20, 30, 10, 15);
+		}
+		
+		if (this.i.name.equals("FussballTable")) {
+			g.setColor(Color.BLACK);
+			g.drawLine(x + 10, y, x + 10, y + 40);
+			g.drawLine(x + 20, y, x + 20, y + 40);
+			g.drawLine(x + 30, y, x + 30, y + 40);
+			g.drawLine(x + 40, y, x + 40, y + 40);
+			g.drawLine(x + 50, y, x + 50, y + 40);
+			g.fillRect(x, y + 15, 5, 10);
+			g.fillRect(x + 55, y + 15, 5, 10);
+		}
 	}
 
 	@Override
@@ -104,4 +119,3 @@ public class ItemGui implements HGui{
 		return isBroken;
 	}
 }
-

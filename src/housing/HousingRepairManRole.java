@@ -32,22 +32,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	public void goToHouse(final MyHouse mh) {
 		// Animation implementation.
-		
-//		if (mh.h.isLocked()) {
-//			mh.s = HouseState.ToBeRechecked;
-//			currentHouse = null;
-//			// Animation implementation.
-//			// Going back.
-//			mh.recheck.schedule(new TimerTask() {
-//				public void run() {
-//					timeToRecheck(mh);
-//				}
-//			}, 10000);
-//		}
-//		else {
-//			mh.r.ImHere();
-//			mh.s = HouseState.Reached;
-//		}
 		mh.r.ImHere();
 		mh.s = HouseState.Reached;
 	}
@@ -57,9 +41,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		for (Item i : brokenItems) {
 			i.repair();
 		}
-//		mh.s = HouseState.DoneRepairing;
-//		mh.r.repairDone();
-//		mh.brokenItems = null;
 		mh.r.repairDone();
 		mh.s = HouseState.None;
 	}
@@ -73,24 +54,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		mh.s = HouseState.NeedsRepair;
 		stateChanged();
 	}
-
-//	public void thingsAreBroken(House h, List<Item> brokenItems) {
-//		MyHouse mh = find(h);
-//		mh.brokenItems = brokenItems;
-//		stateChanged();
-//	}
-
-//	public void thankYou(House h) {
-//		MyHouse mh = find(h);
-//		mh.s = HouseState.None;
-//		currentHouse = null;
-//		stateChanged();
-//	}
-
-//	public void timeToRecheck(MyHouse mh) {
-//		mh.s = HouseState.NeedsRepair;
-//		stateChanged();
-//	}
 
 	// Ensure thread safety for homeMoney.
 	public void salaryArrives() {
@@ -115,10 +78,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 				repairItems(currentHouse);
 				return true;
 			}
-//			if (currentHouse.s == HouseState.ItemsGiven) {
-//				repairItems(currentHouse);
-//				return true;
-//			}
 		}
 		return false;
 	}
@@ -177,19 +136,14 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	private class MyHouse {
 		House h;
 		Resident r;
-//		List<Item> brokenItems;
 		HouseState s;
-//		Timer recheck;
 
 		public MyHouse(House h, Resident r) {
 			this.h = h;
 			this.r = r;
 			s = HouseState.None;
-//			recheck = new Timer();
 		}
 	}
-
-//	public enum HouseState {None, NeedsRepair, ToBeRechecked, Reached, ItemsGiven, DoneRepairing};
+	
 	public enum HouseState {None, NeedsRepair, Reached};
 }
-
