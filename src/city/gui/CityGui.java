@@ -1,5 +1,6 @@
 package city.gui;
 import javax.swing.*;
+import javax.swing.Timer;
 
 import city.Restaurant;
 import people.PeopleAgent;
@@ -12,6 +13,8 @@ import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,7 +23,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class CityGui extends JFrame {
+public class CityGui extends JFrame implements ActionListener {
 	CityPanel cityPanel;
 	JPanel buildingPanels;
 	CardLayout cardLayout;
@@ -31,8 +34,10 @@ public class CityGui extends JFrame {
 	HostRole RestaurantHostRole = new HostRole("Host");
 	MarketRole market = new MarketRole("Market 1");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100,100),"Restaurant 1");
+	int time;
 
 	public CityGui() {
+		Timer timer = new Timer(10, this);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui,RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
@@ -59,43 +64,36 @@ public class CityGui extends JFrame {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
-						person.addJob("RestaurantNormalWaiter", 100, 1200);
+						person.addJob("RestaurantNormalWaiter", 800, 2400);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
-						person.msgTimeIs(100);
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if(role.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
-						person.addJob("RestaurantCook", 100, 1200);
+						person.addJob("RestaurantCook", 800, 2400);
 						person.addRole(RestaurantCookRole,"RestaurantCook");
-						person.msgTimeIs(100);
 						RestaurantCookRole.setPerson(person);
 						RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
 					if(role.equals("RestaurantHost")) {
-						person.addJob("RestaurantHost",100,1200);
+						person.addJob("RestaurantHost",700,2400);
 						person.addRole(RestaurantHostRole, "RestaurantHost");	
-						person.msgTimeIs(100);
 						RestaurantHostRole.setPerson(person);
 					}
 					if(role.equals("RestaurantCustomer")) {
 						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
-						person.addJob("RestaurantCustomer",100,1200);
+						person.addJob("RestaurantCustomer",800,2400);
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
-						person.msgTimeIs(100);
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if(role.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole("Cashier");
-						person.addJob("RestaurantCashier",100,1200);
+						person.addJob("RestaurantCashier",800,2400);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
-						person.msgTimeIs(100);
 						RestaurantCashierRole.setPerson(person);
 						
 					}
-					
 					people.add(person);	
-					//configParams.remove(configIteration);
 				}
 			}
 			bufRead.close();
@@ -146,10 +144,11 @@ public class CityGui extends JFrame {
 		restPanel.setMinimumSize( new Dimension( 500, 250 ) );
 		restPanel.setMaximumSize( new Dimension( 500, 250 ) );
 		restPanel.setPreferredSize( new Dimension( 500, 250 ) );
+		timer.start();
+
 	}
 	
 	public void displayBuildingPanel( BuildingPanel bp ) {
-		System.out.println("abc");
 		System.out.println( bp.getName() );
 		cardLayout.show( buildingPanels, bp.getName() );
 	}
@@ -167,5 +166,15 @@ public class CityGui extends JFrame {
 		    }
 		    // only got here if we didn't return false
 		return true;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		time++;		
+		for(PeopleAgent p : people) {
+			p.msgTimeIs(time);
+		}
+		repaint();
+		
 	}
 }
