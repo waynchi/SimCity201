@@ -9,12 +9,12 @@ import junit.framework.TestCase;
 
 
 import people.People;
-import people.PeopleAgent;
+import people.mock.MockPeople;
 
 public class CarPassengerRoleTest extends TestCase{
 
 	CarPassengerRole cpr = new CarPassengerRole();
-	People p = new PeopleAgent();
+	People p = new MockPeople("mockpeople",100,true);
 	MockCar mockCar = new MockCar("mockCar");
 	CarPassengerGui cpg = new CarPassengerGui();
 	CarGui cg = new CarGui();

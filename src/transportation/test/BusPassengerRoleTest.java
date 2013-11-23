@@ -1,11 +1,10 @@
 package transportation.test;
 
-
+import people.mock.*;
 import junit.framework.TestCase;
 
 
 import people.People;
-import people.PeopleAgent;
 import transportation.BusGui;
 import transportation.BusPassengerGui;
 import transportation.BusPassengerRole;
@@ -20,7 +19,7 @@ public class BusPassengerRoleTest extends TestCase{
 	BusPassengerGui bprGui = new BusPassengerGui();
 	BusGui bg = new BusGui();
 	BusStop bs = new BusStop();
-	People p = new PeopleAgent();
+	People p = new MockPeople("mockpeople",100,true);
 	BusStop destinationBusStop = new BusStop();
 	
 	public void setUp() throws Exception{
