@@ -3,7 +3,7 @@ package market;
 import java.awt.Dimension;
 import java.util.List;
 
-public class MarketTruckRole {
+public class MarketTruckAgent {
 	//data
 	private Boolean isActive;
 	
