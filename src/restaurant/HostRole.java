@@ -19,7 +19,7 @@ public class HostRole extends Role {
 	private List<BaseWaiterRole> availableWaiters = Collections.synchronizedList(new ArrayList<BaseWaiterRole>());
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
-
+	private boolean isActive;
 
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
@@ -46,7 +46,9 @@ public class HostRole extends Role {
 	}
 
 	// Messages
-
+	public void msgIsActive() {
+		isActive = true;
+	}
 
 	public void addWaiter(BaseWaiterRole w){
 		availableWaiters.add(w);
@@ -343,6 +345,10 @@ public class HostRole extends Role {
 		public void msgBreakApproved() {
 			// TODO Auto-generated method stub
 
+		}
+		
+		public boolean isActive() {
+			return isActive;
 		}
 	}
 
