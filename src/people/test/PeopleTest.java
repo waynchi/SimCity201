@@ -15,7 +15,10 @@ import restaurant.NormalWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant.test.mock.MockCashier;
+import restaurant.test.mock.MockCook;
 import restaurant.test.mock.MockCustomer;
+import restaurant.test.mock.MockWaiter;
 import junit.framework.*;
 /**
  * 
@@ -65,29 +68,29 @@ public class PeopleTest extends TestCase
 	{
 		//Adding Roles into all of the People
 		
-		cook.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
+		cook.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		cook.addRole((Role)new CookRole(cook.name, theMonitor), "RestaurantCook");
+		cook.addRole((Role)new MockCook(cook.name), "RestaurantCook");
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
 		
-		waiter.addRole((Role)new RestaurantCustomerRole(waiter.name), "RestaurantCustomer");
+		waiter.addRole((Role)new MockCustomer(waiter.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		waiter.addRole((Role)new NormalWaiterRole(waiter.name), "RestaurantNormalWaiter");
+		waiter.addRole((Role)new MockWaiter(waiter.name), "RestaurantNormalWaiter");
 		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantNormalWaiter"));
 		
-		customer.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
+		customer.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", customer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		customer.addRole((Role)new CookRole(cook.name, theMonitor), "RestaurantCook");
+		customer.addRole((Role)new MockCook(cook.name), "RestaurantCook");
 		assertTrue("Testing Role addition", customer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
 		
-		host.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
+		host.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		host.addRole((Role)new HostRole(host.name), "RestaurantHost");
 		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantHost"));
 		
-		cashier.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
+		cashier.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", cashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		cashier.addRole((Role)new CashierRole(cashier.name), "RestaurantCashier");
+		cashier.addRole((Role)new MockCashier(cashier.name), "RestaurantCashier");
 		assertTrue("Testing Role addition", cashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCashier"));
 		
 		//Adding Jobs
@@ -137,7 +140,7 @@ public class PeopleTest extends TestCase
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
 			}
-			System.out.println("test");
+				assertTrue("")
 			
 		}
 		
