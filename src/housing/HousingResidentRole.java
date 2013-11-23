@@ -100,6 +100,10 @@ public class HousingResidentRole extends Role implements Resident {
 		gui.DoPlayVideoGames();
 	}
 	
+	public void playFussball() {
+		gui.DoPlayFussball();
+	}
+	
 	public void leaveHome() {
 		leisure = false;
 		needToLeave = false;
@@ -217,6 +221,10 @@ public class HousingResidentRole extends Role implements Resident {
 				playVideoGames();
 				return true;
 			}
+			if (a == Activity.PlayFussball) {
+				playFussball();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -254,7 +262,13 @@ public class HousingResidentRole extends Role implements Resident {
 			return Activity.Read;
 		if (num == 2)
 			return Activity.WatchTV;
-		return Activity.PlayVideoGames;
+		if (num == 3)
+			return Activity.PlayVideoGames;
+		return Activity.PlayFussball;
+	}
+	
+	public boolean isActive() {
+		return isActive();
 	}
 
 	//-----------------------------------------------------------//
@@ -265,5 +279,5 @@ public class HousingResidentRole extends Role implements Resident {
 
 	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
 	
-	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames};
+	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
 }

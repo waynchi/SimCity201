@@ -29,7 +29,7 @@ public class ResidentGui implements HGui{
 	public Resident r;
 	public HouseGui hGui;
 	
-	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, Leaving};
+	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, PlayingFussball, Leaving};
 	
 	// Use timers to implement cooking, and then call
 	// r.activityDone().
@@ -92,6 +92,9 @@ public class ResidentGui implements HGui{
 			else if (state == State.PlayingVideoGames) {
 				state = State.Idle;
 				videoGames = true;
+			}
+			else if (state == State.PlayingFussball) {
+				state = State.Idle;
 			}
 			else if (state == State.Leaving) {
 				state = State.Idle;
@@ -194,6 +197,14 @@ public class ResidentGui implements HGui{
 	public void DoPlayVideoGames() {
 		state = State.PlayingVideoGames;
 		Dimension d = hGui.getPosition("StudyChair");
+		goToLocation(d);
+	}
+	
+	public void DoPlayFussball() {
+		state = State.PlayingFussball;
+		Dimension d = hGui.getPosition("FussballTable");
+		d.width += 25;
+		d.height += 40;
 		goToLocation(d);
 	}
 	
