@@ -1,5 +1,6 @@
 package city.gui;
 import javax.swing.*;
+import javax.swing.Timer;
 
 import city.Restaurant;
 import people.PeopleAgent;
@@ -12,32 +13,36 @@ import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 
-public class CityGui extends JFrame {
+public class CityGui extends JFrame implements ActionListener {
 	CityPanel cityPanel;
 	JPanel buildingPanels;
 	CardLayout cardLayout;
 	CityControls cityControls;
-	ArrayList<String> configParams = new ArrayList<String>();
+	List<String> configParams = Collections.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole("Host");
 	MarketRole market = new MarketRole("Market 1");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100,100),"Restaurant 1");
-	
+	int time;
 
-	
-	
-	
 	public CityGui() {
+		Timer timer = new Timer(10, this);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui,RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
+		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
+		MarketRole RestaurantMarketRole = new MarketRole("Market");
+
 		FileReader input;
 		try {
 			input = new FileReader("config.txt");
@@ -46,70 +51,49 @@ public class CityGui extends JFrame {
 			while((line = bufRead.readLine()) != null) {
 				configParams.addAll(Arrays.asList(line.split("\\s*,\\s*")));
 			}
-			for(String item : configParams) {
-				if(isInteger(item)) {
-					//Restaurant Role Setup
-					CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-					SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole("Special Waiter",RestaurantCookWaiterMonitor);
-					MarketRole RestaurantMarketRole = new MarketRole("Market");
-			
-					//Transportation Role Setup
-//					BusPassengerRole BusPassengerRole = new BusPassengerRole();
-//					CarPassengerRole CarPassengerRole = new CarPassengerRole();
-					//Housing Role Setup
-					OwnerRole HousingOwnerRole = new OwnerRole();
-					RenterRole HousingRenterRole = new RenterRole(0); //wtf is the double?
-					RepairManRole HousingRepairManRole = new RepairManRole();
-					ResidentRole HousingResidentRole = new ResidentRole();
-					//Bank Role Setup
-					
-					int currIndex = configParams.indexOf(item);
-					System.out.println(item + " " + configParams.get(currIndex + 1) + " " + configParams.get(currIndex + 2));
-					PeopleAgent person = new PeopleAgent(configParams.get(currIndex + 2),1000.0,false);
+			Iterator<String> configIteration = configParams.iterator();
+			while(configIteration.hasNext()) {
+			//for(String item : configParams) {
+				String amount = configIteration.next();
+				String role = configIteration.next();
+				String name = configIteration.next();
+				if(isInteger(amount)) {
+					PeopleAgent person = new PeopleAgent(role,1000.0,false);
 					person.startThread();
-					if(configParams.get(currIndex + 1).equals("RestaurantNormalWaiter")) {
+					if(role.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole("Normal Waiter");
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
-						person.addJob("RestaurantNormalWaiter", 100, 1200);
+						person.addJob("RestaurantNormalWaiter", 800, 2400);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
-						person.msgTimeIs(0);
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
-					if(configParams.get(currIndex + 1).equals("RestaurantCook")) {
+					if(role.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole("Cook",RestaurantCookWaiterMonitor);
-						person.addJob("RestaurantCook", 100, 1200);
+						person.addJob("RestaurantCook", 800, 2400);
 						person.addRole(RestaurantCookRole,"RestaurantCook");
-						person.msgTimeIs(0);
 						RestaurantCookRole.setPerson(person);
 						RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
-					if(configParams.get(currIndex + 1).equals("RestaurantHost")) {
-						person.addJob("RestaurantHost",100,1200);
+					if(role.equals("RestaurantHost")) {
+						person.addJob("RestaurantHost",700,2400);
 						person.addRole(RestaurantHostRole, "RestaurantHost");	
-						person.msgTimeIs(0);
 						RestaurantHostRole.setPerson(person);
 					}
-					if(configParams.get(currIndex + 1).equals("RestaurantCustomer")) {
+					if(role.equals("RestaurantCustomer")) {
 						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole("Customer");
-						person.addJob("RestaurantCustomer",100,1200);
+						person.addJob("RestaurantCustomer",800,2400);
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
-						person.msgTimeIs(0);
 						RestaurantCustomerRole.setPerson(person);
 					}
-					if(configParams.get(currIndex + 1).equals("RestaurantCashier")) {
+					if(role.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole("Cashier");
-						person.addJob("RestaurantCashier",100,1200);
+						person.addJob("RestaurantCashier",800,2400);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
-						person.msgTimeIs(0);
 						RestaurantCashierRole.setPerson(person);
 						
 					}
-					
 					people.add(person);	
-					for(PeopleAgent p : people) {
-						p.Restaurants.add(restaurant);
-					}
 				}
 			}
 			bufRead.close();
@@ -119,6 +103,9 @@ public class CityGui extends JFrame {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		for(PeopleAgent p : people) {
+			p.Restaurants.add(restaurant);
 		}
 		setVisible( true );
 		setSize( 1024, 1000 );
@@ -157,10 +144,11 @@ public class CityGui extends JFrame {
 		restPanel.setMinimumSize( new Dimension( 500, 250 ) );
 		restPanel.setMaximumSize( new Dimension( 500, 250 ) );
 		restPanel.setPreferredSize( new Dimension( 500, 250 ) );
+		timer.start();
+
 	}
 	
 	public void displayBuildingPanel( BuildingPanel bp ) {
-		System.out.println("abc");
 		System.out.println( bp.getName() );
 		cardLayout.show( buildingPanels, bp.getName() );
 	}
@@ -178,5 +166,15 @@ public class CityGui extends JFrame {
 		    }
 		    // only got here if we didn't return false
 		return true;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		time++;		
+		for(PeopleAgent p : people) {
+			p.msgTimeIs(time);
+		}
+		repaint();
+		
 	}
 }
