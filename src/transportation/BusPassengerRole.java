@@ -1,7 +1,6 @@
 package transportation;
 
 import people.People;
-import people.PeopleAgent;
 import people.Role;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
@@ -27,7 +26,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	 */
 	@Override
 	public void msgIsActive(){
-	
+	//destination = myPerson.state.toString();
 	currentBusStop.msgWaitingHere(this);
 	myState = State.waitingAtBusStop;
 	}

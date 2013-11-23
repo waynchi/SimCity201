@@ -1,6 +1,6 @@
 package transportation;
 
-import people.PeopleAgent;
+import people.People;
 import people.Role;
 import transportation.interfaces.Car;
 import transportation.interfaces.CarPassenger;
@@ -11,11 +11,12 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	
     public String destination;
 	Car myCar;
+	CarPassengerGui myGui;
 	public enum State {readyToLeave,goingToDestination,leaving};
 	public enum Event {carIsReady,carArrivedToDestination};
 	public State myState;
 	public Event event;
-	PeopleAgent myPerson;
+	People myPerson;
 
 	public CarPassengerRole(){
 		
@@ -30,7 +31,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	System.out.println("CarPassenger is now active");
 	myState = State.readyToLeave;
 	event = Event.carIsReady;
-	destination = myPerson.state.toString();
+	//destination = myPerson.state.toString();
 	stateChanged();
 	}
 
@@ -44,6 +45,13 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	event = Event.carArrivedToDestination;
 	stateChanged();
 	}
+	}
+	
+	@Override
+	public void msgAnimationFinishedDoLeaveCar() {
+		// TODO Auto-generated method stub
+		System.out.println("Recieved message that gui finished leaving car, sending done message to myPerson");
+		myPerson.msgDone(this);
 	}
 
 	/* (non-Javadoc)
@@ -73,7 +81,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	
 	private void LeaveCar(){
 	myCar.msgImLeaving(this);
-	
+	myGui.DoLeaveCar(this);
 	}
 	
 	
@@ -91,9 +99,15 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	 * @see transportation.CarPassenger#setPersonAgent(people.PeopleAgent)
 	 */
 	@Override
-	public void setPersonAgent(PeopleAgent p)
+	public void setPerson(People p)
 	{
 		myPerson = p;
-		setPerson(p);
 	}
+	
+	public void setGui(CarPassengerGui g)
+	{
+		myGui = g;
+	}
+
+	
 }

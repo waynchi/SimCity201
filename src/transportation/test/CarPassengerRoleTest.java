@@ -1,40 +1,42 @@
 package transportation.test;
 
-import static org.junit.Assert.*;
-import transportation.CarAgent;
 import transportation.CarGui;
+import transportation.CarPassengerGui;
 import transportation.CarPassengerRole;
 import transportation.CarPassengerRole.State;
+import transportation.mock.MockCar;
 import junit.framework.TestCase;
 
-import org.junit.Test;
 
+import people.People;
 import people.PeopleAgent;
 
 public class CarPassengerRoleTest extends TestCase{
 
 	CarPassengerRole cpr = new CarPassengerRole();
-	PeopleAgent p = new PeopleAgent();
-	CarAgent c = new CarAgent();
+	People p = new PeopleAgent();
+	MockCar mockCar = new MockCar("mockCar");
+	CarPassengerGui cpg = new CarPassengerGui();
 	CarGui cg = new CarGui();
 	public void setUp() throws Exception{
 		super.setUp();
-		cpr.setPersonAgent(p);
-		c.setGui(cg);
-		cpr.setCar(c);
+		cpr.setPerson(p);
+		cpr.setGui(cpg);
+		mockCar.setGui(cg);
+		cpr.setCar(mockCar);
 	}
 	
 	public void testingCaseWithCarAndOnePassenger() {
 		
 		cpr.msgIsActive();
-		assertEquals("CarPassengerRole's state should be readyToLeave but its not", State.readyToLeave, cpr.myState);
 		cpr.destination = "Bank";
+		assertEquals("CarPassengerRole's state should be readyToLeave but its not", State.readyToLeave, cpr.myState);
 		assertTrue("CarPassengerRole's scheduler should return true to react to the state change but it didn't",cpr.pickAndExecuteAnAction());
-		assertEquals("Car's list of passengers should now be one, but its not",1,c.myCarPassengers.size());
-		assertTrue("Car's scheduler should return true to react to the new passenger, but it didn't",c.pickAndExecuteAnAction());
-		assertTrue("Car's scheduler should return true to tell passenger the it arrived, but it didn't",c.pickAndExecuteAnAction());
+		assertEquals("Car should have log size one to record recieving message that car passenger whats to go somewhere, but it didnt",1,mockCar.log.size());
+		cpr.msgArrivedToDestination("Bank");
 		assertTrue("CarPassengerRole's scheduler should return true to react to the car arriving, but it didnt",cpr.pickAndExecuteAnAction());
-		assertEquals("Car's list of passengers should now be zero, but it's not",0,c.myCarPassengers.size());
+		assertEquals("Car should have log size two to record that passenger is leving, but it didn't",2,mockCar.log.size());
+		
 	}
 	
 	

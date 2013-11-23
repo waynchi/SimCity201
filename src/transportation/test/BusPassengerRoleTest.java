@@ -1,14 +1,11 @@
 package transportation.test;
 
-import static org.junit.Assert.*;
 
 import junit.framework.TestCase;
 
-import org.junit.Test;
 
 import people.People;
 import people.PeopleAgent;
-import transportation.BusAgent;
 import transportation.BusGui;
 import transportation.BusPassengerGui;
 import transportation.BusPassengerRole;
