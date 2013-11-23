@@ -31,8 +31,8 @@ public class PeopleAgent extends Agent implements People{
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public HungerState hunger = HungerState.NotHungry;
-	public AgentState state = AgentState.Idle;
-	public AgentEvent event = AgentEvent.Idle;
+	public AgentState state = AgentState.Sleeping;
+	public AgentEvent event = AgentEvent.GoingToSleep;
 	
 	public double getMoney()
 	{
@@ -64,7 +64,7 @@ public class PeopleAgent extends Agent implements People{
 		return hunger.toString();
 	}
 	
-	public Role getHost();
+	public Role getHost()
 	{
 		return Restaurants.get(0).h;
 	}
@@ -164,6 +164,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == 800 && state == AgentState.Sleeping)
 		{
 			event = AgentEvent.WakingUp;
+			log.add(new LoggedEvent("Waking Up In Message"));
 			stateChanged();
 			return;
 		}
@@ -202,6 +203,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.start)
 		{
 			event = AgentEvent.GoingToWork;
+			log.add(new LoggedEvent("Going To Work"));
 			stateChanged();
 			return;
 		}
@@ -271,25 +273,28 @@ public class PeopleAgent extends Agent implements People{
 
 	//scheduler
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		boolean Roles = false, Person = false;
-		
-		for(MyRole m : roles)
+		/*for(MyRole m : roles)
 		{
-			if(true /*m.isActive*/)
+			if(m)
 			{
 				Roles = m.role.pickAndExecuteAnAction();
 			}
-		}
+		}*/
 		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
 		{
 			state = AgentState.Idle;
+			log.add(new LoggedEvent("Waking Up In Scheduler. New State is " + state.toString()));
 			Person = true;
 		}
 		if(state == AgentState.Idle && event == AgentEvent.GoingToWork)
 		{
 			state = AgentState.Working;
+			log.add(new LoggedEvent("Going To Work. New State is " + state.toString()));
+			
 			GoToWork();
+			System.out.println("testing");
 			Person = true;
 		}
 		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
@@ -493,7 +498,8 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantCook"))
 				{			
 					print("I am now a RestaurantCook");
-					r.role.msgIsActive();
+					//r.role.msgIsActive();
+					System.out.println("Testing123");
 				}
 			}
 			//roles.CookRole.msgIsActive();
@@ -506,6 +512,7 @@ public class PeopleAgent extends Agent implements People{
 				{		
 					print("I am now a RestaurantCashier");
 					r.role.msgIsActive();
+					
 				}
 			}
 			//roles.RepairRole.msgIsActive();

@@ -2,7 +2,9 @@ package people.test;
 
 
 
-import bank.TellerAgent;
+import java.util.ArrayList;
+import java.util.List;
+
 import city.gui.CityGui;
 import people.PeopleAgent;
 import people.Role;
@@ -25,6 +27,7 @@ import junit.framework.*;
  */
 public class PeopleTest extends TestCase
 {
+	List<PeopleAgent> people;
 	PeopleAgent cook;
 	PeopleAgent waiter;
 	PeopleAgent host;
@@ -39,11 +42,17 @@ public class PeopleTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
+		people = new ArrayList<PeopleAgent>();
 		cook = new PeopleAgent("Gordon", 100, false);
 		waiter = new PeopleAgent("Waiter", 50, false);
 	    customer = new PeopleAgent("Customer", 50, false);
 		host = new PeopleAgent("Host", 200, false);
 		cashier = new PeopleAgent("Cashier", 300, false);
+		people.add(cook);
+		people.add(waiter);
+		people.add(customer);
+		people.add(host);
+		people.add(cashier);
 		restPanel = new RestaurantPanel();
 		theMonitor = restPanel.theMonitor;
 		
@@ -59,13 +68,12 @@ public class PeopleTest extends TestCase
 		cook.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		cook.addRole((Role)new CookRole(cook.name, theMonitor), "RestaurantCook");
-		System.out.println(cook.log.getLastLoggedEvent().toString());
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
 		
 		waiter.addRole((Role)new RestaurantCustomerRole(waiter.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		waiter.addRole((Role)new NormalWaiterRole(waiter.name), "RestaurantWaiter");
-		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantWaiter"));
+		waiter.addRole((Role)new NormalWaiterRole(waiter.name), "RestaurantNormalWaiter");
+		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantNormalWaiter"));
 		
 		customer.addRole((Role)new RestaurantCustomerRole(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", customer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
@@ -84,14 +92,54 @@ public class PeopleTest extends TestCase
 		
 		//Adding Jobs
 		cook.addJob("RestaurantCook", 1200, 1800);
+		assertTrue("Testing Job addition", cook.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
 		
-		waiter.addJob("RestaurantWaiter", 1200, 1800);
+		waiter.addJob("RestaurantNormalWaiter", 1200, 1800);
+		assertTrue("Testing Job addition", waiter.log.getLastLoggedEvent().toString().contains("Job added: RestaurantNormalWaiter"));
 		
-		customer.addJob("RestaurantCook"), 5000, 50000);
+		customer.addJob("RestaurantCook", 5000, 50000);
+		assertTrue("Testing Job addition", customer.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
 		
-		host.addJob("")
+		host.addJob("RestaurantHost" , 1100, 1900);
+		assertTrue("Testing Job addition", host.log.getLastLoggedEvent().toString().contains("Job added: RestaurantHost"));
+		
+		cashier.addJob("RestaurantCashier", 1200, 1800);
+		assertTrue("Testing Job addition", cashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
 		
 		//Sending message to people!
+		//Wake up call!
+		
+		for(PeopleAgent p: people)
+		{
+			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+			p.msgTimeIs(800);
+			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+		}
+		
+		
+
+		
+		for(PeopleAgent p: people)
+		{
+			if(p == host)
+			{
+				p.msgTimeIs(1100);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+			}
+			else if(p != customer)
+			{
+				p.msgTimeIs(1200);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+			}
+			System.out.println("test");
+			
+		}
 		
 		//setUp() runs first before this test!
 		/*
