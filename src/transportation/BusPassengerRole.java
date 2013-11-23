@@ -1,6 +1,8 @@
 package transportation;
 
 import people.People;
+import people.PeopleAgent;
+import people.Role;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
@@ -11,8 +13,9 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	public Bus myBus;
 	public enum Event {busArrived,busArrivedAtDestination};
 	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
-	Event event;
-	State myState;
+	public Event event;
+	public State myState;
+	public BusPassengerGui myGui;
 	People myPerson;
 	
 	public BusPassengerRole(){
@@ -54,6 +57,12 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	    stateChanged();        
 	}
 	}
+	
+	public void msgAnimationFinishedDoLeaveBus() {
+		// TODO Auto-generated method stub
+		System.out.println("Bus passenger recieved message that gui left bus, now messaging myPerson");
+		myPerson.msgDone(this);
+	}
 
 	/* (non-Javadoc)
 	 * @see transportation.BusPassenger#pickAndExecuteAnAction()
@@ -84,13 +93,24 @@ public class BusPassengerRole extends Role implements BusPassenger{
 
 	private void LeaveBus() {
 	myBus.msgImLeaving(this);
+	myGui.DoLeaveBus(this);
+	//add gui for leaving bus
 	}
 	
 
-	public void setPersonAgent(People p){
-
-		myPerson = p;
+	
+	@Override
+	public void setPerson(People p) {
+		// TODO Auto-generated method stub
+		this.myPerson = p;
 	}
+	
+	public void setGui(BusPassengerGui g)
+	{
+		myGui = g;
+	}
+
+	
 
 	
 
