@@ -6,12 +6,16 @@ import restaurant.gui.CookGui;
 import restaurant.gui.HostGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
+import restaurant.interfaces.Host;
 
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import market.MarketEmployeeRole;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -26,10 +30,10 @@ import people.Role;
 //has not been ordered for now.
 
 
-public class CookRole extends Role{
+public class CookRole extends Role implements Cook{
 
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
-	private List<MarketRole> markets = Collections.synchronizedList(new ArrayList<MarketRole>());
+	private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	private String name;
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
 	private CookWaiterMonitor theMonitor = null;
@@ -43,9 +47,12 @@ public class CookRole extends Role{
 	
 	private Boolean isActive;
 	private Boolean turnActive;
-	private HostRole host;
+	private Host host;
+	
+	//private MarketEmployeeRole marketEmployee = null;
 	
 	
+	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	private class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean isResponded;
@@ -58,7 +65,6 @@ public class CookRole extends Role{
 		};
 	}
 
-	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 
 	/**
 	 * Constructor for CookAgent class
@@ -88,6 +94,11 @@ public class CookRole extends Role{
 		getPersonAgent().CallstateChanged();
 	}
 	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgHereIsAnOrder (String food, BaseWaiterRole w,int tableNum) {
 		orders.add( new MyOrder(food, w, tableNum));
 		print("Receiving order, " + food + " for table #"+tableNum);
@@ -102,7 +113,14 @@ public class CookRole extends Role{
 	}	
 
 
-	public void msgSupply (Map<String,Integer> orderList, Map<String,Integer> supplyList) {
+	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		for (Map.Entry<String, Integer> entry : items.entrySet()) {
+			foods.get(entry.getKey()).amount += entry.getValue();
+		}
+		
+	}
+	
+	/*public void msgSupply (Map<String,Integer> orderList, Map<String,Integer> supplyList) {
 		synchronized (marketOrders) {
 
 			for (MarketOrder mo : marketOrders) {
@@ -116,12 +134,12 @@ public class CookRole extends Role{
 				}
 			}
 		}
-	}
+	}*/
 
-	public void addMarket (MarketRole m) {
+	/*public void addMarket (MarketEmployeeRole m) {
 		markets.add(m);
 		getPersonAgent().CallstateChanged();
-	}
+	}*/
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
@@ -157,14 +175,14 @@ public class CookRole extends Role{
 			}
 		}
 
-		synchronized(marketOrders){
+		/*synchronized(marketOrders){
 			for (MarketOrder mo : marketOrders) {
 				if (mo.isResponded) {
 					orderFromAnotherMarket (mo);
 					return true;
 				}
 			}
-		}
+		}*/
       
 		schedulerTimer.scheduleAtFixedRate(
 				new TimerTask(){
@@ -223,19 +241,19 @@ public class CookRole extends Role{
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
 			for (Food f: foods.values()){
-				if (f.amount <= f.low && (!f.isOrdered)){
+				if (f.amount <= f.low /*&& (!f.isOrdered)*/){
 					marketOrder.put(f.type, f.capacity-f.amount);
-					f.isOrdered = true;
+					//f.isOrdered = true;
 				}
 			}
 		}
 		//System.out.println(foods.get("Chicken").isOrdered);
 		marketOrders.add(new MarketOrder(marketOrder));
-		markets.get(0).msgOrder(marketOrder,this, cashier);	
+		marketEmployees.get(0).msgOrder(marketOrder,this, cashier);	
 	}
 
 
-	private void orderFromAnotherMarket (MarketOrder mo) {
+	/*private void orderFromAnotherMarket (MarketOrder mo) {
 
 		List<String> foodFulfilled = Collections.synchronizedList (new ArrayList<String>());
 		synchronized (mo.marketOrder){
@@ -266,10 +284,11 @@ public class CookRole extends Role{
 		}
 
 		
-	}
+	}*/
 	
 	private void clockIn() {
 		getPersonAgent().getHost().setCook(this);
+		marketEmployees = getPersonAgent().getMarketEmployee();
 		turnActive = false;
 	}
 
@@ -356,5 +375,13 @@ public class CookRole extends Role{
 	public boolean isActive() {
 		return isActive;
 	}
+
+
+	@Override
+	public People getPerson() {
+		return getPersonAgent();
+	}
+
+
 }
 

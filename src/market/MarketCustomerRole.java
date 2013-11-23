@@ -8,6 +8,7 @@ import java.util.Map;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
+import people.People;
 import people.Role;
 
 public class MarketCustomerRole extends Role implements MarketCustomer{
@@ -28,7 +29,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	Boolean isActive = false;
 
-	
+	//constructor
+	MarketCustomerRole(){
+		
+	}
 	
 	// messages
 	public void msgIsActive () {
@@ -116,6 +120,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	//action
 	private void orderItem() {
+		//gui.doGoToMarketEmployee();
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
@@ -135,6 +140,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// unitilies
 	public Boolean isActive() {
 		return isActive;
+	}
+
+	@Override
+	public People getPerson() {
+		return getPersonAgent();
 	}
 
 }

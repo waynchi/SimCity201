@@ -24,7 +24,7 @@ import people.Role;
 public class MarketRole extends Role implements Market{
 
 
-	private String name;
+	/*private String name;
 	private boolean isActive = false;
 	//private CookAgent cook;
 	private class MyOrder {
@@ -54,11 +54,8 @@ public class MarketRole extends Role implements Market{
 	private Map<String, Food> myFood = Collections.synchronizedMap(new HashMap<String, Food>());
 	private Map<Cashier, Double> cashierBalance = Collections.synchronizedMap(new HashMap<Cashier, Double>());
 
-	/**
-	 * Constructor for MarketAgent class
-	 *
-	 * @param name name of the market
-	 */
+
+
 	public MarketRole(String name) {
 		super();
 
@@ -99,7 +96,7 @@ public class MarketRole extends Role implements Market{
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
-	 */
+	 
 	public boolean pickAndExecuteAnAction() {
 
 		if (!orders.isEmpty()) {
@@ -168,6 +165,7 @@ public class MarketRole extends Role implements Market{
 	public boolean isActive() {
 		return isActive;
 	}
+	*/
 
 }
 

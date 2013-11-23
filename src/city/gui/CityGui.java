@@ -32,7 +32,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole("Host");
-	MarketRole market = new MarketRole("Market 1");
+	MarketEmployeeRole market = new MarketEmployeeRole("Market 1");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(
 			100, 100), "Restaurant 1");
 	int time;
@@ -43,7 +43,7 @@ public class CityGui extends JFrame implements ActionListener {
 				RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketRole RestaurantMarketRole = new MarketRole("Market");
+		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole("Market");
 
 		FileReader input;
 		try {
