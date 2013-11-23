@@ -30,12 +30,20 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		ro.s = RentOrderState.AppliedPenalty;
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	public void applyPenaltyAndRemove(RentOrder ro) {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		rents.remove(ro);
+		gui.DoUseCellPhone();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	//-----------------------------------------------------------//

@@ -38,31 +38,7 @@ public class MockResident implements Resident {
 	}
 
 	@Override
-	public void eatAtHome() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void foodCooked() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void activityComplete() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void eatAtRestaurant() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void doneEating() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -78,12 +54,6 @@ public class MockResident implements Resident {
 	}
 
 	@Override
-	public List<Item> getBrokenItems() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public People getAgent() {
 		// TODO Auto-generated method stub
 		return null;
@@ -91,6 +61,12 @@ public class MockResident implements Resident {
 
 	@Override
 	public void setHouse(House h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void activityDone() {
 		// TODO Auto-generated method stub
 		
 	}

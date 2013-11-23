@@ -2,6 +2,7 @@ package housing.test;
 
 import java.util.List;
 import people.People;
+import people.Role;
 import housing.House;
 import housing.Item;
 import housing.interfaces.RepairMan;
@@ -9,7 +10,7 @@ import housing.interfaces.Resident;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
-public class MockRepairMan implements RepairMan {
+public class MockRepairMan extends Role implements RepairMan {
 	
 	// Data
 	
@@ -21,18 +22,6 @@ public class MockRepairMan implements RepairMan {
 	
 	@Override
 	public void needHelp(House h) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void thingsAreBroken(House h, List<Item> brokenItems) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void thankYou(House h) {
 		// TODO Auto-generated method stub
 		
 	}
