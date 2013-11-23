@@ -95,20 +95,21 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		RentOrder ro =  null;
+		if (super.myState != State.Sleeping) {
+			RentOrder ro =  null;
 
-		ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
-		if (ro != null) {
-			applyPenaltyAndRemove(ro);
-			return true;
-		}
-		
-		ro = findRentOrderByState(RentOrderState.ApplyPenalty);
-		if (ro != null) {
-			applyPenalty(ro);
-			return true;
-		}
+			ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
+			if (ro != null) {
+				applyPenaltyAndRemove(ro);
+				return true;
+			}
 
+			ro = findRentOrderByState(RentOrderState.ApplyPenalty);
+			if (ro != null) {
+				applyPenalty(ro);
+				return true;
+			}
+		}
 		return super.pickAndExecuteAnAction();
 	}
 

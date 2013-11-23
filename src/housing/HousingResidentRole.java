@@ -7,7 +7,6 @@ import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-
 import people.People;
 import people.PeopleAgent.AgentEvent;
 import people.PeopleAgent.AgentState;
@@ -20,7 +19,8 @@ public class HousingResidentRole extends Role implements Resident {
 	protected House house;
 	private RepairMan repairMan;
 	private RepairStage repairStage;
-	private State myState;
+	protected State myState;
+	private boolean leisure = false;
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
 
@@ -92,6 +92,10 @@ public class HousingResidentRole extends Role implements Resident {
 	public void relaxOnSofa() {
 		gui.DoRelaxOnSofa();
 	}
+	
+	public void playVideoGames() {
+		gui.DoPlayVideoGames();
+	}
 
 	//-----------------------------------------------------------//
 
@@ -133,33 +137,40 @@ public class HousingResidentRole extends Role implements Resident {
 	public boolean pickAndExecuteAnAction() {
 		if (myPerson.getEvent() == AgentEvent.WakingUp && myState == State.Sleeping) {
 			doMorningStuff();
+			leisure = false;
 			return true;
 		}
 		if (myPerson.getEvent() == AgentEvent.GoingToSleep && myState == State.Idle) {
 			sleep();
+			leisure = false;
 			return true;
 		}
 		if (myPerson.getState == AgentState.EatingAtHome && myState == State.Idle  && myPerson.getHunger() == HungerState.Hungry) {
 			cookAtHome();
+			leisure = false;
 			return true;
 		}
 		if (myPerson.getState == AgentState.EatingAtHome && myState == State.FoodCooked) {
 			eatFood();
+			leisure = false;
 			return true;
 		}
 		if (this.myPerson != repairMan.getPersonAgent()) {
 			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && (myState != State.Sleeping && myState != State.DoingMorningStuff)) {
 				callRepairMan();
+				leisure = false;
 				return true;
 			}
 		}
 		else {
 			if (!house.getBrokenItems().isEmpty() && (repairStage == RepairStage.None || repairStage == RepairStage.NeedsRepair) && (myState != State.Sleeping && myState != State.DoingMorningStuff)) {
 				repairMyHomeItems();
+				leisure = false;
 				return true;
 			}
 		}
-		if (myState == State.Idle) {
+		if (myState == State.Idle && leisure == false) {
+			leisure = true;
 			Activity a = selectRandomActivity();
 			if (a == Activity.RelaxOnSofa) {
 				relaxOnSofa();
@@ -171,6 +182,10 @@ public class HousingResidentRole extends Role implements Resident {
 			}
 			if (a == Activity.WatchTV) {
 				watchTV();
+				return true;
+			}
+			if (a == Activity.PlayVideoGames) {
+				playVideoGames();
 				return true;
 			}
 		}
@@ -203,12 +218,14 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public Activity selectRandomActivity() {
 		Random generator = new Random();
-		int num = generator.nextInt(3);
+		int num = generator.nextInt(4);
 		if (num == 0)
 			return Activity.RelaxOnSofa;
 		if (num == 1)
 			return Activity.Read;
-		return Activity.WatchTV;
+		if (num == 2)
+			return Activity.WatchTV;
+		return Activity.PlayVideoGames;
 	}
 
 	//-----------------------------------------------------------//
@@ -217,8 +234,8 @@ public class HousingResidentRole extends Role implements Resident {
 
 	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-	enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
+	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
 	
-	enum Activity {RelaxOnSofa, Read, WatchTV};
+	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames};
 }
 

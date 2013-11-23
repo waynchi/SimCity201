@@ -68,14 +68,16 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 	// Scheduler
 
 	public boolean pickAnExecuteAnAction() {
-		if (rentDue == true && money >= rent) {
-			payRent();
-			return true;
-		}
-		Double p = findPayablePenalty();
-		if (p != null) {
-			payPenalty(p);
-			return true;
+		if (super.myState != State.Sleeping) {
+			if (rentDue == true && money >= rent) {
+				payRent();
+				return true;
+			}
+			Double p = findPayablePenalty();
+			if (p != null) {
+				payPenalty(p);
+				return true;
+			}
 		}
 		return super.pickAndExecuteAnAction();
 	}

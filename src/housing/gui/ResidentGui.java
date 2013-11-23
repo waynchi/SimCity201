@@ -21,10 +21,11 @@ public class ResidentGui implements HGui{
 	private final int PREPING_TIME = 1000;
 	private final int COOKING_TIME = 2000;
 	private boolean readingBook = false;
+	private boolean videoGames = false;
 	public Resident r;
 	public HouseGui hGui;
 	
-	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping};
+	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames};
 	
 	// Use timers to implement cooking, and then call
 	// r.activityDone().
@@ -37,6 +38,11 @@ public class ResidentGui implements HGui{
 
 	@Override
 	public void updatePosition() {
+		if (state != State.Reading && state != State.Idle)
+			readingBook = false;
+		if (state != State.PlayingVideoGames && state != State.Idle)
+			videoGames = false;
+		
 		if (xPos < xDestination)
 			xPos++;
 		if (yPos < yDestination)
@@ -76,7 +82,12 @@ public class ResidentGui implements HGui{
 				state = State.Idle;
 			}
 			else if (state == State.Reading) {
+				state = State.Idle;
 				readingBook = true;
+			}
+			else if (state == State.PlayingVideoGames) {
+				state = State.Idle;
+				videoGames = true;
 			}
 		}
 	}
@@ -84,8 +95,13 @@ public class ResidentGui implements HGui{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
-		g.fillOval(xPos, yPos, 10, 10);
+		g.fillOval(xPos, yPos, 15, 15);
 		if (readingBook == true) {
+			g.setColor(Color.green);
+			g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+		}
+		if (videoGames == true) {
+			g.setColor(Color.darkGray);
 			g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
 		}
 	}
@@ -100,28 +116,24 @@ public class ResidentGui implements HGui{
 	}
 	
 	public void DoPoop() {
-		readingBook = false;
 		state = State.Pooping;
 		Dimension d = hGui.getPosition("Toilet");
 		goToLocation(d);
 	}
 	
 	public void DoBathe() {
-		readingBook = false;
 		state = State.Bathing;
 		Dimension d = hGui.getPosition("BathTub");
 		goToLocation(d);
 	}
 
 	public void DoPee() {
-		readingBook = false;
 		state = State.Peeing;
 		Dimension d = hGui.getPosition("Toilet");
 		goToLocation(d);
 	}
 	
 	public void DoWatchTV() {
-		readingBook = false;
 		state = State.WatchingTV;
 		Random generator = new Random();
 		int num = generator.nextInt(3);
@@ -132,14 +144,12 @@ public class ResidentGui implements HGui{
 	}
 	
 	public void DoCook() {
-		readingBook = false;
 		state = State.FetchingFromShelves;
 		Dimension d = hGui.getPosition("Shelves");
 		goToLocation(d);
 	}
 	
 	public void DoEat() {
-		readingBook = false;
 		state = State.Eating;
 		Random generator = new Random();
 		int num = generator.nextInt(4);
@@ -149,22 +159,25 @@ public class ResidentGui implements HGui{
 	}
 	
 	public void DoSleep() {
-		readingBook = false;
 		state = State.Sleeping;
 		Dimension d = hGui.getPosition("Bed");
 		goToLocation(d);
 	}
 	
 	public void DoRelaxOnSofa() {
-		readingBook = false;
 		state = State.RelaxingOnSofa;
 		Dimension d = hGui.getPosition("Sofa1");
 		goToLocation(d);
 	}
 	
 	public void DoRead() {
-		readingBook = false;
 		state = State.Reading;
+		Dimension d = hGui.getPosition("StudyChair");
+		goToLocation(d);
+	}
+	
+	public void DoPlayVideoGames() {
+		state = State.PlayingVideoGames;
 		Dimension d = hGui.getPosition("StudyChair");
 		goToLocation(d);
 	}
