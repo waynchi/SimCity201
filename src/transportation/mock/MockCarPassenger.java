@@ -1,5 +1,7 @@
 package transportation.mock;
 
+import test.EventLog;
+import test.LoggedEvent;
 import people.People;
 import people.Role;
 import transportation.interfaces.Car;
@@ -7,6 +9,8 @@ import transportation.interfaces.CarPassenger;
 
 public class MockCarPassenger extends Role implements CarPassenger {
 
+	public EventLog log = new EventLog();
+	
 	public MockCarPassenger() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -21,7 +25,7 @@ public class MockCarPassenger extends Role implements CarPassenger {
 	@Override
 	public void msgArrivedToDestination(String place) {
 		// TODO Auto-generated method stub
-
+		log.add(new LoggedEvent("Recieved message car arrived to destination"));
 	}
 
 	@Override
