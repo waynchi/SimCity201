@@ -26,11 +26,21 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private	Map<String, Integer> itemsReceived = new HashMap<String, Integer>();
 	private	double totalDue;
 
-	Boolean isActive;
+	Boolean isActive = false;
 
 	
 	
 	// messages
+	public void msgIsActive () {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
 		isActive = true;
 		itemsNeeded = items;

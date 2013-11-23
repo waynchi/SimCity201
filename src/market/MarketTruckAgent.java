@@ -46,7 +46,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	//actions
 	private void deliverOrder(Order order) {
-		gui.deliver(order.customer.getPersonAgent().getPosition(); // need a getGui for personAgent
+		gui.deliver(order.customer.getPerson().getPosition(); // need a getGui for personAgent
 		order.customer.msgHereIsYourOrder(order.items);
 		orders.remove(order);
 	}

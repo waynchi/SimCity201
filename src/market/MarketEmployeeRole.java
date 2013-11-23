@@ -53,13 +53,24 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	
-	private Boolean isActive;
+	private Boolean isActive = false;
 
 	// constructor
 	public MarketEmployeeRole(){}
 	
 	
 	// messages
+	
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
 		 orders.add(new Order(customer, chosenItems));
 		getPersonAgent().CallstateChanged();

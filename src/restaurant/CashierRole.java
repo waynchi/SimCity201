@@ -117,8 +117,6 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	// Messages
-
 	public CashierRole(String name) {
 		super();
 		this.name = name;
@@ -137,6 +135,7 @@ public class CashierRole extends Role implements Cashier {
 		turnActive = false;
 	}
 
+	// messages
 
 	public void msgIsActive() {
 		turnActive = true;
@@ -147,6 +146,7 @@ public class CashierRole extends Role implements Cashier {
 	public void msgIsInActive() {
 		// onClose = true
 		isActive = false;
+		getPersonAgent().CallstateChanged();
 	}
 
 
