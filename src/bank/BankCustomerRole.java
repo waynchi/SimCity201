@@ -12,10 +12,12 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import people.Role;
+
 /**
  * Bank customer agent.
  */
-public class BankCustomerAgent extends Agent implements BankCustomer {
+public class BankCustomerRole extends Role implements BankCustomer {
 	private String name;
 
 	Timer timer = new Timer();
@@ -45,7 +47,7 @@ public class BankCustomerAgent extends Agent implements BankCustomer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public BankCustomerAgent(String name){
+	public BankCustomerRole(String name){
 		super();
 		this.name = name;
 	}
