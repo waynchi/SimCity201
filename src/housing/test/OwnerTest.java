@@ -1,57 +1,25 @@
 package housing.test;
 
 import static org.junit.Assert.*;
-import java.util.List;
 import housing.House;
-import housing.HousingRepairManRole;
-import housing.HousingResidentRole;
-import housing.Item;
-import housing.interfaces.RepairMan;
+import housing.interfaces.Owner;
+import housing.interfaces.Renter;
 import housing.interfaces.Resident;
 import org.junit.Test;
 import people.People;
 import people.PeopleAgent;
 
 public class OwnerTest {
-
-	Resident r1;
-	Resident r2;
-	RepairMan r;
-	People p = new PeopleAgent();
+	Owner o;
+	Renter r1;
+	Renter r2;
+	Renter r3;
 	House h1;
 	House h2;
-	List<Item> h1Items;
-	List<Item> h2Items;
+	House h3;
 	
 	@Test
 	public void test1() {
-		setUp();
-		
-		h1Items.get(0).breakIt();
-		assertFalse(r.doesItNeedRepair(h1));
-		assertEquals(1, r1.getBrokenItems().size());
-		assertFalse(r.doesItNeedRepair(h1));
-		
-		r1.pickAndExecuteAnAction();
-		
-		assertTrue(r.doesItNeedRepair(h1));
-		assertFalse(r.anyCurrentHouse());
-		
-		r.pickAndExecuteAnAction();
-		
-		assertTrue(r.anyCurrentHouse());
-		assertFalse(r.doesItNeedRepair(h1));
-		
-		r1.pickAndExecuteAnAction();
-	}
-	
-	@Test
-	public void test2() {
-		setUp();
-	}
-	
-	@Test
-	public void test3() {
 		setUp();
 	}
 	
@@ -60,31 +28,31 @@ public class OwnerTest {
 		h2 = null;
 		r1 = null;
 		r2 = null;
-		r = null;
-		h1Items = null;
-		h2Items = null;
+		o = null;
 		
 		h1 = new House("R1Residence", 1);
-		r1 = new HousingResidentRole();
+		r1 = new MockRenter();
 		h2 = new House("R2Residence", 2);
-		r2 = new HousingResidentRole();
-		r = new HousingRepairManRole();
-		r.setPerson(p);
+		r2 = new MockRenter();
+		h3 = new House("R3Residence", 3);
+		r3 = new MockRenter();
 		
-		h1.setOccupant(r1);
+		h1.setOccupant((Resident)r1);
 		h1.setItemsWithoutGui();
-		h2.setOccupant(r2);
+		h2.setOccupant((Resident)r2);
 		h2.setItemsWithoutGui();
+		h3.setOccupant((Resident)r3);
+		h3.setItemsWithoutGui();
 		
-		r1.setRepairMan(r);
-		r1.setHouse(h1);
-		r2.setRepairMan(r);
-		r2.setHouse(h2);
+		o.addHouse(h1, r1);
+		o.addHouse(h2, r2);
+		o.addHouse(h3, r3);
 		
-		r.addHouse(h1, r1);
-		r.addHouse(h2, r2);
-		
-		h1Items = h1.items;
-		h2Items = h2.items;
+		r1.setOwner(o);
+		((Resident)r1).setHouse(h1);
+		r1.setOwner(o);
+		((Resident)r2).setHouse(h2);
+		r1.setOwner(o);
+		((Resident)r3).setHouse(h3);
 	}
 }
