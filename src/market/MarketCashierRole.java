@@ -38,6 +38,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPersonAgent().CallstateChanged();
 	}
 	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+
+	}
+	
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
 		checks.add(new Check(customer, items));
 		getPersonAgent().CallstateChanged();

@@ -269,7 +269,7 @@ public class CookRole extends Role{
 	}
 	
 	private void clockIn() {
-		host.setCook(this);
+		getPersonAgent().getHost().setCook(this);
 		turnActive = false;
 	}
 

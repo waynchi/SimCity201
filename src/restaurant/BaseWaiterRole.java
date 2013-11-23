@@ -96,10 +96,14 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void msgIsActive() {
 		isActive = true;
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	public void msgIsInActive () {
 		isActive = false;
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	public void msgAtTable() {//from animation

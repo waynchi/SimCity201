@@ -25,7 +25,7 @@ public class MarketRole extends Role implements Market{
 
 
 	private String name;
-	private boolean isActive;
+	private boolean isActive = false;
 	//private CookAgent cook;
 	private class MyOrder {
 		CookRole cook;
@@ -73,7 +73,18 @@ public class MarketRole extends Role implements Market{
 
 
 	// Messages
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
 
+	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+
+	}
+	
 	public void msgOrder (Map<String, Integer> orderList, CookRole c, Cashier ca) {
 		orders.add(new MyOrder(orderList, c, ca));
 		stateChanged();

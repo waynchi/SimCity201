@@ -51,6 +51,12 @@ public class HostRole extends Role implements Host{
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+
+	}
 
 	public void addWaiter(BaseWaiterRole w){
 		availableWaiters.add(w);
