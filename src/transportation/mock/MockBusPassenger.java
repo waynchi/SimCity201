@@ -1,6 +1,6 @@
 package transportation.mock;
 
-import people.PeopleAgent;
+import people.People;
 import transportation.BusStop;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
@@ -37,7 +37,7 @@ public class MockBusPassenger extends Mock implements BusPassenger {
 	}
 
 	@Override
-	public void setPersonAgent(PeopleAgent p) {
+	public void setPerson(People p) {
 		// TODO Auto-generated method stub
 
 	}

@@ -4,7 +4,6 @@ import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 public class BusStop {
 public List<BusPassengerRole> waitingPassengers = new ArrayList<BusPassengerRole>();

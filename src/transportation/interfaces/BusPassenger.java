@@ -1,6 +1,6 @@
 package transportation.interfaces;
 
-import people.PeopleAgent;
+import people.People;
 import transportation.BusStop;
 
 public interface BusPassenger {
@@ -13,6 +13,6 @@ public interface BusPassenger {
 
 	public abstract boolean pickAndExecuteAnAction();
 
-	public abstract void setPersonAgent(PeopleAgent p);
+	public abstract void setPerson(People p);
 
 }

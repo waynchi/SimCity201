@@ -22,6 +22,10 @@ BusState busState;
 BusStop currentStop;
 List<BusStop> myBusStops = new ArrayList<BusStop>();
 
+public BusAgent(){
+	super();
+}
+
 
 /* (non-Javadoc)
  * @see transportation.Bus#msgImBoarding(transportation.BusPassengerRole)
