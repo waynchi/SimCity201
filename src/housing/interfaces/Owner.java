@@ -15,6 +15,12 @@ public interface Owner {
 	public MyHouse getMyHouse(House h);
 
 	//-----------------------------------------------------------//
+	
+	// Scheduler
+	
+	public boolean pickAndExecuteAnAction();
+		
+	//-----------------------------------------------------------//
 
 	// Utilities
 	

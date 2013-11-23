@@ -44,5 +44,9 @@ public class Item {
 		isBroken = true;
 		gui.breakIt();
 	}
+	
+	public String toString() {
+		return name;
+	}
 }
 

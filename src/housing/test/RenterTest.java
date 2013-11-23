@@ -20,6 +20,51 @@ public class RenterTest {
 	@Test
 	public void testNormative1() {
 		setUp();
+		
+		r.setMoney(400.0);
+		
+		assertEquals(1, ((MockOwner)o).log.size());
+		assertEquals("Added Residence", ((MockOwner)o).log.getLastLoggedEvent().getMessage());
+		
+		assertFalse(r.isRentDue());
+		assertEquals(0, r.getTimesRentDue());
+		
+		r.rentReminder();
+		
+		assertTrue(r.isRentDue());
+		assertEquals(1, r.getTimesRentDue());
+		
+		r.pickAndExecuteAnAction();
+		
+		assertEquals("Received rent of $200.0 from Residence", ((MockOwner)o).log.getLastLoggedEvent().getMessage());
+		
+		assertFalse(r.isRentDue());
+		assertEquals(0, r.getTimesRentDue());
+		
+		r.rentReminder();
+		
+		assertTrue(r.isRentDue());
+		assertEquals(1, r.getTimesRentDue());
+		
+		r.pickAndExecuteAnAction();
+		
+		assertEquals("Received rent of $200.0 from Residence", ((MockOwner)o).log.getLastLoggedEvent().getMessage());
+	}
+	
+	public void testNonNormative1() {
+		setUp();
+		
+		r.setMoney(200);
+		
+		r.rentReminder();
+		r.rentReminder();
+		
+		assertTrue(r.isRentDue());
+		assertEquals(2, r.getTimesRentDue());
+		
+		r.pickAndExecuteAnAction();
+		
+		assertEquals("Received rent of $200.0 from Residence", ((MockOwner)o).log.getLastLoggedEvent().getMessage());
 	}
 	
 	public void setUp() {
@@ -34,9 +79,9 @@ public class RenterTest {
 		h.setOccupant((Resident)r);
 		h.setItemsWithoutGui();
 		
-		o.addHouse(h, r);
-		
 		r.setOwner(o);
 		((Resident)r).setHouse(h);
+		
+		o.addHouse(h, r);
 	}
 }
