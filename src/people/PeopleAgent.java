@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import city.Restaurant;
 import city.gui.CityGui;
 import agent.Agent;
@@ -19,6 +21,8 @@ public class PeopleAgent extends Agent implements People{
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
 	CityGui cityGui;
+	public EventLog log = new EventLog();
+
 	
 	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
@@ -67,6 +71,7 @@ public class PeopleAgent extends Agent implements People{
 	public void addRole(Role r, String description)
 	{
 		roles.add(new MyRole(r, description));
+		log.add(new LoggedEvent("Role added: " + description));
 	}
 	
 	/* (non-Javadoc)
@@ -94,6 +99,7 @@ public class PeopleAgent extends Agent implements People{
 	public void addJob(String job, int start, int end)
 	{
 		jobs.add(new Job(job, start, end));
+		log.add(new LoggedEvent("Job added: " + job));
 	}
 	//messages
 
@@ -128,13 +134,13 @@ public class PeopleAgent extends Agent implements People{
 	}*/
 	public void msgTimeIs(int Time)
 	{
-		if(Time == 0)
+		/*if(Time == 0)
 		{
 			event = AgentEvent.GoingToRestaurant;
 			stateChanged();
 			print("GoingToCar");
 			return;
-		}
+		}*/
 		if(Time == 800 && state == AgentState.Sleeping)
 		{
 			event = AgentEvent.WakingUp;
