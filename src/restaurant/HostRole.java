@@ -2,6 +2,7 @@ package restaurant;
 
 import agent.Agent;
 import restaurant.gui.HostGui;
+import restaurant.interfaces.Host;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ import people.Role;
  */
 //A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Role {
+public class HostRole extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -48,12 +49,13 @@ public class HostRole extends Role {
 	// Messages
 	public void msgIsActive() {
 		isActive = true;
+		getPersonAgent().CallstateChanged();
 	}
 
 	public void addWaiter(BaseWaiterRole w){
 		availableWaiters.add(w);
 		waiters.add(new MyWaiter(w));
-		stateChanged();
+		getPersonAgent().CallstateChanged();
 	}
 
 	// from restaurant panel, "Go On Break" button is pressed
@@ -62,7 +64,8 @@ public class HostRole extends Role {
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
 					w.s = waiterStatus.ASKING_FOR_BREAK;
-					stateChanged();
+					getPersonAgent().CallstateChanged();
+
 				}
 			}
 		}
@@ -75,7 +78,8 @@ public class HostRole extends Role {
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
 					w.s = waiterStatus.AT_WORK;
-					stateChanged();
+					getPersonAgent().CallstateChanged();
+
 				}
 			}
 		}
@@ -85,7 +89,8 @@ public class HostRole extends Role {
 	public void IWantToEat(RestaurantCustomerRole cust) {
 
 		customers.add(new MyCustomer(cust));
-		stateChanged();
+		getPersonAgent().CallstateChanged();
+
 	}
 
 	public void leaveRestaurant(RestaurantCustomerRole cust){
@@ -93,7 +98,8 @@ public class HostRole extends Role {
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
 					mc.state = customerState.LEAVING;
-					stateChanged();
+					getPersonAgent().CallstateChanged();
+
 				}
 			}
 		}
@@ -105,6 +111,8 @@ public class HostRole extends Role {
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
 					mc.state = customerState.WAITING;
+					getPersonAgent().CallstateChanged();
+
 				}
 			}
 		}
@@ -124,7 +132,8 @@ public class HostRole extends Role {
 					}
 					customerCount--;
 					table.setUnoccupied();
-					stateChanged();
+					getPersonAgent().CallstateChanged();
+
 				}
 			}
 		}
