@@ -14,6 +14,7 @@ public class HouseGui implements HGui{
 	List<ItemGui> items = new ArrayList<ItemGui>();
 	List<HGui> guis = new ArrayList<HGui>();
 	TestGui testGui;
+	public Dimension entranceCoordinates = new Dimension(455, 345);
 
 	public HouseGui(House h, TestGui g) {
 		this.h = h;
