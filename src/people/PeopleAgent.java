@@ -49,6 +49,26 @@ public class PeopleAgent extends Agent implements People{
 		return temp;
 	}
 	
+	public String getAgentState()
+	{
+		return state.toString();
+	} 
+	
+	public String getAgentEvent()
+	{
+		return event.toString();
+	}
+	
+	public String getHunger()
+	{
+		return hunger.toString();
+	}
+	
+	public Role getHost();
+	{
+		return Restaurants.get(0).h;
+	}
+	
 	public String getMaitreDName() {
 		return name;
 	}
