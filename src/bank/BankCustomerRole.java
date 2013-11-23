@@ -75,6 +75,16 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgIsActive() {
+		isActive = true;
+		stateChanged();
+	}
+	
+	public void msgIsInactive() {
+		isActive = false;
+		stateChanged();
+	}
+	
 	public void msgReadyToHelp(Teller t) {
 		this.teller = t;
 		state = CustomerState.ready;
@@ -114,25 +124,27 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
-
-		if (state == CustomerState.ready) {
-	        if (action == CustomerAction.deposit) {
-	        	DepositMoney();
-	        	return true;
-	        }
-	        if (action == CustomerAction.withdraw) {
-	            WithdrawMoney();
-	            return true;
-	        }
+		if (isActive) {
+			if (state == CustomerState.ready) {
+				if (action == CustomerAction.deposit) {
+					DepositMoney();
+					return true;
+				}
+				if (action == CustomerAction.withdraw) {
+					WithdrawMoney();
+					return true;
+				}
+			}
+			if (state == CustomerState.done) {
+				LeaveBank();
+				return true;
+			}
+			if (state == CustomerState.needAccount) {
+				CreateAccount();
+				return true;
+			}
 		}
-		if (state == CustomerState.done) {
-	        LeaveBank();
-	        return true;
-		}
-		if (state == CustomerState.needAccount) {
-	        CreateAccount();
-	        return true;
-		}
+		
 		return false;
 	}
 

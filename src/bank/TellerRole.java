@@ -48,6 +48,16 @@ public class TellerRole extends Role implements Teller {
 
 	// Messages
 	
+	public void msgIsActive(){
+		isActive = true;
+		stateChanged();
+	}
+	
+	public void msgIsInactive(){
+		isActive = false;
+		stateChanged();
+	}
+	
 	public void msgHere(BankCustomer cust) {
 		waitingCustomers.add(new myBankCustomer(cust));
 		stateChanged();
@@ -89,28 +99,30 @@ public class TellerRole extends Role implements Teller {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	protected boolean pickAndExecuteAnAction() {
-		if (waitingCustomers.size() != 0) {
-			if (currentCustomer == null) {
-				currentCustomer = waitingCustomers.get(0);
-				callCustomer(currentCustomer);
-				return true;
-			}
-			else {
-				if (currentCustomer.state == CustomerState.newAccount) {
-					newAccount(currentCustomer);
+		if (isActive) {
+			if (waitingCustomers.size() != 0) {
+				if (currentCustomer == null) {
+					currentCustomer = waitingCustomers.get(0);
+					callCustomer(currentCustomer);
 					return true;
 				}
-				if (currentCustomer.state == CustomerState.deposit) {
-					depositMoney(currentCustomer);
-					return true;
-				}
-				if (currentCustomer.state == CustomerState.withdraw) {
-					withdrawMoney(currentCustomer);
-					return true;
-				}
-				if (currentCustomer.state == CustomerState.done) {
-					removeCustomer(currentCustomer);
-					return true;
+				else {
+					if (currentCustomer.state == CustomerState.newAccount) {
+						newAccount(currentCustomer);
+						return true;
+					}
+					if (currentCustomer.state == CustomerState.deposit) {
+						depositMoney(currentCustomer);
+						return true;
+					}
+					if (currentCustomer.state == CustomerState.withdraw) {
+						withdrawMoney(currentCustomer);
+						return true;
+					}
+					if (currentCustomer.state == CustomerState.done) {
+						removeCustomer(currentCustomer);
+						return true;
+					}
 				}
 			}
 		}
