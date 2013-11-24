@@ -4,7 +4,7 @@ import java.util.List;
 
 import people.People;
 
-public interface Renter {
+public interface Renter extends Resident{
 	// Messages
 
 	public void payPenalty(double penalty);

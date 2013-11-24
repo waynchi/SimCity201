@@ -8,7 +8,7 @@ import housing.interfaces.Renter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
-public class MockOwner implements Owner {
+public class MockOwner extends MockResident implements Owner {
 	
 	// Data
 	
