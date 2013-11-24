@@ -49,7 +49,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 	}
 	
-	MarketCashierRole() {
+	public MarketCashierRole() {
 		priceList.put("Steak", 7.99);
 		priceList.put("Chicken", 7.99);
 		priceList.put("Salad", 2.99);
@@ -101,9 +101,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	// from restaurant cashier
-	public void msgHereIsPayment(Double amount, Cashier cashier) {
+	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
 		for (Check c : checks) {
-			if (c.restaurantCashier == cashier) {
+			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
 				c.totalPaid = amount;
 				marketMoney += c.totalPaid;
@@ -138,6 +138,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		
 		if (leaveWork) {
 			done();
+			return true;
 		}
 
 		return false;
@@ -161,7 +162,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			check.restaurantCashier.msgHereIsWhatIsDue(this, check.totalDue);
+			check.restaurantCashier.msgHereIsWhatIsDue(this, check.totalDue, check.items);
 		}
 		else { // check is for market customer
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);

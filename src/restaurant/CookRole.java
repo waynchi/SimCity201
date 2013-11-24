@@ -44,9 +44,9 @@ public class CookRole extends Role implements Cook{
 
 	private CookGui cookGui = null;
 
-	private Boolean isActive;
-	private Boolean turnActive;
-	private Boolean leaveWork;
+	private Boolean isActive = false;
+	private Boolean turnActive = false;
+	private Boolean leaveWork = false;
 
 	private Host host;
 	private Cashier cashier;
@@ -81,9 +81,6 @@ public class CookRole extends Role implements Cook{
 		foods.put("Salad", new Food("Salad"));
 		foods.put("Pizza", new Food("Pizza"));
 		theMonitor = monitor;
-		isActive = false;
-		turnActive = false;
-		leaveWork = false;
 	}
 
 
@@ -119,6 +116,12 @@ public class CookRole extends Role implements Cook{
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
 		}
+		for (MarketOrder mo : marketOrders) {
+			if (mo.marketOrder == items) {
+				mo.isResponded = true;
+			}
+		}
+		getPersonAgent().CallstateChanged();
 
 	}
 
@@ -150,7 +153,7 @@ public class CookRole extends Role implements Cook{
 		//	orderFoodThatIsLow();
 		//	return true;
 		//}
-
+		
 		if (turnActive) {
 			clockIn();
 			orderFoodThatIsLow();
@@ -186,6 +189,15 @@ public class CookRole extends Role implements Cook{
 				}
 			}
 		}*/
+		
+		synchronized(marketOrders) {
+			for (MarketOrder mo:marketOrders) {
+				if (mo.isResponded) {
+					askCashierToPayForOrder(mo);
+					return true;
+				}
+			}
+		}
 
 
 		schedulerTimer.scheduleAtFixedRate(
@@ -210,6 +222,11 @@ public class CookRole extends Role implements Cook{
 
 	// Actions
 
+	public void askCashierToPayForOrder(MarketOrder order) {
+		cashier.msgMarketOrderReceived(order.marketOrder);
+		marketOrders.remove(order);
+	}
+	
 	// The correct waiter is notified of the cooked order
 	public void plateFood(MyOrder order) {
 		print("food for table " + order.tableNumber + " is ready!");

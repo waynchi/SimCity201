@@ -1,5 +1,7 @@
 package restaurant.test.mock;
 
+import java.util.Map;
+
 import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -28,12 +30,20 @@ public class MockCashier extends Mock implements Cashier {
 	}
 
 	@Override
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
-		log.add(new LoggedEvent("Received msgHereIsWhatIsDue from marketCahshier " + marketCashier.getName()));
+	public void msgHereIsChange(double change) {
+		log.add(new LoggedEvent("Received msgHereIsChange, change is " + change));
 	}
 
 	@Override
-	public void msgHereIsChange(double change) {
-		log.add(new LoggedEvent("Received msgHereIsChange, change is " + change));
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price,
+			Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -109,12 +109,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	}
 	
-	public void msgIsInActive() {
-		isActive = false;
-		getPersonAgent().CallstateChanged();
-
-	}
-	
 	
 	//public void gotHungry() {
 	//	print("I'm hungry");
@@ -463,6 +457,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private void leaveTable() {
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
+		isActive = false;
 		getPersonAgent().msgDone("RestaurantCustomer");
 	}
 

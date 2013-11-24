@@ -85,10 +85,14 @@ public class CashierRole extends Role implements Cashier {
 	public class MarketBill {
 		public MarketCashier marketCashier;
 		Double amount;
+		boolean itemsReceived;
+		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (MarketCashier _marketCashier , double a) {
+		public MarketBill (MarketCashier _marketCashier , double a, Map<String, Integer> items) {
 			marketCashier = _marketCashier;
 			amount = a;
+			itemsReceived = false;
+			itemsOrdered = items;
 		}
 
 		//public String toString () {
@@ -129,9 +133,9 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price, Map<String, Integer> items) {
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName() + " with price " + price));
-		marketBills.add(new MarketBill(marketCashier, price));
+		marketBills.add(new MarketBill(marketCashier, price, items));
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -171,6 +175,15 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
+	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+		for (MarketBill mb : marketBills) {
+			if (mb.itemsOrdered == marketOrder) {
+				mb.itemsReceived = true;
+			}
+		}
+		getPersonAgent().CallstateChanged();
+		
+	}
 	
 	// from BankTellerRole
 	
@@ -235,7 +248,10 @@ public class CashierRole extends Role implements Cashier {
 		}
 	
 		if (!marketBills.isEmpty()) {
-			payMarket(marketBills.get(0));
+			for (MarketBill mb : marketBills) {
+				if (mb.itemsReceived = true)
+					payMarket(mb);
+			}
 			return true;
 		}
 
@@ -324,7 +340,7 @@ public class CashierRole extends Role implements Cashier {
 		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
 		if (working_capital > bill.amount) {
 			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.marketCashier.msgHereIsPayment(working_capital, this);
+			bill.marketCashier.msgHereIsPayment(working_capital, bill.itemsOrdered, this);
 			setMyMoney(0);
 
 		}
@@ -442,5 +458,6 @@ public class CashierRole extends Role implements Cashier {
 	public String getName() {
 		return getPersonAgent().getName();
 	}
+
 
 }
