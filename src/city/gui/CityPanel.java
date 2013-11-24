@@ -104,7 +104,8 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		Building restaurant6 = new Building( hozX + 420, hozY + 110, 30, 30 );
 		buildings.add(restaurant6);
 		
-		Vehicle vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0));
+		Vehicle vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes);
+		vehicle.setDestination(520, 150);
 		vehicles.add(vehicle);
 		addMouseListener( this );
 	}

@@ -1,6 +1,7 @@
 package city.gui;
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 
 
 public class Vehicle extends Rectangle2D.Double {
@@ -10,13 +11,15 @@ public class Vehicle extends Rectangle2D.Double {
 	public double yPos;
 	public Lane lane;
 	Rectangle2D.Double rectangle;
+	ArrayList<Lane> lanes;
 
 	
 	Color vehicleColor;
 	
-	public Vehicle( int x, int y, int width, int height, Lane l ) {
+	public Vehicle( int x, int y, int width, int height, Lane l, ArrayList<Lane>lanes ) {
 		super( x, y, width, height );
 		this.lane = l;
+		this.lanes = lanes;
 		rectangle = new Rectangle2D.Double( 100, 100, 20, 20 );
 		this.setOrientation();
 	}
@@ -53,17 +56,20 @@ public class Vehicle extends Rectangle2D.Double {
 			}
 		}
 	}
-	public void draw(Graphics2D g2) {		
+	public void draw(Graphics2D g2) {	
 		g2.setColor( this.getColor() );
 		g2.fill( this );
 		g2.draw(this);
 		this.move(lane.xVelocity,lane.yVelocity);
-
+		//Crosswalks, X Coordinates:
+		//330  & 550 & 750 & 950
 		
 		
 		
-		if(xPos == 550 || xPos == 750 || xPos == 950) {
-			System.out.println("at cross");
+		if(xPos == 550) {
+			System.out.println("SWITCHED LANE");
+			this.lane = lanes.get(4);
+			this.setOrientation();
 		}
 		
 	}
