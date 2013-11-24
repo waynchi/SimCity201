@@ -1,6 +1,6 @@
 package restaurant.interfaces;
 
-import restaurant.RestaurantCustomerRole;
+import people.People;
 
 public interface Waiter {
 	//public abstract void goOnBreak();
@@ -38,5 +38,7 @@ public interface Waiter {
 	public abstract void msgDoneEatingAndLeaving (Customer cust);
 
 	public abstract String getName();
+
+	public abstract People getPerson();
 	
 }

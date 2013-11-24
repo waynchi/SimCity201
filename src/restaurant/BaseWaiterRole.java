@@ -11,6 +11,7 @@ import restaurant.interfaces.Waiter;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.People;
 import people.Role;
 /**
  * Restaurant Host Agent
@@ -37,8 +38,9 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atCashier = new Semaphore(0,true);
 	protected int currentCustomerNum;
 
-	private boolean isActive = false;
+	protected boolean isActive = false;
 	private boolean turnActive = false;
+	protected boolean leaveWork = false;
 	
 	protected enum customerState {waiting, seated, readyToOrder, askedToOrder, ordered, 
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
@@ -105,9 +107,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgIsInActive () {
-		isActive = false;
+		leaveWork = false;
 		getPersonAgent().CallstateChanged();
-
 	}
 	
 	public void msgAtTable() {//from animation
@@ -280,6 +281,11 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 					return true;
 				}
 			}
+			
+			if (leaveWork) {
+				done();
+			}
+			
 		}catch (ConcurrentModificationException e) {return false;}
 			
 			
@@ -299,7 +305,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		host = getPersonAgent().getHost();
+		host = (Host) getPersonAgent().getHost();
 		host.addWaiter(this);
 		cook = host.getCook();
 		cashier = host.getCashier();
@@ -420,6 +426,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		currentCustomerNum--;
 		host.msgTableIsFree(((RestaurantCustomerRole) c).getTableNumber());
 	}
+	
+	public abstract void done();
 
 	//utilities
 
@@ -478,6 +486,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	public Boolean isActive() {
 		return isActive;
+	}
+	
+	public People getPerson() {
+		return getPersonAgent();
 	}
 	
 	

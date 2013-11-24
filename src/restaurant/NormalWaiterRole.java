@@ -19,4 +19,10 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 		cook.msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
 	}
+	
+	public void done () {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("RestaurantNormalWaiter");
+	}
 }

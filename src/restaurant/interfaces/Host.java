@@ -9,7 +9,7 @@ public interface Host {
 
 	public abstract void setCashier(Cashier cashierRole);
 
-	public abstract List<BaseWaiterRole> getWaiters();
+	public abstract List<Waiter> getWaiters();
 
 	public abstract Cook getCook();
 
@@ -24,5 +24,9 @@ public interface Host {
 	public abstract List<Waiter> getAvailableWaiters();
 
 	public abstract void IAmOffBreak(Waiter w);
+
+	public abstract void addWaiter(Waiter Waiter);
+
+	public abstract void setCook(Cook cookRole);
 
 }

@@ -21,4 +21,10 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
         theMonitor.addOrder(customer.tableNumber, customer.choice, this);
         customer.state = customerState.waitingForFood;
 	}
+	
+	public void done () {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("RestaurantSpecialWaiter");
+	}
 }

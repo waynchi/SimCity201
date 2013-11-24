@@ -4,7 +4,6 @@ import java.util.List;
 
 import people.People;
 import people.Role;
-import restaurant.BaseWaiterRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
@@ -23,11 +22,6 @@ public class MockHost extends Role implements Host {
 		
 	}
 
-	@Override
-	public List<BaseWaiterRole> getWaiters() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Cook getCook() {
@@ -67,6 +61,24 @@ public class MockHost extends Role implements Host {
 
 	@Override
 	public void IAmOffBreak(Waiter w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addWaiter(Waiter Waiter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Waiter> getWaiters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCook(Cook cookRole) {
 		// TODO Auto-generated method stub
 		
 	}
