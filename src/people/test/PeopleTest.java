@@ -129,6 +129,17 @@ public class PeopleTest extends TestCase
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
+		
+		//Sleeping Time!
+		for(PeopleAgent p : BankPeople)
+		{
+			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+			p.msgTimeIs(2330);
+			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+		}	
 	}
 	
 	/**
