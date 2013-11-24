@@ -115,20 +115,28 @@ public class PeopleTest extends TestCase
 		//Going to Work
 		for(PeopleAgent p: BankPeople)
 		{
+			p.msgTimeIs(1200);
 			if(p == teller)
 			{
-				p.msgTimeIs(1200);
 				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
 			}
 			else
 			{
-				p.msgTimeIs(1200);
+				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Retrieving Money. Event is now: GoingToRetrieveMoney" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is GoingToBank"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
+		
+		//Taking them off work
+		for(PeopleAgent p : BankPeople)
+		{
+			p.msgTimeIs(1800);
+		}
+		
 		
 		//Sleeping Time!
 		for(PeopleAgent p : BankPeople)
