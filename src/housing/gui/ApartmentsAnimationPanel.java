@@ -1,7 +1,5 @@
 package housing.gui;
 
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -11,10 +9,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-public class HouseAnimationPanel extends JPanel implements ActionListener {
-	List<HGui> guis = new ArrayList<HGui>();
+public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
+	List<HGui> humanGuis = new ArrayList<HGui>();
+	List<HGui> nonLivingGuis = new ArrayList<HGui>();
 	
-	public HouseAnimationPanel() {
+	public ApartmentsAnimationPanel() {
 		super();
 		this.setSize(500, 570);
 	}
@@ -26,13 +25,21 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
 	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
-		for (HGui gui : guis) {
+		for (HGui gui : humanGuis) {
+			if (!gui.isPresent())
+				gui.draw(g);
+		}
+		for (HGui gui : nonLivingGuis) {
 			if (gui.isPresent())
 				gui.draw(g);
 		}
 	}
 	
 	public void addGui(HGui gui) {
-		guis.add(gui);
+		if (!(gui instanceof ApartmentsGui))
+			humanGuis.add(gui);
+		else {
+			nonLivingGuis.add(gui);
+		}
 	}
 }

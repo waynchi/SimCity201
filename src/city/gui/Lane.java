@@ -47,26 +47,23 @@ public class Lane {
 		
 		vehicles = new ArrayList<Vehicle>();
 	}
-	public double getPos(Vehicle v) {
-		return v.xPos;
-	}
-	public void addVehicle( Vehicle v ) {
-		//We need to set the proper origin for this new vehicle, given the lane starting geometry constraints
-		//The +2 is due to my lanes being 20 pixels "wide" and vehicles being 16 pixels "wide". 
-		if ( xVelocity > 0 ) {
-			v.setRect( xOrigin, yOrigin+2, v.getWidth(), v.getHeight() ); 
-		} else if ( yVelocity > 0 ) {
-			v.setRect( xOrigin+2, yOrigin, v.getWidth(), v.getHeight() ); 
-		} else {
-			if ( isHorizontal ) {
-				v.setRect( xOrigin + width - v.getWidth(), yOrigin + 2, v.getWidth(), v.getHeight() );
-			} else {
-				v.setRect( xOrigin + 2, yOrigin + height - v.getHeight(), v.getWidth(), v.getHeight() ) ;
-			}
-		}
-		
-		vehicles.add( v );
-	}
+//	public void addVehicle( Vehicle v ) {
+//		//We need to set the proper origin for this new vehicle, given the lane starting geometry constraints
+//		//The +2 is due to my lanes being 20 pixels "wide" and vehicles being 16 pixels "wide". 
+//		if ( xVelocity > 0 ) {
+//			v.setRect( xOrigin, yOrigin+2, v.getWidth(), v.getHeight() ); 
+//		} else if ( yVelocity > 0 ) {
+//			v.setRect( xOrigin+2, yOrigin, v.getWidth(), v.getHeight() ); 
+//		} else {
+//			if ( isHorizontal ) {
+//				v.setRect( xOrigin + width - v.getWidth(), yOrigin + 2, v.getWidth(), v.getHeight() );
+//			} else {
+//				v.setRect( xOrigin + 2, yOrigin + height - v.getHeight(), v.getWidth(), v.getHeight() ) ;
+//			}
+//		}
+//		
+//		vehicles.add( v );
+//	}
 	
 	public void draw( Graphics2D g2 ) {
 		g2.setColor( laneColor );
@@ -77,40 +74,40 @@ public class Lane {
 			g2.draw( sides.get(i) );
 		}
 		
-		for ( int i=vehicles.size()-1; i >= 0; i-- ) {
-			Vehicle v = vehicles.get(i);
-			if ( !redLight ) {
-				v.move( xVelocity, yVelocity );
-			}
-			
-			double x = v.getX();
-			double y = v.getY();
-
-			//Remove the vehicle from the list if it is at the end of the lane
-			if ( isHorizontal ) {
-				//End of lane is xOrigin + width - vehicle width
-				double endOfLane = xOrigin + width - v.getWidth();
-				if ( xVelocity > 0 && x >= endOfLane ) {
-					vehicles.remove(i);					
-				} else if ( x <= xOrigin ) {
-					vehicles.remove(i);
-				}
-			} else {
-				//End of lane is xOrigin + height - vehicle height
-				double endOfLane = yOrigin + height - v.getHeight();
-				if ( yVelocity > 0 && y >= endOfLane ) {
-					vehicles.remove(i);					
-				} else if ( y <= yOrigin ) {
-					vehicles.remove(i);
-				}
-			}
-		}
-		
-		for ( int i=0; i<vehicles.size(); i++ ) {
-			Vehicle v = vehicles.get(i);
-			g2.setColor( v.getColor() );
-			g2.fill( v );
-		}
+//		for ( int i=vehicles.size()-1; i >= 0; i-- ) {
+//			Vehicle v = vehicles.get(i);
+//			if ( !redLight ) {
+//				v.move( xVelocity, yVelocity );
+//			}
+//			
+//			double x = v.getX();
+//			double y = v.getY();
+//
+//			//Remove the vehicle from the list if it is at the end of the lane
+//			if ( isHorizontal ) {
+//				//End of lane is xOrigin + width - vehicle width
+//				double endOfLane = xOrigin + width - v.getWidth();
+//				if ( xVelocity > 0 && x >= endOfLane ) {
+//					vehicles.remove(i);					
+//				} else if ( x <= xOrigin ) {
+//					vehicles.remove(i);
+//				}
+//			} else {
+//				//End of lane is xOrigin + height - vehicle height
+//				double endOfLane = yOrigin + height - v.getHeight();
+//				if ( yVelocity > 0 && y >= endOfLane ) {
+//					vehicles.remove(i);					
+//				} else if ( y <= yOrigin ) {
+//					vehicles.remove(i);
+//				}
+//			}
+//		}
+//		
+//		for ( int i=0; i<vehicles.size(); i++ ) {
+//			Vehicle v = vehicles.get(i);
+//			g2.setColor( v.getColor() );
+//			g2.fill( v );
+//		}
 	}
 	
 	public void redLight() {
@@ -119,5 +116,8 @@ public class Lane {
 	
 	public void greenLight() {
 		redLight = false;
+	}
+	public boolean isHorizontal() {
+		return isHorizontal;
 	}
 }
