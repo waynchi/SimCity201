@@ -231,7 +231,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		Vehicle vehicle;
 		if ( count == 100) {
 			//Second Row -- First Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
 			vehicle.setDestination(570, 60);
 			vehicles.add(vehicle);
 			
@@ -239,56 +239,56 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		
 		if (count == 150) {
 			//First Row -- Second Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
 			vehicle.setDestination(570, 100);
 			vehicles.add(vehicle);
 		}
 		if( count == 200) {
 			//First Row -- Third Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
 			vehicle.setDestination(570, 150);
 			vehicles.add(vehicle);
 		}
 		if( count == 250) {
 			//First Row -- Fourth Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
 			vehicle.setDestination(570, 200);
 			vehicles.add(vehicle);
 		}
 
 		if( count == 300) {
 			//Second Row -- First Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
 			vehicle.setDestination(770, 60);
 			vehicles.add(vehicle);
 		}
 		if( count == 350) {
 			//Second Row -- Second Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
 			vehicle.setDestination(770, 100);
 			vehicles.add(vehicle);
 		}
 		if( count == 400) {
 			//Second Row -- Third Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
 			vehicle.setDestination(770, 150);
 			vehicles.add(vehicle);
 		}
 		if( count == 450) {
 			//Second Row -- Fourth Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
 			vehicle.setDestination(770, 200);
 			vehicles.add(vehicle);
 		}
 		if( count == 500) {
 			//Fourth row -- First building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
 			vehicle.setDestination(990, 100);
 			vehicles.add(vehicle);
 		}
 		if( count == 550) {
 			//Fourth row -- First building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
 			vehicle.setDestination(990, 200);
 			vehicles.add(vehicle);
 		}
