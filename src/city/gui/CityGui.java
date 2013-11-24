@@ -32,7 +32,7 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole = new HostRole("Host");
+	HostRole RestaurantHostRole = new HostRole();
 	MarketEmployeeRole market = new MarketEmployeeRole();
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(
 			100, 100), "Restaurant 1");
@@ -56,7 +56,6 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 			Iterator<String> configIteration = configParams.iterator();
 			while (configIteration.hasNext()) {
-				// for(String item : configParams) {
 				String amount = configIteration.next();
 				String role = configIteration.next();
 				String name = configIteration.next();
@@ -64,8 +63,7 @@ public class CityGui extends JFrame implements ActionListener {
 					PeopleAgent person = new PeopleAgent(role, 1000.0, false);
 					person.startThread();
 					if (role.equals("RestaurantNormalWaiter")) {
-						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(
-								name);
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole();
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", 800, 2400);
@@ -74,8 +72,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(name,
-								RestaurantCookWaiterMonitor);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor);
 						person.addJob("RestaurantCook", 800, 2400);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
@@ -87,16 +84,14 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCustomer")) {
-						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(
-								name);
+						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole();
 						person.addJob("RestaurantCustomer", 800, 2400);
 						person.addRole(RestaurantCustomerRole,
 								"RestaurantCustomer");
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole(
-								name);
+						CashierRole RestaurantCashierRole = new CashierRole();
 						person.addJob("RestaurantCashier", 800, 2400);
 						person.addRole(RestaurantCashierRole,
 								"RestaurantCashier");
