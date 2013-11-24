@@ -40,6 +40,11 @@ public class PeopleAgent extends Agent implements People{
 		return Money;
 	}
 	
+	public void setMoney(double Money)
+	{
+		this.Money = Money;
+	}
+	
 	public List<Role> getRoles()
 	{
 		List<Role> temp = new ArrayList<Role>();
@@ -188,6 +193,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingToRetrieveMoney;
+					log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
 					stateChanged();
 					return;
 				}
@@ -242,7 +248,7 @@ public class PeopleAgent extends Agent implements People{
 				return;
 			}
 		}
-		if(Time >= lastTime && state == AgentState.Idle)
+		if(Time >= lastTime && state == AgentState.Idle && Time <= 2100)
 		{
 			if(!hasCar)
 			{
@@ -252,13 +258,12 @@ public class PeopleAgent extends Agent implements People{
 					stateChanged();
 					return;
 				}
-				if(!(Time>= 1700 && Money <= 30000))
+				else if(!(Time>= 1700 && Money <= 30000))
 				{
-					/*rand(){
-						1. do nothing();
-						2.{ event == GoingToRetrieveMoney();
-					return}
-					}*/
+						event = AgentEvent.GoingToRetrieveMoney;
+						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+						stateChanged();
+						return;
 				}
 			}				
 			else
