@@ -180,12 +180,16 @@ public class TellerRole extends Role implements Teller {
 		customer.state = CustomerState.beingHelped;
 		if (customer.withdrawAmount > customer.account.funds) {
 			customer.account.funds -= customer.withdrawAmount;
-			customer.customer.msgGiveLoan(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("customer")) customer.customer.msgGiveLoan(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("mcashier")) customer.mcashier.msgGiveLoan(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("cashier")) customer.cashier.msgGiveLoan(customer.account.funds, customer.withdrawAmount);
 			customer.withdrawAmount = 0;
 		}
 		else {
 			customer.account.funds -= customer.withdrawAmount;
-			customer.customer.msgWithdrawSuccessful(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("customer")) customer.customer.msgWithdrawSuccessful(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("mcashier")) customer.mcashier.msgWithdrawSuccessful(customer.account.funds, customer.withdrawAmount);
+			if (customer.type.equals("cashier")) customer.cashier.msgWithdrawSuccessful(customer.account.funds, customer.withdrawAmount);
 			customer.withdrawAmount = 0;
 		}
 	}
@@ -194,7 +198,9 @@ public class TellerRole extends Role implements Teller {
 		customer.state = CustomerState.beingHelped;
 		customer.account.funds += customer.depositAmount;
 		customer.depositAmount = 0;
-		customer.customer.msgDepositSuccessful(customer.account.funds);
+		if (customer.type.equals("customer")) customer.customer.msgDepositSuccessful(customer.account.funds);
+		if (customer.type.equals("mcashier")) customer.mcashier.msgDepositSuccessful(customer.account.funds);
+		if (customer.type.equals("cashier")) customer.cashier.msgDepositSuccessful(customer.account.funds);
 	}
 	
 	private void removeCustomer(myBankCustomer customer) {
