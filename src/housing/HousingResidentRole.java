@@ -112,7 +112,7 @@ public class HousingResidentRole extends Role implements Resident {
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
-		myPerson.msgDone(this);
+		myPerson.msgDone("Resident");
 	}
 
 	//-----------------------------------------------------------//
@@ -145,6 +145,16 @@ public class HousingResidentRole extends Role implements Resident {
 	public void activityDone() {
 		myState = State.Idle;
 		activity.release();
+		stateChanged();
+	}
+	
+	public void leftHouse() {
+		myState = State.Idle;
+		activity.release();
+		isActive = false;
+		if (myPerson != null) {
+			myPerson.msgDone("Resident");
+		}
 		stateChanged();
 	}
 	
