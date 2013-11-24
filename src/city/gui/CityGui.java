@@ -2,6 +2,7 @@ package city.gui;
 import javax.swing.*;
 import javax.swing.Timer;
 
+import market.MarketEmployeeRole;
 import city.Restaurant;
 import people.PeopleAgent;
 import restaurant.*;
@@ -32,7 +33,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole("Host");
-	MarketEmployeeRole market = new MarketEmployeeRole("Market 1");
+	MarketEmployeeRole market = new MarketEmployeeRole();
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(
 			100, 100), "Restaurant 1");
 	int time;
@@ -43,7 +44,7 @@ public class CityGui extends JFrame implements ActionListener {
 				RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole("Market");
+		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole();
 
 		FileReader input;
 		try {
@@ -78,7 +79,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("RestaurantCook", 800, 2400);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
-						RestaurantCookRole.addMarket(RestaurantMarketRole);
+						//RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
 					if (role.equals("RestaurantHost")) {
 						person.addJob("RestaurantHost", 700, 2400);
