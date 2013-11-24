@@ -39,8 +39,8 @@ public class PeopleTest extends TestCase
 	PeopleAgent cook;
 	PeopleAgent waiter;
 	PeopleAgent host;
-	PeopleAgent cashier;
-	PeopleAgent customer;
+	PeopleAgent restaurantCashier;
+	PeopleAgent restaurantCustomer;
 	CookWaiterMonitor theMonitor;
 	RestaurantPanel restPanel;
 	
@@ -48,6 +48,11 @@ public class PeopleTest extends TestCase
 	List<PeopleAgent> BankPeople;
 	PeopleAgent teller;
 	PeopleAgent bankCustomer;
+	
+	List<PeopleAgent> MarketPeople;
+	PeopleAgent marketCashier;
+	PeopleAgent marketEmployee;
+	PeopleAgent marketCustomer;
 	//these are instantiated for each test separately via the setUp() method.
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -58,26 +63,43 @@ public class PeopleTest extends TestCase
 		RestaurantPeople = new ArrayList<PeopleAgent>();
 		cook = new PeopleAgent("Gordon", 100, false);
 		waiter = new PeopleAgent("Waiter", 50, false);
-	    customer = new PeopleAgent("Customer", 50, true);
+	    restaurantCustomer = new PeopleAgent("Customer", 50, true);
 		host = new PeopleAgent("Host", 200, false);
-		cashier = new PeopleAgent("Cashier", 300, false);
+		restaurantCashier = new PeopleAgent("Cashier", 300, false);
 		RestaurantPeople.add(cook);
 		RestaurantPeople.add(waiter);
-		RestaurantPeople.add(customer);
+		RestaurantPeople.add(restaurantCustomer);
 		RestaurantPeople.add(host);
-		RestaurantPeople.add(cashier);
+		RestaurantPeople.add(restaurantCashier);
 		restPanel = new RestaurantPanel();
 		theMonitor = restPanel.theMonitor;
 		
 		BankPeople = new ArrayList<PeopleAgent>();
 		teller = new PeopleAgent("teller", 100, false);
-		bankCustomer = new PeopleAgent("customer", 100, false);
+		bankCustomer = new PeopleAgent("restaurantCustomer", 100, false);
 		BankPeople.add(teller);
 		BankPeople.add(bankCustomer);
 		
 		//person.addRole(new )
 	}	
 	
+	public void testMarketScenario()
+	{
+		//AddingRoles
+		teller.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		teller.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		teller.addRole((Role)new MockTeller(teller.name), "Teller");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+		
+		bankCustomer.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		bankCustomer.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		bankCustomer.addRole((Role)new MockTeller(teller.name), "Teller");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+	}
 	
 //	public void testBankScenario()
 //	{
@@ -168,7 +190,7 @@ public class PeopleTest extends TestCase
 //	}
 //	
 //	/**
-//	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.
+//	 * This tests the restaurantCashier under very simple terms: one restaurantCustomer is ready to pay the exact bill.
 //	 */
 //	public void testRestaurantScenario()
 //	{
@@ -184,20 +206,20 @@ public class PeopleTest extends TestCase
 //		waiter.addRole((Role)new MockWaiter(waiter.name), "RestaurantNormalWaiter");
 //		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantNormalWaiter"));
 //		
-//		customer.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
-//		assertTrue("Testing Role addition", customer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-//		customer.addRole((Role)new MockCook(cook.name), "RestaurantCook");
-//		assertTrue("Testing Role addition", customer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
+//		restaurantCustomer.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		restaurantCustomer.addRole((Role)new MockCook(cook.name), "RestaurantCook");
+//		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
 //		
 //		host.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 //		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 //		host.addRole((Role)new MockHost(host.name), "RestaurantHost");
 //		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantHost"));
 //		
-//		cashier.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
-//		assertTrue("Testing Role addition", cashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-//		cashier.addRole((Role)new MockCashier(cashier.name), "RestaurantCashier");
-//		assertTrue("Testing Role addition", cashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCashier"));
+//		restaurantCashier.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		restaurantCashier.addRole((Role)new MockCashier(restaurantCashier.name), "RestaurantCashier");
+//		assertTrue("Testing Role addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCashier"));
 //		
 //		//Adding Jobs
 //		cook.addJob("RestaurantCook", 1200, 1800);
@@ -206,14 +228,14 @@ public class PeopleTest extends TestCase
 //		waiter.addJob("RestaurantNormalWaiter", 1200, 1800);
 //		assertTrue("Testing Job addition", waiter.log.getLastLoggedEvent().toString().contains("Job added: RestaurantNormalWaiter"));
 //		
-//		customer.addJob("RestaurantCook", 5000, 50000);
-//		assertTrue("Testing Job addition", customer.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
+//		restaurantCustomer.addJob("RestaurantCook", 5000, 50000);
+//		assertTrue("Testing Job addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
 //		
 //		host.addJob("RestaurantHost" , 1100, 1900);
 //		assertTrue("Testing Job addition", host.log.getLastLoggedEvent().toString().contains("Job added: RestaurantHost"));
 //		
-//		cashier.addJob("RestaurantCashier", 1200, 1800);
-//		assertTrue("Testing Job addition", cashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
+//		restaurantCashier.addJob("RestaurantCashier", 1200, 1800);
+//		assertTrue("Testing Job addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
 //		
 //		//Sending message to RestaurantPeople!
 //		//Wake up call!
@@ -227,7 +249,7 @@ public class PeopleTest extends TestCase
 //			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
 //		}
 //		
-//		customer.hunger = HungerState.Hungry;
+//		restaurantCustomer.hunger = HungerState.Hungry;
 //
 //		
 //		for(PeopleAgent p: RestaurantPeople)
@@ -239,7 +261,7 @@ public class PeopleTest extends TestCase
 //				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 //				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
 //			}
-//			else if(p != customer)
+//			else if(p != restaurantCustomer)
 //			{
 //				p.msgTimeIs(1200);
 //				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
@@ -262,7 +284,7 @@ public class PeopleTest extends TestCase
 //				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 //				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
 //			}
-//			else if(p!= customer)
+//			else if(p!= restaurantCustomer)
 //			{
 //				p.msgTimeIs(1800);
 //				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
@@ -280,7 +302,7 @@ public class PeopleTest extends TestCase
 //		//Sleeping Time!
 //		for(PeopleAgent p : RestaurantPeople)
 //		{
-//			if(p == customer)
+//			if(p == restaurantCustomer)
 //			{
 //				p.msgDone("RestaurantCustomerRole");
 //			}
