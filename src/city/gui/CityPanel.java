@@ -66,6 +66,60 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		s = new Sidewalk( hozX + 400, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
+		
+		s = new Sidewalk( hozX + 410, hozY + 180 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 190, hozY + 180 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 190, hozY + 20 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 410, hozY + 20 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		
+		s = new Sidewalk( hozX + 410, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 190, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 650, hozY - 10 , sidewalkHeight, hozWidth + 10, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 620, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 420, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 390, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 220, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		s = new Sidewalk( hozX + 190, hozY - 10 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 190, hozY + 120 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		
+		s = new Sidewalk( hozX + 620, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 420, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 390, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 220, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		
 
 		
 		//Middle
