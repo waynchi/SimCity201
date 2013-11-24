@@ -4,32 +4,30 @@ import java.util.Map;
 
 import people.People;
 import people.Role;
+import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 
-public class MockMarketCustomer extends Role implements MarketCustomer {
+public class MockMarketCustomer extends Mock implements MarketCustomer {
 
 	public MockMarketCustomer(String name) {
-		super();
+		super(name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("received msgHereIsYourOrder"));				
 	}
 
 	@Override
 	public void msgHereIsWhatIsDue(double totalDue, MarketCashier marketCashier) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("received msgHereIsWhatIsDue from market cashier"));		
 	}
 
 	@Override
 	public void msgHereIsChange(double change) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("received msgHereIsChange from market cashier"));				
 	}
 
 	@Override
@@ -42,6 +40,24 @@ public class MockMarketCustomer extends Role implements MarketCustomer {
 	public void msgBuy(Map<String, Integer> items) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void msgIsActive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgIsInActive() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 
 }

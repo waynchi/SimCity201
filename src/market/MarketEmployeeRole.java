@@ -61,7 +61,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// constructor
 	public MarketEmployeeRole(){
 		for (int i=0; i<10; i++) { // create 10 market trucks
-			trucks.add(new MarketTruckAgent());
+			trucks.add(new MarketTruckAgent("MarketTruck "+i));
 		}
 		items.put("Steak", new Item("Steak", 100));
 		items.put("Salad", new Item("Salad", 100));
@@ -181,6 +181,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public MarketCashier getCashier(MarketCashier c) {
 		return cashier;
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
 	}
 
 

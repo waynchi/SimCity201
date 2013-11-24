@@ -1,26 +1,27 @@
 package test;
 
+import market.interfaces.MarketCashier;
+import market.test.MockMarketCashier;
+import market.test.MockMarketEmployee;
 import people.People;
 import people.PeopleAgent;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import restaurant.CashierRole;
 import restaurant.gui.RestaurantPanel;
-import restaurant.interfaces.Market;
+import restaurant.test.mock.LoggedEvent;
 import restaurant.test.mock.MockCustomer;
-import restaurant.test.mock.MockMarket;
 import restaurant.test.mock.MockWaiter;
 
 public class CashierTest extends TestCase {
 	CashierRole cashier;
-	MockWaiter waiter1;
-	MockWaiter waiter2;
-	MockCustomer customer1;
-	MockCustomer customer2;
-	MockMarket market1;
-	MockMarket market2;
+	MockWaiter w1;
+	MockWaiter w2;
+	MockCustomer c1;
+	MockCustomer c2;
+	//MockMarketEmployee mme;
+	MockMarketCashier mmc;
 	enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
-	RestaurantPanel restaurantPanel;
 	People person;
 
 
@@ -33,27 +34,27 @@ public class CashierTest extends TestCase {
 	}
 
 	public class MarketBill {
-		Market market;
+		public MarketCashier marketCashier;
 		Double amount;
 
-		public MarketBill (Market m , double a) {
-			market = m;
+		public MarketBill (MarketCashier _marketCashier , double a) {
+			marketCashier = _marketCashier;
 			amount = a;
 		}
 	}
 
 	public void setUp() throws Exception{
-		super.setUp();                
-		cashier = new CashierRole("cashier");                
-		customer1 = new MockCustomer("mockcustomer1");  
-		customer2 = new MockCustomer("mockcustomer2");
-		waiter1 = new MockWaiter("mockwaiter1");
-		waiter2 = new MockWaiter("mockwaiter2");
-		market1 = new MockMarket("mockmarket1");
-		market2 = new MockMarket("mockmarket2");
-		person = new PeopleAgent();
-		cashier.setPerson(person);
-		person.addRole(cashier, "Cashier");
+		super.setUp();  
+		person = new PeopleAgent("person", 0.0, true);
+		cashier = new CashierRole();  
+		cashier.setPerson((PeopleAgent) person);
+		c1 = new MockCustomer("mockcustomer1");  
+		c2 = new MockCustomer("mockcustomer2");
+		w1 = new MockWaiter("mockwaiter1");
+		w2 = new MockWaiter("mockwaiter2");
+		//mme = new MockMarketEmployee("mme");
+		mmc = new MockMarketCashier("mmc");
+		person.addRole(cashier, "ResetaurantCashier");
 	}        
 
 
@@ -70,10 +71,10 @@ public class CashierTest extends TestCase {
 		//		cashier.getStateChange().availablePermits(),1);
 
 		//post condition for messaging and precondition for scheduler
-		cashier.msgHereIsWhatIsDue(market1, 14.99);
-		assertTrue("CashierAgent should have an event log after the msgHereIsMarketBill is called. "
+		cashier.msgHereIsWhatIsDue(mmc, 14.99);
+		assertTrue("Cashier should have an event log after the message is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
-				cashier.log.containsString("Received msgHereIsMarketBill from Market mockmarket1 and the amount is 14.99"));
+				cashier.log.containsString("Received msgHereIsWhatIsDue from MarketCashier mmc with price 14.99"));
 		assertEquals("Cashier should have 1 MarketBill in marketBills list. It doesn't.", 
 				cashier.getMarketBills().size(), 1);
 		//assertEquals("Cashier should have only one permit for stateChange semaphore. It doesn't.", 
@@ -83,7 +84,7 @@ public class CashierTest extends TestCase {
 		cashier.pickAndExecuteAnAction();
 
 		//check if the right action is called
-		assertTrue("CashierAgent should have an event log after the scheduler is called. "
+		assertTrue("Cashier should have an event log after the scheduler is called. "
 				+ "Instead, the Cashier's event log reads: " +cashier.log.toString(), 
 				cashier.log.containsString("In action payMarket, paying market mockmarket1"));
 		assertEquals("The money Cashier holds should be 100-14.99 = 85.01 right now. Instead it's "+ cashier.getMyMoney(),
@@ -91,8 +92,8 @@ public class CashierTest extends TestCase {
 		assertEquals("this bill should be removed from marketBills list right now. It's not.", cashier.getMarketBills().size(),0);
 
 		//check if the right message has been sent out.
-		assertTrue("market1 should have received the message from the cashier, but the event log reads: " + 
-				market1.log.toString(), market1.log.containsString("Received msgPayMarketBill "
+		assertTrue("marketCashier should have received the message from the cashier, but the event log reads: " + 
+				mmc.log.toString(), mmc.log.containsString("Received msgPayMarketBill "
 						+ "from Cashier cashier and the amount is 14.99"));
 	}
 

@@ -36,7 +36,6 @@ public class CookRole extends Role implements Cook{
 
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
 	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
-	private String name;
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
 	private CookWaiterMonitor theMonitor = null;
 
@@ -75,9 +74,8 @@ public class CookRole extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRole(String name, CookWaiterMonitor monitor) {
+	public CookRole(CookWaiterMonitor monitor) {
 		super();
-		this.name = name;
 		foods.put("Steak", new Food("Steak"));
 		foods.put("Chicken", new Food("Chicken"));
 		foods.put("Salad", new Food("Salad"));
@@ -310,11 +308,11 @@ public class CookRole extends Role implements Cook{
 	//utilities
 
 	public String getMaitreDName() {
-		return name;
+		return getPersonAgent().getName();
 	}
 
 	public String getName() {
-		return name;
+		return getPersonAgent().getName();
 	}
 
 	public void setCashier(Cashier ca) {

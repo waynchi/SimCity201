@@ -3,9 +3,8 @@ package restaurant;
 import restaurant.interfaces.Waiter;
 
 public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
-	public NormalWaiterRole(String name) {
+	public NormalWaiterRole() {
 		super();
-		this.name = name;
 		currentCustomerNum = 0;
 		menu.add(new FoodOnMenu("Steak", 15.99));
 		menu.add(new FoodOnMenu("Chicken", 10.99));

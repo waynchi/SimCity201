@@ -1,6 +1,7 @@
 package restaurant;
 
 import agent.Agent;
+import restaurant.HostRole.Table;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -65,8 +66,6 @@ public class HostRole extends Role implements Host{
 		}
 	}
 
-
-	private String name;
 	public HostGui hostGui = null;
 	private Cashier cashier;
 	private Cook cook;
@@ -101,9 +100,8 @@ public class HostRole extends Role implements Host{
 	}
 	
 	
-	public HostRole(String name) {
+	public HostRole() {
 		super();
-		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
@@ -360,18 +358,19 @@ public class HostRole extends Role implements Host{
 	//utilities
 
 	public String getMaitreDName() {
-		return name;
+		return getPersonAgent().getName();
 	}
 
 	public String getName() {
-		return name;
+		return getPersonAgent().getName();
 	}
+
 
 	public List<Waiter> getWaiters() {
 		return allWaiters;
 	}
 
-	public Collection getTables() {
+	public Collection<Table> getTables() {
 		return tables;
 	}
 

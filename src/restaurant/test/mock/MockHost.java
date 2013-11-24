@@ -9,10 +9,10 @@ import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
-public class MockHost extends Role implements Host {
+public class MockHost extends Mock implements Host {
 	
 	public MockHost(String name) {
-		super();
+		super(name);
 		
 	}
 
@@ -81,6 +81,12 @@ public class MockHost extends Role implements Host {
 	public void setCook(Cook cookRole) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 
 	

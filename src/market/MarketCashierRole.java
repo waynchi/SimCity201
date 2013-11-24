@@ -193,6 +193,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public Boolean isActive() {
 		return isActive;
 	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
+	}
 
 
 }

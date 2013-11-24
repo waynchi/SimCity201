@@ -26,7 +26,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
 
-	protected String name;
 	protected Host host;
 	protected Cook cook;
 	private Cashier cashier;
@@ -78,11 +77,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}*/
 
 	public String getMaitreDName() {
-		return name;
-	}
+		return getPersonAgent().getName();
 
-	public String getName() {
-		return name;
 	}
 
 	public List<MyCustomer> getCustomers() {
@@ -491,6 +487,11 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	public People getPerson() {
 		return getPersonAgent();
 	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
+	}
+
 	
 	
 }
