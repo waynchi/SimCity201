@@ -2,10 +2,8 @@ package restaurant.test.mock;
 
 import market.interfaces.MarketCashier;
 import people.Role;
-import restaurant.BaseWaiterRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 
 public class MockCashier extends Role implements Cashier {
@@ -21,9 +19,7 @@ public class MockCashier extends Role implements Cashier {
 		//log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName()));
 	}
 	
-	public void msgHereIsMarketBill (Market m, double price) {
-		//log.add(new LoggedEvent("Recieved msgHereIsMarketBill from Market" + m.getName()));
-	}
+
 	
 	public void msgPayMyCheck (Customer c, Double amount){
 		//log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName()));

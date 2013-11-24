@@ -8,12 +8,14 @@ import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
+import restaurant.interfaces.Waiter;
 
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import market.MarketEmployeeRole;
+import market.interfaces.MarketEmployee;
 import people.People;
 import people.PeopleAgent;
 import people.Role;
@@ -33,7 +35,7 @@ import people.Role;
 public class CookRole extends Role implements Cook{
 
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
-	private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
+	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	private String name;
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
 	private CookWaiterMonitor theMonitor = null;
@@ -41,13 +43,15 @@ public class CookRole extends Role implements Cook{
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Boolean onOpen;
 	private Timer schedulerTimer = new Timer();
-	private Cashier cashier;
 
 	private CookGui cookGui = null;
 	
 	private Boolean isActive;
 	private Boolean turnActive;
+	
 	private Host host;
+	private Cashier cashier;
+	private MarketEmployee marketEmployee;
 	
 	//private MarketEmployeeRole marketEmployee = null;
 	
@@ -99,7 +103,7 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgHereIsAnOrder (String food, BaseWaiterRole w,int tableNum) {
+	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
 		orders.add( new MyOrder(food, w, tableNum));
 		print("Receiving order, " + food + " for table #"+tableNum);
 		getPersonAgent().CallstateChanged();
@@ -249,7 +253,7 @@ public class CookRole extends Role implements Cook{
 		}
 		//System.out.println(foods.get("Chicken").isOrdered);
 		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployees.get(0).msgOrder(marketOrder,this, cashier);	
+		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
 
 
@@ -287,8 +291,10 @@ public class CookRole extends Role implements Cook{
 	}*/
 	
 	private void clockIn() {
-		getPersonAgent().getHost().setCook(this);
-		marketEmployees = getPersonAgent().getMarketEmployee();
+		host = getPersonAgent().getHost();
+		host.setCook(this);
+		marketEmployee = getPersonAgent().getMarketEmployee();
+		cashier = host.getCashier();
 		turnActive = false;
 	}
 
@@ -307,12 +313,12 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public class MyOrder {
-		BaseWaiterRole waiter;
+		Waiter waiter;
 		int tableNumber;
 		String food;
 		OrderState state;
 
-		public MyOrder (String f, BaseWaiterRole w, int t) {
+		public MyOrder (String f, Waiter w, int t) {
 			food = f;
 			waiter = w;
 			tableNumber = t;

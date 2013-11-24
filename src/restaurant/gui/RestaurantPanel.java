@@ -1,10 +1,8 @@
 package restaurant.gui;
 
 import restaurant.BaseWaiterRole;
-import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.HostRole;
-import restaurant.MarketEmployeeRole;
 import restaurant.NormalWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.SpecialWaiterRole;

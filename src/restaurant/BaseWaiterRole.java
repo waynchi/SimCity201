@@ -3,7 +3,9 @@ package restaurant;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
 import java.util.*;
@@ -24,8 +26,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
 
 	protected String name;
-	protected HostRole host;
-	protected CookRole cook;
+	protected Host host;
+	protected Cook cook;
 	private Cashier cashier;
 	//private Boolean inProgress = false; // true if WaiterAgent is in the middle of animation
 	protected Boolean onBreak = false; 
@@ -35,7 +37,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atCashier = new Semaphore(0,true);
 	protected int currentCustomerNum;
 
-	private Boolean isActive = false;
+	private boolean isActive = false;
+	private boolean turnActive = false;
 	
 	protected enum customerState {waiting, seated, readyToOrder, askedToOrder, ordered, 
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
@@ -96,6 +99,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void msgIsActive() {
 		isActive = true;
+		turnActive = true;
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -221,6 +225,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		try{
+			if (turnActive) {
+				clockIn();
+				return true;
+			}
 	
 			for (MyCustomer customer : customers) {
 				if (customer.state == customerState.waiting){
@@ -290,6 +298,14 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	// Actions
 
+	private void clockIn() {
+		host = getPersonAgent().getHost();
+		host.addWaiter(this);
+		cook = host.getCook();
+		cashier = host.getCashier();
+		turnActive = false;
+	}
+	
 	private void seatCustomer(MyCustomer customer) {
 		print("Approaching waiting customer "+customer.c.getName());
 		waiterGui.DoGoToWaitingCustomer();
@@ -431,7 +447,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		return customers;
 	}
 	
-	public HostRole getHost () {
+	public Host getHost () {
 		return host;
 	}
 
@@ -463,5 +479,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	public Boolean isActive() {
 		return isActive;
 	}
+	
 	
 }

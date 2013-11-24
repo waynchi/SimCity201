@@ -9,13 +9,15 @@ import people.Role;
 import restaurant.interfaces.Cashier;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
 
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	// data
 	private boolean isActive = false;
 	private boolean turnActive = false;
-
+	private MarketEmployee marketEmployee;
+	
 	Map<String, Double> priceList = new HashMap<String, Double>();
 	double marketMoney = 10000.0;
 
@@ -116,7 +118,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public boolean pickAndExecuteAnAction(){
 		if (turnActive) {
 			clockIn();
-			turnActive = false;
 			return true;
 		}
 		
@@ -142,7 +143,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
-		getPersonAgent().getMarketEmployee().setCashier(this);
+		marketEmployee = getPersonAgent().getMarketEmployee();
+		marketEmployee.setCashier(this);
+		turnActive = false;
 	}
 	
 	private void computeAndSendCheck(Check check) {
@@ -158,7 +161,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else { // check is for market customer
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
-
 		check.state = checkState.SENT;
 	}
 

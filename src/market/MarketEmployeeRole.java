@@ -163,10 +163,15 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		return isActive;
 	}
 
-	public void setCashier(MarketCashierRole c) {
+	public void setCashier(MarketCashier c) {
 		cashier = c;
 		getPersonAgent().CallstateChanged();
 	}
+	
+	public MarketCashier getCashier(MarketCashier c) {
+		return cashier;
+	}
+
 
 
 }

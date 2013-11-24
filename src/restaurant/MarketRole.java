@@ -4,7 +4,6 @@ import agent.Agent;
 import restaurant.BaseWaiterRole;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 
 import java.awt.Dimension;
@@ -21,7 +20,7 @@ import people.Role;
 // Market and Cook pass each other maps that are not semantic enough, will be changed to lists if there's time
 
 
-public class MarketRole extends Role implements Market{
+public class MarketRole extends Role{
 
 
 	/*private String name;

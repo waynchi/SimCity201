@@ -74,10 +74,6 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	//utilities
-	@Override
-	public boolean isAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 }
