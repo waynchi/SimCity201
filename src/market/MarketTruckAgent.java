@@ -14,6 +14,11 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//data
 	MarketTruckGui gui = new MarketTruckGui(this);
 	List<Order> orders = new ArrayList<Order>();
+	String name;
+	
+	public MarketTruckAgent(String n) {
+		name = n;
+	}
 	
 	class Order {
 		MarketCustomer customer = null;

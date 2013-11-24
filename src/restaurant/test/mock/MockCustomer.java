@@ -9,13 +9,13 @@ import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 
-public class MockCustomer extends Role implements Customer{
+public class MockCustomer extends Mock implements Customer{
 
 	private String choice;
 	private CustomerGui gui;
 	
 	public MockCustomer(String name) {
-		super();
+		super(name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,7 +29,6 @@ public class MockCustomer extends Role implements Customer{
 	
 	// handles waiter follow me message and eventually sits down at the correct table
 	public void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m){
-		
 	}
 
 	// from animation, when customer has arrived at the table
@@ -87,7 +86,6 @@ public class MockCustomer extends Role implements Customer{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
-
 }

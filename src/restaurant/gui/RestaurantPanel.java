@@ -268,9 +268,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	
     	if (type.equals("Waiters")) {
     		//if (name.equalsIgnoreCase("special")){
-    			BaseWaiterRole w = new NormalWaiterRole(name);
+    			BaseWaiterRole w = new NormalWaiterRole();
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(name, theMonitor);
+        			w = new SpecialWaiterRole(theMonitor);
     			}
     			WaiterGui g = new WaiterGui(w);
         		g.setHomePosition(waiters.size());

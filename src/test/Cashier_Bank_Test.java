@@ -21,7 +21,6 @@ public class Cashier_Bank_Test extends TestCase{
 	MockMarket market1;
 	MockMarket market2;
 	enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};*/
-	RestaurantPanel restaurantPanel;
 	MockTeller teller;
 	PeopleAgent person, person2,person3,person4,person5;
 	BaseWaiterRole waiter1;
@@ -43,11 +42,7 @@ public class Cashier_Bank_Test extends TestCase{
 		waiter1 = new NormalWaiterRole("waiter1");
 		waiter2 = new NormalWaiterRole("waiter2");
 		
-		restaurantPanel = new RestaurantPanel();
-		restaurantPanel.getWaiters().add(waiter1);
-		restaurantPanel.getWaiters().add(waiter2);
-		
-		cashier = new CashierRole("cashier", restaurantPanel);
+		cashier = new CashierRole("cashier");
 		
 		/*customer1 = new MockCustomer("mockcustomer1");  
 		customer2 = new MockCustomer("mockcustomer2");
@@ -57,14 +52,6 @@ public class Cashier_Bank_Test extends TestCase{
 		market2 = new MockMarket("mockmarket2");*/
 
 		teller = new MockTeller("teller");
-		person = new PeopleAgent();
-		person2 = new PeopleAgent();
-		person3 = new PeopleAgent();
-		person4 = new PeopleAgent();
-		person5 = new PeopleAgent();
-
-		
-		
 	}      
 	
 	//scenario: make PeopleAgent a CashierRole, then Cashier will do the opening
@@ -78,8 +65,7 @@ public class Cashier_Bank_Test extends TestCase{
 		
 		waiter1.setPerson(person2);
 		waiter2.setPerson(person3);
-		restaurantPanel.getCook().setPerson(person4);
-		restaurantPanel.getHost().setPerson(person5);
+		
 		
 		assertEquals(person.roles.size(),1);
 		cashier.msgIsActive();

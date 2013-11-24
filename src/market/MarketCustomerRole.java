@@ -146,5 +146,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public People getPerson() {
 		return getPersonAgent();
 	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
+	}
 
 }

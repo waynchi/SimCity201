@@ -17,4 +17,6 @@ public interface MarketCashier {
 	public abstract void msgHereIsPayment(MarketCustomer customer, double totalPaid);
 	
 	public abstract void msgHereIsPayment(Double amount, Cashier cashier);
+
+	public abstract String getName();
 }
