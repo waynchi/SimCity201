@@ -138,7 +138,6 @@ public class Vehicle extends Rectangle2D.Double {
 			}
 		}
 		
-		System.out.println(xPos);
 		if(xPos >= 970 && xPos <= 982) {
 			//990 4th row buildings
 			if(Math.abs(xDestination - xPos) == 20) {
