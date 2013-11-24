@@ -16,10 +16,12 @@ import restaurant.NormalWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import people.test.mock.MockBankCustomer;
 import people.test.mock.MockCashier;
 import people.test.mock.MockCook;
 import people.test.mock.MockCustomer;
 import people.test.mock.MockHost;
+import people.test.mock.MockTeller;
 import people.test.mock.MockWaiter;
 import junit.framework.*;
 /**
@@ -32,7 +34,7 @@ import junit.framework.*;
  */
 public class PeopleTest extends TestCase
 {
-	List<PeopleAgent> people;
+	List<PeopleAgent> RestaurantPeople;
 	PeopleAgent cook;
 	PeopleAgent waiter;
 	PeopleAgent host;
@@ -40,6 +42,11 @@ public class PeopleTest extends TestCase
 	PeopleAgent customer;
 	CookWaiterMonitor theMonitor;
 	RestaurantPanel restPanel;
+	
+	
+	List<PeopleAgent> BankPeople;
+	PeopleAgent teller;
+	PeopleAgent bankCustomer;
 	//these are instantiated for each test separately via the setUp() method.
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -47,26 +54,87 @@ public class PeopleTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		people = new ArrayList<PeopleAgent>();
+		RestaurantPeople = new ArrayList<PeopleAgent>();
 		cook = new PeopleAgent("Gordon", 100, false);
 		waiter = new PeopleAgent("Waiter", 50, false);
 	    customer = new PeopleAgent("Customer", 50, true);
 		host = new PeopleAgent("Host", 200, false);
 		cashier = new PeopleAgent("Cashier", 300, false);
-		people.add(cook);
-		people.add(waiter);
-		people.add(customer);
-		people.add(host);
-		people.add(cashier);
+		RestaurantPeople.add(cook);
+		RestaurantPeople.add(waiter);
+		RestaurantPeople.add(customer);
+		RestaurantPeople.add(host);
+		RestaurantPeople.add(cashier);
 		restPanel = new RestaurantPanel();
 		theMonitor = restPanel.theMonitor;
 		
+		BankPeople = new ArrayList<PeopleAgent>();
+		teller = new PeopleAgent("teller", 100, false);
+		bankCustomer = new PeopleAgent("customer", 100, false);
+		BankPeople.add(teller);
+		BankPeople.add(bankCustomer);
+		
 		//person.addRole(new )
 	}	
+	
+	
+	public void testBankScenario()
+	{
+		//AddingRoles
+		teller.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		teller.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		teller.addRole((Role)new MockTeller(teller.name), "Teller");
+		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+		
+		bankCustomer.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		bankCustomer.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		bankCustomer.addRole((Role)new MockTeller(teller.name), "Teller");
+		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+		
+		//Adding Jobs
+		teller.addJob("Teller", 1200, 1800);
+		assertTrue("Testing Job addition", teller.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
+				
+		bankCustomer.addJob("Teller", 5000, 50000);
+		assertTrue("Testing Job addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
+		
+		//Wake Up Call
+		for(PeopleAgent p: BankPeople)
+		{
+			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+			p.msgTimeIs(800);
+			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+		}
+		
+		//Going to Work
+		for(PeopleAgent p: BankPeople)
+		{
+			if(p == teller)
+			{
+				p.msgTimeIs(1200);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+			}
+			else
+			{
+				p.msgTimeIs(1200);
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			}
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+		}
+	}
+	
 	/**
 	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.
 	 */
-	public void testRestaurantScenario()
+	/*public void testRestaurantScenario()
 	{
 		//Adding Roles into all of the People
 		
@@ -111,10 +179,10 @@ public class PeopleTest extends TestCase
 		cashier.addJob("RestaurantCashier", 1200, 1800);
 		assertTrue("Testing Job addition", cashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
 		
-		//Sending message to people!
+		//Sending message to RestaurantPeople!
 		//Wake up call!
 		
-		for(PeopleAgent p: people)
+		for(PeopleAgent p: RestaurantPeople)
 		{
 			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
 			p.msgTimeIs(800);
@@ -126,7 +194,7 @@ public class PeopleTest extends TestCase
 		customer.hunger = HungerState.Hungry;
 
 		
-		for(PeopleAgent p: people)
+		for(PeopleAgent p: RestaurantPeople)
 		{
 			if(p == host)
 			{
@@ -149,7 +217,7 @@ public class PeopleTest extends TestCase
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
-		for(PeopleAgent p : people)
+		for(PeopleAgent p : RestaurantPeople)
 		{
 			if(p == host)
 			{
@@ -174,7 +242,7 @@ public class PeopleTest extends TestCase
 		}
 		
 		//Sleeping Time!
-		for(PeopleAgent p : people)
+		for(PeopleAgent p : RestaurantPeople)
 		{
 			if(p == customer)
 			{
@@ -187,7 +255,6 @@ public class PeopleTest extends TestCase
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
 			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}	
-	}
-	
-	
+	}*/
+
 }
