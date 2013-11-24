@@ -135,11 +135,16 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
+		log.add(new LoggedEvent("Recieved msgDone"));
 		state = AgentState.Idle;
 		event = AgentEvent.Idle;
 		if(role.equals("RestaurantCustomerRole"))
 		{
 			hunger = HungerState.NotHungry;
+		}
+		if(role.equals("BankCustomerRole"))
+		{
+			
 		}
 	}
 	
@@ -181,7 +186,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Idle)
 		{
-		if(jobs.get(0).start - Time >= 200)
+		if(jobs.get(0).start - Time >= 200 && Time <=2100)
 		{
 			if(!hasCar)
 			{
@@ -350,7 +355,7 @@ public class PeopleAgent extends Agent implements People{
 		if(state == AgentState.Idle && event == AgentEvent.GoingToRetrieveMoney)
 		{
 			state = AgentState.GoingToBank;
-			log.add(new LoggedEvent("Retrieving Money. New State is " + state.toString()));
+			log.add(new LoggedEvent("Going To Bank. New State is " + state.toString()));
 			GoToBank();
 			Person = true;
 		}
