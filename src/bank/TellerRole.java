@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import people.Role;
+import restaurant.interfaces.Cashier;
 
 
 /**
@@ -31,7 +32,10 @@ public class TellerRole extends Role implements Teller {
 	public TellerRole(String name) {
 		super();
 
-		this.name = name;
+		Account rest = new Account("Restaurant 1", accounts.size()+1); //Initializes an account for the restaurant
+		accounts.put(rest.id, rest);
+		rest.funds = 10000;
+		myPerson.Restaurants.get(0).bankAccountID = rest.id;
 	}
 
 	public String getMaitreDName() {
@@ -202,11 +206,13 @@ public class TellerRole extends Role implements Teller {
 	
 	private class myBankCustomer {
 		BankCustomer customer;
+		Cashier cashier;
 		private CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
 		double depositAmount = 0;
 		String name;
+		String type;
 		
 		myBankCustomer(BankCustomer customer, String name) {
 			this.customer = customer;
