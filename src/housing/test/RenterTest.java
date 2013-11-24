@@ -3,6 +3,7 @@ package housing.test;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import housing.House;
+import housing.HouseType;
 import housing.HousingRenterRole;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
@@ -261,7 +262,7 @@ public class RenterTest {
 		r = null;
 		o = null;
 		
-		h = new House("Residence", 1);
+		h = new House("Residence", 1, HouseType.Villa);
 		r = new HousingRenterRole(200.0);
 		o = new MockOwner();
 		
