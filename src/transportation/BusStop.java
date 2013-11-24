@@ -1,5 +1,4 @@
 package transportation;
-import transportation.BusPassengerRole;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
