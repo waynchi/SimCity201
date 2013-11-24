@@ -7,6 +7,7 @@ import bank.interfaces.Teller;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import market.interfaces.MarketCashier;
 import people.Role;
 import restaurant.interfaces.Cashier;
 
@@ -63,7 +64,17 @@ public class TellerRole extends Role implements Teller {
 	}
 	
 	public void msgHere(BankCustomer cust, String name) {
-		waitingCustomers.add(new myBankCustomer(cust, name));
+		waitingCustomers.add(new myBankCustomer(cust, name, "customer"));
+		stateChanged();
+	}
+	
+	public void msgNeedHelp(Cashier cashier, String name) {
+		waitingCustomers.add(new myBankCustomer(cashier, name, "cashier"));
+		stateChanged();
+	}
+	
+	public void msgNeedHelp(MarketCashier mcashier, String name) {
+		waitingCustomers.add(new myBankCustomer(mcashier, name, "mcashier"));
 		stateChanged();
 	}
 	
@@ -207,6 +218,7 @@ public class TellerRole extends Role implements Teller {
 	private class myBankCustomer {
 		BankCustomer customer;
 		Cashier cashier;
+		MarketCashier mcashier;
 		private CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
@@ -214,10 +226,23 @@ public class TellerRole extends Role implements Teller {
 		String name;
 		String type;
 		
-		myBankCustomer(BankCustomer customer, String name) {
+		myBankCustomer(BankCustomer customer, String name, String type) {
 			this.customer = customer;
 			this.state = CustomerState.none;
 			this.name = name;
+			this.type = type;
+		}
+		myBankCustomer(Cashier cashier, String name, String type) {
+			this.cashier = cashier;
+			this.state = CustomerState.none;
+			this.name = name;
+			this.type = type;
+		}
+		myBankCustomer(MarketCashier mcashier, String name, String type) {
+			this.mcashier = mcashier;
+			this.state = CustomerState.none;
+			this.name = name;
+			this.type = type;
 		}
 	}
 }
