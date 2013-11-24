@@ -122,17 +122,17 @@ public class CityGui extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());
 
 		cityPanel = new CityPanel();
-		cityPanel.setPreferredSize(new Dimension(400, 250));
-		cityPanel.setMaximumSize(new Dimension(400, 250));
-		cityPanel.setMinimumSize(new Dimension(400, 250));
+		cityPanel.setPreferredSize(new Dimension(400, 300));
+		cityPanel.setMaximumSize(new Dimension(400, 300));
+		cityPanel.setMinimumSize(new Dimension(400, 300));
 		
 		cardLayout = new CardLayout();
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setMinimumSize(new Dimension(500, 250));
-		buildingPanels.setMaximumSize(new Dimension(500, 250));
-		buildingPanels.setPreferredSize(new Dimension(500, 450));
+		buildingPanels.setMinimumSize(new Dimension(500, 400));
+		buildingPanels.setMaximumSize(new Dimension(500, 400));
+		buildingPanels.setPreferredSize(new Dimension(500, 400));
 		buildingPanels.setBackground(Color.yellow);
 
 		cityControls = new CityControls();
