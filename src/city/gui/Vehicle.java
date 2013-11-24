@@ -20,7 +20,7 @@ public class Vehicle extends Rectangle2D.Double {
 	ArrayList<Lane> lanes;
 	ArrayList<Lane> bestRoute;
 	HashMap<Integer,Lane> distances;
-	//ArrayList<Integer> distances;
+	String direction;
 	
 	
 
@@ -36,6 +36,7 @@ public class Vehicle extends Rectangle2D.Double {
 		distances = new HashMap<Integer,Lane>();
 		redLight = false;
 		this.cityPanel = cityPanel;
+		this.direction = "up";
 
 
 	}
@@ -51,9 +52,16 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
-		setRect( x+xv, y+yv, getWidth(), getHeight() );
-		this.xPos = x+xv;
-		this.yPos = y+yv;
+		if(this.direction.equals("up")) {
+			setRect( x+xv, y-yv, getWidth(), getHeight() );
+			this.xPos = x+xv;
+			this.yPos = y-yv;	
+		} else {
+			setRect( x+xv, y+yv, getWidth(), getHeight() );
+			this.xPos = x+xv;
+			this.yPos = y+yv;
+		}
+
 	}
 	public void setDestination(int xd, int yd) {
 		xDestination = xd;
@@ -63,7 +71,7 @@ public class Vehicle extends Rectangle2D.Double {
 		if ( lane.xVelocity > 0 ) {
 			this.setRect( lane.xOrigin, lane.yOrigin+2, this.getWidth(), this.getHeight() ); 
 		} else if ( lane.yVelocity > 0 ) {
-			this.setRect( lane.xOrigin+2, lane.yOrigin, this.getWidth(), this.getHeight() ); 
+			this.setRect( lane.xOrigin+2, lane.yOrigin+90, this.getWidth(), this.getHeight() ); 
 		} else {
 			if ( lane.isHorizontal ) {
 				this.setRect( lane.xOrigin + width - this.getWidth(), lane.yOrigin + 2, this.getWidth(), this.getHeight() );
@@ -113,10 +121,16 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		if(xPos >= 550 && xPos <= 552) {
-			
+			//Up or down?
+			if(yDestination <= 100) {
+				this.direction = "up";
+			} else {
+				this.direction = "down";
+			}
+
 			//570 = Second Row Buildings
 			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(10);
+				this.lane = lanes.get(8);
 				this.setOrientation();
 			}
 			if(yPos == yDestination) {
@@ -126,9 +140,17 @@ public class Vehicle extends Rectangle2D.Double {
 			
 		}
 		if(xPos >= 750 && xPos <= 752) {
+			
+			if(yDestination <= 100) {
+				this.direction = "up";
+			} else {
+				this.direction = "down";
+			}
+
+			
 			//770 3rd row buildings
 			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(11);
+				this.lane = lanes.get(9);
 				this.setOrientation();
 			}
 			
@@ -139,9 +161,16 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		
 		if(xPos >= 970 && xPos <= 982) {
+			
+			if(yDestination <= 100) {
+				this.direction = "up";
+			} else {
+				this.direction = "down";
+			}
+
 			//990 4th row buildings
 			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(12);
+				this.lane = lanes.get(10);
 				this.setOrientation();
 			}
 			

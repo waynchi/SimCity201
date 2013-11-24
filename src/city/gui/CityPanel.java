@@ -20,6 +20,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	static final int crossHeight = 210;
 	static final int hozWidth = 210;
 	static final int hozHeight = 20;
+	static final int sidewalkHeight = 10;
 	
 	
 	
@@ -32,45 +33,59 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		vehicles = new ArrayList<Vehicle>();
 	
 		
-		//Create sidewalks
-//		Sidewalk s = new Sidewalk( hozX - 40, hozY - 20 , hozWidth + 80, hozHeight, 1, 0, true, Color.gray, Color.black ); 
-//		sidewalks.add(s);
-//		s = new Sidewalk( hozX - 40, hozY + 210 , hozWidth + 80, hozHeight, 1, 0, true, Color.gray, Color.black ); 
-//		sidewalks.add(s);
-//		s = new Sidewalk( crossX - 20, crossY, crossWidth, crossHeight, 1, 0, true, Color.gray, Color.black ); 
-//		sidewalks.add(s);
-//		s = new Sidewalk( crossX + 670, crossY, crossWidth, crossHeight, 1, 0, true, Color.gray, Color.black ); 
-//		sidewalks.add(s);
+
+
 		//Create grid of lanes
 		//Horizontal Top Lanes
-
+		Sidewalk s = new Sidewalk( hozX - 210, hozY + 110 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		Lane l = new Lane( hozX - 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
+		s = new Sidewalk( hozX - 210, hozY + 80 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		
+		s = new Sidewalk( hozX, hozY + 110 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		l = new Lane( hozX, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
+		s = new Sidewalk( hozX, hozY + 80 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		s = new Sidewalk( hozX + 200, hozY - 10 , hozWidth - 10, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		l = new Lane( hozX + 210, hozY, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
+
+		s = new Sidewalk( hozX + 400, hozY - 10 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		l = new Lane( hozX + 420, hozY, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
+		
+		s = new Sidewalk( hozX + 400, hozY + 110 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		s = new Sidewalk( hozX + 400, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+
+		
 		//Middle
-		l = new Lane( hozX, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
-		//lanes.add(l);
+		s = new Sidewalk( hozX + 210, hozY + 110 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
 		l = new Lane( hozX + 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
+		s = new Sidewalk( hozX + 210, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		
 		l = new Lane( hozX + 420, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		//Bottom
-		l = new Lane( hozX, hozY + 190, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
-		//lanes.add(l);
 		l = new Lane( hozX + 210, hozY + 190, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		l = new Lane( hozX + 420, hozY + 190, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		
 		//Vertical Cross Lanes
-		l = new Lane( crossX, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
-		//lanes.add(l);
 		l = new Lane( crossX + 220, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		l = new Lane( crossX + 420, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
@@ -93,40 +108,35 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		}
 		
 		//First Section, Top Row
-		Building restaurant1 = new Building( hozX + 220, hozY + 160, 30, 30 );
+		Building restaurant1 = new Building( hozX + 230, hozY + 160, 20, 20 );
 		buildings.add(restaurant1);
 		
-		Building restaurant2 = new Building( hozX + 220, hozY + 20, 30, 30 );
+		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20 );
 		buildings.add(restaurant2);
 		
-		Building restaurant3 = new Building( hozX + 420, hozY + 20, 30, 30 );
+		Building restaurant3 = new Building( hozX + 430, hozY + 30, 20, 20 );
 		buildings.add(restaurant3);
 		
 		//First Section, Bottom Row
-		Building market = new Building( hozX + 370, hozY + 160, 30, 30 );
+		Building market = new Building( hozX + 370, hozY + 160, 20, 20 );
 		buildings.add(market);
 		
-		Building bank = new Building( hozX + 370, hozY + 60, 30, 30 );
+		Building bank = new Building( hozX + 370, hozY + 60, 20, 20 );
 		buildings.add(bank);
 		
-		Building restaurant4 = new Building( hozX + 600, hozY + 60, 30, 30 );
+		Building restaurant4 = new Building( hozX + 600, hozY + 60, 20, 20 );
 		buildings.add(restaurant4);
 		
 		//Second Section, Top Row 
-		Building restaurant5 = new Building( hozX + 600, hozY + 160, 30, 30 );
+		Building restaurant5 = new Building( hozX + 600, hozY + 160, 20, 20 );
 		buildings.add(restaurant5);
 		
-		Building restaurant7 = new Building( hozX + 220, hozY + 110, 30, 30 );
+		Building restaurant7 = new Building( hozX + 230, hozY + 120, 20, 20 );
 		buildings.add(restaurant7);
 		
 		//Second Section, Bottom Row
-		Building restaurant6 = new Building( hozX + 420, hozY + 110, 30, 30 );
+		Building restaurant6 = new Building( hozX + 430, hozY + 120, 20, 20 );
 		buildings.add(restaurant6);
-		
-
-		
-
-	
 		
 		addMouseListener( this );
 	}
@@ -136,7 +146,8 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		count++;
 		
 		Vehicle vehicle;
-		if ( count % 100 == 0) {
+		if ( count == 100) {
+			System.out.println("CAR 1");
 			//Second Row -- First Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 60);
@@ -144,41 +155,65 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			
 		}
 		
-		if (count % 200 == 0) {
-			//Second Row -- Second Building
+		if (count == 150) {
+			System.out.println("CAR 2");
+
+			//First Row -- Second Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 100);
 			vehicles.add(vehicle);
 		}
-		if( count % 210 == 0) {
-			//Second Row -- Third Building
+		if( count == 200) {
+			System.out.println("CAR 3");
+
+			//First Row -- Third Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 150);
 			vehicles.add(vehicle);
 		}
-		
-		if( count % 230 == 0) {
-			//Third Row -- First Building
+		if( count == 250) {
+			System.out.println("CAR 4");
+
+			//First Row -- Fourth Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
+			vehicle.setDestination(570, 200);
+			vehicles.add(vehicle);
+		}
+
+		if( count == 300) {
+			//Second Row -- First Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
 			vehicle.setDestination(770, 60);
 			vehicles.add(vehicle);
 		}
-		if( count % 240 == 0) {
-			//Third Row -- Second Building
+		if( count == 350) {
+			//Second Row -- Second Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
 			vehicle.setDestination(770, 100);
 			vehicles.add(vehicle);
 		}
-		if( count % 250 == 0) {
-			//Third Row -- Third Building
+		if( count == 400) {
+			//Second Row -- Third Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
 			vehicle.setDestination(770, 150);
 			vehicles.add(vehicle);
 		}
-		if( count % 250 == 0 ) {
+		if( count == 450) {
+			//Second Row -- Fourth Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle.setDestination(770, 200);
+			vehicles.add(vehicle);
+		}
+		if( count == 500) {
 			//Fourth row -- First building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
 			vehicle.setDestination(990, 100);
+			vehicles.add(vehicle);
+		}
+		if( count == 550) {
+			//Fourth row -- First building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes, this);
+			vehicle.setDestination(990, 200);
 			vehicles.add(vehicle);
 		}
 		
