@@ -149,7 +149,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
-		marketEmployee = getPersonAgent().getMarketEmployee();
+		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
 		marketEmployee.setCashier(this);
 		turnActive = false;
 	}
