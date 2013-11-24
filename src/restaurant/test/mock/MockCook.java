@@ -6,6 +6,7 @@ import people.People;
 import people.Role;
 import restaurant.gui.CookGui;
 import restaurant.interfaces.Cook;
+import restaurant.interfaces.Waiter;
 
 public class MockCook extends Role implements Cook{
 	
@@ -30,6 +31,13 @@ public class MockCook extends Role implements Cook{
 	public CookGui getGui() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void msgHereIsAnOrder(String choice, Waiter normalWaiterRole,
+			int tableNumber) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
