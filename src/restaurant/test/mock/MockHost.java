@@ -11,6 +11,11 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
 public class MockHost extends Role implements Host {
+	
+	public MockHost(String name) {
+		super();
+		
+	}
 
 	@Override
 	public void setCashier(Cashier cashierRole) {

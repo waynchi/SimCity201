@@ -1,5 +1,8 @@
 package people.mock;
 
+import java.util.List;
+
+import city.gui.CityGui;
 import people.People;
 import people.Role;
 import restaurant.test.mock.EventLog;
@@ -40,7 +43,7 @@ public class MockPeople extends Mock implements People{
 	}
 
 	@Override
-	public void msgDone(Role r) {
+	public void msgDone(String role) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -89,6 +92,62 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public void CallstateChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public double getMoney() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public List<Role> getRoles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getAgentState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getAgentEvent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getHunger() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Role getHost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getMaitreDName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void addCityGui(CityGui gui) {
 		// TODO Auto-generated method stub
 		
 	}
