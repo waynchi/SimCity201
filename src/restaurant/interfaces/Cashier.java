@@ -2,6 +2,8 @@ package restaurant.interfaces;
 
 import java.util.Map;
 
+import restaurant.CashierRole.bankActivityEvent;
+import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
 
 public interface Cashier {
@@ -13,4 +15,12 @@ public interface Cashier {
 	public abstract String getName();
 	public abstract void msgHereIsChange(double change);
 	public abstract void msgMarketOrderReceived(Map<String, Integer> marketOrder);
+	public abstract void msgReadyToHelp(Teller teller);
+	
+	public abstract void msgGiveLoan(double balance, double amount);
+	
+	public abstract void msgWithdrawalSuccessful(double funds, double amount);
+	
+	public abstract void msgDepositSuccessful(double funds);
+
 }
