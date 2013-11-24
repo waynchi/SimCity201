@@ -272,7 +272,7 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 	
 	private void clockIn() {
-		host = getPersonAgent().getHost();
+		host = (Host) getPersonAgent().getHost();
 		teller = getPersonAgent().getTeller();
 		host.setCashier(this);
 		turnActive = false;
@@ -353,7 +353,7 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		working_capital -= getTotalSalary();
 		for (int i=0; i < host.getWaiters().size(); i++) {
-			host.getWaiters().get(i).getPersonAgent().setMoney (waiter_salary);
+			host.getWaiters().get(i).getPerson().setMoney (waiter_salary);
 		}
 		host.getCook().getPerson().setMoney (cook_salary);
 		host.getPerson().setMoney (host_salary);

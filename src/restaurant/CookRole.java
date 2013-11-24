@@ -297,7 +297,7 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
-		host = getPersonAgent().getHost();
+		host = (Host) getPersonAgent().getHost();
 		host.setCook(this);
 		marketEmployee = getPersonAgent().getMarketEmployee();
 		cashier = host.getCashier();

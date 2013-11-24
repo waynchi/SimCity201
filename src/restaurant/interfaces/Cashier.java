@@ -1,6 +1,5 @@
 package restaurant.interfaces;
 
-import market.MarketCashierRole;
 import market.interfaces.MarketCashier;
 
 public interface Cashier {

@@ -186,7 +186,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void done() {
 		isActive = false;
 		leaveWork = false;
-		getPersonAgent().msgDone("MarketCashier);
+		getPersonAgent().msgDone("MarketCashier");
 	}
 
 	//utilities

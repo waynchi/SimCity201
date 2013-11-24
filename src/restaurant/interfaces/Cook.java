@@ -7,13 +7,13 @@ import restaurant.gui.CookGui;
 
 public interface Cook {
 
-	abstract People getPerson();
+	public abstract People getPerson();
 
-	abstract void msgHereIsYourOrder(Map<String, Integer> items);
+	public abstract void msgHereIsYourOrder(Map<String, Integer> items);
 
-	abstract CookGui getGui();
+	public abstract CookGui getGui();
 
-	abstract void msgHereIsAnOrder(String choice,
+	public abstract void msgHereIsAnOrder(String choice,
 			Waiter normalWaiterRole, int tableNumber);
 
 }

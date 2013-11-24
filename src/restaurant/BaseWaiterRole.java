@@ -11,6 +11,7 @@ import restaurant.interfaces.Waiter;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.People;
 import people.Role;
 /**
  * Restaurant Host Agent
@@ -304,7 +305,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		host = getPersonAgent().getHost();
+		host = (Host) getPersonAgent().getHost();
 		host.addWaiter(this);
 		cook = host.getCook();
 		cashier = host.getCashier();
@@ -485,6 +486,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	public Boolean isActive() {
 		return isActive;
+	}
+	
+	public People getPerson() {
+		return getPersonAgent();
 	}
 	
 	

@@ -20,7 +20,7 @@ import people.Role;
 public class HostRole extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	
-	private List<BaseWaiterRole> allWaiters = Collections.synchronizedList(new ArrayList<BaseWaiterRole>());
+	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	private boolean isActive;
@@ -72,20 +72,17 @@ public class HostRole extends Role implements Host{
 	private Cook cook;
 
 	public class MyWaiter {
-		BaseWaiterRole w;
+		Waiter w;
 		waiterStatus s;
 
-		public MyWaiter (BaseWaiterRole waiter) {
+		public MyWaiter (Waiter waiter) {
 			w = waiter;
 			s = waiterStatus.AT_WORK;
 		}
-
 		public void msgBreakApproved() {
 			// TODO Auto-generated method stub
 
-		}
-
-		
+		}	
 	}
 
 	public class MyCustomer {
@@ -128,7 +125,7 @@ public class HostRole extends Role implements Host{
 
 	}
 
-	public void addWaiter(BaseWaiterRole w){
+	public void addWaiter(Waiter w){
 		allWaiters.add(w);
 		waiters.add(new MyWaiter(w));
 		getPersonAgent().CallstateChanged();
@@ -324,7 +321,7 @@ public class HostRole extends Role implements Host{
 		mc.state = customerState.ASKED_WHETHER_TO_WAIT;
 	}
 
-	private void TellWaiterToSeatCustomer(MyCustomer mc, BaseWaiterRole waiter, Table table) {
+	private void TellWaiterToSeatCustomer(MyCustomer mc, Waiter waiter, Table table) {
 		print("Please take "+mc.customer.getName()+ " to table#" + table.tableNumber);
 		waiter.SitAtTable(mc.customer, table.tableNumber);
 		mc.state = customerState.SEATED;
@@ -356,7 +353,7 @@ public class HostRole extends Role implements Host{
 		leaveWork = false;
 		// reset the two lists of waiters
 		waiters = new ArrayList<MyWaiter>();
-		allWaiters = new ArrayList<BaseWaiterRole>();
+		allWaiters = new ArrayList<Waiter>();
 		getPersonAgent().msgDone("RestaurantHost");
 	}
 
@@ -370,7 +367,7 @@ public class HostRole extends Role implements Host{
 		return name;
 	}
 
-	public List<BaseWaiterRole> getWaiters() {
+	public List<Waiter> getWaiters() {
 		return allWaiters;
 	}
 
