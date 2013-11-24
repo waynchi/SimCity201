@@ -13,6 +13,7 @@ public interface Resident {
 	public void repairDone();
 	public void foodCooked();
 	public void activityDone();
+	public void leftHouse();
 
 	//-----------------------------------------------------------//
 
