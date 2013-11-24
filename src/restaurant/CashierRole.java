@@ -357,11 +357,11 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		working_capital -= getTotalSalary();
 		for (int i=0; i < host.getWaiters().size(); i++) {
-			host.getWaiters().get(i).getPerson().getMoney() = waiter_salary;
+			host.getWaiters().get(i).getPerson().setMoney( waiter_salary);
 		}
-		host.getCook().getPerson().getMoney() = cook_salary;
-		host.getPerson().getMoney() = host_salary;
-		this.getPersonAgent().getMoney() = cashier_salary;
+		host.getCook().getPerson().setMoney(cook_salary);
+		host.getPerson().setMoney(host_salary);
+		this.getPersonAgent().setMoney( cashier_salary);
 	}
 
 	private void closeRestaurant() {
