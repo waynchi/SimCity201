@@ -1,50 +1,49 @@
-package people.test.mock;
+package restaurant.test.mock;
 
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
-import people.Role;
 
-public class MockTeller extends Role implements Teller{
+public class MockTeller extends Mock implements Teller{
 
 	public MockTeller(String name) {
-		super();
+		super(name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void msgHere(BankCustomer cust) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void msgHere(BankCustomer cust) {}
 
 	@Override
 	public void msgCreateAccount(String name, double initialFund) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Received msgCreateAccount from " + name));
 		
 	}
 
 	@Override
 	public void msgWithdraw(int accountID, double moneyNeeded) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Received msgWithdraw from ID " + accountID));
 	}
 
 	@Override
 	public void msgDeposit(int accountID, double moneyGiven) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Received msgDeposit from ID " + accountID));
 	}
 
 	@Override
 	public void msgDeposit(double moneyGiven) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent(""));		
 	}
 
 	@Override
 	public void msgDoneAndLeaving() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 
 }

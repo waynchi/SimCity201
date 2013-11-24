@@ -125,6 +125,7 @@ public class ResidentGui implements HGui{
 				if (hGui.h.type == HouseType.Apartment) {
 					if (this.location == Location.Apartments) {
 						location = Location.Home;
+						state = State.Idle;
 						xPos = hGui.entranceCoordinatesInternal.width;
 						yPos = hGui.entranceCoordinatesInternal.height;
 						Random generator = new Random();
@@ -132,13 +133,8 @@ public class ResidentGui implements HGui{
 						num++;
 						Dimension d = hGui.getPosition("Chair" + num);
 						goToLocation(d);
+						r.activityDone();
 					}
-					else {
-						state = State.Idle;
-					}
-				}
-				else {
-					state = State.Idle;
 				}
 			}
 		}
@@ -273,19 +269,16 @@ public class ResidentGui implements HGui{
 			goToLocation(hGui.entranceCoordinatesExternal);
 		}
 		else {
+			state = State.Idle;
 			location = Location.Home;
 			xPos = hGui.entranceCoordinatesInternal.width;
 			yPos = hGui.entranceCoordinatesInternal.height;
 			Random generator = new Random();
-			int t;
-			if (hGui.h.type == HouseType.Villa)
-				t = 4;
-			else
-				t = 2;
-			int num = generator.nextInt(t);
+			int num = generator.nextInt(4);
 			num++;
 			Dimension d = hGui.getPosition("Chair" + num);
 			goToLocation(d);
+			r.activityDone();
 		}
 	}
 	

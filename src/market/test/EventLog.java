@@ -3,6 +3,8 @@ package market.test;
 import java.util.LinkedList;	
 import java.util.List;
 
+import restaurant.test.mock.LoggedEvent;
+
 	/**
 	 * This class should be used by Mock agents to log significant events. For
 	 * example, you might write a log entry every time a Mock receives a message.
@@ -100,5 +102,6 @@ import java.util.List;
 	                return text.toString();
 
 	        }
+
 }
 

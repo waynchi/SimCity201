@@ -244,4 +244,3 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 
 	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
 }
-

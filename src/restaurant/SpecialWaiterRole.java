@@ -4,9 +4,8 @@ import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Waiter;
 
 public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
-	public SpecialWaiterRole(String name, CookWaiterMonitor monitor) {
+	public SpecialWaiterRole(CookWaiterMonitor monitor) {
 		super();
-		this.name = name;
 		currentCustomerNum = 0;
 		menu.add(new FoodOnMenu("Steak", 15.99));
 		menu.add(new FoodOnMenu("Chicken", 10.99));
@@ -20,5 +19,11 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 		print ("Here's an order for table " + customer.tableNumber + ". Adding to the revolving stand!");
         theMonitor.addOrder(customer.tableNumber, customer.choice, this);
         customer.state = customerState.waitingForFood;
+	}
+	
+	public void done () {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("RestaurantSpecialWaiter");
 	}
 }

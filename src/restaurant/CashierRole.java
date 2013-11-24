@@ -14,6 +14,7 @@ import java.util.*;
 import bank.interfaces.Teller;
 import market.MarketCashierRole;
 import market.interfaces.MarketCashier;
+import people.People;
 import people.Role;
 
 
@@ -24,7 +25,6 @@ import people.Role;
 
 public class CashierRole extends Role implements Cashier {
 
-	private String name;
 	public EventLog log = new EventLog();
 	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
 
@@ -34,26 +34,30 @@ public class CashierRole extends Role implements Cashier {
 	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
 	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 
-	//private RestaurantPanel restaurantPanel;
-	private double min_working_capital, working_capital, bank_balance;
-	private double waiter_salary, cook_salary, host_salary, cashier_salary;
-
 	private Host host;
 	private Teller teller;
 	private int bankAccount = -1;
 	//private Semaphore depositCompleted = new Semaphore(0,true);
 	//private Semaphore withdrawalCompleted = new Semaphore(0,true);
-	private Boolean loanRequested, loanGranted, loanRefused;
+	private Boolean loanRequested, loanGranted, loanRefused = false;
 
 	//private Vector<BaseWaiterRole> waiters = null;
 
-	private Boolean onClose;
+	private Boolean leaveWork;
 	private Boolean isActive;
 	private Boolean turnActive;
 	private Boolean depositSuccessful = false;
 	private Boolean withdrawalSuccessful = false;
 
-
+	private double min_working_capital = 1000.0;
+	private double working_capital = 100000.0;
+	private double bank_balance = 0.0;
+	private int waiter_salary = 100;
+	private int cook_salary = 100;
+	private int  host_salary = 100;
+	private int cashier_salary = 100;
+	
+	
 	public class Check {
 		Waiter waiter;
 		Customer customer;
@@ -81,10 +85,14 @@ public class CashierRole extends Role implements Cashier {
 	public class MarketBill {
 		public MarketCashier marketCashier;
 		Double amount;
+		boolean itemsReceived;
+		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (MarketCashier _marketCashier , double a) {
+		public MarketBill (MarketCashier _marketCashier , double a, Map<String, Integer> items) {
 			marketCashier = _marketCashier;
 			amount = a;
+			itemsReceived = false;
+			itemsOrdered = items;
 		}
 
 		//public String toString () {
@@ -94,9 +102,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public CashierRole(String name) {
+	public CashierRole() {
 		super();
-		this.name = name;
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
@@ -107,9 +114,10 @@ public class CashierRole extends Role implements Cashier {
 		bank_balance = 0.0;
 		waiter_salary = cook_salary = host_salary = cashier_salary = 100;
 		loanRequested = loanGranted = loanRefused = false;
-		onClose = false;
+		leaveWork = false;
 		isActive = false;
 		turnActive = false;
+		//leaveWork = false;
 	}
 
 	// messages
@@ -121,12 +129,13 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
-		marketBills.add(new MarketBill(marketCashier, price));
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price, Map<String, Integer> items) {
+		log.add(new LoggedEvent("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName() + " with price " + price));
+		marketBills.add(new MarketBill(marketCashier, price, items));
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -166,6 +175,15 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
+	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+		for (MarketBill mb : marketBills) {
+			if (mb.itemsOrdered == marketOrder) {
+				mb.itemsReceived = true;
+			}
+		}
+		getPersonAgent().CallstateChanged();
+		
+	}
 	
 	// from BankTellerRole
 	
@@ -205,10 +223,6 @@ public class CashierRole extends Role implements Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		if (getPersonAgent().getTime() == 2200) {
-			onClose = true;
-			return true;
-		}
 		
 		if (turnActive) {
 			clockIn();
@@ -234,7 +248,10 @@ public class CashierRole extends Role implements Cashier {
 		}
 	
 		if (!marketBills.isEmpty()) {
-			payMarket(marketBills.get(0));
+			for (MarketBill mb : marketBills) {
+				if (mb.itemsReceived = true)
+					payMarket(mb);
+			}
 			return true;
 		}
 
@@ -248,7 +265,7 @@ public class CashierRole extends Role implements Cashier {
 			closeRestaurant();	
 			return true;
 		}
-		if (onClose) {
+		if (leaveWork) {
 			if (depositSuccessful) {
 				closeRestaurant();
 				return true;
@@ -275,7 +292,7 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 	
 	private void clockIn() {
-		host = getPersonAgent().getHost();
+		host = (Host) getPersonAgent().getHost();
 		teller = getPersonAgent().getTeller();
 		host.setCashier(this);
 		turnActive = false;
@@ -323,7 +340,7 @@ public class CashierRole extends Role implements Cashier {
 		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
 		if (working_capital > bill.amount) {
 			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.marketCashier.msgHereIsPayment(working_capital, this);
+			bill.marketCashier.msgHereIsPayment(working_capital, bill.itemsOrdered, this);
 			setMyMoney(0);
 
 		}
@@ -356,11 +373,11 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		working_capital -= getTotalSalary();
 		for (int i=0; i < host.getWaiters().size(); i++) {
-			host.getWaiters().get(i).getPersonAgent().setMoney (waiter_salary);
+			host.getWaiters().get(i).getPerson().setMoney( waiter_salary);
 		}
-		host.getCook().getPerson().setMoney (cook_salary);
-		host.getPerson().setMoney (host_salary);
-		this.getPersonAgent().setMoney (cashier_salary);
+		host.getCook().getPerson().setMoney(cook_salary);
+		host.getPerson().setMoney(host_salary);
+		this.getPersonAgent().setMoney( cashier_salary);
 	}
 
 	private void closeRestaurant() {
@@ -368,8 +385,9 @@ public class CashierRole extends Role implements Cashier {
 		loanRequested = false;
 		loanGranted = false;
 		loanRefused = false;
-		onClose = false;
-		getPersonAgent().msgDone(this);
+		leaveWork = false;
+		isActive = false;
+		getPersonAgent().msgDone("RestaurantCashier");
 		//DoCloseRestaurant(); //gui stuff
 	}
 
@@ -387,13 +405,9 @@ public class CashierRole extends Role implements Cashier {
 	//utilities
 
 	public String getMaitreDName() {
-		return name;
+		return getPersonAgent().getName();
 	}
-
-	public String getName() {
-		return name;
-	}
-
+	
 	public List<Check> getChecks() {
 		return checks;
 	}
@@ -439,6 +453,10 @@ public class CashierRole extends Role implements Cashier {
 	
 	public void setHost (HostRole h) {
 		host = h;
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
 	}
 
 

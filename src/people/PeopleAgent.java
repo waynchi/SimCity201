@@ -40,6 +40,12 @@ public class PeopleAgent extends Agent implements People{
 		return Money;
 	}
 	
+	public void setMoney(double Money)
+	{
+		this.Money = Money;
+	}
+	
+	
 	public List<Role> getRoles()
 	{
 		List<Role> temp = new ArrayList<Role>();
@@ -68,6 +74,16 @@ public class PeopleAgent extends Agent implements People{
 	public Role getHost()
 	{
 		return Restaurants.get(0).h;
+	}
+	
+	public Role getTeller()
+	{
+		return null;
+	}
+	
+	public Role getMarketEmployee()
+	{
+		return null;
 	}
 	
 	public String getMaitreDName() {
@@ -130,11 +146,16 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
+		log.add(new LoggedEvent("Recieved msgDone"));
 		state = AgentState.Idle;
 		event = AgentEvent.Idle;
 		if(role.equals("RestaurantCustomerRole"))
 		{
 			hunger = HungerState.NotHungry;
+		}
+		if(role.equals("BankCustomerRole"))
+		{
+			
 		}
 	}
 	
@@ -176,7 +197,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Idle)
 		{
-		if(jobs.get(0).start - Time >= 200)
+		if(jobs.get(0).start - Time >= 200 && Time <=2100)
 		{
 			if(!hasCar)
 			{
@@ -188,6 +209,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingToRetrieveMoney;
+					log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
 					stateChanged();
 					return;
 				}
@@ -242,7 +264,7 @@ public class PeopleAgent extends Agent implements People{
 				return;
 			}
 		}
-		if(Time >= lastTime && state == AgentState.Idle)
+		if(Time >= lastTime && state == AgentState.Idle && Time <= 2100)
 		{
 			if(!hasCar)
 			{
@@ -252,13 +274,12 @@ public class PeopleAgent extends Agent implements People{
 					stateChanged();
 					return;
 				}
-				if(!(Time>= 1700 && Money <= 30000))
+				else if(!(Time>= 1700 && Money <= 30000))
 				{
-					/*rand(){
-						1. do nothing();
-						2.{ event == GoingToRetrieveMoney();
-					return}
-					}*/
+						event = AgentEvent.GoingToRetrieveMoney;
+						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+						stateChanged();
+						return;
 				}
 			}				
 			else
@@ -345,6 +366,7 @@ public class PeopleAgent extends Agent implements People{
 		if(state == AgentState.Idle && event == AgentEvent.GoingToRetrieveMoney)
 		{
 			state = AgentState.GoingToBank;
+			log.add(new LoggedEvent("Going To Bank. New State is " + state.toString()));
 			GoToBank();
 			Person = true;
 		}

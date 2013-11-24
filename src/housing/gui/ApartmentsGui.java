@@ -43,7 +43,6 @@ public class ApartmentsGui implements HGui{
 
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 }

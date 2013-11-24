@@ -55,12 +55,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 
-	private Boolean isActive = false;
+	private boolean isActive = false;
+	private boolean leaveWork = false;
 
 	// constructor
 	public MarketEmployeeRole(){
 		for (int i=0; i<10; i++) { // create 10 market trucks
-			trucks.add(new MarketTruckAgent());
+			trucks.add(new MarketTruckAgent("MarketTruck "+i));
 		}
 		items.put("Steak", new Item("Steak", 100));
 		items.put("Salad", new Item("Salad", 100));
@@ -79,7 +80,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -103,6 +104,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			giveOrderToCustomer(orders.get(0));
 			return true;
 		}
+		
+		if (leaveWork) {
+			done();
+		}
+		
 		return false;
 	}
 
@@ -157,6 +163,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("MarketEmployee");
+	}
 
 	//utilities
 	public Boolean isActive() {
@@ -170,6 +181,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public MarketCashier getCashier(MarketCashier c) {
 		return cashier;
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
 	}
 
 
