@@ -45,6 +45,7 @@ public class PeopleAgent extends Agent implements People{
 		this.Money = Money;
 	}
 	
+	
 	public List<Role> getRoles()
 	{
 		List<Role> temp = new ArrayList<Role>();
@@ -73,6 +74,16 @@ public class PeopleAgent extends Agent implements People{
 	public Role getHost()
 	{
 		return Restaurants.get(0).h;
+	}
+	
+	public Role getTeller()
+	{
+		return null;
+	}
+	
+	public Role getMarketEmployee()
+	{
+		return null;
 	}
 	
 	public String getMaitreDName() {
