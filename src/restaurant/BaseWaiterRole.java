@@ -103,7 +103,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgIsInActive () {
-		leaveWork = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 	

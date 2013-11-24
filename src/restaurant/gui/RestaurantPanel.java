@@ -256,7 +256,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole(name);	
+    		RestaurantCustomerRole c = new RestaurantCustomerRole();	
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw

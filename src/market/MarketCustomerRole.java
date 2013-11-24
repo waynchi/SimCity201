@@ -40,10 +40,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgIsInActive() {
-		isActive = false;
-		getPersonAgent().CallstateChanged();
-	}
 	
 	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
 		isActive = true;
@@ -111,7 +107,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 				
 		if (state == marketCustomerState.PAID && event == marketCustomerEvent.RECEIVED_CHANGE) {
-			doneShopping();
+			done();
 			return true;
 		}
 		
@@ -131,7 +127,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		state = marketCustomerState.PAID;	
 	}
 
-	private void doneShopping() {
+	private void done() {
+		isActive = false;
 		getPersonAgent().msgDone("MarketCustomer");
 		state = marketCustomerState.DONE;
 	}

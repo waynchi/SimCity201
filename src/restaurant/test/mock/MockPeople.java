@@ -145,4 +145,10 @@ public class MockPeople extends Mock implements People{
 		return name;
 	}
 
+	@Override
+	public void setMoney(double Money) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

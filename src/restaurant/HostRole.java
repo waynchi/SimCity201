@@ -1,7 +1,5 @@
 package restaurant;
 
-import agent.Agent;
-import restaurant.HostRole.Table;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
