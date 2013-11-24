@@ -7,6 +7,7 @@ import java.util.List;
 
 import city.gui.CityGui;
 import people.PeopleAgent;
+import people.PeopleAgent.HungerState;
 import people.Role;
 import restaurant.CashierRole;
 import restaurant.CookRole;
@@ -15,10 +16,11 @@ import restaurant.NormalWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
-import restaurant.test.mock.MockCashier;
-import restaurant.test.mock.MockCook;
-import restaurant.test.mock.MockCustomer;
-import restaurant.test.mock.MockWaiter;
+import people.test.mock.MockCashier;
+import people.test.mock.MockCook;
+import people.test.mock.MockCustomer;
+import people.test.mock.MockHost;
+import people.test.mock.MockWaiter;
 import junit.framework.*;
 /**
  * 
@@ -48,7 +50,7 @@ public class PeopleTest extends TestCase
 		people = new ArrayList<PeopleAgent>();
 		cook = new PeopleAgent("Gordon", 100, false);
 		waiter = new PeopleAgent("Waiter", 50, false);
-	    customer = new PeopleAgent("Customer", 50, false);
+	    customer = new PeopleAgent("Customer", 50, true);
 		host = new PeopleAgent("Host", 200, false);
 		cashier = new PeopleAgent("Cashier", 300, false);
 		people.add(cook);
@@ -85,7 +87,7 @@ public class PeopleTest extends TestCase
 		
 		host.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		host.addRole((Role)new HostRole(host.name), "RestaurantHost");
+		host.addRole((Role)new MockHost(host.name), "RestaurantHost");
 		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantHost"));
 		
 		cashier.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
@@ -121,7 +123,7 @@ public class PeopleTest extends TestCase
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
 		}
 		
-		
+		customer.hunger = HungerState.Hungry;
 
 		
 		for(PeopleAgent p: people)
@@ -140,33 +142,51 @@ public class PeopleTest extends TestCase
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
 			}
-				assertTrue("")
-			
+			else
+			{
+				p.msgTimeIs(1200);
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			}
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+		}
+		for(PeopleAgent p : people)
+		{
+			if(p == host)
+			{
+				p.msgTimeIs(1900);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+			}
+			else if(p!= customer)
+			{
+				p.msgTimeIs(1800);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+			}
+			else
+			{
+				p.msgTimeIs(1800);
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+			}
+			assertFalse("Testing SCheduler", p.pickAndExecuteAnAction());
 		}
 		
-		//setUp() runs first before this test!
-		/*
-		customer.cashier = cashier;//You can do almost anything in a unit test.			
-		
-		//check preconditions
-		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.pendingChecks.size(), 0);		
-		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "
-						+ cashier.log.toString(), 0, cashier.log.size());
-		//Testing Milestone v2.2A 
-		//One Market with one bill
-		System.out.println("Testing Market Interactions");
-		assertEquals("Cashier should have 0 market bills in it", cashier.MarketBills.size(), 0);
-		cashier.msgHereIsMarketBill(new MBill("Steak", 5, 8), market);
-		assertFalse("CashierAgent should have something in MarketBills now.",cashier.MarketBills.isEmpty());
-		System.out.println(cashier.log.getLastLoggedEvent().toString());
-		assertTrue("Testing if msg is sent", cashier.log.getLastLoggedEvent().toString().equals("Received HereIsMarketBill from market. Total = 40.0"));
-		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
-		assertTrue("Testing if payment is sent", cashier.log.getLastLoggedEvent().toString().equals("Paid Market back. Total = 40.0"));
-		assertTrue("Testing if market recieved message", market.log.getLastLoggedEvent().toString().equals("Recieved message Bill Payment. Total = 40.0"));
-		assertTrue("Testing if cashier MBill is now empty", cashier.MarketBills.isEmpty());
-		assertFalse("Scheduler testing again", cashier.pickAndExecuteAnAction());*/
-		
-	
+		//Sleeping Time!
+		for(PeopleAgent p : people)
+		{
+			if(p == customer)
+			{
+				p.msgDone("RestaurantCustomerRole");
+			}
+			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+			p.msgTimeIs(2330);
+			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+		}	
 	}
 	
 	

@@ -1,4 +1,4 @@
-package restaurant.test.mock;
+package people.test.mock;
 
 import people.Role;
 import restaurant.interfaces.Host;
@@ -6,7 +6,6 @@ import restaurant.interfaces.Host;
 public class MockHost extends Role implements Host {
 
 		public MockHost(String name) {
-			super();
-			
+			super();	
 		}
-	}
+}
