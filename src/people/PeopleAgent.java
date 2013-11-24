@@ -350,6 +350,7 @@ public class PeopleAgent extends Agent implements People{
 		if(state == AgentState.Idle && event == AgentEvent.GoingToRetrieveMoney)
 		{
 			state = AgentState.GoingToBank;
+			log.add(new LoggedEvent("Retrieving Money. New State is " + state.toString()));
 			GoToBank();
 			Person = true;
 		}

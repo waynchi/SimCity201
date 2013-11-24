@@ -12,6 +12,8 @@ public interface People {
 	
 	public double getMoney();
 	
+	public void setMoney(double Money);
+	
 	public List<Role> getRoles();
 	
 	public String getAgentState();
