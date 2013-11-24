@@ -36,6 +36,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 
 
 		//Create grid of lanes
+		
 		//Horizontal Top Lanes
 		Sidewalk s = new Sidewalk( hozX - 210, hozY + 110 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
@@ -66,7 +67,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		s = new Sidewalk( hozX + 400, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		
+		//TOP AND BOTTOM OF HORIZONTAL ROADS
 		s = new Sidewalk( hozX + 410, hozY + 180 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
@@ -79,16 +80,17 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		s = new Sidewalk( hozX + 410, hozY + 20 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		
 		s = new Sidewalk( hozX + 410, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		s = new Sidewalk( hozX + 190, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
+		//FAR RIGHT VERTICAL
 		s = new Sidewalk( hozX + 650, hozY - 10 , sidewalkHeight, hozWidth + 10, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
+		//SMALL INNER BLOCKS - TOP
 		s = new Sidewalk( hozX + 620, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
@@ -100,12 +102,15 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		
 		s = new Sidewalk( hozX + 220, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
+		
+		//FAR LEFT VERTICAL
 		s = new Sidewalk( hozX + 190, hozY - 10 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		s = new Sidewalk( hozX + 190, hozY + 120 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
+		//SMALL INNER BLOCKS - BOTTOM
 		s = new Sidewalk( hozX + 620, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
@@ -146,16 +151,41 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		
 		l = new Lane( crossX + 650, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
+		
+		
+		//Residential
+		l = new Lane( crossX - 210, crossY - 50, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
+		//Right sidewalks
+		s = new Sidewalk( hozX - 210, hozY - 40 , sidewalkHeight, 120, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		s = new Sidewalk( hozX - 210, hozY + 120 , sidewalkHeight, 140, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		//Left sidewalks
+		s = new Sidewalk( hozX - 240, hozY - 40 , sidewalkHeight, 120, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		s = new Sidewalk( hozX - 240, hozY + 80 , sidewalkHeight, 200, 1, 0, false, Color.gray, Color.black ); 
+		sidewalks.add(s);
+		
+		l = new Lane( crossX - 210, crossY + 110, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
 	
 		
 		//Start animation for the timer
 		javax.swing.Timer t = new javax.swing.Timer( 25, this );
 		t.start();
 		
-		//Add grid of homes (temp loc)
-		for ( int i=0; i<2; i++ ) {
-			for ( int j=0; j<5; j++ ) {
-				Building home = new Building( i*40+ 10, j*40 + 10, 20, 20 );
+		//Add grid of homes
+		for ( int i=0; i<=1; i++ ) {
+			for ( int j=0; j<3; j++ ) {
+				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20 );
+				buildings.add( home );
+			}
+		}
+		
+		for ( int i=0; i<=1; i++ ) {
+			for ( int j=0; j<3; j++ ) {
+				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20 );
 				buildings.add( home );
 			}
 		}
@@ -200,7 +230,6 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		
 		Vehicle vehicle;
 		if ( count == 100) {
-			System.out.println("CAR 1");
 			//Second Row -- First Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 60);
@@ -209,24 +238,18 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		}
 		
 		if (count == 150) {
-			System.out.println("CAR 2");
-
 			//First Row -- Second Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 100);
 			vehicles.add(vehicle);
 		}
 		if( count == 200) {
-			System.out.println("CAR 3");
-
 			//First Row -- Third Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 150);
 			vehicles.add(vehicle);
 		}
 		if( count == 250) {
-			System.out.println("CAR 4");
-
 			//First Row -- Fourth Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(0),lanes,this);
 			vehicle.setDestination(570, 200);
