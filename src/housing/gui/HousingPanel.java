@@ -2,6 +2,7 @@ package housing.gui;
 
 import housing.Apartments;
 import housing.House;
+import housing.HouseType;
 
 import javax.swing.JPanel;
 
@@ -12,7 +13,7 @@ public class HousingPanel extends JPanel {
 	public HousingPanel(TestGui g, HouseAnimationPanel p) {
 		testGui = g;
 		this.p = p;
-		House h = new House("Residence", 44);
+		House h = new House("Residence", 44, HouseType.Villa);
 		h.setItems(testGui);
 		HouseGui gui1 = new HouseGui(h, testGui);
 		h.setGui(gui1);

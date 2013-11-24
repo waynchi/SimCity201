@@ -15,13 +15,15 @@ public class House extends Item{
 	public HouseGui gui;
 	public boolean isLocked = false;
 	public boolean isBroken = false;
+	public HouseType type;
 
-	public House(String name, int houseNum) {
+	public House(String name, int houseNum, HouseType type) {
 		super(name, null);
 		number = houseNum;
 		items = new ArrayList<Item>();
 		occupant = null;
 		isLocked = false;
+		this.type = type;
 	}
 
 	public boolean isLocked() {
