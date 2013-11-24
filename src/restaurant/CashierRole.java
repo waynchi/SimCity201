@@ -293,7 +293,7 @@ public class CashierRole extends Role implements Cashier {
 	
 	private void clockIn() {
 		host = (Host) getPersonAgent().getHost();
-		teller = getPersonAgent().getTeller();
+		teller = (Teller) getPersonAgent().getTeller();
 		host.setCashier(this);
 		turnActive = false;
 		depositSuccessful = false;
