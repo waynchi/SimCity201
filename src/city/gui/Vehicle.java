@@ -80,31 +80,6 @@ public class Vehicle extends Rectangle2D.Double {
 			}
 		}
 	}
-	public void shortestDistance() {
-		for(Lane lane : lanes) {
-			if((xPos - 2) == lane.xOrigin) {
-				double distance = Math.sqrt(Math.pow(lane.xOrigin - xPos,2) + (Math.pow(lane.yOrigin - yPos,2)));
-				distances.put((int) distance,lane);
-			}
-			
-		}
-		
-		for(Map.Entry<Integer,Lane> e:distances.entrySet()) {
-			//System.out.println(e.getKey() + " " + e.getValue());
-		}
-		
-// 		Iterator it = distances.keySet().iterator();
-//		while(it.hasNext()) {
-//			System.out.println("DISTANCES:" + it.next());
-//		}
-//		if(distances.size() > 0) {
-//			System.out.println(this.min(distances.get(0),distances.get(1),distances.get(2)));
-//		}
-		
-	}
-	public static double min(double a, double b, double c) {
-	    return Math.min(Math.min(a, b), c);
-	}
 	public void draw(Graphics2D g2) {
 		//this.shortestDistance();
 		g2.setColor( Color.blue );
