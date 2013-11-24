@@ -8,6 +8,7 @@ import restaurant.BaseWaiterRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
+import restaurant.interfaces.Waiter;
 
 public class MockHost extends Role implements Host {
 
@@ -43,6 +44,24 @@ public class MockHost extends Role implements Host {
 
 	@Override
 	public void msgTableIsFree(int tableNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void IWantABreak(Waiter w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Waiter> getAvailableWaiters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void IAmOffBreak(Waiter w) {
 		// TODO Auto-generated method stub
 		
 	}
