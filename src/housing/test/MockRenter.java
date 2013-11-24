@@ -7,7 +7,7 @@ import housing.interfaces.Renter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
-public class MockRenter implements Renter {
+public class MockRenter extends MockResident implements Renter {
 	
 	// Data
 	
@@ -19,6 +19,7 @@ public class MockRenter implements Renter {
 	
 	@Override
 	public void payPenalty(double penalty) {
+		log.add(new LoggedEvent("Penalty of $" + penalty + " applied"));
 	}
 
 	@Override
@@ -73,5 +74,6 @@ public class MockRenter implements Renter {
 
 	@Override
 	public void setOwner(Owner o) {
+		log.add(new LoggedEvent("Owner added"));
 	}
 }
