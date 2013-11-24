@@ -14,6 +14,8 @@ public class Vehicle extends Rectangle2D.Double {
 	public double xPos;
 	public double yPos;
 	public Lane lane;
+	public CityPanel cityPanel;
+	boolean redLight;
 	Rectangle2D.Double rectangle;
 	ArrayList<Lane> lanes;
 	ArrayList<Lane> bestRoute;
@@ -25,13 +27,15 @@ public class Vehicle extends Rectangle2D.Double {
 	
 	Color vehicleColor;
 	
-	public Vehicle( int x, int y, int width, int height, Lane l, ArrayList<Lane>lanes ) {
+	public Vehicle( int x, int y, int width, int height, Lane l, ArrayList<Lane>lanes, CityPanel cityPanel ) {
 		super( x, y, width, height );
 		this.lane = l;
 		this.lanes = lanes;
 		rectangle = new Rectangle2D.Double( 100, 100, 20, 20 );
 		this.setOrientation();
 		distances = new HashMap<Integer,Lane>();
+		redLight = false;
+		this.cityPanel = cityPanel;
 
 
 	}
@@ -94,25 +98,67 @@ public class Vehicle extends Rectangle2D.Double {
 	    return Math.min(Math.min(a, b), c);
 	}
 	public void draw(Graphics2D g2) {
-		this.shortestDistance();
-		g2.setColor( this.getColor() );
+		//this.shortestDistance();
+		g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		this.move(lane.xVelocity,lane.yVelocity);
+		if(!redLight) {
+			this.move(lane.xVelocity,lane.yVelocity);
+		}
 		//Crosswalks, X Coordinates:
 		//330  & 550 & 750 & 950
+		//Intersections
+		//9 = first; 10 = second; 11=third
 		
 
 
+		if(xPos >= 550 && xPos <= 552) {
+			
+			//570 = Second Row Buildings
+			if(Math.abs(xDestination - xPos) == 20) {
+				this.lane = lanes.get(10);
+				this.setOrientation();
+			}
+			if(yPos == yDestination) {
+				cityPanel.removeVehicle(this);
+				
+			}
+			
+		}
+		if(xPos >= 750 && xPos <= 752) {
+			//770 3rd row buildings
+			if(Math.abs(xDestination - xPos) == 20) {
+				this.lane = lanes.get(11);
+				this.setOrientation();
+			}
+			
+			if(yPos == yDestination) {
+				cityPanel.removeVehicle(this);
+				
+			}
+		}
+		
+		System.out.println(xPos);
+		if(xPos >= 970 && xPos <= 982) {
+			//990 4th row buildings
+			if(Math.abs(xDestination - xPos) == 20) {
+				this.lane = lanes.get(12);
+				this.setOrientation();
+			}
+			
+			if(yPos == yDestination) {
+				cityPanel.removeVehicle(this);
+				
+			}
+		}
 		
 		
-		//System.out.println(xPos + " " + xDestination);
-		
-//		if(xPos == 550) {
-//			System.out.println("SWITCHED LANE");
-//			this.lane = lanes.get(4);
-//			this.setOrientation();
-//		}
-		
+	}
+	public void redLight() {
+		redLight = true;
+	}
+	
+	public void greenLight() {
+		redLight = false;
 	}
 }
