@@ -71,4 +71,10 @@ public class MockResident implements Resident {
 		
 	}
 
+	@Override
+	public void leftHouse() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
