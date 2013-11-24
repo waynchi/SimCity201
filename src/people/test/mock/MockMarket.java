@@ -1,4 +1,4 @@
-package restaurant.test.mock;
+package people.test.mock;
 
 import java.util.Map;
 

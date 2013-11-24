@@ -1,5 +1,6 @@
 package housing.gui;
 
+import housing.HouseType;
 import housing.interfaces.Resident;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -60,7 +61,12 @@ public class ResidentGui implements HGui{
 			if (state == State.FetchingFromShelves) {
 				state = State.Preping;
 				Random generator = new Random();
-				int num = generator.nextInt(2);
+				int t;
+				if (hGui.h.type == HouseType.Villa)
+					t = 2;
+				else
+					t = 1;
+				int num = generator.nextInt(t);
 				num++;
 				String s = "CookingSlab" + num;
 				goToLocation(hGui.getPosition(s));
@@ -154,7 +160,12 @@ public class ResidentGui implements HGui{
 	public void DoWatchTV() {
 		state = State.WatchingTV;
 		Random generator = new Random();
-		int num = generator.nextInt(3);
+		int t;
+		if (hGui.h.type == HouseType.Villa)
+			t = 3;
+		else
+			t = 1;
+		int num = generator.nextInt(t);
 		num++;
 		String sofa = "Sofa" + num;
 		Dimension d = hGui.getPosition(sofa);
@@ -170,7 +181,12 @@ public class ResidentGui implements HGui{
 	public void DoEat() {
 		state = State.Eating;
 		Random generator = new Random();
-		int num = generator.nextInt(4);
+		int t;
+		if (hGui.h.type == HouseType.Villa)
+			t = 4;
+		else
+			t = 2;
+		int num = generator.nextInt(t);
 		num++;
 		Dimension d = hGui.getPosition("Chair" + num);
 		goToLocation(d);
@@ -214,7 +230,12 @@ public class ResidentGui implements HGui{
 		xPos = hGui.entranceCoordinates.width;
 		yPos = hGui.entranceCoordinates.height;
 		Random generator = new Random();
-		int num = generator.nextInt(4);
+		int t;
+		if (hGui.h.type == HouseType.Villa)
+			t = 4;
+		else
+			t = 2;
+		int num = generator.nextInt(t);
 		num++;
 		Dimension d = hGui.getPosition("Chair" + num);
 		goToLocation(d);

@@ -5,7 +5,7 @@ import housing.HousingRenterRole;
 import housing.HousingOwnerRole.MyHouse;
 import people.People;
 
-public interface Owner {
+public interface Owner extends Resident {
 	// Messages
 
 	public void hereIsRent(House h, double money);

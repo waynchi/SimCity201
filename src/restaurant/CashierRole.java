@@ -2,15 +2,18 @@ package restaurant;
 
 import restaurant.BaseWaiterRole;
 import restaurant.gui.RestaurantPanel;
-import restaurant.interfaces.BankTeller;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
+import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
+
+import bank.interfaces.Teller;
+import market.MarketCashierRole;
+import market.interfaces.MarketCashier;
 import people.Role;
 
 
@@ -31,21 +34,20 @@ public class CashierRole extends Role implements Cashier {
 	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
 	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 
-	private RestaurantPanel restaurantPanel;
+	//private RestaurantPanel restaurantPanel;
 	private double min_working_capital, working_capital, bank_balance;
 	private double waiter_salary, cook_salary, host_salary, cashier_salary;
 
-	private HostRole host;
-	
-	private BankTeller teller;
-	private int bankAccount;
+	private Host host;
+	private Teller teller;
+	private int bankAccount = -1;
 	//private Semaphore depositCompleted = new Semaphore(0,true);
 	//private Semaphore withdrawalCompleted = new Semaphore(0,true);
 	private Boolean loanRequested, loanGranted, loanRefused;
 
-	private Vector<BaseWaiterRole> waiters = null;
+	//private Vector<BaseWaiterRole> waiters = null;
 
-	public Boolean onClose;
+	private Boolean onClose;
 	private Boolean isActive;
 	private Boolean turnActive;
 	private Boolean depositSuccessful = false;
@@ -77,47 +79,20 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public class MarketBill {
-		public Market market;
+		public MarketCashier marketCashier;
 		Double amount;
 
-		public MarketBill (Market m , double a) {
-			market = m;
+		public MarketBill (MarketCashier _marketCashier , double a) {
+			marketCashier = _marketCashier;
 			amount = a;
 		}
 
-		public String toString () {
-			return market.getName() + " " + amount;
-		}
+		//public String toString () {
+		//	return market.getName() + " " + amount;
+		//}
 
 	}
 
-
-
-
-	public CashierRole(String name, RestaurantPanel rp) {
-		super();
-		this.name = name;
-		price.put("Steak", 15.99);
-		price.put("Chicken", 10.99);
-		price.put("Salad", 5.99);
-		price.put("Pizza", 8.99);
-
-		restaurantPanel = rp;
-
-		min_working_capital = rp.getMinWorkingCapital();
-		working_capital = rp.getWorkingCapital();
-		bank_balance = rp.getBankBalance();
-		waiter_salary = cook_salary = host_salary = cashier_salary = 10;
-		//BankTellerRole teller;
-		bankAccount = rp.getBankAccount();
-		loanRequested = loanGranted = loanRefused = false;
-		onClose = false;
-		isActive = false;
-		turnActive = false;
-	}
-
-
-	// Messages
 
 	public CashierRole(String name) {
 		super();
@@ -127,16 +102,17 @@ public class CashierRole extends Role implements Cashier {
 		price.put("Salad", 5.99);
 		price.put("Pizza", 8.99);
 
-		waiter_salary = cook_salary = host_salary = cashier_salary = 10;
-		working_capital = 100;
-
-		//BankTellerRole teller;
+		min_working_capital = 1000;
+		working_capital = 100000;
+		bank_balance = 0.0;
+		waiter_salary = cook_salary = host_salary = cashier_salary = 100;
 		loanRequested = loanGranted = loanRefused = false;
 		onClose = false;
 		isActive = false;
 		turnActive = false;
 	}
 
+	// messages
 
 	public void msgIsActive() {
 		turnActive = true;
@@ -145,16 +121,20 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgIsInActive() {
-		// onClose = true
 		isActive = false;
+		getPersonAgent().CallstateChanged();
 	}
 
-
-	public void msgHereIsMarketBill (Market m, double price){
-		log.add(new LoggedEvent("Received msgHereIsMarketBill from Market " + m.getName() + " and the "
-				+ "amount is " + price));
-		marketBills.add(new MarketBill(m,price));
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
+		marketBills.add(new MarketBill(marketCashier, price));
 		getPersonAgent().CallstateChanged();
+	}
+	
+
+	public void msgHereIsChange(double change) {
+		working_capital += change;
+		getPersonAgent().CallstateChanged();
+		
 	}
 
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
@@ -186,27 +166,36 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
+	
 	// from BankTellerRole
-	public void msgDepositSuccessful(double balance){
-		working_capital -= (balance - bank_balance);
-		bank_balance = balance;
-		//depositCompleted.release();
+	
+	public void msgAccountBalance (int id, double funds) {
+		bankAccount = id;
+		bank_balance = funds;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgDepositSuccessful(double funds){
+		working_capital -= (funds - bank_balance);
+		bank_balance = funds;
 		depositSuccessful = true;
 		getPersonAgent().CallstateChanged();
 	}
-	public void msgWithdrawalSuccessful(double balance){
-		working_capital += (bank_balance - balance);
-		bank_balance -= balance;
-		//withdrawalCompleted.release();
+	
+	public void msgWithdrawalSuccessful(double funds, double amount){
+		working_capital += amount;
+		bank_balance -= funds;
 		withdrawalSuccessful = true;
 		getPersonAgent().CallstateChanged();
 	}
+	
 	public void loanGranted(double amount) {
 		working_capital += amount;
 		bank_balance -= amount;
 		loanGranted = true;
 		getPersonAgent().CallstateChanged();
 	}
+	
 	public void loanRefused(){
 		loanRefused = true;
 		getPersonAgent().CallstateChanged();
@@ -216,6 +205,16 @@ public class CashierRole extends Role implements Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		if (getPersonAgent().getTime() == 2200) {
+			onClose = true;
+			return true;
+		}
+		
+		if (turnActive) {
+			clockIn();
+			return true;
+		}
+
 		synchronized (checks) {
 			for (Check check : checks) {
 				if (check.getState() == checkState.COMPUTED){
@@ -233,12 +232,7 @@ public class CashierRole extends Role implements Cashier {
 				}
 			}
 		}
-		
-		if (turnActive) {
-			clockIn();
-			return true;
-		}
-
+	
 		if (!marketBills.isEmpty()) {
 			payMarket(marketBills.get(0));
 			return true;
@@ -274,11 +268,22 @@ public class CashierRole extends Role implements Cashier {
 		//and wait.
 	}
 
+	
+	
+	
+	
 	// Actions
 	
 	private void clockIn() {
+		host = getPersonAgent().getHost();
+		teller = getPersonAgent().getTeller();
 		host.setCashier(this);
 		turnActive = false;
+		depositSuccessful = false;
+		withdrawalSuccessful = false;
+		if (bankAccount == -1) { // if bank account hasn't been created yet
+			tellermsgCreateAccount("restaurant", 0.0);
+		}
 	}
 	
 	private void sendCheckToWaiter (final Check c) {
@@ -315,19 +320,19 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
+		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
 		if (working_capital > bill.amount) {
-			print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.market.msgPayMarketBill(bill.amount, this);
-			setMyMoney(working_capital - bill.amount);
+			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
+			bill.marketCashier.msgHereIsPayment(working_capital, this);
+			setMyMoney(0);
 
 		}
-		else {
+		/*else {
 			print ("Paying " + bill.market.getName()+" , not able to pay full bill");
 			bill.market.msgPayMarketBill(working_capital,this);
 			setMyMoney(0);
 
-		}
+		}*/
 
 		marketBills.remove(bill);
 
@@ -341,70 +346,40 @@ public class CashierRole extends Role implements Cashier {
 		if (working_capital >= total) {
 			payWorkers(); 	
 			depositExcessMoney();	
-		
-			//closeRestaurant();
 		}
-		//else if (bank_balance + working_capital) >= total {
-		//	teller.msgWithdraw(bankAccount, total - working_capital);
-		//	withdrawalCompleted.acquire();
-		//	payWorkers();
-		//	closeRestaurant();
-		//}
+		
 		else {
 			teller.msgWithdraw(bankAccount, total - working_capital);
-			/*try {
-				withdrawalCompleted.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			//payWorkers();
-			//closeRestaurant();
 		}
 	}
 
 	private void payWorkers() {
 		working_capital -= getTotalSalary();
-		//waiters = restaurantPanel.getWaiters();
-
-		//for (BaseWaiterRole w : restaurantPanel.getWaiters()){
-		//	w.getPersonAgent().Money += waiter_salary;
-		//}
-		
-		for (int i=0; i<restaurantPanel.getWaiters().size(); i++) {
-			restaurantPanel.getWaiters().get(i).getPersonAgent().Money += waiter_salary;
+		for (int i=0; i < host.getWaiters().size(); i++) {
+			host.getWaiters().get(i).getPersonAgent().setMoney (waiter_salary);
 		}
-		restaurantPanel.getCook().getPersonAgent().Money+= cook_salary;
-		restaurantPanel.getHost().getPersonAgent().Money+= host_salary;
-		this.getPersonAgent().Money +=cashier_salary;
+		host.getCook().getPerson().setMoney (cook_salary);
+		host.getPerson().setMoney (host_salary);
+		this.getPersonAgent().setMoney (cashier_salary);
 	}
 
 	private void closeRestaurant() {
 		log.add(new LoggedEvent("In action closeRestaurant"));
-		restaurantPanel.setWorkingCapital (working_capital);
-		restaurantPanel.setBankBalance (bank_balance);
 		loanRequested = false;
 		loanGranted = false;
 		loanRefused = false;
 		onClose = false;
 		getPersonAgent().msgDone(this);
-		//deactivate roles;
 		//DoCloseRestaurant(); //gui stuff
 	}
 
 	private double getTotalSalary() {
-		return (restaurantPanel.getWaiters().size()) * waiter_salary + cook_salary + host_salary + cashier_salary;
+		return (host.getWaiters().size()) * waiter_salary + cook_salary + host_salary + cashier_salary;
 	}
 
 	private void depositExcessMoney() {
 		if (working_capital - min_working_capital >0){
 			teller.msgDeposit(bankAccount, working_capital - min_working_capital);
-			/*try {
-				depositCompleted.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
 		}
 	}
 
@@ -458,12 +433,13 @@ public class CashierRole extends Role implements Cashier {
 		return isActive;
 	}
 	
-	public void setTeller (BankTeller t) {
+	public void setTeller (Teller t) {
 		teller = t;
 	}
 	
 	public void setHost (HostRole h) {
 		host = h;
 	}
+
 
 }

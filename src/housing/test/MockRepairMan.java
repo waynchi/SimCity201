@@ -2,6 +2,7 @@ package housing.test;
 
 import java.util.List;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 import housing.House;
 import housing.Item;
@@ -61,7 +62,7 @@ public class MockRepairMan extends Role implements RepairMan {
 	}
 
 	@Override
-	public void setPerson(People p) {
+	public void setPerson(PeopleAgent p) {
 		// TODO Auto-generated method stub
 		
 	}

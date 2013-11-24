@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 
 public class HousingRepairManRole extends Role implements RepairMan {
@@ -128,6 +129,11 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			return true;
 		return false;
 	}
+	
+	@Override
+	public void setPerson(PeopleAgent p) {
+		myPerson = p;
+	}
 
 	//-----------------------------------------------------------//
 
@@ -145,5 +151,5 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		}
 	}
 	
-	public enum HouseState {None, NeedsRepair, Reached};
+	public enum HouseState {None, NeedsRepair, Reached}
 }

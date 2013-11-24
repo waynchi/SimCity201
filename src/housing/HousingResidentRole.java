@@ -255,7 +255,12 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public Activity selectRandomActivity() {
 		Random generator = new Random();
-		int num = generator.nextInt(4);
+		int t;
+		if (house.type == HouseType.Villa)
+			t = 5;
+		else
+			t = 4;
+		int num = generator.nextInt(t);
 		if (num == 0)
 			return Activity.RelaxOnSofa;
 		if (num == 1)

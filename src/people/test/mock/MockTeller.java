@@ -1,4 +1,4 @@
-package restaurant.test.mock;
+package people.test.mock;
 
 import people.Role;
 import restaurant.interfaces.BankTeller;

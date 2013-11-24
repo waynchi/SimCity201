@@ -108,6 +108,14 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		event = CustomerEvent.GOT_HUNGRY;
 		getPersonAgent().CallstateChanged();
 		isActive = true;
+		getPersonAgent().CallstateChanged();
+
+	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	
@@ -503,7 +511,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 
 	
-	public Boolean getActiveStatus() {
+	public Boolean isActive() {
 		return isActive;
 	}
 

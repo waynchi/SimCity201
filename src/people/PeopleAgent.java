@@ -15,6 +15,7 @@ public class PeopleAgent extends Agent implements People{
 	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
+	private int Hunger = 10;
 	public Boolean hasCar;
 	public String name;
 	public enum HungerState
@@ -127,10 +128,14 @@ public class PeopleAgent extends Agent implements People{
 	 * @see people.People#msgDone(people.Role)
 	 */
 	@Override
-	public void msgDone(Role r)
+	public void msgDone(String role)
 	{
 		state = AgentState.Idle;
 		event = AgentEvent.Idle;
+		if(role.equals("RestaurantCustomerRole"))
+		{
+			hunger = HungerState.NotHungry;
+		}
 	}
 	
 	public PeopleAgent(String name, double Money, boolean hasCar)
@@ -152,6 +157,7 @@ public class PeopleAgent extends Agent implements People{
 		//TODO
 		return cityGui.Time;
 	}*/
+	
 	public void msgTimeIs(int Time)
 	{
 		/*if(Time == 0)
@@ -210,25 +216,29 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.end)
 		{
 			event = AgentEvent.LeavingWork;
+			log.add(new LoggedEvent("Leaving Work"));
 			stateChanged();
 			return;
 		}
 		lastTime = job.end;
 		}
-		if(state != AgentState.Sleeping || state != AgentState.Working)
+		if(state != AgentState.Sleeping && state != AgentState.Working)
 		{
 			if(hunger == HungerState.Hungry)
 			{
 				if(rand.nextInt() < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
+					print("Going To Restaurant To Eat");
 					stateChanged();
 				}
 				else
 				{
 					event = AgentEvent.GoingHome;
+					print("Going Home To Eat");
 					stateChanged();
 				}
+				
 				return;
 			}
 		}
@@ -265,6 +275,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == 2330)
 		{
 			event = AgentEvent.GoingToSleep;
+			log.add(new LoggedEvent("Sleeping In Message"));
 			stateChanged();
 			return;
 		}
@@ -274,6 +285,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		print("My Current State is: " + state.toString());
+		print("My Current Event is: " + event.toString());
+		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		for(MyRole m : roles)
 		{
@@ -292,13 +306,14 @@ public class PeopleAgent extends Agent implements People{
 		{
 			state = AgentState.Working;
 			log.add(new LoggedEvent("Going To Work. New State is " + state.toString()));
-			
 			GoToWork();
 			Person = true;
 		}
 		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
 		{
 			event = AgentEvent.Idle;
+			state = AgentState.Idle;
+			log.add(new LoggedEvent("Leaving Work. New State is " + state.toString()));
 			LeaveWork();
 			Person = true;
 		}
@@ -339,6 +354,12 @@ public class PeopleAgent extends Agent implements People{
 			GoToBank();
 			Person = true;
 		}
+		if(state == AgentState.Idle && event == AgentEvent.GoingToSleep)
+		{
+			state = AgentState.Sleeping;
+			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
+			Person = true;
+		}
 
 		
 		return (Roles || Person);
@@ -362,6 +383,8 @@ public class PeopleAgent extends Agent implements People{
 		//roles.RestaurantCustomerAgent.msg(this);
 		if(hasCar)
 		{
+			//Gui for car animation
+			hunger = HungerState.Eating;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("carPassenger"))
@@ -387,9 +410,9 @@ public class PeopleAgent extends Agent implements People{
 				}
 			}
 			else*/
-			{
 				//GUI WALK
 				print("Walking to Restaurant");
+				hunger = HungerState.Eating;
 				//Semaphore
 				for(MyRole r: roles)
 				{
@@ -398,7 +421,6 @@ public class PeopleAgent extends Agent implements People{
 						r.role.msgIsActive();
 					}
 				}
-			}
 		}
 		
 	}
@@ -436,7 +458,7 @@ public class PeopleAgent extends Agent implements People{
 				r.role.msgIsInActive();
 			}
 		}
-		msgTimeIs( jobs.get(0).end); //TODO I probably need to get the actual time here
+		//msgTimeIs( jobs.get(0).end); //TODO I probably need to get the actual time here
 	}
 
 	/* (non-Javadoc)
