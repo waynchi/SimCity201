@@ -1,90 +1,150 @@
 package housing.test;
 
 import static org.junit.Assert.*;
-import java.util.List;
 import housing.House;
-import housing.HousingRepairManRole;
-import housing.HousingResidentRole;
-import housing.Item;
-import housing.interfaces.RepairMan;
+import housing.HouseType;
+import housing.HousingOwnerRole;
+import housing.interfaces.Owner;
+import housing.interfaces.Renter;
 import housing.interfaces.Resident;
 import org.junit.Test;
-import people.People;
-import people.PeopleAgent;
 
 public class OwnerTest {
-
-	Resident r1;
-	Resident r2;
-	RepairMan r;
-	People p = new PeopleAgent();
+	Owner o;
+	Renter r1;
+	Renter r2;
+	Renter r3;
 	House h1;
 	House h2;
-	List<Item> h1Items;
-	List<Item> h2Items;
+	House h3;
 	
 	@Test
-	public void test1() {
+	public void testNormative1() {
 		setUp();
 		
-		h1Items.get(0).breakIt();
-		assertFalse(r.doesItNeedRepair(h1));
-		assertEquals(1, r1.getBrokenItems().size());
-		assertFalse(r.doesItNeedRepair(h1));
+		o.generate(h1);
+		o.generate(h2);
+		o.generate(h3);
 		
-		r1.pickAndExecuteAnAction();
+		assertEquals(3, o.getTotalRents());
 		
-		assertTrue(r.doesItNeedRepair(h1));
-		assertFalse(r.anyCurrentHouse());
+		o.hereIsRent(h1, 200);
+		o.hereIsRent(h2, 200);
+		o.hereIsRent(h3, 200);
 		
-		r.pickAndExecuteAnAction();
-		
-		assertTrue(r.anyCurrentHouse());
-		assertFalse(r.doesItNeedRepair(h1));
-		
-		r1.pickAndExecuteAnAction();
+		assertEquals(0, o.getTotalRents());
 	}
 	
 	@Test
-	public void test2() {
+	public void testNormative2() {
 		setUp();
+		
+		o.generate(h1);
+		o.generate(h2);
+		o.hereIsRent(h1, 200);
+		o.generate(h3);
+		o.hereIsRent(h2, 200);
+		o.hereIsRent(h3, 200);
+		
+		assertEquals(0, o.getTotalRents());
 	}
 	
 	@Test
-	public void test3() {
+	public void testNonNormative1() {
 		setUp();
+		
+		assertEquals("Owner added", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		
+		o.generate(h1);
+		o.generate(h1);
+		o.generate(h2);
+		assertEquals(3, o.getTotalRents());
+		
+		o.pickAndExecuteAnAction();
+		
+		assertEquals("Penalty of $50.0 applied", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		
+		o.hereIsRent(h1, 200);
+		
+		assertEquals(2, o.getTotalRents());
+		
+		o.hereIsRent(h1, 200);
+		o.hereIsRent(h2, 200);
+		
+		assertEquals(0, o.getTotalRents());
+	}
+	
+	@Test
+	public void testNonNormative2() {
+		setUp();
+		
+		assertEquals("Owner added", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		
+		o.generate(h1);
+		o.generate(h1);
+		o.generate(h2);
+		assertEquals(3, o.getTotalRents());
+		assertEquals(2, o.getTimesRentDue(h1));
+		
+		o.hereIsRent(h1, 200);
+		
+		assertEquals("Owner added", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		assertEquals(2, o.getTotalRents());
+		assertEquals(1, o.getTimesRentDue(h1));
+		
+		o.hereIsRent(h1, 200);
+		
+		assertEquals("Owner added", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		assertEquals(2, o.getTotalRents());
+		assertEquals(1, o.getTimesRentDue(h1));
+		
+		o.pickAndExecuteAnAction();
+		
+		assertEquals("Penalty of $50.0 applied", ((MockRenter)r1).log.getLastLoggedEvent().getMessage());
+		assertEquals(1, o.getTotalRents());
+		assertEquals(0, o.getTimesRentDue(h1));
+		
+		o.hereIsRent(h1, 200);
+		o.hereIsRent(h2, 200);
+		
+		assertEquals(0, o.getTotalRents());
 	}
 	
 	public void setUp() {
 		h1 = null;
 		h2 = null;
+		h3 = null;
 		r1 = null;
 		r2 = null;
-		r = null;
-		h1Items = null;
-		h2Items = null;
+		r3 = null;
+		o = null;
 		
-		h1 = new House("R1Residence", 1);
-		r1 = new HousingResidentRole();
-		h2 = new House("R2Residence", 2);
-		r2 = new HousingResidentRole();
-		r = new HousingRepairManRole();
-		r.setPerson(p);
+		h1 = new House("R1Residence", 1, HouseType.Villa);
+		r1 = new MockRenter();
+		h2 = new House("R2Residence", 2, HouseType.Villa);
+		r2 = new MockRenter();
+		h3 = new House("R3Residence", 3, HouseType.Villa);
+		r3 = new MockRenter();
+		o = new HousingOwnerRole();
 		
-		h1.setOccupant(r1);
+		((HousingOwnerRole)o).testModeOn();
+		
+		h1.setOccupant((Resident)r1);
 		h1.setItemsWithoutGui();
-		h2.setOccupant(r2);
+		h2.setOccupant((Resident)r2);
 		h2.setItemsWithoutGui();
+		h3.setOccupant((Resident)r3);
+		h3.setItemsWithoutGui();
 		
-		r1.setRepairMan(r);
-		r1.setHouse(h1);
-		r2.setRepairMan(r);
-		r2.setHouse(h2);
+		o.addHouse(h1, r1);
+		o.addHouse(h2, r2);
+		o.addHouse(h3, r3);
 		
-		r.addHouse(h1, r1);
-		r.addHouse(h2, r2);
-		
-		h1Items = h1.items;
-		h2Items = h2.items;
+		r1.setOwner(o);
+		((Resident)r1).setHouse(h1);
+		r2.setOwner(o);
+		((Resident)r2).setHouse(h2);
+		r3.setOwner(o);
+		((Resident)r3).setHouse(h3);
 	}
 }

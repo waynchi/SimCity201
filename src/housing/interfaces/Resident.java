@@ -13,6 +13,7 @@ public interface Resident {
 	public void repairDone();
 	public void foodCooked();
 	public void activityDone();
+	public void leftHouse();
 
 	//-----------------------------------------------------------//
 
@@ -21,7 +22,4 @@ public interface Resident {
 	public void setRepairMan(RepairMan r);
 	public People getAgent();
 	public void setHouse(House h);
-
-
-
 }

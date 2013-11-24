@@ -1,6 +1,38 @@
 package people;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import people.PeopleAgent.Job;
+import people.PeopleAgent.MyRole;
+import restaurant.test.mock.LoggedEvent;
+import city.gui.CityGui;
+
 public interface People {
+	
+	public double getMoney();
+	
+	public void setMoney(double Money);
+	
+	public List<Role> getRoles();
+	
+	public String getAgentState();
+	
+	public String getAgentEvent();
+	
+	public String getHunger();
+	
+	public Role getHost();
+	
+	public Role getTeller();
+	
+	public Role getMarketEmployee();
+	
+	public String getMaitreDName();
+	
+	public String getName();
+	
+	public void addCityGui(CityGui gui);
 
 	public abstract void addRole(Role r, String description);
 
@@ -12,7 +44,7 @@ public interface People {
 
 	//messages
 
-	public abstract void msgDone(Role r);
+	public abstract void msgDone(String role);
 
 	public abstract void msgTimeIs(int Time);
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
+import people.People;
 import people.Role;
 
 public class MarketCustomerRole extends Role implements MarketCustomer{
@@ -26,11 +27,20 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private	Map<String, Integer> itemsReceived = new HashMap<String, Integer>();
 	private	double totalDue;
 
-	Boolean isActive;
+	Boolean isActive = false;
 
-	
+	//constructor
+	MarketCustomerRole(){
+		
+	}
 	
 	// messages
+	public void msgIsActive () {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	
 	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
 		isActive = true;
 		itemsNeeded = items;
@@ -97,7 +107,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 				
 		if (state == marketCustomerState.PAID && event == marketCustomerEvent.RECEIVED_CHANGE) {
-			doneShopping();
+			done();
 			return true;
 		}
 		
@@ -106,6 +116,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	//action
 	private void orderItem() {
+		//gui.doGoToMarketEmployee();
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
@@ -116,8 +127,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		state = marketCustomerState.PAID;	
 	}
 
-	private void doneShopping() {
-		getPersonAgent().msgDone(this);
+	private void done() {
+		isActive = false;
+		getPersonAgent().msgDone("MarketCustomer");
 		state = marketCustomerState.DONE;
 	}
 
@@ -125,6 +137,15 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// unitilies
 	public Boolean isActive() {
 		return isActive;
+	}
+
+	@Override
+	public People getPerson() {
+		return getPersonAgent();
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
 	}
 
 }

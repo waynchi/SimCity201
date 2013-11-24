@@ -1,10 +1,8 @@
 package restaurant.gui;
 
 import restaurant.BaseWaiterRole;
-import restaurant.CashierRole;
 import restaurant.CookRole;
 import restaurant.HostRole;
-import restaurant.MarketRole;
 import restaurant.NormalWaiterRole;
 import restaurant.RestaurantCustomerRole;
 import restaurant.SpecialWaiterRole;
@@ -258,7 +256,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole(name);	
+    		RestaurantCustomerRole c = new RestaurantCustomerRole();	
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw
@@ -270,9 +268,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	
     	if (type.equals("Waiters")) {
     		//if (name.equalsIgnoreCase("special")){
-    			BaseWaiterRole w = new NormalWaiterRole(name);
+    			BaseWaiterRole w = new NormalWaiterRole();
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(name, theMonitor);
+        			w = new SpecialWaiterRole(theMonitor);
     			}
     			WaiterGui g = new WaiterGui(w);
         		g.setHomePosition(waiters.size());

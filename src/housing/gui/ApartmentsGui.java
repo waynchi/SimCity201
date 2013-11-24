@@ -1,15 +1,20 @@
 package housing.gui;
 
 import housing.Apartments;
+import housing.House;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 public class ApartmentsGui implements HGui{
-	public Apartments apartments;
+	public Apartments a;
+	int houseWidth = 76;
+	int houseHeight = 76;
+	public Dimension entranceCoordinates = new Dimension(250, 530);
 
 	public ApartmentsGui(Apartments a) {
-		this.apartments = a;
+		this.a = a;
 	}
 
 	@Override
@@ -19,22 +24,25 @@ public class ApartmentsGui implements HGui{
 
 	@Override
 	public void draw(Graphics2D g) {
-		int x = 15;
-		int y = 15;
-		g.setColor(Color.BLACK);
+		int x = 0;
+		int y = 0;
+		g.setColor(Color.BLUE);
+		int k = 0;
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
-				g.fillRect(x, y, 30, 30);
-				y += 50;
+				g.fillRect(x, y, houseWidth, houseHeight);
+				House h = a.houses.get(k);
+				h.gui.setExternalCoordinates(new Dimension(x + (houseWidth / 2), y + houseHeight));
+				y += (houseHeight + 30);
+				k++;
 			}
-			y = 15;
-			x += 50;
+			y = 0;
+			x += (houseHeight + 30);
 		}
 	}
 
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }

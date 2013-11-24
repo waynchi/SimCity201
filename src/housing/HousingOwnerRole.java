@@ -1,9 +1,7 @@
 package housing;
 
-//import static org.junit.Assert.assertEquals;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -17,6 +15,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	private List<RentOrder> rents = new ArrayList<RentOrder>();
 	private double money;
 	private double PEN_INCREMENT = 50.0;
+	private boolean testMode = false;
 
 	public HousingOwnerRole() {
 		super();
@@ -30,20 +29,24 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		ro.s = RentOrderState.AppliedPenalty;
-		gui.DoUseCellPhone();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (gui != null) {
+			gui.DoUseCellPhone();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 
 	public void applyPenaltyAndRemove(RentOrder ro) {
 		ro.mh.penalty += PEN_INCREMENT;
 		ro.mh.r.payPenalty(PEN_INCREMENT);
 		rents.remove(ro);
-		gui.DoUseCellPhone();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (gui != null) {
+			gui.DoUseCellPhone();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 
 	//-----------------------------------------------------------//
@@ -118,7 +121,9 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 				return true;
 			}
 		}
-		return super.pickAndExecuteAnAction();
+		if (testMode == false)
+			return super.pickAndExecuteAnAction();
+		return false;
 	}
 
 	//-----------------------------------------------------------//
@@ -174,6 +179,14 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		MyHouse mh = new MyHouse(h, r);
 		myHouses.add(mh);
 	}
+	
+	public void testModeOn() {
+		testMode = true;
+	}
+	
+	public void testModeOff() {
+		testMode = false;
+	}
 
 	//-----------------------------------------------------------//
 
@@ -192,26 +205,30 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 			this.period = 10000;
 			this.r = r;
 			this.penalty = 0.0;
-			rent = 600.0;
+			rent = 200.0;
 			rentTimer = new Timer();
-//			final MyHouse mh = this;
-//			if (r != null) {
-//				rentTimer.scheduleAtFixedRate(new TimerTask() {
-//					public void run() {
-//						generateRent(mh);
-//					}
-//				}, 0, period);
-//			}
+			if (testMode == false) {
+				final MyHouse mh = this;
+				if (r != null) {
+					rentTimer.scheduleAtFixedRate(new TimerTask() {
+						public void run() {
+							generateRent(mh);
+						}
+					}, period, period);
+				}
+			}
 		}
 		
 		public void setOccupant(Renter r) {
 			this.r = r;
-//			final MyHouse mh = this;
-//			rentTimer.scheduleAtFixedRate(new TimerTask() {
-//				public void run() {
-//					generateRent(mh);
-//				}
-//			}, 0, period);
+			if (testMode == false) {
+				final MyHouse mh = this;
+				rentTimer.scheduleAtFixedRate(new TimerTask() {
+					public void run() {
+						generateRent(mh);
+					}
+				}, period, period);
+			}
 		}
 	}
 
@@ -227,4 +244,3 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 
 	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
 }
-

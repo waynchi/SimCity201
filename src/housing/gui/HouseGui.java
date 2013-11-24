@@ -1,6 +1,7 @@
 package housing.gui;
 
 import housing.House;
+import housing.HouseType;
 import housing.Item;
 
 import java.awt.Color;
@@ -13,12 +14,11 @@ public class HouseGui implements HGui{
 	public House h;
 	List<ItemGui> items = new ArrayList<ItemGui>();
 	List<HGui> guis = new ArrayList<HGui>();
-	TestGui testGui;
-	public Dimension entranceCoordinates = new Dimension(455, 345);
+	public Dimension entranceCoordinatesInternal = new Dimension(455, 345);
+	public Dimension entranceCoordinatesExternal = new Dimension();
 
-	public HouseGui(House h, TestGui g) {
+	public HouseGui(House h) {
 		this.h = h;
-		testGui = g;
 		setItems();
 	}
 
@@ -38,7 +38,9 @@ public class HouseGui implements HGui{
 		g.fillRect(280, 15, 15, 145);
 		g.fillRect(280, 195, 170, 15);
 		
-		g.fillRect(15, 195, 220, 15);
+		if (h.type == HouseType.Villa)
+			g.fillRect(15, 195, 220, 15);
+		
 		for (ItemGui gui : items) {
 			gui.draw(g);
 		}
@@ -74,5 +76,10 @@ public class HouseGui implements HGui{
 	
 	public void add(HGui g) {
 		guis.add(g);
+	}
+	
+	public void setExternalCoordinates(Dimension d) {
+		entranceCoordinatesExternal.width = d.width;
+		entranceCoordinatesExternal.height = d.height;
 	}
 }

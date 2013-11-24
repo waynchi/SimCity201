@@ -1,6 +1,5 @@
 package market;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,56 +11,89 @@ import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
-import restaurant.CashierRole;
-import restaurant.CookRole;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
-	Map <String, Item> items = new HashMap<String, Item>();
 	MarketCashier cashier;
 	MarketEmployeeGui gui;
-		
+	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
+	int marketTruckCount = 0;
+
+	Map <String, Item> items = new HashMap<String, Item>();
 	class Item {
-		//Dimension location;
 		String name;
 		int inventory;
-		
-		public Item (Dimension loc, String n, int i) {
-			//location = loc;
+
+		public Item (String n, int i) {
 			name = n;
 			inventory = i;
 		}
 	}
-	
-	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
-	int marketTruckCount = 0;
-	
+
 	List<Order> orders = new ArrayList<Order>();
 
 	class Order {
 		Map<String, Integer> items = new HashMap<String, Integer>();
 		MarketCustomer customer = null;
-		CookRole cook = null;
-		CashierRole restaurantCashier = null;
+		Cook cook = null;
+		Cashier restaurantCashier = null;
 		//boolean customerAtMarket;
 		//boolean customerIsRestaurantCashier;
-		
+
 		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
 			customer = cust;
 			items = itemsNeeded;
 		}
+
+		public Order(Cook _cook, Cashier _cashier, Map<String, Integer> order) {
+			items = order;
+			cook = _cook;
+			restaurantCashier = _cashier;
+		}
 	}
 
-	
-	private Boolean isActive;
+
+	private boolean isActive = false;
+	private boolean leaveWork = false;
 
 	// constructor
-	public MarketEmployeeRole(){}
-	
-	
+	public MarketEmployeeRole(){
+		for (int i=0; i<10; i++) { // create 10 market trucks
+			trucks.add(new MarketTruckAgent("MarketTruck "+i));
+		}
+		items.put("Steak", new Item("Steak", 100));
+		items.put("Salad", new Item("Salad", 100));
+		items.put("Pizza", new Item("Pizza", 100));
+		items.put("Chicken", new Item("Chicken", 100));
+		items.put("Car", new Item("Car", 100));
+
+	}
+
+
 	// messages
+
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
+	}
+
+	public void msgIsInActive() {
+		leaveWork = true;
+		getPersonAgent().CallstateChanged();
+	}
+
+	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
-		 orders.add(new Order(customer, chosenItems));
+		orders.add(new Order(customer, chosenItems));
+		getPersonAgent().CallstateChanged();
+
+	}
+
+	// order from restaurant cook
+	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
+		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -72,6 +104,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			giveOrderToCustomer(orders.get(0));
 			return true;
 		}
+		
+		if (leaveWork) {
+			done();
+		}
+		
 		return false;
 	}
 
@@ -79,35 +116,43 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
-			gui.doGetItem(entry.getKey(), entry.getValue());
+			gui.doGetItem(entry.getKey());
 			items.get(entry.getKey()).inventory -= entry.getValue();
 		}
 	}
 
-	
+
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
 		getOrder(order.items);
+		// if order is from restaurant
+		if (order.cook != null) {
+			getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
+		}
+
+
 		//if customer is in market, give it the order
-		if (getPersonAgent().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
-			gui.doWalkToCustomer(order.customer);
-			order.customer.msgHereIsYourOrder(order.items);
-		}
-		
-		//if customer is at somewhere else, send a truck to the place
 		else {
-			getNextMarketTruck().msgHereIsAnOrder(order.customer,order.items); 
-			
+			//if (order.customer.getPerson().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
+				gui.doWalkToCustomer(order.customer);
+				order.customer.msgHereIsYourOrder(order.items);
+			//}
+
+			//if customer is at somewhere else, send a truck to the place
+			//else {
+			//	getNextMarketTruck().msgHereIsAnOrder(order.customer,order.items); 
+
+			//}
+			cashier.msgHereIsACheck(order.customer, order.items);
 		}
-		
-		cashier.msgHereIsACheck(order.customer, order.items);
+
 		orders.remove(order);
 	}
 
 
 
 	private MarketTruck getNextMarketTruck() {
-		MarketTruck temp;
 		if (marketTruckCount == trucks.size()-1) {
 			marketTruckCount = 0;
 			return trucks.get(0);
@@ -118,14 +163,30 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("MarketEmployee");
+	}
 
 	//utilities
 	public Boolean isActive() {
 		return isActive;
 	}
 
-	public void setCashier(MarketCashierRole c) {
+	public void setCashier(MarketCashier c) {
 		cashier = c;
+		getPersonAgent().CallstateChanged();
 	}
 	
+	public MarketCashier getCashier(MarketCashier c) {
+		return cashier;
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
+	}
+
+
+
 }

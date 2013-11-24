@@ -3,12 +3,15 @@ package restaurant;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.People;
 import people.Role;
 /**
  * Restaurant Host Agent
@@ -23,9 +26,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
 
-	protected String name;
-	protected HostRole host;
-	protected CookRole cook;
+	protected Host host;
+	protected Cook cook;
 	private Cashier cashier;
 	//private Boolean inProgress = false; // true if WaiterAgent is in the middle of animation
 	protected Boolean onBreak = false; 
@@ -35,7 +37,9 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atCashier = new Semaphore(0,true);
 	protected int currentCustomerNum;
 
-	private Boolean isActive = false;
+	protected boolean isActive = false;
+	private boolean turnActive = false;
+	protected boolean leaveWork = false;
 	
 	protected enum customerState {waiting, seated, readyToOrder, askedToOrder, ordered, 
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
@@ -73,11 +77,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}*/
 
 	public String getMaitreDName() {
-		return name;
-	}
+		return getPersonAgent().getName();
 
-	public String getName() {
-		return name;
 	}
 
 	public List<MyCustomer> getCustomers() {
@@ -96,10 +97,14 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void msgIsActive() {
 		isActive = true;
+		turnActive = true;
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	public void msgIsInActive () {
-		isActive = false;
+		leaveWork = true;
+		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtTable() {//from animation
@@ -217,6 +222,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		try{
+			if (turnActive) {
+				clockIn();
+				return true;
+			}
 	
 			for (MyCustomer customer : customers) {
 				if (customer.state == customerState.waiting){
@@ -268,6 +277,11 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 					return true;
 				}
 			}
+			
+			if (leaveWork) {
+				done();
+			}
+			
 		}catch (ConcurrentModificationException e) {return false;}
 			
 			
@@ -286,6 +300,14 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	// Actions
 
+	private void clockIn() {
+		host = (Host) getPersonAgent().getHost();
+		host.addWaiter(this);
+		cook = host.getCook();
+		cashier = host.getCashier();
+		turnActive = false;
+	}
+	
 	private void seatCustomer(MyCustomer customer) {
 		print("Approaching waiting customer "+customer.c.getName());
 		waiterGui.DoGoToWaitingCustomer();
@@ -400,6 +422,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		currentCustomerNum--;
 		host.msgTableIsFree(((RestaurantCustomerRole) c).getTableNumber());
 	}
+	
+	public abstract void done();
 
 	//utilities
 
@@ -427,7 +451,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		return customers;
 	}
 	
-	public HostRole getHost () {
+	public Host getHost () {
 		return host;
 	}
 
@@ -459,5 +483,15 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	public Boolean isActive() {
 		return isActive;
 	}
+	
+	public People getPerson() {
+		return getPersonAgent();
+	}
+	
+	public String getName() {
+		return getPersonAgent().getName();
+	}
+
+	
 	
 }

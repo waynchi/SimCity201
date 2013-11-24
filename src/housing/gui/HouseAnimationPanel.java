@@ -16,7 +16,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
 	public HouseAnimationPanel() {
 		super();
-		this.setSize(500, 500);
+		this.setSize(500, 570);
 	}
 	
 	@Override

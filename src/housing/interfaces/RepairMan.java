@@ -1,11 +1,8 @@
 package housing.interfaces;
 
-import java.util.List;
-
 import people.People;
-
+import people.PeopleAgent;
 import housing.House;
-import housing.Item;
 
 public interface RepairMan {
 	// Messages
@@ -23,5 +20,5 @@ public interface RepairMan {
 	public boolean doesItNeedRepair(House h);
 	public boolean anyCurrentHouse();
 	public People getPersonAgent();
-	public void setPerson(People p);
+	public void setPerson(PeopleAgent p);
 }

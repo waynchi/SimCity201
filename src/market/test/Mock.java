@@ -1,4 +1,4 @@
-package market.mock;
+package market.test;
 
 public class Mock {
         public String name;

@@ -3,9 +3,8 @@ package restaurant;
 import restaurant.interfaces.Waiter;
 
 public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
-	public NormalWaiterRole(String name) {
+	public NormalWaiterRole() {
 		super();
-		this.name = name;
 		currentCustomerNum = 0;
 		menu.add(new FoodOnMenu("Steak", 15.99));
 		menu.add(new FoodOnMenu("Chicken", 10.99));
@@ -18,5 +17,11 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 		print ("Here's an order for table " + customer.tableNumber);
 		cook.msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
+	}
+	
+	public void done () {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("RestaurantNormalWaiter");
 	}
 }

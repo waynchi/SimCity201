@@ -7,7 +7,7 @@ import housing.interfaces.Renter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
-public class MockRenter implements Renter {
+public class MockRenter extends MockResident implements Renter {
 	
 	// Data
 	
@@ -19,14 +19,20 @@ public class MockRenter implements Renter {
 	
 	@Override
 	public void payPenalty(double penalty) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Penalty of $" + penalty + " applied"));
 	}
 
 	@Override
 	public void rentReminder() {
-		// TODO Auto-generated method stub
-		
+	}
+	
+	//-----------------------------------------------------------//
+	
+	// Scheduler
+
+	@Override
+	public boolean pickAndExecuteAnAction() {
+		return false;
 	}
 	
 	//-----------------------------------------------------------//
@@ -35,50 +41,39 @@ public class MockRenter implements Renter {
 	
 	@Override
 	public People getAgent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void startRentTimer() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setMoney(double m) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public double getMoney() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getTimesRentDue() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean isRentDue() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public List<Double> getPenalties() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setOwner(Owner o) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Owner added"));
 	}
-
 }

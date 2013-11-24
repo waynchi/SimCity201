@@ -9,34 +9,31 @@ public class ItemGui implements HGui{
 	public Item i;
 	int x, y, width, height, d, wArc, hArc;
 	Color c;
-	TestGui testGui;
 	boolean isBroken = false;
 	Shape shape;
 	
 	enum Shape {Circle, Rectangle, RoundRectangle};
 
-	public ItemGui(Item i, int x, int y, int width, int height, Color c, TestGui g) {
+	public ItemGui(Item i, int x, int y, int width, int height, Color c) {
 		this.i = i;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.c = c;
-		testGui = g;
 		shape = Shape.Rectangle;
 	}
 	
-	public ItemGui(Item i, int x, int y, int d, Color c, TestGui g) {
+	public ItemGui(Item i, int x, int y, int d, Color c) {
 		this.i = i;
 		this.x = x;
 		this.y = y;
 		this.d = d;
 		this.c = c;
-		testGui = g;
 		shape = Shape.Circle;
 	}
 	
-	public ItemGui(Item i, int x, int y, int width, int height, int wArc, int hArc, Color c, TestGui g) {
+	public ItemGui(Item i, int x, int y, int width, int height, int wArc, int hArc, Color c) {
 		this.i = i;
 		this.x = x;
 		this.y = y;
@@ -45,7 +42,6 @@ public class ItemGui implements HGui{
 		this.wArc = wArc;
 		this.hArc = hArc;
 		this.c = c;
-		testGui = g;
 		shape = Shape.RoundRectangle;
 	}
 

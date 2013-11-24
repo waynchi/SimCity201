@@ -27,6 +27,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	@Override
 	public void msgIsActive(){
 	//destination = myPerson.state.toString();
+	
 	currentBusStop.msgWaitingHere(this);
 	myState = State.waitingAtBusStop;
 	}

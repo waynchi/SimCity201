@@ -1,5 +1,6 @@
 package housing.gui;
 
+import housing.HouseType;
 import housing.interfaces.Resident;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +14,8 @@ public class ResidentGui implements HGui{
 	private int yDestination;
 	private int xPos;
 	private int yPos;
-	private State state = State.Idle;;
+	private State state = State.Idle;
+	private Location location = Location.Home;
 	private Timer timer = new Timer();
 	private Timer cellPhoneTimer = new Timer();
 	private final int CELLPHONE_TIME = 2000;
@@ -25,16 +27,13 @@ public class ResidentGui implements HGui{
 	private boolean readingBook = false;
 	private boolean videoGames = false;
 	private boolean cellPhone = false;
-	private boolean isAtHome = false;
 	public Resident r;
 	public HouseGui hGui;
+	public ApartmentsGui aGui;
 	
-	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading, WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, PlayingFussball, Leaving};
-	
-	// Use timers to implement cooking, and then call
-	// r.activityDone().
-	// Also, use timers to implement eating, then call
-	// r.activityDone().
+	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading,
+		WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, PlayingFussball, Leaving, Entering};
+	private enum Location {Home, Apartments, Outside};
 	
 	public ResidentGui(Resident r) {
 		this.r = r;
@@ -49,18 +48,23 @@ public class ResidentGui implements HGui{
 		
 		if (xPos < xDestination)
 			xPos++;
-		if (yPos < yDestination)
+		else if (yPos < yDestination)
 			yPos++;
-		if (xPos > xDestination)
+		else if (xPos > xDestination)
 			xPos--;
-		if (yPos > yDestination)
+		else if (yPos > yDestination)
 			yPos--;
 		
 		if (xPos == xDestination && yPos == yDestination) {
 			if (state == State.FetchingFromShelves) {
 				state = State.Preping;
 				Random generator = new Random();
-				int num = generator.nextInt(2);
+				int t;
+				if (hGui.h.type == HouseType.Villa)
+					t = 2;
+				else
+					t = 1;
+				int num = generator.nextInt(t);
 				num++;
 				String s = "CookingSlab" + num;
 				goToLocation(hGui.getPosition(s));
@@ -97,40 +101,78 @@ public class ResidentGui implements HGui{
 				state = State.Idle;
 			}
 			else if (state == State.Leaving) {
-				state = State.Idle;
 				videoGames = false;
 				readingBook = false;
-				isAtHome = false;
-				r.activityDone();
+				if (hGui.h.type == HouseType.Apartment) {
+					if (this.location == Location.Home) {
+						location = Location.Apartments;
+						xPos = hGui.entranceCoordinatesExternal.width;
+						yPos = hGui.entranceCoordinatesExternal.height;
+						goToLocation(aGui.entranceCoordinates);
+					}
+					else if (this.location == Location.Apartments) {
+						state = State.Idle;
+						location = Location.Outside;
+						r.leftHouse();
+					}
+				}
+				else {
+					state = State.Idle;
+					r.leftHouse();
+				}
+			}
+			else if (state == State.Entering) {
+				if (hGui.h.type == HouseType.Apartment) {
+					if (this.location == Location.Apartments) {
+						location = Location.Home;
+						state = State.Idle;
+						xPos = hGui.entranceCoordinatesInternal.width;
+						yPos = hGui.entranceCoordinatesInternal.height;
+						Random generator = new Random();
+						int num = generator.nextInt(2);
+						num++;
+						Dimension d = hGui.getPosition("Chair" + num);
+						goToLocation(d);
+						r.activityDone();
+					}
+				}
 			}
 		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLUE);
-		g.fillOval(xPos, yPos, 15, 15);
-		if (readingBook == true) {
-			g.setColor(Color.green);
-			g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
-		}
-		if (videoGames == true) {
-			g.setColor(Color.darkGray);
-			g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
-		}
-		if (cellPhone == true) {
-			g.setColor(Color.black);
-			g.fillRoundRect(xPos - 3, yPos - 6, 3, 6, 1, 2);
+		if (this.location != Location.Outside) {
+			g.setColor(Color.BLUE);
+			g.fillOval(xPos, yPos, 15, 15);
+			if (readingBook == true) {
+				g.setColor(Color.green);
+				g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+			}
+			if (videoGames == true) {
+				g.setColor(Color.darkGray);
+				g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+			}
+			if (cellPhone == true) {
+				g.setColor(Color.black);
+				g.fillRoundRect(xPos - 3, yPos - 6, 3, 6, 1, 2);
+			}
 		}
 	}
 
 	@Override
 	public boolean isPresent() {
-		return isAtHome;
+		if (location == Location.Home)
+			return true;
+		return false;
 	}
 	
 	public void setHouseGui(HouseGui hGui) {
 		this.hGui = hGui;
+	}
+	
+	public void setApartmentsGui(ApartmentsGui aGui) {
+		this.aGui = aGui;
 	}
 	
 	public void DoPoop() {
@@ -154,7 +196,12 @@ public class ResidentGui implements HGui{
 	public void DoWatchTV() {
 		state = State.WatchingTV;
 		Random generator = new Random();
-		int num = generator.nextInt(3);
+		int t;
+		if (hGui.h.type == HouseType.Villa)
+			t = 3;
+		else
+			t = 1;
+		int num = generator.nextInt(t);
 		num++;
 		String sofa = "Sofa" + num;
 		Dimension d = hGui.getPosition(sofa);
@@ -170,7 +217,12 @@ public class ResidentGui implements HGui{
 	public void DoEat() {
 		state = State.Eating;
 		Random generator = new Random();
-		int num = generator.nextInt(4);
+		int t;
+		if (hGui.h.type == HouseType.Villa)
+			t = 4;
+		else
+			t = 2;
+		int num = generator.nextInt(t);
 		num++;
 		Dimension d = hGui.getPosition("Chair" + num);
 		goToLocation(d);
@@ -209,21 +261,30 @@ public class ResidentGui implements HGui{
 	}
 	
 	public void DoEnterHome() {
-		state = State.Idle;
-		// Temporary
-		xPos = hGui.entranceCoordinates.width;
-		yPos = hGui.entranceCoordinates.height;
-		Random generator = new Random();
-		int num = generator.nextInt(4);
-		num++;
-		Dimension d = hGui.getPosition("Chair" + num);
-		goToLocation(d);
-		isAtHome = true;
+		state = State.Entering;
+		if (hGui.h.type == HouseType.Apartment) {
+			location = Location.Apartments;
+			xPos = aGui.entranceCoordinates.width;
+			yPos = aGui.entranceCoordinates.height;
+			goToLocation(hGui.entranceCoordinatesExternal);
+		}
+		else {
+			state = State.Idle;
+			location = Location.Home;
+			xPos = hGui.entranceCoordinatesInternal.width;
+			yPos = hGui.entranceCoordinatesInternal.height;
+			Random generator = new Random();
+			int num = generator.nextInt(4);
+			num++;
+			Dimension d = hGui.getPosition("Chair" + num);
+			goToLocation(d);
+			r.activityDone();
+		}
 	}
 	
 	public void DoLeaveHome() {
 		state = State.Leaving;
-		goToLocation(new Dimension(hGui.entranceCoordinates.width, hGui.entranceCoordinates.height));
+		goToLocation(new Dimension(hGui.entranceCoordinatesInternal.width, hGui.entranceCoordinatesInternal.height));
 	}
 	
 	public void DoUseCellPhone() {
@@ -241,7 +302,9 @@ public class ResidentGui implements HGui{
 	}
 	
 	public boolean isAtHome() {
-		return isAtHome;
+		if (location == Location.Home)
+			return true;
+		return false;
 	}
 	
 	private TimerTask getTimerTask(State s) {

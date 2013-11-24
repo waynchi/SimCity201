@@ -9,7 +9,7 @@ public class TestGui extends JFrame {
 	
 	public TestGui() {
 		this.add(p);
-		this.setSize(500, 530);
+		this.setSize(500, 570);
 	}
 	
 	public void addGui(HGui gui) {

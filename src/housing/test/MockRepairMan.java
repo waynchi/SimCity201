@@ -2,6 +2,7 @@ package housing.test;
 
 import java.util.List;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 import housing.House;
 import housing.Item;
@@ -22,14 +23,10 @@ public class MockRepairMan extends Role implements RepairMan {
 	
 	@Override
 	public void needHelp(House h) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void salaryArrives() {
-		// TODO Auto-generated method stub
-		
+	public void salaryArrives() {	
 	}
 	
 	//-----------------------------------------------------------//
@@ -37,33 +34,25 @@ public class MockRepairMan extends Role implements RepairMan {
 	// Utilities
 	
 	@Override
-	public void addHouse(House h, Resident r) {
-		// TODO Auto-generated method stub
-		
+	public void addHouse(House h, Resident r) {	
 	}
 
 	@Override
 	public boolean doesItNeedRepair(House h) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean anyCurrentHouse() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public People getPersonAgent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setPerson(People p) {
-		// TODO Auto-generated method stub
-		
+	public void setPerson(PeopleAgent p) {	
 	}
-
 }

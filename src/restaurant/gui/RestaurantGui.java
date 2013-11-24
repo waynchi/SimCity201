@@ -22,13 +22,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
 	private int RESTPANELY = 50;
 	private int RESTPANELW = 1200;
 	private int RESTPANELH = 600;
-	private int ANIMAPANELX = 600;
-	private int ANIMAPANELY = 50;
-	private int ANIMAPANELW = 550;
-	private int ANIMAPANELH = 450;
-	
-	
-    /* restPanel holds 3 panels
+	/* restPanel holds 3 panels
      * 1) the staff listing, menu, and and image of restaurant together with pause/restart button
      * 2) lists of current customers and waiters all constructed in RestaurantPanel()
      * 3) the infoPanel about the clicked Customer or Waiter
@@ -197,7 +191,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         				new java.util.TimerTask(){
         					public void run(){
         						if (w.getHost().getAvailableWaiters().size() != 1) {
-        							System.out.println(w.getHost().getAvailableWaiters().size());
+        							System.out.println(w.getHost().getWaiters().size());
         		        			onBreakButton.setVisible(false);
         		        		    onBreakButton.setEnabled(true);
         		        			offBreakButton.setVisible(true);

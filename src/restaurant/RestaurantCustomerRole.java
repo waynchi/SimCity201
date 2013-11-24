@@ -21,7 +21,6 @@ import people.Role;
 // Customers behave differently upon situations, which depends on the name they have
 
 public class RestaurantCustomerRole extends Role implements Customer{
-	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
@@ -64,10 +63,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 *
 	 * @param name name of the customer
 	 */
-	public RestaurantCustomerRole(String name){
+	public RestaurantCustomerRole(){
 		super();
-		this.name = name;
-		String temp = name;
 //		// parsing customer name string to get desirable customer behavior
 //		String delims = "[ ]+";
 //		String[] tokens = temp.split(delims);
@@ -108,6 +105,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		event = CustomerEvent.GOT_HUNGRY;
 		getPersonAgent().CallstateChanged();
 		isActive = true;
+		getPersonAgent().CallstateChanged();
+
 	}
 	
 	
@@ -458,16 +457,17 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private void leaveTable() {
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
-		getPersonAgent().msgDone(this);
+		isActive = false;
+		getPersonAgent().msgDone("RestaurantCustomer");
 	}
 
 	
 	// Accessors, etc.
 	
 	public String getName() {
-		return name;
+		return getPersonAgent().getName();
 	}
-	
+
 	public int getHungerLevel() {
 		return hungerLevel;
 	}
@@ -503,7 +503,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 
 	
-	public Boolean getActiveStatus() {
+	public Boolean isActive() {
 		return isActive;
 	}
 

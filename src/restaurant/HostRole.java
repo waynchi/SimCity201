@@ -1,11 +1,14 @@
 package restaurant;
 
-import agent.Agent;
 import restaurant.gui.HostGui;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
+import restaurant.interfaces.Waiter;
 
 import java.util.*;
 
+import people.People;
 import people.Role;
 
 /**
@@ -15,14 +18,15 @@ import people.Role;
 //is proceeded as he wishes.
 public class HostRole extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
-	//Notice that we implement waitingCustomers using ArrayList, but type it
-	//with List semantics.
-	private List<BaseWaiterRole> availableWaiters = Collections.synchronizedList(new ArrayList<BaseWaiterRole>());
+	
+	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	private boolean isActive;
+	private boolean leaveWork;
 
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+	
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
 	private int waiterCount = 0;
 
@@ -30,20 +34,79 @@ public class HostRole extends Role implements Host{
 	private int customerCount = 0;
 
 	public Collection<Table> tables;
+	public class Table {
+		RestaurantCustomerRole occupiedBy;
+		int tableNumber;
 
-	private String name;
+
+		Table(int tableNumber) {
+			this.tableNumber = tableNumber;
+		}
+
+		void setOccupant(RestaurantCustomerRole cust) {
+			occupiedBy = cust;
+		}
+
+		void setUnoccupied() {
+			occupiedBy = null;
+		}
+
+		RestaurantCustomerRole getOccupant() {
+			return occupiedBy;
+		}
+
+		boolean isOccupied() {
+			return occupiedBy != null;
+		}
+
+		public String toString() {
+			return "table " + tableNumber;
+		}
+	}
+
 	public HostGui hostGui = null;
-	private CashierRole cashier;
-	private CookRole cook;
+	private Cashier cashier;
+	private Cook cook;
 
-	public HostRole(String name) {
+	public class MyWaiter {
+		Waiter w;
+		waiterStatus s;
+
+		public MyWaiter (Waiter waiter) {
+			w = waiter;
+			s = waiterStatus.AT_WORK;
+		}
+		public void msgBreakApproved() {
+			// TODO Auto-generated method stub
+
+		}	
+	}
+
+	public class MyCustomer {
+		RestaurantCustomerRole customer;
+		customerState state;
+
+		public MyCustomer (RestaurantCustomerRole cust) {
+			customer = cust;
+			if (customerCount >= NTABLES){
+				state = customerState.PENDING;
+			}
+			else {
+				state = customerState.WAITING;
+			}
+		}
+	}
+	
+	
+	public HostRole() {
 		super();
-		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));
 		}
+		isActive = false;
+		leaveWork = false;
 	}
 
 	// Messages
@@ -52,14 +115,20 @@ public class HostRole extends Role implements Host{
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void addWaiter(BaseWaiterRole w){
-		availableWaiters.add(w);
+	public void msgIsInActive() {
+		leaveWork = true;
+		getPersonAgent().CallstateChanged();
+
+	}
+
+	public void addWaiter(Waiter w){
+		allWaiters.add(w);
 		waiters.add(new MyWaiter(w));
 		getPersonAgent().CallstateChanged();
 	}
 
 	// from restaurant panel, "Go On Break" button is pressed
-	public void IWantABreak(BaseWaiterRole waiter) {
+	public void IWantABreak(Waiter waiter) {
 		synchronized (waiters){
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
@@ -71,9 +140,8 @@ public class HostRole extends Role implements Host{
 		}
 	}
 
-	public void IAmOffBreak(BaseWaiterRole waiter) {
+	public void IAmOffBreak(Waiter waiter) {
 		print ("Hey "+waiter.getName()+", welcome back to work!");
-		availableWaiters.add(waiter);
 		synchronized (waiters){
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
@@ -229,6 +297,11 @@ public class HostRole extends Role implements Host{
 				}
 			}
 		}
+		
+		if (leaveWork) {
+			done();
+			return true;
+		}
 
 		return false;
 		//we have tried all our rules and found
@@ -244,7 +317,7 @@ public class HostRole extends Role implements Host{
 		mc.state = customerState.ASKED_WHETHER_TO_WAIT;
 	}
 
-	private void TellWaiterToSeatCustomer(MyCustomer mc, BaseWaiterRole waiter, Table table) {
+	private void TellWaiterToSeatCustomer(MyCustomer mc, Waiter waiter, Table table) {
 		print("Please take "+mc.customer.getName()+ " to table#" + table.tableNumber);
 		waiter.SitAtTable(mc.customer, table.tableNumber);
 		mc.state = customerState.SEATED;
@@ -269,41 +342,52 @@ public class HostRole extends Role implements Host{
 		waiter.s = waiterStatus.AT_WORK;
 		waiter.w.msgBreakDenied();
 	}
+	
+	
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		// reset the two lists of waiters
+		waiters = new ArrayList<MyWaiter>();
+		allWaiters = new ArrayList<Waiter>();
+		getPersonAgent().msgDone("RestaurantHost");
+	}
 
 	//utilities
 
 	public String getMaitreDName() {
-		return name;
+		return getPersonAgent().getName();
 	}
 
 	public String getName() {
-		return name;
+		return getPersonAgent().getName();
 	}
 
-	public List<BaseWaiterRole> getAvailableWaiters() {
-		return availableWaiters;
+
+	public List<Waiter> getWaiters() {
+		return allWaiters;
 	}
 
-	public Collection getTables() {
+	public Collection<Table> getTables() {
 		return tables;
 	}
 
-	public void setCashier(CashierRole c) {
+	public void setCashier(Cashier c) {
 		cashier = c;
 	}
 
-	public CashierRole getCashier() {
+	public Cashier getCashier() {
 		return cashier;
 	}
-	
-	public void setCook(CookRole c) {
+
+	public void setCook(Cook c) {
 		cook = c;
 	}
-	
-	public CookRole getCook() {
+
+	public Cook getCook() {
 		return cook;
 	}
-	
+
 	public void setGui(HostGui gui) {
 		hostGui = gui;
 	}
@@ -312,67 +396,24 @@ public class HostRole extends Role implements Host{
 		return hostGui;
 	}
 
-	public class Table {
-		RestaurantCustomerRole occupiedBy;
-		int tableNumber;
-
-
-		Table(int tableNumber) {
-			this.tableNumber = tableNumber;
-		}
-
-		void setOccupant(RestaurantCustomerRole cust) {
-			occupiedBy = cust;
-		}
-
-		void setUnoccupied() {
-			occupiedBy = null;
-		}
-
-		RestaurantCustomerRole getOccupant() {
-			return occupiedBy;
-		}
-
-		boolean isOccupied() {
-			return occupiedBy != null;
-		}
-
-		public String toString() {
-			return "table " + tableNumber;
-		}
+	public boolean isActive() {
+		return isActive;
 	}
 
-	public class MyWaiter {
-		BaseWaiterRole w;
-		waiterStatus s;
-
-		public MyWaiter (BaseWaiterRole waiter) {
-			w = waiter;
-			s = waiterStatus.AT_WORK;
-		}
-
-		public void msgBreakApproved() {
-			// TODO Auto-generated method stub
-
-		}
-		
-		public boolean isActive() {
-			return isActive;
-		}
+	@Override
+	public People getPerson() {
+		// TODO Auto-generated method stub
+		return getPersonAgent();
 	}
 
-	public class MyCustomer {
-		RestaurantCustomerRole customer;
-		customerState state;
-
-		public MyCustomer (RestaurantCustomerRole cust) {
-			customer = cust;
-			if (customerCount >= NTABLES){
-				state = customerState.PENDING;
-			}
-			else {
-				state = customerState.WAITING;
+	@Override
+	public List<Waiter> getAvailableWaiters() {
+		List<Waiter> temp = new ArrayList<Waiter>();
+		for (MyWaiter mw: waiters){
+			if (mw.s == waiterStatus.AT_WORK) {
+				temp.add(mw.w);
 			}
 		}
+		return temp;
 	}
 }

@@ -4,7 +4,6 @@ import agent.Agent;
 import restaurant.BaseWaiterRole;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 
 import java.awt.Dimension;
@@ -21,11 +20,11 @@ import people.Role;
 // Market and Cook pass each other maps that are not semantic enough, will be changed to lists if there's time
 
 
-public class MarketRole extends Role implements Market{
+public class MarketRole extends Role{
 
 
-	private String name;
-	private boolean isActive;
+	/*private String name;
+	private boolean isActive = false;
 	//private CookAgent cook;
 	private class MyOrder {
 		CookRole cook;
@@ -54,11 +53,8 @@ public class MarketRole extends Role implements Market{
 	private Map<String, Food> myFood = Collections.synchronizedMap(new HashMap<String, Food>());
 	private Map<Cashier, Double> cashierBalance = Collections.synchronizedMap(new HashMap<Cashier, Double>());
 
-	/**
-	 * Constructor for MarketAgent class
-	 *
-	 * @param name name of the market
-	 */
+
+
 	public MarketRole(String name) {
 		super();
 
@@ -73,7 +69,18 @@ public class MarketRole extends Role implements Market{
 
 
 	// Messages
+	public void msgIsActive() {
+		isActive = true;
+		getPersonAgent().CallstateChanged();
 
+	}
+	
+	public void msgIsInActive() {
+		isActive = false;
+		getPersonAgent().CallstateChanged();
+
+	}
+	
 	public void msgOrder (Map<String, Integer> orderList, CookRole c, Cashier ca) {
 		orders.add(new MyOrder(orderList, c, ca));
 		stateChanged();
@@ -88,7 +95,7 @@ public class MarketRole extends Role implements Market{
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
-	 */
+	 
 	public boolean pickAndExecuteAnAction() {
 
 		if (!orders.isEmpty()) {
@@ -157,6 +164,7 @@ public class MarketRole extends Role implements Market{
 	public boolean isActive() {
 		return isActive;
 	}
+	*/
 
 }
 

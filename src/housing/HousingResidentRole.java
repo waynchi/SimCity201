@@ -112,7 +112,14 @@ public class HousingResidentRole extends Role implements Resident {
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
-		myPerson.msgDone(this);
+		myPerson.msgDone("Resident");
+	}
+	
+	public void enterHome() {
+		gui.DoEnterHome();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	//-----------------------------------------------------------//
@@ -148,14 +155,24 @@ public class HousingResidentRole extends Role implements Resident {
 		stateChanged();
 	}
 	
+	public void leftHouse() {
+		myState = State.Idle;
+		activity.release();
+		isActive = false;
+		if (myPerson != null) {
+			myPerson.msgDone("Resident");
+		}
+		stateChanged();
+	}
+	
 	@Override
 	public void msgIsActive() {
 		isActive = true;
-		gui.DoEnterHome();
 	}
 	
 	@Override
 	public void msgIsInActive() {
+		myState = State.Entering;
 		needToLeave = true;
 	}
 
@@ -164,6 +181,10 @@ public class HousingResidentRole extends Role implements Resident {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
+		if(myState == State.Entering) {
+			enterHome();
+			return true;
+		}
 		if (((PeopleAgent)myPerson).getAgentEvent().equals("WakingUp") && myState == State.Sleeping) {
 			doMorningStuff();
 			leisure = false;
@@ -255,7 +276,12 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public Activity selectRandomActivity() {
 		Random generator = new Random();
-		int num = generator.nextInt(4);
+		int t;
+		if (house.type == HouseType.Villa)
+			t = 5;
+		else
+			t = 4;
+		int num = generator.nextInt(t);
 		if (num == 0)
 			return Activity.RelaxOnSofa;
 		if (num == 1)
@@ -277,7 +303,7 @@ public class HousingResidentRole extends Role implements Resident {
 
 	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
+	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
 }
