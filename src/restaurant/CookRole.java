@@ -314,7 +314,7 @@ public class CookRole extends Role implements Cook{
 	private void clockIn() {
 		host = (Host) getPersonAgent().getHost();
 		host.setCook(this);
-		marketEmployee = getPersonAgent().getMarketEmployee();
+		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
 		cashier = host.getCashier();
 		turnActive = false;
 	}
