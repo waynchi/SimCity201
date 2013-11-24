@@ -47,7 +47,7 @@ public class CashierRole extends Role implements Cashier {
 
 	//private Vector<BaseWaiterRole> waiters = null;
 
-	private Boolean onClose;
+	private Boolean leaveWork;
 	private Boolean isActive;
 	private Boolean turnActive;
 	private Boolean depositSuccessful = false;
@@ -107,9 +107,10 @@ public class CashierRole extends Role implements Cashier {
 		bank_balance = 0.0;
 		waiter_salary = cook_salary = host_salary = cashier_salary = 100;
 		loanRequested = loanGranted = loanRefused = false;
-		onClose = false;
+		leaveWork = false;
 		isActive = false;
 		turnActive = false;
+		//leaveWork = false;
 	}
 
 	// messages
@@ -121,7 +122,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -205,10 +206,6 @@ public class CashierRole extends Role implements Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		if (getPersonAgent().getTime() == 2200) {
-			onClose = true;
-			return true;
-		}
 		
 		if (turnActive) {
 			clockIn();
@@ -248,7 +245,7 @@ public class CashierRole extends Role implements Cashier {
 			closeRestaurant();	
 			return true;
 		}
-		if (onClose) {
+		if (leaveWork) {
 			if (depositSuccessful) {
 				closeRestaurant();
 				return true;
@@ -368,8 +365,9 @@ public class CashierRole extends Role implements Cashier {
 		loanRequested = false;
 		loanGranted = false;
 		loanRefused = false;
-		onClose = false;
-		getPersonAgent().msgDone(this);
+		leaveWork = false;
+		isActive = false;
+		getPersonAgent().msgDone("RestaurantCashier");
 		//DoCloseRestaurant(); //gui stuff
 	}
 

@@ -16,6 +16,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// data
 	private boolean isActive = false;
 	private boolean turnActive = false;
+	private boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
 	
 	Map<String, Double> priceList = new HashMap<String, Double>();
@@ -67,7 +68,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -134,6 +135,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				return true;
 			}
 		}
+		
+		if (leaveWork) {
+			done();
+		}
 
 		return false;
 	}
@@ -176,6 +181,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			check.customer.msgHereIsChange(change);
 		}
 		checks.remove(check);
+	}
+	
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("MarketCashier);
 	}
 
 	//utilities

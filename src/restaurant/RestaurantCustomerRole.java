@@ -466,7 +466,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private void leaveTable() {
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
-		getPersonAgent().msgDone(this);
+		getPersonAgent().msgDone("RestaurantCustomer");
 	}
 
 	

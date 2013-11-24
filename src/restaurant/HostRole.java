@@ -24,8 +24,10 @@ public class HostRole extends Role implements Host{
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	private boolean isActive;
+	private boolean leaveWork;
 
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+	
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
 	private int waiterCount = 0;
 
@@ -110,6 +112,8 @@ public class HostRole extends Role implements Host{
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));
 		}
+		isActive = false;
+		leaveWork = false;
 	}
 
 	// Messages
@@ -119,7 +123,7 @@ public class HostRole extends Role implements Host{
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -300,6 +304,11 @@ public class HostRole extends Role implements Host{
 				}
 			}
 		}
+		
+		if (leaveWork) {
+			done();
+			return true;
+		}
 
 		return false;
 		//we have tried all our rules and found
@@ -339,6 +348,16 @@ public class HostRole extends Role implements Host{
 				+ " counting on you. Fight on!");
 		waiter.s = waiterStatus.AT_WORK;
 		waiter.w.msgBreakDenied();
+	}
+	
+	
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		// reset the two lists of waiters
+		waiters = new ArrayList<MyWaiter>();
+		allWaiters = new ArrayList<BaseWaiterRole>();
+		getPersonAgent().msgDone("RestaurantHost");
 	}
 
 	//utilities
