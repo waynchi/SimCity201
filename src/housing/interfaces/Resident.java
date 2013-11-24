@@ -22,7 +22,4 @@ public interface Resident {
 	public void setRepairMan(RepairMan r);
 	public People getAgent();
 	public void setHouse(House h);
-
-
-
 }
