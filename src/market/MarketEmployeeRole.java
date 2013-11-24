@@ -55,7 +55,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 
-	private Boolean isActive = false;
+	private boolean isActive = false;
+	private boolean leaveWork = false;
 
 	// constructor
 	public MarketEmployeeRole(){
@@ -79,7 +80,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public void msgIsInActive() {
-		isActive = false;
+		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -103,6 +104,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			giveOrderToCustomer(orders.get(0));
 			return true;
 		}
+		
+		if (leaveWork) {
+			done();
+		}
+		
 		return false;
 	}
 
@@ -157,6 +163,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
+	private void done() {
+		isActive = false;
+		leaveWork = false;
+		getPersonAgent().msgDone("MarketEmployee");
+	}
 
 	//utilities
 	public Boolean isActive() {

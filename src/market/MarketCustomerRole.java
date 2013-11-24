@@ -132,7 +132,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	private void doneShopping() {
-		getPersonAgent().msgDone(this);
+		getPersonAgent().msgDone("MarketCustomer");
 		state = marketCustomerState.DONE;
 	}
 
