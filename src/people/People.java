@@ -24,6 +24,10 @@ public interface People {
 	
 	public Role getHost();
 	
+	public Role getTeller();
+	
+	public Role getMarketEmployee();
+	
 	public String getMaitreDName();
 	
 	public String getName();
