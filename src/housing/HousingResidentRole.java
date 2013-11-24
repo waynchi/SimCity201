@@ -114,6 +114,13 @@ public class HousingResidentRole extends Role implements Resident {
 		} catch (InterruptedException e) {}
 		myPerson.msgDone("Resident");
 	}
+	
+	public void enterHome() {
+		gui.DoEnterHome();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+	}
 
 	//-----------------------------------------------------------//
 
@@ -161,11 +168,11 @@ public class HousingResidentRole extends Role implements Resident {
 	@Override
 	public void msgIsActive() {
 		isActive = true;
-		gui.DoEnterHome();
 	}
 	
 	@Override
 	public void msgIsInActive() {
+		myState = State.Entering;
 		needToLeave = true;
 	}
 
@@ -174,6 +181,10 @@ public class HousingResidentRole extends Role implements Resident {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
+		if(myState == State.Entering) {
+			enterHome();
+			return true;
+		}
 		if (((PeopleAgent)myPerson).getAgentEvent().equals("WakingUp") && myState == State.Sleeping) {
 			doMorningStuff();
 			leisure = false;
@@ -292,7 +303,7 @@ public class HousingResidentRole extends Role implements Resident {
 
 	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff};
+	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
 }

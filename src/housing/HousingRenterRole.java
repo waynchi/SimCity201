@@ -153,4 +153,3 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		testMode = false;
 	}
 }
-
