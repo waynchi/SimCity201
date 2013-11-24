@@ -19,7 +19,7 @@ public interface Cashier {
 	
 	public abstract void msgGiveLoan(double balance, double amount);
 	
-	public abstract void msgWithdrawalSuccessful(double funds, double amount);
+	public abstract void msgWithdrawSuccessful(double funds, double amount);
 	
 	public abstract void msgDepositSuccessful(double funds);
 
