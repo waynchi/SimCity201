@@ -243,9 +243,9 @@ public class RestaurantGui extends JPanel implements ActionListener {
         gui.setVisible(true);
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+    }*/
     
     public AnimationPanel getAnimationPanel(){
     	return animationPanel;
-    }*/
+    }
 }
