@@ -40,6 +40,7 @@ public class CityGui extends JFrame implements ActionListener {
 	TellerRole BankTellerRole = new TellerRole();
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	
+	
 
 
 	public int time;
@@ -147,16 +148,15 @@ public class CityGui extends JFrame implements ActionListener {
 		// Create the BuildingPanel for each Building object
 		ArrayList<Building> buildings = cityPanel.getBuildings();
 		for (int i = 0; i < buildings.size(); i++) {
-			Building b = buildings.get(i);
-			BuildingPanel bp = new BuildingPanel(b, i, this);
-			b.setBuildingPanel(bp);
-			buildingPanels.add(bp, "" + i);
+            Building b = buildings.get(i);
+            BuildingPanel bp = new BuildingPanel(b, i, this);
+            b.setBuildingPanel(bp);
+            buildingPanels.add(bp, "" + i);
 		}
 		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
 		
-		buildingPanels.add(restPanel, "name_1385002139901999000");
 		restPanel.setBounds(768, 0, 666, 215);
 		restPanel.setMinimumSize(new Dimension(500, 250));
 		restPanel.setMaximumSize(new Dimension(500, 250));
@@ -167,7 +167,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void displayBuildingPanel(BuildingPanel bp) {
 		System.out.println(bp.getName());
-		
 		cardLayout.show(buildingPanels, bp.getName());
 	}
 
