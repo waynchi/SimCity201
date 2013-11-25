@@ -64,7 +64,7 @@ public class CustomerGui implements Gui{
 			else if (command==Command.LeaveRestaurant) {
 				customer.msgAnimationFinishedLeaveRestaurant();
 				isHungry = false;
-				gui.setCustomerEnabled((RestaurantCustomerRole) customer);
+				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
 			//command=Command.noCommand;
 		}
