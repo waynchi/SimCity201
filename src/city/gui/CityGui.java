@@ -76,6 +76,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person);
 					person.setPersonGui(personGui);
+					cityPanel.people.add(personGui);
 					person.startThread();
 					if (role.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole();
