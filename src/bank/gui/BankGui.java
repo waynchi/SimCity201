@@ -7,7 +7,10 @@ import agent.Agent;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Vector;
+import java.util.List;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -16,25 +19,10 @@ public class BankGui extends JFrame implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
-	JFrame animationFrame = new JFrame("Restaurant Animation");
-	public AnimationPanel animationPanel = new AnimationPanel();
-	
-    /* restPanel holds 2 panels
-     * 1) the staff listing, menu, and lists of current customers all constructed
-     *    in RestaurantPanel()
-     * 2) the infoPanel about the clicked Customer (created just below)
-     */    
-    private BankPanel bankPanel = new BankPanel(this);
+	JFrame animationFrame = new JFrame("Bank Animation");
+	public static AnimationPanel animationPanel = new AnimationPanel();
     
-    public void addPerson(String type, String name, String status, BankCustomerRole c) {
-
-    	BankCustomerGui g = new BankCustomerGui(c, gui, customers.size());
-    	animationPanel.addGui(g);// dw
-    	c.setGui(g);
-    	customers.add(c);
-    }
-    
-    public Vector<BankCustomerRole> customers = new Vector<BankCustomerRole>();
+    public static List<BankCustomerGui> customers = new ArrayList<BankCustomerGui>();
 
     /**
      * Constructor for RestaurantGui class.
@@ -44,65 +32,27 @@ public class BankGui extends JFrame implements ActionListener {
         int WINDOWX = 450;
         int WINDOWY = 450;
 
-        Dimension animationDim = new Dimension(WINDOWX+100, WINDOWY+100);
+        Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
         animationPanel.setPreferredSize(animationDim);
         animationPanel.setMinimumSize(animationDim);
         animationPanel.setMaximumSize(animationDim);
 
     	
-    	setBounds(50, 50, WINDOWX*3, WINDOWY);
+    	setBounds(50, 50, WINDOWX, WINDOWY);
     	
         setLayout(new BorderLayout());
         
         add(animationPanel, BorderLayout.EAST);
         
-        Dimension controlDim = new Dimension(WINDOWX+50, WINDOWY);
-        controlPanel = new JPanel();
-        controlPanel.setPreferredSize(controlDim);
-        controlPanel.setMinimumSize(controlDim);
-        controlPanel.setMaximumSize(controlDim);
-        controlPanel.setLayout(new BorderLayout());
-        
-
-        Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .6));
-        bankPanel.setPreferredSize(restDim);
-        bankPanel.setMinimumSize(restDim);
-        bankPanel.setMaximumSize(restDim);
-        controlPanel.add(bankPanel, BorderLayout.NORTH);
-        
-        // Now, setup the info panel
-        Dimension infoDim = new Dimension(WINDOWX, (int) (WINDOWY * .25));
-        infoPanel = new JPanel();
-        infoPanel.setPreferredSize(infoDim);
-        infoPanel.setMinimumSize(infoDim);
-        infoPanel.setMaximumSize(infoDim);
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
-
-        stateCB = new JCheckBox();
-        stateCB.setVisible(false);
-        stateCB.addActionListener(this);
-        
-        stateWB = new JCheckBox();
-        stateWB.setVisible(false);
-        stateWB.addActionListener(this);
-        
-        pause = new JCheckBox("Pause");
-        pause.setVisible(true);
-        pause.addActionListener(this);
-
-        infoPanel.setLayout(new GridLayout(1, 2, 30, 0));
-        
-        infoLabel = new JLabel(); 
-        infoLabel.setText("<html><pre><i>Click Add to make customers</i></pre></html>");
-        infoPanel.add(infoLabel);
-        infoPanel.add(stateCB);
-        infoPanel.add(stateWB);
-        controlPanel.add(infoPanel, BorderLayout.CENTER);
-        controlPanel.add(pause, BorderLayout.WEST);
-        
-        add(controlPanel, BorderLayout.WEST);
     }
+    
+    public void addPerson(String type, BankCustomerRole c) {
 
+    	BankCustomerGui g = new BankCustomerGui(c, customers.size());
+    	animationPanel.addGui(g);
+    	c.setGui(g);
+    	customers.add(g);
+    }
     /**
      * Action listener method that reacts to the checkbox being clicked;
      * If it's the customer's checkbox, it will make him hungry
@@ -124,6 +74,18 @@ public class BankGui extends JFrame implements ActionListener {
      */
     public static void main(String[] args) {
         BankGui gui = new BankGui();
+        BankCustomerRole b = new BankCustomerRole("bob");
+    	BankCustomerGui g = new BankCustomerGui(b, customers.size());
+    	animationPanel.addGui(g);
+    	b.setGui(g);
+    	customers.add(g);
+    	
+        BankCustomerRole b1 = new BankCustomerRole("bob1");
+    	BankCustomerGui g1 = new BankCustomerGui(b1, customers.size());
+    	animationPanel.addGui(g1);
+    	b1.setGui(g1);
+    	customers.add(g1);
+    	
         gui.setTitle("SimCity Bank");
         gui.setVisible(true);
         gui.setResizable(false);

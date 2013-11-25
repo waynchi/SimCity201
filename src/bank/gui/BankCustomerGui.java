@@ -12,8 +12,8 @@ public class BankCustomerGui implements Gui{
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
+	private boolean isWaiting;
 	
-	private String choice = null;
 
 	//private HostAgent host;
 	BankGui gui;
@@ -26,17 +26,14 @@ public class BankCustomerGui implements Gui{
 	
 	static final int CUST_SIZE = 20;
 
-	public BankCustomerGui(BankCustomerRole c, BankGui gui, int custNum){ //HostAgent m) {
+	public BankCustomerGui(BankCustomerRole c, int custNum){ //HostAgent m) {
 		agent = c;
 		this.custNum = custNum;
 		xPos = -20;
-		yPos = 100 + (CUST_SIZE +10)*custNum;
-		xDestination = -20;
-		yDestination = 100 + (CUST_SIZE +10)*custNum;
-		xFinal = -20;
-		yFinal = 100 + (CUST_SIZE +10)*custNum;
-		//maitreD = m;
-		this.gui = gui;
+		yPos = 325;
+		isWaiting = true;
+		xDestination = 200 - (CUST_SIZE + 10)*custNum;
+		yDestination = 325;
 		setPresent(true);
 		
 	}
@@ -52,39 +49,19 @@ public class BankCustomerGui implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 
-		if (xPos == xDestination && yPos == yDestination) {
-			if (command==Command.GoToSeat) {}
-			else if (command==Command.LeaveRestaurant) {
-				System.out.println("about to call gui.setCustomerEnabled(agent);");
-				isHungry = false;
-			}
-			command=Command.noCommand;
+		if (isWaiting) {
+			xDestination = 200 - (CUST_SIZE + 10)*custNum;
+			yDestination = 325;
 		}
 	}
 
 	public void draw(Graphics2D g) {
-		if (choice == null) {
 			g.setColor(Color.GREEN);
 			g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
-		}
-		else {
-			g.setColor(Color.GREEN);
-			g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
-			g.setColor(Color.BLACK);
-			g.drawString(choice, xPos, yPos+10);
-		}
 	}
 
 	public boolean isPresent() {
 		return isPresent;
-	}
-	public void setHungry() {
-		isHungry = true;
-		xDestination = 0;
-		yDestination = 100 + (CUST_SIZE +10)*custNum;
-	}
-	public boolean isHungry() {
-		return isHungry;
 	}
 
 	public void setPresent(boolean p) {
@@ -94,17 +71,6 @@ public class BankCustomerGui implements Gui{
 	public void Goto(Dimension dim) {
 		xTable= dim.width;
 		yTable = dim.height;
-	}
-
-	public void DoGoToSeat() {//later you will map seatnumber to table coordinates.
-		while(true) {
-			if(xTable != 0 && yTable != 0) {
-		        xDestination = xTable;
-		        yDestination = yTable;
-		        command = Command.GoToSeat;
-		        break;
-			}
-		}
 	}
 
 	public void DoExitRestaurant() {
