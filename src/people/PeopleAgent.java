@@ -309,6 +309,8 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
+				if(Time <= 1900)
+				{
 				if(rand.nextInt() < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
@@ -321,7 +323,12 @@ public class PeopleAgent extends Agent implements People{
 					print("Going Home To Eat");
 					stateChanged();
 				}
-				
+				}
+				else
+				{
+					event = AgentEvent.GoingHome;
+					print("Going Home To Eat");
+				}
 				return;
 			}
 		}
@@ -329,13 +336,13 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(!hasCar)
 			{
-				if(!(Time >= 1700) && Money >= 30000)
+				if(!(Time >= 2100) && Money >= 30000)
 				{
 					event = AgentEvent.GoingToBuyCar;
 					stateChanged();
 					return;
 				}
-				else if(!(Time>= 1700 && Money <= 30000))
+				else if(!(Time>= 2100 && Money <= 30000))
 				{
 						event = AgentEvent.GoingToRetrieveMoney;
 						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
