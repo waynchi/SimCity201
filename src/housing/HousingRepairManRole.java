@@ -1,5 +1,6 @@
 package housing;
 
+import housing.HousingResidentRole.State;
 import housing.gui.RepairManGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
@@ -113,7 +114,10 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void leaveJob() {
-		
+		gui.DoLeaveJob();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 
 	//-----------------------------------------------------------//
@@ -144,6 +148,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void doneLeaving() {
 		location = Location.Nowhere;
 		isActive = false;
+		activity.release();
 		myPerson.msgDone("RepairManRole");
 	}
 
