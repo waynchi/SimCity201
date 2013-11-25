@@ -161,13 +161,14 @@ public class CityGui extends JFrame implements ActionListener {
 		jPanel.setPreferredSize(new Dimension(500,250));
 		jPanel.setDoubleBuffered(true);
 		jPanel.add(bankGui);
+		
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
 
-		getContentPane().add(BorderLayout.WEST, cityControls);
+		//getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
 		
@@ -181,7 +182,6 @@ public class CityGui extends JFrame implements ActionListener {
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
-		System.out.println(bp.getName());
 		cardLayout.show(buildingPanels, bp.getName());
 	}
 
