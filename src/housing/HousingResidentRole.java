@@ -29,6 +29,7 @@ public class HousingResidentRole extends Role implements Resident {
 		repairMan = null;
 		repairStage = RepairStage.None;
 		myState = State.Idle;
+		gui = new ResidentGui(this);
 	}
 
 	//-----------------------------------------------------------//
@@ -296,6 +297,7 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void setHouse(House h) {
 		this.house = h;
+		h.gui.add(gui);
 	}
 	
 	public void setRepairMan(RepairMan r) {
