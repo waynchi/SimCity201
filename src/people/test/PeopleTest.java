@@ -8,6 +8,7 @@ import java.util.List;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.PeopleAgent;
+import people.PeopleAgent.AgentLocation;
 import people.PeopleAgent.HungerState;
 import people.Role;
 import restaurant.CashierRole;
@@ -72,6 +73,10 @@ public class PeopleTest extends TestCase
 		RestaurantPeople.add(restaurantCustomer);
 		RestaurantPeople.add(host);
 		RestaurantPeople.add(restaurantCashier);
+		for(PeopleAgent p: RestaurantPeople)
+		{
+			p.setTest();
+		}
 
 		restPanel = new RestaurantPanel();
 		theMonitor = restPanel.theMonitor;
@@ -81,6 +86,10 @@ public class PeopleTest extends TestCase
 		bankCustomer = new PeopleAgent("restaurantCustomer", 100, false);
 		BankPeople.add(teller);
 		BankPeople.add(bankCustomer);
+		for(PeopleAgent p: BankPeople)
+		{
+			p.setTest();
+		}
 		
 		MarketPeople = new ArrayList<PeopleAgent>();
 		marketCashier = new PeopleAgent("marketCashier", 100, false);
@@ -89,7 +98,10 @@ public class PeopleTest extends TestCase
 		MarketPeople.add(marketCashier);
 		MarketPeople.add(marketEmployee);
 		MarketPeople.add(marketCustomer);
-		
+		for(PeopleAgent p: MarketPeople)
+		{
+			p.setTest();
+		}
 		
 		//person.addRole(new )
 	}	
@@ -295,6 +307,7 @@ public class PeopleTest extends TestCase
 	{
 		//Adding Roles into all of the People
 		
+		
 		cook.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		cook.addRole((Role)new MockCook(cook.name), "RestaurantCook");
@@ -393,9 +406,17 @@ public class PeopleTest extends TestCase
 			else
 			{
 				p.msgTimeIs(1800);
+				if(p.state.toString().equals("EatingAtRestaurant"))
+				{
+					p.msgDone("RestaurantCustomerRole");
+				}
+				else
+				{
+					p.msgDone("HomeEating");
+				}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 			}
-			assertFalse("Testing SCheduler", p.pickAndExecuteAnAction());
+			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
 		
 		//Sleeping Time!
@@ -406,10 +427,19 @@ public class PeopleTest extends TestCase
 				p.msgDone("RestaurantCustomerRole");
 			}
 			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+			if(!p.location.toString().equals("Home"))
+			{
+			p.msgTimeIs(2200);
+			System.out.println(p.event.toString());
+			System.out.println(p.state.toString());
+			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
+			}
 			p.msgTimeIs(2330);
 			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
 			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+			
 			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}	
 	}
