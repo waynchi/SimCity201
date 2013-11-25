@@ -112,7 +112,7 @@ public class HousingResidentRole extends Role implements Resident {
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
-		myPerson.msgDone("Resident");
+		myPerson.msgDone("ResidentRole");
 	}
 	
 	public void enterHome() {

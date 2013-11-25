@@ -55,12 +55,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		stateChanged();
 	}
 
-	// Ensure thread safety for homeMoney.
-	public void salaryArrives() {
-		homeMoney += salary;
-		stateChanged();
-	}
-
 	//-----------------------------------------------------------//
 
 	// Scheduler
@@ -151,4 +145,5 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public enum HouseState {None, NeedsRepair, Reached}
+	public enum Location {Shop, Outside, Resident};
 }
