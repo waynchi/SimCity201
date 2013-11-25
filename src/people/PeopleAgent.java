@@ -431,7 +431,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-			state = AgentState.Idle;
+			//state = AgentState.Idle;
 			}
 			GoToHouse();
 			Person = true;
@@ -491,10 +491,6 @@ public class PeopleAgent extends Agent implements People{
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see people.People#GoToRestaurant()
-	 */
-	@Override
 	public void GoToRestaurant()
 	{
 		location = AgentLocation.Road;
@@ -502,7 +498,6 @@ public class PeopleAgent extends Agent implements People{
 		//roles.RestaurantCustomerAgent.msg(this);
 		if(hasCar)
 		{
-			//Gui for car animation
 			hunger = HungerState.Eating;
 		for(MyRole r: roles)
 		{
@@ -510,6 +505,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				r.role.msgIsActive();
 			}
+			//Guifor Car Animation
+			
 			/*if(r.description.equals("CustomerAgent"))
 			{			
 				r.role.msgIsActive();
@@ -558,6 +555,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToHouse()
 	{
+		location = AgentLocation.Road;
 		hunger = HungerState.Eating;
 		personGui.GoToHouse();
 		try {
@@ -565,6 +563,7 @@ public class PeopleAgent extends Agent implements People{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		location = AgentLocation.Home;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -573,6 +572,7 @@ public class PeopleAgent extends Agent implements People{
 				
 			}
 		}	
+		state = AgentState.Idle;
 	}
 
 	/* (non-Javadoc)
@@ -581,12 +581,14 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoBuyCar()
 	{
+		location = AgentLocation.Road;
 		personGui.GoToMarket();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		location = AgentLocation.Market;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("MarketCustomer"))
@@ -618,12 +620,14 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToBank()
 	{
+		location = AgentLocation.Road;
 		personGui.goToBank();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		location = AgentLocation.Bank;
 		for(MyRole r: roles)
 		{
 			if(r.description == "BankCustomer")
@@ -658,20 +662,21 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		//Pause the Gui
-		personGui.GoToRestaurantOne();
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("test test test");
 		//Release the Gui from msgDone
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RestaurantNormalWaiter"))
-				{			
+				{	
+					location = AgentLocation.Road;
+					personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantNormalWaiter");
 					r.role.msgIsActive();
 				}
@@ -682,8 +687,17 @@ public class PeopleAgent extends Agent implements People{
 		{
 			for(MyRole r: roles)
 			{
+				
 				if(r.description.equals("RestaurantHost"))
-				{			
+				{	
+					location = AgentLocation.Road;
+					personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantHost");
 					r.role.msgIsActive();
 				}
@@ -696,6 +710,14 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(r.description.equals("RestaurantCook"))
 				{			
+					location = AgentLocation.Road;
+					personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantCook");
 					//r.role.msgIsActive();
 				}
@@ -707,7 +729,15 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RestaurantCashier"))
-				{		
+				{	
+					location = AgentLocation.Road;
+					personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantCashier");
 					r.role.msgIsActive();
 					
