@@ -52,6 +52,7 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
+
 		if(this.direction.equals("up")) {
 			setRect( x+xv, y-yv, getWidth(), getHeight() );
 			this.xPos = x+xv;
@@ -94,7 +95,18 @@ public class Vehicle extends Rectangle2D.Double {
 		//9 = first; 10 = second; 11=third
 		
 
+		//Residential Intersection
+		if(xPos == 122 && yPos == 238) {
+			System.out.println("UP");
+			this.direction = "up";
+		} else {
+			this.direction = "down";
 
+		}
+		if(yPos == 120 && xPos == 122) {
+			this.lane = lanes.get(0);
+			this.setOrientation();
+		}
 		if(xPos >= 550 && xPos <= 552) {
 			//Up or down?
 			if(yDestination <= 100) {
