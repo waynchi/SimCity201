@@ -38,8 +38,9 @@ public class MarketCashierTest extends TestCase{
 	}
 	
 	public void testPeopleMessage (){
+		//check pre-condition
 		cashier.msgIsActive();
-		people.pickAndExecuteAnAction();
+		
 		
 	}
 	
