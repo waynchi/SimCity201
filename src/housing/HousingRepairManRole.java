@@ -60,8 +60,8 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToApartmentInSamePlaceFromApartment(MyHouse mh) {
-		gui.DoGoToApartmentInSamePlaceFromApartment(mh.h.gui);
+	public void goToApartmentInSameComplexFromApartment(MyHouse mh) {
+		gui.DoGoToApartmentInSameComplexFromApartment(mh.h.gui);
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
@@ -196,7 +196,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 				if (currentLocationHouse.h.type == HouseType.Apartment) {
 					if (currentHouse.h.type == HouseType.Apartment) {
 						if (currentHouse.h.a == currentLocationHouse.h.a) {
-							goToApartmentInSamePlaceFromApartment(currentHouse);
+							goToApartmentInSameComplexFromApartment(currentHouse);
 							return true;
 						}
 						else {

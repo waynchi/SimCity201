@@ -160,7 +160,7 @@ public class RepairManGui implements HGui{
 		yDestination = d.height;
 	}
 	
-	public void DoGoToApartmentInSamePlaceFromApartment(HouseGui g) {
+	public void DoGoToApartmentInSameComplexFromApartment(HouseGui g) {
 		this.targetGui = g;
 		location = Location.ApartmentComplex;
 		state = State.EnteringHouse;
