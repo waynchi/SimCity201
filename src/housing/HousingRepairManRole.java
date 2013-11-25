@@ -1,13 +1,11 @@
 package housing;
 
+import housing.gui.RepairManGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
-
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import java.util.concurrent.Semaphore;
 import people.People;
 import people.PeopleAgent;
 import people.Role;
@@ -20,6 +18,10 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	private double money;
 	private double homeMoney;
 	private MyHouse currentHouse = null;
+	public Location location = Location.Shop;
+	public RepairManGui gui;
+	public Semaphore activity = new Semaphore(0, true);
+	public MyHouse currentLocationHouse;
 
 	public HousingRepairManRole() {
 		super();
@@ -42,6 +44,26 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		}
 		mh.r.repairDone();
 		mh.s = HouseState.None;
+		currentLocationHouse = currentHouse;
+		currentHouse = null;
+		// Leaving.
+	}
+	
+	public void leaveShop() {
+		gui.DoLeaveShop();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+		location = Location.OutsideFixing;
+		myPerson.msgDone("RepairManFixing");
+	}
+	
+	public void returnToShop() {
+		location = Location.OutsideReturning;
+	}
+	
+	public void enterShop() {
+		location = Location.Shop;
 	}
 
 	//-----------------------------------------------------------//
@@ -54,22 +76,43 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		this.money += money;
 		stateChanged();
 	}
+	
+	public void activityDone() {
+		location = Location.OutsideReturning;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
+		if (location == Location.OutsideReturning) {
+			enterShop();
+			return true;
+		}
 		if (currentHouse == null) {
 			currentHouse = findMyHouseByState(HouseState.NeedsRepair);
 		}
 		if (currentHouse != null) {
+			if (location == Location.Shop) {
+				leaveShop();
+				return true;
+			}
+			else if (location == Location.Resident) {
+				if (currentHouse)
+			}
 			if (currentHouse.s == HouseState.NeedsRepair) {
 				goToHouse(currentHouse);
 				return true;
 			}
 			if (currentHouse.s == HouseState.Reached) {
 				repairItems(currentHouse);
+				return true;
+			}
+		}
+		else {
+			if (location == Location.Resident) {
+				returnToShop();
 				return true;
 			}
 		}
@@ -145,5 +188,5 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public enum HouseState {None, NeedsRepair, Reached}
-	public enum Location {Shop, Outside, Resident};
+	public enum Location {Shop, OutsideFixing, OutsideReturning, Resident};
 }

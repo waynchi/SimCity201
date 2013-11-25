@@ -21,7 +21,7 @@ public class PeopleAgent extends Agent implements People{
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Double Balance;
-	private int Hunger = 100;
+	private int Hunger = 1200;
 	public Boolean hasCar;
 	public String name;
 	public enum HungerState
@@ -168,7 +168,7 @@ public class PeopleAgent extends Agent implements People{
 		if(role.equals("RestaurantCustomerRole"))
 		{
 			hunger = HungerState.NotHungry;
-			Hunger = 100;
+			Hunger = 1200;
 		}
 		if(role.equals("BankCustomerRole"))
 		{

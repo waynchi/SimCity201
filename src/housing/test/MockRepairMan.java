@@ -22,11 +22,11 @@ public class MockRepairMan extends Role implements RepairMan {
 	// Messages
 	
 	@Override
-	public void needHelp(House h) {
+	public void needHelp(House h, double money) {
 	}
-
+	
 	@Override
-	public void salaryArrives() {	
+	public void activityDone() {
 	}
 	
 	//-----------------------------------------------------------//
