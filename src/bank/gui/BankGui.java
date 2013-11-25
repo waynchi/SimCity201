@@ -77,6 +77,13 @@ public class BankGui extends JPanel implements ActionListener {
      	return g2;
     }
     
+    public void popCustomer() {
+    	for(int i = 0; i < customers.size(); i++) {
+    		customers.get(i).setCust(i-1);
+    	}
+    	customers.remove(0);
+    }
+    
     public void gotoLine(BankCustomerGui b) {
     	b.setCust(customers.size());
     	customers.add(b);
