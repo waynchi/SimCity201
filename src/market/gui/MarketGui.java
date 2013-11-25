@@ -105,4 +105,8 @@ public class MarketGui extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public AnimationPanel getAnimationPanel() {
+		return animationPanel;
+	}
 }

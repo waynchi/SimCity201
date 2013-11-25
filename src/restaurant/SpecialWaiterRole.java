@@ -1,11 +1,18 @@
 package restaurant;
 
+import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Waiter;
 
 public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
-	public SpecialWaiterRole(CookWaiterMonitor monitor) {
+	public SpecialWaiterRole(CookWaiterMonitor monitor, RestaurantGui gui) {
 		super();
+		restGui = gui;
+		waiterGui = new WaiterGui(this);
+		restGui.getAnimationPanel().addGui(waiterGui);
+		waiterGui.setPresent(false);
+		
 		currentCustomerNum = 0;
 		menu.add(new FoodOnMenu("Steak", 15.99));
 		menu.add(new FoodOnMenu("Chicken", 10.99));
@@ -25,8 +32,10 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 	}
 	
 	public void done () {
+		// gui has to walk to exit
 		isActive = false;
 		leaveWork = false;
+		waiterGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantSpecialWaiterRole");
 	}
 }

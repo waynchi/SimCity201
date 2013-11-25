@@ -1,5 +1,6 @@
 package people.test.mock;
 
+import people.People;
 import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -87,6 +88,12 @@ public class MockWaiter extends Role implements Waiter{
 
 	@Override
 	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public People getPerson() {
 		// TODO Auto-generated method stub
 		return null;
 	}

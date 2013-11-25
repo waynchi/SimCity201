@@ -3,6 +3,7 @@ package people.mock;
 import java.util.List;
 
 import city.gui.CityGui;
+import city.gui.PersonGui;
 import people.People;
 import people.Role;
 import restaurant.test.mock.EventLog;
@@ -131,14 +132,6 @@ public class MockPeople extends Mock implements People{
 		return null;
 	}
 
-
-	@Override
-	public Role getHost() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	public String getMaitreDName() {
 		// TODO Auto-generated method stub
@@ -147,9 +140,58 @@ public class MockPeople extends Mock implements People{
 
 
 	@Override
-	public void addCityGui(CityGui gui) {
+	public void setMoney(double Money) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public Role getHost(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Role getTeller() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Role getMarketEmployee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setPersonGui(PersonGui gui) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setCityGui(CityGui gui) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void Arrived() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int msgWhatIsTime() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

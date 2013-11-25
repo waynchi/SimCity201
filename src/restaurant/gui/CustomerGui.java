@@ -34,13 +34,12 @@ public class CustomerGui implements Gui{
 	
 	
 	// set the initial position of customer
-	public CustomerGui(Customer c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(Customer c){ //HostAgent m) {
 		customer = c;
 		xPos = -40;
 		yPos = -40;
 		xDestination = 20;
 		yDestination = 10;
-		this.gui = gui;
 		try {
             img = ImageIO.read(getClass().getResource("customer.png"));
         } catch (IOException e) {}

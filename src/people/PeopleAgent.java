@@ -30,6 +30,7 @@ public class PeopleAgent extends Agent implements People{
 	Random rand = new Random();
 	PersonGui personGui;
 	CityGui cityGui;
+	private boolean testmode = false;
 	
 	private Semaphore moving = new Semaphore(0,true);
 	
@@ -49,6 +50,10 @@ public class PeopleAgent extends Agent implements People{
 	public AgentLocation location = AgentLocation.Home;
 	
 	
+	public void setTest()
+	{
+		testmode = true;
+	}
 	public void Arrived()
 	{
 		moving.release();
@@ -556,12 +561,15 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToHouse()
 	{
 		location = AgentLocation.Road;
+		if(testmode)
+		{
 		hunger = HungerState.Eating;
 		personGui.GoToHouse();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
 		}
 		location = AgentLocation.Home;
 		for(MyRole r: roles)
@@ -582,11 +590,14 @@ public class PeopleAgent extends Agent implements People{
 	public void GoBuyCar()
 	{
 		location = AgentLocation.Road;
+		if(testmode)
+		{
 		personGui.GoToMarket();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
 		}
 		location = AgentLocation.Market;
 		for(MyRole r: roles)
@@ -621,11 +632,14 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToBank()
 	{
 		location = AgentLocation.Road;
+		if(testmode)
+		{
 		personGui.goToBank();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
 		}
 		location = AgentLocation.Bank;
 		for(MyRole r: roles)
@@ -670,11 +684,14 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantNormalWaiter"))
 				{	
 					location = AgentLocation.Road;
+					if(testmode)
+					{
 					personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
 					}
 					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantNormalWaiter");
@@ -691,11 +708,14 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantHost"))
 				{	
 					location = AgentLocation.Road;
+					if(testmode)
+					{
 					personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
 					}
 					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantHost");
@@ -711,11 +731,14 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantCook"))
 				{			
 					location = AgentLocation.Road;
+					if(testmode)
+					{
 					personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
 					}
 					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantCook");
@@ -731,11 +754,14 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantCashier"))
 				{	
 					location = AgentLocation.Road;
+					if(testmode)
+					{
 					personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
 					}
 					location = AgentLocation.Restaurant;
 					print("I am now a RestaurantCashier");

@@ -23,12 +23,6 @@ public class MockHost extends Role implements Host {
 		}
 
 		@Override
-		public List<BaseWaiterRole> getWaiters() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
 		public Cook getCook() {
 			// TODO Auto-generated method stub
 			return null;
@@ -68,5 +62,23 @@ public class MockHost extends Role implements Host {
 		public void IAmOffBreak(Waiter w) {
 			// TODO Auto-generated method stub
 			
+		}
+
+		@Override
+		public void addWaiter(Waiter Waiter) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setCook(Cook cookRole) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public List<Waiter> getWaiters() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }
