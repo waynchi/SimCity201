@@ -19,7 +19,6 @@ public class HousingResidentRole extends Role implements Resident {
 	protected State myState;
 	public Location location = Location.Home;
 	private boolean leisure = false;
-	protected boolean isActive = true;
 	private boolean needToLeave = false;
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
@@ -31,6 +30,7 @@ public class HousingResidentRole extends Role implements Resident {
 		repairStage = RepairStage.None;
 		myState = State.Sleeping;
 		gui = new ResidentGui(this);
+		isActive = true;
 	}
 
 	//-----------------------------------------------------------//
