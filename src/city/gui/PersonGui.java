@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class Person extends Rectangle2D.Double {
+public class PersonGui extends Rectangle2D.Double {
 	Color personColor;
 	public Sidewalk sidewalk;
 	public int xDestination;
@@ -19,7 +19,7 @@ public class Person extends Rectangle2D.Double {
 	String direction;
 	Color vehicleColor;
 	
-	public Person( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel ) {
+	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel ) {
 		super( x, y, width, height );
 		this.sidewalk = s;
 		this.sidewalks = sidewalks;

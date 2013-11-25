@@ -17,7 +17,7 @@ public class Sidewalk {
 	boolean startAtOrigin;
 	Color laneColor;
 	Color sideColor;
-	ArrayList<Person> people;
+	ArrayList<PersonGui> people;
 	
 	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc ) {
 		width = w;
@@ -43,7 +43,7 @@ public class Sidewalk {
 			sides.add( new Line2D.Double( xOrigin+width, yOrigin, xOrigin+width, yOrigin+height ) );
 		}
 		
-		people = new ArrayList<Person>();
+		people = new ArrayList<PersonGui>();
 	}
 	
 	public void draw( Graphics2D g2 ) {
