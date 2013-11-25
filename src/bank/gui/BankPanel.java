@@ -3,8 +3,8 @@ package bank.gui;
 
 import javax.swing.*;
 
-import bank.BankCustomerAgent;
-import bank.TellerAgent;
+import bank.BankCustomerRole;
+import bank.TellerRole;
 import agent.Agent;
 
 import java.awt.*;
@@ -19,13 +19,11 @@ public class BankPanel extends JPanel {
 
     //Host, cook, waiters and customers
 
-    private TellerAgent host = new TellerAgent("Teller");
+    private TellerRole host;
 
-    public Vector<Agent> agents = new Vector<Agent>();
-    public Vector<BankCustomerAgent> customers = new Vector<BankCustomerAgent>();
+    public Vector<BankCustomerRole> customers = new Vector<BankCustomerRole>();
 
     private JPanel restLabel = new JPanel();
-    private ListPanel customerPanel = new ListPanel(this, "Customers");
     private JPanel group = new JPanel();
 
     private BankGui gui; //reference to main gui

@@ -29,6 +29,8 @@ public class TellerRole extends Role implements Teller {
 	private myBankCustomer currentCustomer = null;
 	
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
+	
+	Boolean LeavePost = false;
 
 	public TellerRole(String name) {
 		super();
@@ -63,7 +65,7 @@ public class TellerRole extends Role implements Teller {
 	}
 	
 	public void msgIsInactive(){
-		isActive = false;
+		LeavePost = true;
 		stateChanged();
 	}
 	
@@ -147,6 +149,9 @@ public class TellerRole extends Role implements Teller {
 					}
 				}
 			}
+			if (LeavePost && waitingCustomers.size() == 0) {
+				Leave();
+			}
 		}
 
 		return false;
@@ -210,6 +215,12 @@ public class TellerRole extends Role implements Teller {
 	private void removeCustomer(myBankCustomer customer) {
 		waitingCustomers.remove(customer);
 		currentCustomer = null;
+	}
+	private void Leave() {
+		//DoLeave
+		isActive = false;
+		LeavePost = false;
+		myPerson.msgDone("TellerRole");
 	}
 	
 	//Utilities

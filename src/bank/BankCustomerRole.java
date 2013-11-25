@@ -67,11 +67,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
-	public void msgIsInactive() {
-		isActive = false;
-		stateChanged();
-	}
-	
 	public void msgReadyToHelp(Teller t) {
 		this.teller = t;
 		state = CustomerState.ready;
@@ -171,6 +166,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void LeaveBank(){
 		//Do Leave Bank
 		teller.msgDoneAndLeaving();
+		myPerson.msgDone("BankCustomerRole");
+		isActive = false;
 	}
 
 	// Accessors, etc.
