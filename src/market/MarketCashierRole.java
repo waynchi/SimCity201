@@ -8,6 +8,8 @@ import java.util.Map;
 import bank.interfaces.Teller;
 import people.Role;
 import restaurant.interfaces.Cashier;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -19,6 +21,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private boolean turnActive = false;
 	private boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
+	public EventLog log = new EventLog();
+
 	
 	Map<String, Double> priceList = new HashMap<String, Double>();
 	double marketMoney = 10000.0;
@@ -183,6 +187,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
+		log.add(new LoggedEvent(""));
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
 		marketEmployee.setCashier(this);
 		turnActive = false;

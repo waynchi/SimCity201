@@ -15,7 +15,8 @@ import javax.imageio.ImageIO;
 
 public class WaiterGui implements Gui {
 
-    private BaseWaiterRole agent = null;
+    private BaseWaiterRole role = null;
+    private boolean isPresent = false;
 
     private int xPos = -20, yPos = -20;//default waiter position
     private int currentTableX = -100;
@@ -39,13 +40,12 @@ public class WaiterGui implements Gui {
     
     private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
     
-    public WaiterGui(BaseWaiterRole agent) {
-        this.agent = agent;
+    public WaiterGui(BaseWaiterRole role) {
         try {
             img = ImageIO.read(getClass().getResource("waiter.png"));
         } catch (IOException e) {}
         
-        
+        this.role = role;
         tableMap.put (1,new Dimension(100,100));
         tableMap.put (2,new Dimension(200,100));
         tableMap.put (3,new Dimension(300,100));  
@@ -69,23 +69,23 @@ public class WaiterGui implements Gui {
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == currentTableX -20) && (yDestination == currentTableY -20)) {
         	BringingFoodToCustomer = false;
-           agent.msgAtTable();
+           role.msgAtTable();
         }
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == cookX) && (yDestination == cookY-20)) {
-           agent.msgAtCook();
+           role.msgAtCook();
         }
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == cashierX) && (yDestination == cashierY-20)) {
-           agent.msgAtCashier();
+           role.msgAtCashier();
         }
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == 20) && (yDestination == 25)) {
-           agent.msgAtWaitingCustomer();
+           role.msgAtWaitingCustomer();
         }
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
-           agent.msgAtRevolvingStand();
+           role.msgAtRevolvingStand();
         }
     }
 
@@ -93,7 +93,7 @@ public class WaiterGui implements Gui {
         
     	g.drawImage(img,xPos,yPos,null);
         g.setColor(Color.BLACK);
-        g.drawString(agent.getName(), xPos, yPos+10);
+        g.drawString(role.getName(), xPos, yPos+10);
         if (BringingFoodToCustomer) {
     		g.setColor(Color.BLACK);
 			g.drawString(currentCustomer.getChoice().substring(0,2),xPos, yPos);
@@ -101,7 +101,7 @@ public class WaiterGui implements Gui {
     }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void DoSeatCustomer(Customer c, int tableNum) {
@@ -165,5 +165,9 @@ public class WaiterGui implements Gui {
 		// TODO Auto-generated method stub
 		xDestination = revolvingStandX;
 		yDestination = revolvingStandY;
+	}
+	
+	public void setPresent(boolean p) {
+		isPresent = p;
 	}
 }

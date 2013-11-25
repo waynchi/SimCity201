@@ -2,6 +2,7 @@ package restaurant;
 
 import restaurant.BaseWaiterRole.FoodOnMenu;
 import restaurant.gui.CustomerGui;
+import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
@@ -24,6 +25,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
+	private RestaurantGui restGui;
 
 	// agent correspondents
 	private HostRole host;
@@ -34,9 +36,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private String choice;
 	private Random randomGenerator = new Random();
 	private Semaphore atCashier = new Semaphore(0,true);
-	
-	private Double moneyOnMe = 12.00;
-	private Double due;
+	//private Double due;
 	
 	//customer behaviors
 	private Boolean leaveIfRestIsFull = false;
@@ -63,7 +63,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 *
 	 * @param name name of the customer
 	 */
-	public RestaurantCustomerRole(){
+	public RestaurantCustomerRole(RestaurantGui gui){
 		super();
 //		// parsing customer name string to get desirable customer behavior
 //		String delims = "[ ]+";
@@ -82,6 +82,11 @@ public class RestaurantCustomerRole extends Role implements Customer{
 //		if (tokens[5].equalsIgnoreCase("y")) {
 //			reorderAcceptable = true;
 //		}
+		this.restGui = gui;
+		customerGui = new CustomerGui(this);
+		restGui.getAnimationPanel().addGui(customerGui);
+		customerGui.setPresent(false);
+		
 	}
 
 	/**
@@ -101,6 +106,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	// from animation. Eventually messages the Host about wanting food...
 
 	public void msgIsActive() {
+		customerGui.setPresent(true);
 		print("I'm hungry");
 		event = CustomerEvent.GOT_HUNGRY;
 		getPersonAgent().CallstateChanged();
@@ -170,12 +176,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	public void msgHereIsCheck (Double d, Cashier c) {
 		event = CustomerEvent.GOT_CHECK;
 		cashier = c;
-		due = d;
+		//due = d;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsYourChange (Double change) {
-		moneyOnMe = change;
+		myPerson.Money = change;
 		event = CustomerEvent.DONE_PAYING;
 		getPersonAgent().CallstateChanged();
 	}
@@ -342,7 +348,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		}
 		//Case 1 - Can't afford anything on the menu. Customer leaves
 		if (event == CustomerEvent.SEATED){
-			if (moneyOnMe < minimumPrice && orderFoodThatICanAfford){
+			if (myPerson.Money < minimumPrice && orderFoodThatICanAfford){
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -355,7 +361,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == CustomerEvent.ASKED_TO_REORDER){
 
-			if (moneyOnMe < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
+			if (myPerson.Money < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
 				print ("Can't afford anything else, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -386,7 +392,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// than 8.99.
 		if (orderFoodThatICanAfford) {
 			for (FoodOnMenu temp : menu) {
-				if (temp.price > maximumPrice && temp.price <= moneyOnMe) {
+				if (temp.price > maximumPrice && temp.price <= myPerson.Money) {
 					maximumPrice = temp.price;
 					choice = temp.type;
 					//print ("in makeOrder, should be here, choice is " + temp.type + "price is " + temp.price);
@@ -449,15 +455,21 @@ public class RestaurantCustomerRole extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashier.msgPayMyCheck(this, moneyOnMe);
+		cashier.msgPayMyCheck(this, myPerson.Money);
+		myPerson.Money = 0.0;
 		print ("Paying my bill");
-		moneyOnMe = 0.00;
 	}
 	
 	private void leaveTable() {
+		
+		
+		// gui stuff set gui 
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
+		
+		// gui needs to walk to the exit
 		isActive = false;
+		customerGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantCustomerRole");
 	}
 

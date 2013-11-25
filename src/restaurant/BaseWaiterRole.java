@@ -1,5 +1,6 @@
 package restaurant;
 
+import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
@@ -60,6 +61,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	
 	public WaiterGui waiterGui = null;
+	protected RestaurantGui restGui = null;
 
 	/*public BaseWaiterRole(String name, CookWaiterMonitor monitor) {
 		super();
@@ -315,6 +317,9 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
+		
+		// how to make sure the cook and cashier are already created?
+		
 		host = myPerson.Restaurants.get(0).h;
 		host.addWaiter(this);
 		cook = host.getCook();

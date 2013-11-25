@@ -50,4 +50,16 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 		return name;
 	}
 
+	@Override
+	public void msgAtCabinet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAtCounter() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

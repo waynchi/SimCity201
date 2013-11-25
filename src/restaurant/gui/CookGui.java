@@ -13,9 +13,10 @@ import restaurant.CookRole;
 
 public class CookGui implements Gui {
 
-	private CookRole agent = null;
+	private CookRole role = null;
 	Boolean isCooking;
 	String foodBeingCooked = null;
+	RestaurantGui gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
@@ -24,11 +25,13 @@ public class CookGui implements Gui {
     
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
+    
+    boolean isPresent;
 	
 	
 	public CookGui (CookRole cook) {
 		isCooking = false;
-		agent = cook;
+		role = cook;
 		for (int i=0;i<3;i++) {
 			foodPlated.add("");
 		}
@@ -55,7 +58,7 @@ public class CookGui implements Gui {
         		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
         	xDestination = cookX;
         	yDestination = cookY;
-           agent.msgAtRevolvingStand();
+           role.msgAtRevolvingStand();
         }
 	}
 
@@ -76,7 +79,7 @@ public class CookGui implements Gui {
 
 	@Override
 	public boolean isPresent() {
-		return true;
+		return isPresent;
 	}
 
 	public void cookFood (String food) {
@@ -100,5 +103,9 @@ public class CookGui implements Gui {
 		xDestination = revolvingStandX;
 		yDestination = revolvingStandY;
 		
+	}
+	
+	public void setPresent(boolean b) {
+		isPresent = b;
 	}
 }
