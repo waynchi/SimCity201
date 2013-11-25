@@ -20,7 +20,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	MarketEmployeeGui gui;
 	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
 	int marketTruckCount = 0;
-	String name;
 	Map <String, Item> items = new HashMap<String, Item>();
 	class Item {
 		String name;
@@ -59,8 +58,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private boolean leaveWork = false;
 
 	// constructor
-	public MarketEmployeeRole(String name){
-		this.name = name;
+	public MarketEmployeeRole(){
 		for (int i=0; i<10; i++) { // create 10 market trucks
 			trucks.add(new MarketTruckAgent("MarketTruck "+i));
 		}
