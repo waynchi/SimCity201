@@ -3,3 +3,4 @@
 1,RestaurantHost,Billy
 1,RestaurantCashier,Todd
 1,Teller,teller
+1,Nobody,Customer
