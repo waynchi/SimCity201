@@ -2,11 +2,12 @@ package bank.gui;
 
 import javax.swing.*;
 
-import bank.BankCustomerAgent;
+import bank.BankCustomerRole;
 import agent.Agent;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 /**
  * Main GUI class.
  * Contains the main frame and subsequent panels
@@ -25,17 +26,15 @@ public class BankGui extends JFrame implements ActionListener {
      */    
     private BankPanel bankPanel = new BankPanel(this);
     
-    /* infoPanel holds information about the clicked customer, if there is one*/
-    private JPanel infoPanel;
-    private JLabel infoLabel; //part of infoPanel
-    private JCheckBox stateCB;//part of infoLabel
-    private JCheckBox stateWB;//part of infoLabel
-    private JCheckBox pause;
-    private JPanel controlPanel;
-    
+    public void addPerson(String type, String name, String status, BankCustomerRole c) {
 
-    private Object currentPerson;/* Holds the agent that the info is about.
-    								Seems like a hack */
+    	BankCustomerGui g = new BankCustomerGui(c, gui, customers.size());
+    	animationPanel.addGui(g);// dw
+    	c.setGui(g);
+    	customers.add(c);
+    }
+    
+    public Vector<BankCustomerRole> customers = new Vector<BankCustomerRole>();
 
     /**
      * Constructor for RestaurantGui class.
@@ -103,55 +102,14 @@ public class BankGui extends JFrame implements ActionListener {
         
         add(controlPanel, BorderLayout.WEST);
     }
-    /**
-     * updateInfoPanel() takes the given customer (or, for v3, Host) object and
-     * changes the information panel to hold that person's info.
-     *
-     * @param person customer (or waiter) object
-     */
-    public void updateInfoPanel(Object person) {
-        currentPerson = person;
 
-        if (person instanceof BankCustomerAgent) {
-        	stateWB.setVisible(false);
-        	stateCB.setVisible(true);
-            BankCustomerAgent customer = (BankCustomerAgent) person;
-            stateCB.setText("Hungry?");
-          //Should checkmark be there? 
-            stateCB.setSelected(customer.getGui().isHungry());
-          //Is customer hungry? Hack. Should ask customerGui
-            stateCB.setEnabled(!customer.getGui().isHungry());
-          // Hack. Should ask customerGui
-            infoLabel.setText(
-               "<html><pre>     Name: " + customer.getName() + " </pre></html>");
-        } 
-        infoPanel.validate();
-    }
     /**
      * Action listener method that reacts to the checkbox being clicked;
      * If it's the customer's checkbox, it will make him hungry
      * For v3, it will propose a break for the waiter.
      */
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == stateCB) {
-            if (currentPerson instanceof BankCustomerAgent) {
-                BankCustomerAgent c = (BankCustomerAgent) currentPerson;
-                c.getGui().setHungry();
-                stateCB.setEnabled(false);
-            }
-        }
-        if (e.getSource() == pause) {
-        	if (pause.isSelected()) {
-        		for(Agent agent : bankPanel.agents) {
-        			agent.pause();
-        		}
-        	}
-        	if (!pause.isSelected()) {
-        		for(Agent agent : bankPanel.agents) {
-        			agent.restart();
-        		}        		
-        	}
-        }
+        
     }
     /**
      * Message sent from a customer gui to enable that customer's
@@ -159,15 +117,6 @@ public class BankGui extends JFrame implements ActionListener {
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(BankCustomerAgent c) {
-        if (currentPerson instanceof BankCustomerAgent) {
-            BankCustomerAgent cust = (BankCustomerAgent) currentPerson;
-            if (c.equals(cust)) {
-                stateCB.setEnabled(true);
-                stateCB.setSelected(false);
-            }
-        }
-    }
     
     
     /**

@@ -4,11 +4,11 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import bank.BankCustomerAgent;
+import bank.BankCustomerRole;
 
 public class BankCustomerGui implements Gui{
 
-	private BankCustomerAgent agent = null;
+	private BankCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
@@ -24,11 +24,9 @@ public class BankCustomerGui implements Gui{
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 	
-	public Map<String, String> foodLabels = new HashMap<String, String>();
-	
 	static final int CUST_SIZE = 20;
 
-	public BankCustomerGui(BankCustomerAgent c, BankGui gui, int custNum){ //HostAgent m) {
+	public BankCustomerGui(BankCustomerRole c, BankGui gui, int custNum){ //HostAgent m) {
 		agent = c;
 		this.custNum = custNum;
 		xPos = -20;
@@ -89,9 +87,6 @@ public class BankCustomerGui implements Gui{
 		return isHungry;
 	}
 
-	public void setChoice(String c) {
-		this.choice = foodLabels.get(c);
-	}
 	public void setPresent(boolean p) {
 		isPresent = p;
 	}
