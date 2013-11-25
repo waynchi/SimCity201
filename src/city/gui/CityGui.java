@@ -56,7 +56,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public int time;
 
 	public CityGui() {
-		this.setResizable(false);
+		//this.setResizable(false);
 		cityPanel = new CityPanel(this);
 		cityPanel.setPreferredSize(new Dimension(500, 500));		
 		
