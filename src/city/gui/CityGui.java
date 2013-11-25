@@ -63,7 +63,9 @@ public class CityGui extends JFrame implements ActionListener {
 	public CityGui() {
 		//this.setResizable(false);
 		cityPanel = new CityPanel(this);
-		cityPanel.setPreferredSize(new Dimension(500, 500));		
+		cityPanel.setPreferredSize(new Dimension(1024, 500));		
+		cityPanel.setMaximumSize(new Dimension(1024, 500));
+		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
 		Timer timer = new Timer(10, this);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
@@ -178,17 +180,24 @@ public class CityGui extends JFrame implements ActionListener {
 		setVisible(true);
 		setSize(1024, 1000);
 
-		getContentPane().setLayout(new BorderLayout());
-
+		getContentPane().setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		cityControls = new CityControls();
+		cityControls.setPreferredSize(new Dimension(500, 500));
+		cityControls.setMaximumSize(new Dimension(500, 500));
+		cityControls.setMinimumSize(new Dimension(500, 500));
 		
 		cardLayout = new CardLayout();
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setPreferredSize(new Dimension(500, 300));
+		buildingPanels.setPreferredSize(new Dimension(500, 500));
+		buildingPanels.setMaximumSize(new Dimension(500, 500));
+		buildingPanels.setMinimumSize(new Dimension(500, 500));
 		buildingPanels.setBackground(Color.yellow);
 
-		cityControls = new CityControls();
 
 		// Create the BuildingPanel for each Building object
 		ArrayList<Building> buildings = cityPanel.getBuildings();
@@ -209,8 +218,26 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
-		getContentPane().add(BorderLayout.NORTH, cityPanel);
-		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
+		//getContentPane().add(BorderLayout.NORTH, cityPanel);
+		//getContentPane().add(BorderLayout.SOUTH, buildingPanels);
+        
+        buildingPanels.setOpaque(true);
+        cityControls.setOpaque(true);
+        cityPanel.setOpaque(true);
+		
+	    c.gridx = 0; c.gridy = 0;
+	    c.gridwidth = 2; c.gridheight = 1;
+	    this.add(cityPanel, c);
+
+	    c.gridx = 0; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(buildingPanels, c);
+
+	    c.gridx = 1; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(cityControls, c);
+	    
+	    this.pack();
 		
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
