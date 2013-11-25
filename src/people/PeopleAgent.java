@@ -606,12 +606,12 @@ public class PeopleAgent extends Agent implements People{
 		}
 		//Pause the Gui
 		personGui.msgGoToRestaurantOne();
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			moving.acquire();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		//Release the Gui from msgDone
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
