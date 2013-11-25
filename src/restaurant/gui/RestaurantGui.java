@@ -11,7 +11,7 @@ import java.awt.event.*;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class RestaurantGui extends JFrame implements ActionListener {
+public class RestaurantGui extends JPanel implements ActionListener {
     /* The GUI has only one frame and two panels within, the control panel 
      * and the animation panel
      */
@@ -234,14 +234,5 @@ public class RestaurantGui extends JFrame implements ActionListener {
             }
         }
     }
-    /**
-     * Main routine to get gui started
-     */
-    public static void main(String[] args) {
-        RestaurantGui gui = new RestaurantGui();
-        gui.setTitle("csci201 Restaurant");
-        gui.setVisible(true);
-        gui.setResizable(false);
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+  
 }
