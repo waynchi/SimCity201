@@ -51,7 +51,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		customerGui = new MarketCustomerGui(this);
 		marketGui.getAnimationPanel().addGui(customerGui);
 		customerGui.setPresent(false);
-		
 	}
 	
 	// messages
