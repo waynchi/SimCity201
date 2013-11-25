@@ -233,99 +233,99 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		
 		Vehicle vehicle;
 		PersonGui person;
-		if ( count == 100) {
-			//Second Row -- First Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-			vehicle.setDestination(570, 60);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
-			person.setDestination(570, 60);
-			people.add(person);
-			
-		}
-		
-		if( count == 200) {
-			//First Row -- Second Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-			vehicle.setDestination(570, 150);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
-			person.setDestination(570, 150);
-			people.add(person);
-		}
-		if( count == 250) {
-			//First Row -- Third Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
-			vehicle.setDestination(570, 200);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
-			person.setDestination(570, 200);
-			people.add(person);
-		}
-
-		if( count == 300) {
-			//Second Row -- First Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-			vehicle.setDestination(770, 60);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
-			person.setDestination(770, 60);
-			people.add(person);
-		}
-		if( count == 350) {
-			//Second Row -- Second Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-			vehicle.setDestination(770, 100);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
-			person.setDestination(770, 100);
-			people.add(person);
-		}
-		if( count == 400) {
-			//Second Row -- Third Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-			vehicle.setDestination(770, 150);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
-			person.setDestination(770, 150);
-			people.add(person);
-		}
-		if( count == 450) {
-			//Second Row -- Fourth Building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-			vehicle.setDestination(770, 200);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
-			person.setDestination(770, 200);
-			people.add(person);
-		}
-		if( count == 500) {
-			//Fourth row -- First building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-			vehicle.setDestination(990, 100);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
-			person.setDestination(990, 100);
-			people.add(person);
-		}
-		if( count == 550) {
-			//Fourth row -- First building
-			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-			vehicle.setDestination(990, 200);
-			vehicles.add(vehicle);
-			
-			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
-			person.setDestination(990, 150);
-			people.add(person);
-		}
+//		if ( count == 100) {
+//			//Second Row -- First Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
+//			vehicle.setDestination(570, 60);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+//			person.setDestination(570, 60);
+//			people.add(person);
+//			
+//		}
+//		
+//		if( count == 200) {
+//			//First Row -- Second Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
+//			vehicle.setDestination(570, 150);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+//			person.setDestination(570, 150);
+//			people.add(person);
+//		}
+//		if( count == 250) {
+//			//First Row -- Third Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
+//			vehicle.setDestination(570, 200);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+//			person.setDestination(570, 200);
+//			people.add(person);
+//		}
+//
+//		if( count == 300) {
+//			//Second Row -- First Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+//			vehicle.setDestination(770, 60);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+//			person.setDestination(770, 60);
+//			people.add(person);
+//		}
+//		if( count == 350) {
+//			//Second Row -- Second Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+//			vehicle.setDestination(770, 100);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+//			person.setDestination(770, 100);
+//			people.add(person);
+//		}
+//		if( count == 400) {
+//			//Second Row -- Third Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+//			vehicle.setDestination(770, 150);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+//			person.setDestination(770, 150);
+//			people.add(person);
+//		}
+//		if( count == 450) {
+//			//Second Row -- Fourth Building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+//			vehicle.setDestination(770, 200);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+//			person.setDestination(770, 200);
+//			people.add(person);
+//		}
+//		if( count == 500) {
+//			//Fourth row -- First building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+//			vehicle.setDestination(990, 100);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+//			person.setDestination(990, 100);
+//			people.add(person);
+//		}
+//		if( count == 550) {
+//			//Fourth row -- First building
+//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+//			vehicle.setDestination(990, 200);
+//			vehicles.add(vehicle);
+//			
+//			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+//			person.setDestination(990, 150);
+//			people.add(person);
+//		}
 		
 //		//Make them all lanes stop
 //		if ( count % 500 == 0 ) {

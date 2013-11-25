@@ -33,22 +33,30 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole = new HostRole();
-	TellerRole BankTellerRole = new TellerRole("Teller 1");
-	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole();
+	HostRole RestaurantHostRole = new HostRole("Restaurant Host");
+	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole("Market Employee");
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
-	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
+	TellerRole BankTellerRole = new TellerRole("Teller 1");
+	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
+
 
 	int time;
 
 	public CityGui() {
+
+		cityPanel = new CityPanel();
+		cityPanel.setPreferredSize(new Dimension(400, 300));
+		cityPanel.setMaximumSize(new Dimension(400, 300));
+		cityPanel.setMinimumSize(new Dimension(400, 300));
+		
+		
 		Timer timer = new Timer(10, this);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui,
 				RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole();
+		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole("Market Employee");
 
 		FileReader input;
 		try {
@@ -77,7 +85,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, "Cook");
 						person.addJob("RestaurantCook", 1000, 2000);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
@@ -94,7 +102,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole();
+						CashierRole RestaurantCashierRole = new CashierRole("Cashier");
 						person.addJob("RestaurantCashier", 1000, 2000);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
@@ -121,10 +129,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 		getContentPane().setLayout(new BorderLayout());
 
-		cityPanel = new CityPanel();
-		cityPanel.setPreferredSize(new Dimension(400, 300));
-		cityPanel.setMaximumSize(new Dimension(400, 300));
-		cityPanel.setMinimumSize(new Dimension(400, 300));
 		
 		cardLayout = new CardLayout();
 
