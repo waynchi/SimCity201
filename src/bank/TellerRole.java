@@ -7,6 +7,8 @@ import bank.interfaces.Teller;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import city.Market;
+import city.Restaurant;
 import market.interfaces.MarketCashier;
 import people.Role;
 import restaurant.interfaces.Cashier;
@@ -34,15 +36,20 @@ public class TellerRole extends Role implements Teller {
 
 	public TellerRole(String name) {
 		super();
-
-		Account rest = new Account("Restaurant 1", accounts.size()+1); //Initializes an account for the restaurant
-		accounts.put(rest.id, rest);
-		rest.funds = 10000;
-		myPerson.Restaurants.get(0).bankAccountID = rest.id;
+	}
+	
+	public void addAccount(Market m) {
 		Account market = new Account("Market 1", accounts.size()+1); //Initializes an account for the restaurant
 		accounts.put(market.id, market);
 		market.funds = 10000;
-		myPerson.Markets.get(0).bankAccountID = market.id;
+		m.bankAccountID = market.id;
+	}
+	
+	public void addAccount(Restaurant r) {
+		Account rest = new Account("Restaurant 1", accounts.size()+1); //Initializes an account for the restaurant
+		accounts.put(rest.id, rest);
+		rest.funds = 10000;
+		r.bankAccountID = rest.id;
 	}
 
 	public String getMaitreDName() {
