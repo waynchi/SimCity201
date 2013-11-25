@@ -44,7 +44,6 @@ public class CashierRole extends Role implements Cashier {
 
 	private Host host;
 	private Teller teller;
-	private String name;
 	
 	private Boolean leaveWork;
 	private Boolean isActive;
@@ -105,9 +104,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public CashierRole(String name) {
+	public CashierRole() {
 		super();
-		this.name = name;
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
