@@ -253,6 +253,7 @@ public class CityGui extends JFrame implements ActionListener {
 		if(time == 4800) {
 			time=0;
 		}
+		repaint();
 
 	}
 }
