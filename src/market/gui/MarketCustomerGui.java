@@ -16,11 +16,10 @@ public class MarketCustomerGui implements Gui{
 	private int xRegister = 380, yRegister = 70;
 	private int xExit = 470, yExit = 70;
 	
-	public MarketCustomerGui(MarketCustomer mc, MarketGui gui){
+	public MarketCustomerGui(MarketCustomer mc){
 		marketCustomer = mc;
-		this.gui = gui;
 	}
-	
+	private boolean isPresent;
 	
 	@Override
 	public void updatePosition() {
@@ -56,7 +55,7 @@ public class MarketCustomerGui implements Gui{
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return true;
+		return isPresent;
 	}
 
 
@@ -78,6 +77,10 @@ public class MarketCustomerGui implements Gui{
 		// TODO Auto-generated method stub
 		xDestination = xExit;
 		yDestination = yExit;
+	}
+	
+	public void setPresent(boolean p) {
+		isPresent = p;
 	}
 
 }

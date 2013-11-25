@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import people.People;
-import people.Role;
 import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
@@ -58,6 +57,24 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+
+	@Override
+	public void msgAtCounter() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAtExit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAtRegister() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
