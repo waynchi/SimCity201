@@ -42,21 +42,24 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 
 		//Create grid of lanes
 		
-		//Horizontal Top Lanes
-		Sidewalk s = new Sidewalk( hozX - 210, hozY + 110 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		//Center Horizontal Top Lanes
+		Sidewalk s = new Sidewalk( hozX - 210, hozY + 130 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		Lane l = new Lane( hozX - 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
 		s = new Sidewalk( hozX - 210, hozY + 80 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX, hozY + 110 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX, hozY + 130 , hozWidth - 150, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
-		s = new Sidewalk( hozX, hozY + 80 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX, hozY + 80 , hozWidth - 150, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
+		//Beginning of main city
+		
+		//Top of city
 		s = new Sidewalk( hozX + 200, hozY - 10 , hozWidth - 10, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX + 210, hozY, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
@@ -109,10 +112,10 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		sidewalks.add(s);
 		
 		//FAR LEFT VERTICAL
-		s = new Sidewalk( hozX + 190, hozY - 10 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 60, hozY - 10 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 120 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 60, hozY + 120 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//SMALL INNER BLOCKS - BOTTOM
@@ -161,36 +164,39 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		//Residential
 		l = new Lane( crossX - 210, crossY - 50, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
+		l = new Lane( crossX - 230, crossY - 50, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
 		//Right sidewalks
 		s = new Sidewalk( hozX - 210, hozY - 40 , sidewalkHeight, 120, 0.5, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		s = new Sidewalk( hozX - 210, hozY + 120 , sidewalkHeight, 140, 0.5, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY + 140 , sidewalkHeight, 120, 0.5, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		//Left sidewalks
-		s = new Sidewalk( hozX - 240, hozY - 40 , sidewalkHeight, 120, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 260, hozY - 40 , sidewalkHeight, 120, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		s = new Sidewalk( hozX - 240, hozY + 80 , sidewalkHeight, 200, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 260, hozY + 80 , sidewalkHeight, 200, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		l = new Lane( crossX - 210, crossY + 110, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
-	
+		l = new Lane( crossX - 230, crossY + 110, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
 		
 		//Start animation for the timer
 		javax.swing.Timer t = new javax.swing.Timer( 25, this );
 		t.start();
 		
-		//Add grid of homes
+		//Add grid of homes on left
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10, "Home " + i );
+				Building home = new Building( i*80+ 70, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10, "Home " + i );
 				buildings.add( home );
 			}
 		}
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20, i*60 + 90, j*40 + 18, "Home " + i );
+				Building home = new Building( i*80+ 70, j*40 + 200, 20, 20, i*60 + 90, j*40 + 18, "Home " + i );
 				buildings.add( home );
 			}
 		}
