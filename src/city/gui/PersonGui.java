@@ -22,11 +22,14 @@ public class PersonGui extends Rectangle2D.Double {
 	Color vehicleColor;
 	People person;
 	
-	public void msgGoToRestaurantOne()
+	public void GoToRestaurantOne()
 	{
-		System.out.println("test1");
 		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
-		System.out.println("test2");
+	}
+	
+	public void GoToHouse()
+	{
+		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
 	}
 	
 	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
@@ -161,4 +164,5 @@ public class PersonGui extends Rectangle2D.Double {
 		}
 	
 	}
+
 }
