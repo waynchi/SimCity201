@@ -90,6 +90,10 @@ public class BankGui extends JPanel implements ActionListener {
     	b.isWaiting = true;
     }
     
+    public void updatePosition() {
+    	animationPanel.updatePosition();
+    }
+    
     /**
      * Main routine to get gui started
 //     */
