@@ -2,6 +2,7 @@ package housing.gui;
 
 import housing.House;
 import housing.HouseType;
+import housing.HousingRepairManRole;
 import housing.interfaces.RepairMan;
 
 import java.awt.Dimension;
@@ -16,7 +17,7 @@ public class RepairManGui implements HGui{
 	public HouseGui targetGui;
 	public HouseGui ref;
 	
-	public enum State {Idle, EnteringHouse, LeavingHouse, Repairing, LeavingApartmentComplex, LeavingShop};
+	public enum State {Idle, EnteringHouse, LeavingHouse, Repairing, LeavingApartmentComplex, LeavingShop, LeavingJob};
 	public enum Location {Outside, Shop, ApartmentComplex, Apartment, Villa};
 
 	public RepairManGui(RepairMan r) {
@@ -75,6 +76,14 @@ public class RepairManGui implements HGui{
 				location = Location.Outside;
 				r.activityDone();
 			}
+			else if (state == State.LeavingJob) {
+				if (location == Location.ApartmentComplex) {
+					ref.h.a.gui.remove(this);
+				}
+				location = Location.Outside;
+				state = State.Idle;
+				((HousingRepairManRole)r).doneLeaving();
+			}
 		}
 	}
 
@@ -97,6 +106,7 @@ public class RepairManGui implements HGui{
 	}
 	
 	public void DoLeaveShop(HouseGui g) {
+		ref = targetGui;
 		targetGui = g;
 		state = State.LeavingShop;
 		goToLocation(gui.entranceCoordinatesInternal);
@@ -135,6 +145,7 @@ public class RepairManGui implements HGui{
 	
 	public void DoLeaveHouse() {
 		state = State.LeavingHouse;
+		ref = targetGui;
 		goToLocation(targetGui.entranceCoordinatesInternal);
 	}
 	
@@ -181,6 +192,19 @@ public class RepairManGui implements HGui{
 		else {
 			state = State.Idle;
 			location = Location.Outside;
+		}
+	}
+	
+	public void DoLeaveJob() {
+		state = State.LeavingJob;
+		if (location == Location.Outside) {
+			((HousingRepairManRole)r).doneLeaving();
+		}
+		else if (location == Location.ApartmentComplex) {
+			goToLocation(ref.h.a.gui.entranceCoordinates);
+		}
+		else if (location == Location.Shop) {
+			goToLocation(gui.entranceCoordinatesInternal);
 		}
 	}
 }
