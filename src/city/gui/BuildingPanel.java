@@ -1,7 +1,6 @@
 package city.gui;
 import javax.swing.*;
 
-import restaurant.gui.AnimationPanel;
 import restaurant.gui.RestaurantGui;
 
 import java.awt.*;
@@ -22,23 +21,9 @@ public class BuildingPanel extends JPanel {
 		setMaximumSize( new Dimension( 500, 250 ) );
 		setPreferredSize( new Dimension( 500, 250 ) );
 		
-		RestaurantGui restaurantGui = myCity.restaurantGui;
-		restaurantGui.setPreferredSize(new Dimension(500,500));
-		System.out.println(restaurantGui);
-		restaurantGui.setVisible(true);
-        //JLabel j = new JLabel( myName );
-        //add( animationPanel );
-        
-        JPanel panel = new JPanel();
-        panel.add(restaurantGui);
-        panel.setPreferredSize(new Dimension(500,500));
-
-        add(panel);
-        
-        
-      
-        //add(j);
-        
+		
+        JLabel j = new JLabel( myName );
+        add( j );
 		
 	}
 	

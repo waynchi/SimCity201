@@ -16,11 +16,10 @@ import java.util.List;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class BankGui extends JFrame implements ActionListener {
+public class BankGui extends JPanel implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
-	JFrame animationFrame = new JFrame("Bank Animation");
 	public static AnimationPanel animationPanel = new AnimationPanel();
     
     public static List<BankCustomerGui> customers = new ArrayList<BankCustomerGui>();
@@ -86,13 +85,13 @@ public class BankGui extends JFrame implements ActionListener {
     
     /**
      * Main routine to get gui started
-     */
-    public static void main(String[] args) {
-        BankGui gui = new BankGui();
-    	
-        gui.setTitle("SimCity Bank");
-        gui.setVisible(true);
-        gui.setResizable(false);
-        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+//     */
+//    public static void main(String[] args) {
+//        BankGui gui = new BankGui();
+//    	
+//        gui.setTitle("SimCity Bank");
+//        gui.setVisible(true);
+//        gui.setResizable(false);
+//        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
 }

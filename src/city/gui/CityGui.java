@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import bank.TellerRole;
+import bank.gui.BankGui;
 import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
@@ -25,6 +26,7 @@ import java.util.*;
 import java.util.List;
 
 public class CityGui extends JFrame implements ActionListener {
+	BankGui bankGui = new BankGui();
 	CityPanel cityPanel;
 	JPanel buildingPanels;
 	CardLayout cardLayout;
@@ -37,7 +39,7 @@ public class CityGui extends JFrame implements ActionListener {
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole();
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
-	TellerRole BankTellerRole = new TellerRole();
+	TellerRole BankTellerRole = new TellerRole(bankGui);
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	
 	
@@ -151,8 +153,9 @@ public class CityGui extends JFrame implements ActionListener {
             Building b = buildings.get(i);
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
-            buildingPanels.add(bp, "" + i);
 		}
+        buildingPanels.add(bankGui, "" + 1);
+
 		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
