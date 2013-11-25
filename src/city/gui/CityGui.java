@@ -5,6 +5,7 @@ import javax.swing.Timer;
 import bank.TellerRole;
 import bank.gui.BankGui;
 import market.MarketEmployeeRole;
+import market.gui.MarketGui;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -34,9 +35,10 @@ public class CityGui extends JFrame implements ActionListener {
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
+	MarketGui marketGui = new MarketGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole();
-	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole();
+	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole(bankGui);
@@ -60,7 +62,7 @@ public class CityGui extends JFrame implements ActionListener {
 				RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole();
+		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole(marketGui);
 
 		FileReader input;
 		try {
