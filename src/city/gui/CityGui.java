@@ -98,6 +98,8 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					HousingResidentRole residentRole = new HousingResidentRole();
+					residentRole.testModeOn();
+					residentRole.isActive = true;
 					person.addRole(residentRole, "Resident");
 					
 					
@@ -235,6 +237,7 @@ public class CityGui extends JFrame implements ActionListener {
 		if(time == 4800) {
 			time=0;
 		}
+		repaint();
 
 	}
 }

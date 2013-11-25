@@ -1,12 +1,8 @@
 package restaurant.gui;
 //this is the main class for gui stuff
-import restaurant.BaseWaiterRole;
-import restaurant.RestaurantCustomerRole;
+
 
 import javax.swing.*;
-
-import bank.gui.AnimationPanel;
-import bank.gui.BankCustomerGui;
 
 import java.awt.*;
 import java.awt.event.*;
