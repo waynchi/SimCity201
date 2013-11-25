@@ -9,6 +9,7 @@ import city.Bank;
 import city.Market;
 import city.Restaurant;
 import city.gui.CityGui;
+import city.gui.PersonGui;
 import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
@@ -26,7 +27,8 @@ public class PeopleAgent extends Agent implements People{
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
-	CityGui cityGui;
+	PersonGui personGui;
+	
 	public EventLog log = new EventLog();
 
 	
@@ -100,9 +102,9 @@ public class PeopleAgent extends Agent implements People{
 		return name;
 	}
 	
-	public void addCityGui(CityGui gui)
+	public void setPersonGui(PersonGui gui)
 	{
-		cityGui = gui;
+		personGui = gui;
 	}
 	
 	//public void addPeopleGui()
