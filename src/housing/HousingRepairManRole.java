@@ -86,14 +86,20 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToHouseInDifferentPlaceToFixFromVilla(MyHouse mh) {
-		gui.DoGoToHouseInDifferentPlaceToFixFromVilla(mh.h.gui);
-		location = Location.OutsideFixing;
-		myPerson.msgDone("RepairManFixing");
-	}
+//	public void goToHouseInDifferentPlaceToFixFromVilla(MyHouse mh) {
+//		gui.DoGoToHouseInDifferentPlaceToFixFromVilla(mh.h.gui);
+//		location = Location.OutsideFixing;
+//		myPerson.msgDone("RepairManFixing");
+//	}
+//	
+//	public void goToVillaFromVilla(MyHouse mh) {
+//		gui.DoGoToVillaFromVilla(mh.h.gui);
+//		location = Location.OutsideFixing;
+//		myPerson.msgDone("RepairManFixing");
+//	}
 	
-	public void goToVillaFromVilla(MyHouse mh) {
-		gui.DoGoToVillaFromVilla(mh.h.gui);
+	public void goToHouseFromVilla(MyHouse mh) {
+		gui.DoGoToHouseFromVilla(mh.h.gui);
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
@@ -148,6 +154,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void doneLeaving() {
 		location = Location.Nowhere;
 		isActive = false;
+		needToLeave = false;
 		activity.release();
 		myPerson.msgDone("RepairManRole");
 	}
@@ -203,14 +210,16 @@ public class HousingRepairManRole extends Role implements RepairMan {
 					}
 				}
 				else {
-					if (currentHouse.h.type == HouseType.Apartment) {
-						goToHouseInDifferentPlaceToFixFromVilla(currentHouse);
-						return true;
-					}
-					else {
-						goToVillaFromVilla(currentHouse);
-						return true;
-					}
+//					if (currentHouse.h.type == HouseType.Apartment) {
+//						goToHouseInDifferentPlaceToFixFromVilla(currentHouse);
+//						return true;
+//					}
+//					else {
+//						goToVillaFromVilla(currentHouse);
+//						return true;
+//					}
+					goToHouseFromVilla(currentHouse);
+					return true;
 				}
 			}
 		}

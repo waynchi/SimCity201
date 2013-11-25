@@ -175,11 +175,15 @@ public class RepairManGui implements HGui{
 		this.targetGui = g;
 	}
 	
-	public void DoGoToHouseInDifferentPlaceToFixFromVilla(HouseGui g) {
-		targetGui = g;
-	}
+//	public void DoGoToHouseInDifferentPlaceToFixFromVilla(HouseGui g) {
+//		targetGui = g;
+//	}
+//	
+//	public void DoGoToVillaFromVilla(HouseGui g) {
+//		targetGui = g;
+//	}
 	
-	public void DoGoToVillaFromVilla(HouseGui g) {
+	public void DoGoToHouseFromVilla(HouseGui g) {
 		targetGui = g;
 	}
 	
