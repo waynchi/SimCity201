@@ -271,6 +271,7 @@ public class RenterTest {
 		
 		r.setOwner(o);
 		((Resident)r).setHouse(h);
+		((HousingRenterRole)r).testModeOn();
 		
 		o.addHouse(h, r);
 	}

@@ -27,7 +27,6 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		rentDue = false;
 		timesRentDue = 0;
 		rentTimer = new Timer();
-//		startRentTimer();
 	}
 
 	//-----------------------------------------------------------//
@@ -40,7 +39,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		if (timesRentDue == 0)
 			rentDue = false;
 		money -= rent;
-		if (gui != null) {
+		if (testMode == false) {
 			gui.DoUseCellPhone();
 			try {
 				activity.acquire();
@@ -53,7 +52,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		owner.hereIsPenalty(house, amount);
 		money -= amount;
 		penalties.remove(p);
-		if (gui != null) {
+		if (testMode == false) {
 			gui.DoUseCellPhone();
 			try {
 				activity.acquire();
