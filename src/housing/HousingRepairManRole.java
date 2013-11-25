@@ -16,11 +16,9 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	// Data
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
-	private Timer salaryTimer;
 	private double salary;
 	private double money;
 	private double homeMoney;
-	private int salaryTime;
 	private MyHouse currentHouse = null;
 
 	public HousingRepairManRole() {
@@ -50,9 +48,10 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	// Messages
 
-	public void needHelp(House h) {
+	public void needHelp(House h, double money) {
 		MyHouse mh = find(h);
 		mh.s = HouseState.NeedsRepair;
+		this.money += money;
 		stateChanged();
 	}
 

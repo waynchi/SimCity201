@@ -4,6 +4,13 @@ import housing.Item;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class ItemGui implements HGui{
 	public Item i;
@@ -11,6 +18,7 @@ public class ItemGui implements HGui{
 	Color c;
 	boolean isBroken = false;
 	Shape shape;
+	private String imagePath = "";
 	
 	enum Shape {Circle, Rectangle, RoundRectangle};
 
@@ -44,6 +52,15 @@ public class ItemGui implements HGui{
 		this.c = c;
 		shape = Shape.RoundRectangle;
 	}
+	
+	public ItemGui(Item i, int x, int y, int width, int height, String imagePath) {
+		this.i = i;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.imagePath = imagePath;
+	}
 
 	@Override
 	public void updatePosition() {
@@ -54,7 +71,16 @@ public class ItemGui implements HGui{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(c);
-		if (shape == Shape.Rectangle)
+		if (!this.imagePath.equals("")) {
+			Image i = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+			try {
+				i = ImageIO.read(new File(imagePath));
+			} catch (IOException e) {
+				System.out.println("Nope.");
+			}
+			g.drawImage(i, x, y, null);
+		}
+		else if (shape == Shape.Rectangle)
 			g.fill3DRect(x, y, width, height, true);
 		else if (shape == Shape.Circle)
 			g.fillOval(x, y, d, d);
@@ -70,19 +96,6 @@ public class ItemGui implements HGui{
 				g.drawLine(x, y, x + d, y + d);
 				g.drawLine(x + d, y, x, y + d);
 			}
-		}
-		if (this.i.name.equals("CookingGrill")) {
-			g.setColor(Color.BLACK);
-			g.drawLine(x, y + (height / 2), x + width, y + (height / 2));
-			g.drawLine(x + (width / 2), y, x + (width / 2), y + height);
-			g.drawOval(x + 4, y + 7, 10, 10);
-			g.drawOval(x + 25, y + 7, 10, 10);
-			g.drawOval(x + 4, y + 32, 10, 10);
-			g.drawOval(x + 25, y + 32, 10, 10);
-		}
-		if (this.i.name.equals("Bed")) {
-			g.setColor(Color.BLACK);
-			g.drawRoundRect(x + 10, y + 15, 20, 30, 10, 15);
 		}
 		
 		if (this.i.name.equals("FussballTable")) {

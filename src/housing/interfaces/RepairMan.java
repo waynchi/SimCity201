@@ -7,9 +7,7 @@ import housing.House;
 public interface RepairMan {
 	// Messages
 
-	public void needHelp(House h);
-//	public void thingsAreBroken(House h, List<Item> brokenItems);
-//	public void thankYou(House h);
+	public void needHelp(House h, double money);
 	public void salaryArrives();
 
 	//-----------------------------------------------------------//
