@@ -24,6 +24,7 @@ public class HostRole extends Role implements Host{
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	private boolean isActive;
 	private boolean leaveWork;
+	private String name;
 
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	
@@ -98,8 +99,9 @@ public class HostRole extends Role implements Host{
 	}
 	
 	
-	public HostRole() {
+	public HostRole(String name) {
 		super();
+		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
 		for (int ix = 1; ix <= NTABLES; ix++) {
