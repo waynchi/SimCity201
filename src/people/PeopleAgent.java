@@ -321,7 +321,7 @@ public class PeopleAgent extends Agent implements People{
 					print("Going To Restaurant To Eat");
 					stateChanged();
 				}
-				else if(location != AgentLocation.Home)
+				else
 				{
 					event = AgentEvent.GoingHome;
 					print("Going Home To Eat");
@@ -433,12 +433,16 @@ public class PeopleAgent extends Agent implements People{
 			if(hunger == HungerState.Hungry)
 			{
 			state = AgentState.EatingAtHome;
+			hunger = HungerState.Eating;
 			}
 			else
 			{
-			//state = AgentState.Idle;
+			state = AgentState.Idle;
 			}
+			if(location != AgentLocation.Home)
+			{
 			GoToHouse();
+			}
 			Person = true;
 		}
 		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
@@ -533,12 +537,15 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else*/
 				//GUI WALK
+				if(!testmode)
+				{
 				personGui.GoToRestaurantOne();
 				try {
 					moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+				}
 				location = AgentLocation.Restaurant;
 				print("Walking to Restaurant");
 				hunger = HungerState.Eating;
@@ -561,9 +568,8 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToHouse()
 	{
 		location = AgentLocation.Road;
-		if(testmode)
+		if(!testmode)
 		{
-		hunger = HungerState.Eating;
 		personGui.GoToHouse();
 		try {
 			moving.acquire();
@@ -590,7 +596,7 @@ public class PeopleAgent extends Agent implements People{
 	public void GoBuyCar()
 	{
 		location = AgentLocation.Road;
-		if(testmode)
+		if(!testmode)
 		{
 		personGui.GoToMarket();
 		try {
@@ -632,7 +638,7 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToBank()
 	{
 		location = AgentLocation.Road;
-		if(testmode)
+		if(!testmode)
 		{
 		personGui.goToBank();
 		try {
@@ -684,7 +690,7 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantNormalWaiter"))
 				{	
 					location = AgentLocation.Road;
-					if(testmode)
+					if(!testmode)
 					{
 					personGui.GoToRestaurantOne();
 					try {
@@ -708,7 +714,7 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantHost"))
 				{	
 					location = AgentLocation.Road;
-					if(testmode)
+					if(!testmode)
 					{
 					personGui.GoToRestaurantOne();
 					try {
@@ -731,7 +737,7 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantCook"))
 				{			
 					location = AgentLocation.Road;
-					if(testmode)
+					if(!testmode)
 					{
 					personGui.GoToRestaurantOne();
 					try {
@@ -754,7 +760,7 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("RestaurantCashier"))
 				{	
 					location = AgentLocation.Road;
-					if(testmode)
+					if(!testmode)
 					{
 					personGui.GoToRestaurantOne();
 					try {

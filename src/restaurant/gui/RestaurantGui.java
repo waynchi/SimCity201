@@ -116,7 +116,7 @@ public class RestaurantGui extends JPanel implements ActionListener {
          controlPanel.add(listPanel);
          controlPanel.add(infoPanel);
          
-         add(controlPanel);
+         //add(controlPanel);
          add(animationPanel);
          
      }

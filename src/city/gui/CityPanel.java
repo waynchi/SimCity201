@@ -237,6 +237,8 @@ public class CityPanel extends JPanel implements MouseListener {
 	public void paintComponent( Graphics g ) {
 		Graphics2D g2 = (Graphics2D)g;
 		
+        g2.setColor(getBackground());
+        g2.fillRect(0, 0, 500, 500);
 
 		for ( int i=0; i<sidewalks.size(); i++ ) {
 			Sidewalk s = sidewalks.get(i);

@@ -7,11 +7,11 @@ import java.awt.event.*;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class MarketGui extends JFrame implements ActionListener {
+public class MarketGui extends JPanel implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
-	JFrame animationFrame = new JFrame("Market Animation");
+	//JFrame animationFrame = new JFrame("Market Animation");
 	AnimationPanel animationPanel = new AnimationPanel();
 	
     /* restPanel holds 2 panels
@@ -31,10 +31,11 @@ public class MarketGui extends JFrame implements ActionListener {
         int WINDOWX = 600;
         int WINDOWY = 400;
 
-        animationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        animationFrame.setBounds(100, 50 , WINDOWX, WINDOWY);
-        animationFrame.setVisible(true);
-    	animationFrame.add(animationPanel); 
+        //animationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //animationFrame.setBounds(100, 50 , WINDOWX, WINDOWY);
+        //animationFrame.setVisible(true);
+    	//animationFrame.add(animationPanel); 
+        this.add(animationPanel);
     	
   
     }
@@ -93,13 +94,13 @@ public class MarketGui extends JFrame implements ActionListener {
     /**
      * Main routine to get gui started
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         MarketGui gui = new MarketGui();
         gui.setTitle("simCity201 Market");
         gui.setVisible(true);
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+    }*/
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
