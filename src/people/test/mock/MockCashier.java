@@ -1,5 +1,8 @@
 package people.test.mock;
 
+import java.util.Map;
+
+import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
 import people.Role;
 import restaurant.interfaces.Cashier;
@@ -30,13 +33,44 @@ public class MockCashier extends Role implements Cashier {
 	}
 
 	@Override
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price) {
+	public void msgHereIsChange(double change) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgHereIsChange(double change) {
+	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price,
+			Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGiveLoan(double balance, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgWithdrawSuccessful(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
 		// TODO Auto-generated method stub
 		
 	}

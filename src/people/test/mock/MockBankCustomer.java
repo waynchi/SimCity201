@@ -12,18 +12,6 @@ public class MockBankCustomer extends Role implements BankCustomer{
 	}
 
 	@Override
-	public void needMoney(double money) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void depositMoney(double money) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void msgReadyToHelp(Teller t) {
 		// TODO Auto-generated method stub
 		
@@ -49,6 +37,12 @@ public class MockBankCustomer extends Role implements BankCustomer{
 
 	@Override
 	public void msgDepositSuccessful(double balance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAccountAndLoan(int accountID, double balance, double money) {
 		// TODO Auto-generated method stub
 		
 	}
