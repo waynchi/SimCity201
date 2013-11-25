@@ -1,6 +1,6 @@
-1,RestaurantNormalWaiter,John
-1,RestaurantCook,James
-1,RestaurantHost,Billy
-1,RestaurantCashier,Todd
-1,Teller,teller
-1,Nobody,Customer
+1,RestaurantNormalWaiter,John,1100,1900
+1,RestaurantCook,James,1100,1900
+1,RestaurantHost,Billy,1000,1930
+1,RestaurantCashier,Todd,1100,1900
+1,Teller,teller,1100,1900
+1,Nobody,Customer,5000,50000

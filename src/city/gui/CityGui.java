@@ -68,7 +68,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input;
 		try {
-			input = new FileReader("src\\config.txt");
+			input = new FileReader("config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -77,8 +77,10 @@ public class CityGui extends JFrame implements ActionListener {
 			Iterator<String> configIteration = configParams.iterator();
 			while (configIteration.hasNext()) {
 				String amount = configIteration.next();
-				String role = configIteration.next();
+				String job = configIteration.next();
 				String name = configIteration.next();
+				int start = Integer.parseInt(configIteration.next());
+				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
 					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
 					person.setCityGui(this);
@@ -93,36 +95,40 @@ public class CityGui extends JFrame implements ActionListener {
 					bankCustomerRole.setPerson(person);
 					person.startThread();
 					
-					if (role.equals("RestaurantNormalWaiter")) {
+					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
-						person.addJob("RestaurantNormalWaiter", 1000, 2000);
+						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
-					if (role.equals("RestaurantCook")) {
+					if (job.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui);
-						person.addJob("RestaurantCook", 1000, 2000);
+						person.addJob("RestaurantCook", start, end);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
 					}
-					if (role.equals("RestaurantHost")) {
-						person.addJob("RestaurantHost", 900, 2000);
+					if (job.equals("RestaurantHost")) {
+						person.addJob("RestaurantHost", start, end);
 						person.addRole(RestaurantHostRole, "RestaurantHost");
 						RestaurantHostRole.setPerson(person);
 					}
-					if (role.equals("RestaurantCashier")) {
+					if (job.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole();
-						person.addJob("RestaurantCashier", 1000, 2000);
+						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
 					}
-					if (role.equals("Teller"))
-					{
-						person.addJob("Teller", 1000, 2000);
+					if (job.equals("Teller")) {
+						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
 						BankTellerRole.setPerson(person);			
+					}
+					if(job.equals("Nobody")) {
+						person.addJob("MarketEmployee", start, end);
+						person.addRole(MarketEmployeeRole,"MarketEmployee");
+						MarketEmployeeRole.setPerson(person);
 					}
 					people.add(person);
 				}
