@@ -70,7 +70,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input;
 		try {
-			input = new FileReader("config.txt");
+			input = new FileReader("src\\config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -214,7 +214,7 @@ public class CityGui extends JFrame implements ActionListener {
 		if(time == 12000) {
 			time=0;
 		}
-		repaint();
+		//repaint();
 
 	}
 }
