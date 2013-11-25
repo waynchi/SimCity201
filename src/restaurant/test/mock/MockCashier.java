@@ -6,6 +6,7 @@ import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
 public class MockCashier extends Mock implements Cashier {
@@ -24,7 +25,7 @@ public class MockCashier extends Mock implements Cashier {
 	public void msgPayMyCheck (Customer c, Double amount){
 		log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName()));
 	}
-
+	
 	@Override
 	public String getName() {
 		return name;
@@ -43,7 +44,7 @@ public class MockCashier extends Mock implements Cashier {
 	}
 
 	@Override
-	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -68,6 +69,11 @@ public class MockCashier extends Mock implements Cashier {
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setHost(Host host) {
 		// TODO Auto-generated method stub
 		
 	}

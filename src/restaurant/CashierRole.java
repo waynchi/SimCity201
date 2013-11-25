@@ -170,7 +170,7 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
 		for (MarketBill mb : marketBills) {
 			if (mb.itemsOrdered == marketOrder) {
 				mb.itemsReceived = true;
