@@ -243,7 +243,7 @@ public class TellerRole extends Role implements Teller {
 		currentCustomer = null;
 	}
 	private void Leave() {
-		//DoLeave
+		gui.DoExitRestaurant();
 		isActive = false;
 		LeavePost = false;
 		myPerson.msgDone("TellerRole");

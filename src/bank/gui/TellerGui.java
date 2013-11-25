@@ -75,14 +75,10 @@ public class TellerGui implements Gui{
 	}
 
 	public void DoExitRestaurant() {
-		xDestination = xFinal;
-		yDestination = yFinal;
-		command = Command.LeaveRestaurant;
+		xDestination = 520;
+		yDestination = 90;
 	}
 	
-	public void DoGoToTeller() {
-		
-	}
 	
     public int getXPos() {
         return xPos;
