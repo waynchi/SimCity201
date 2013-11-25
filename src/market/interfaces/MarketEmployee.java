@@ -19,5 +19,9 @@ public interface MarketEmployee {
 
 	public abstract void setCashier(MarketCashier marketCashier);
 
+	public abstract void msgAtCabinet();
+
+	public abstract void msgAtCounter();
+
 
 }

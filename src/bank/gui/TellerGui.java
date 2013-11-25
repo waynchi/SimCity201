@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bank.BankCustomerRole;
+import bank.TellerRole;
 
-public class BankCustomerGui implements Gui{
+public class TellerGui implements Gui{
 
-	private BankCustomerRole agent = null;
+	private TellerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
-	boolean isWaiting;
+	private boolean isAtDesk;
 	
 
 	//private HostAgent host;
-	public BankGui gui;
+	BankGui gui;
     private int xTable, yTable;
     private int xFinal, yFinal;
 	private int xPos, yPos;
@@ -26,14 +27,16 @@ public class BankCustomerGui implements Gui{
 	
 	static final int CUST_SIZE = 20;
 
-	public BankCustomerGui(BankCustomerRole c){ //HostAgent m) {
+	public TellerGui(TellerRole c){ //HostAgent m) {
 		agent = c;
-		xPos = -20;
-		yPos = 125;
-		isWaiting = false;
-		xDestination = -20;
-		yDestination = 125;
+		this.custNum = custNum;
+		xPos = 520;
+		yPos = 90;
+		isAtDesk = true;
+		xDestination = 312;
+		yDestination = 90;
 		setPresent(true);
+		
 	}
 
 	public void updatePosition() {
@@ -47,9 +50,9 @@ public class BankCustomerGui implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 
-		if (isWaiting) {
-			xDestination = 200 - (CUST_SIZE + 10)*custNum;
-			yDestination = 125;
+		if (isAtDesk) {
+			xDestination = 312;
+			yDestination = 90;
 		}
 	}
 
@@ -87,9 +90,5 @@ public class BankCustomerGui implements Gui{
 
     public int getYPos() {
         return yPos;
-    }
-    
-    public void setCust(int num) {
-    	custNum = num;
     }
 }

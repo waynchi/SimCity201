@@ -14,6 +14,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
+    
+    private ImageIcon bank_divider = new ImageIcon("res/bank/bank_divider.png");
+    private ImageIcon floor = new ImageIcon("res/bank/floortile.png");
 
     private List<Gui> guis = new ArrayList<Gui>();
 
@@ -38,8 +41,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
-        //Here are the tables
-        g2.setColor(Color.ORANGE);
+        g2.drawImage(floor.getImage(), 0, 0, 500, 250, null);
+        g2.drawImage(bank_divider.getImage(), 300, 0, 12, 250, null);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -55,6 +58,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
     }
 
     public void addGui(BankCustomerGui gui) {
+        guis.add(gui);
+    }
+    
+    public void addGui(TellerGui gui) {
         guis.add(gui);
     }
 

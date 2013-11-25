@@ -3,6 +3,7 @@ package bank.gui;
 import javax.swing.*;
 
 import bank.BankCustomerRole;
+import bank.TellerRole;
 import agent.Agent;
 
 import java.awt.*;
@@ -23,14 +24,16 @@ public class BankGui extends JFrame implements ActionListener {
 	public static AnimationPanel animationPanel = new AnimationPanel();
     
     public static List<BankCustomerGui> customers = new ArrayList<BankCustomerGui>();
+    
+    public static TellerGui teller;
 
     /**
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
     public BankGui() {
-        int WINDOWX = 450;
-        int WINDOWY = 450;
+        int WINDOWX = 500;
+        int WINDOWY = 250;
 
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
         animationPanel.setPreferredSize(animationDim);
@@ -46,13 +49,6 @@ public class BankGui extends JFrame implements ActionListener {
         
     }
     
-    public void addPerson(String type, BankCustomerRole c) {
-
-    	BankCustomerGui g = new BankCustomerGui(c, customers.size());
-    	animationPanel.addGui(g);
-    	c.setGui(g);
-    	customers.add(g);
-    }
     /**
      * Action listener method that reacts to the checkbox being clicked;
      * If it's the customer's checkbox, it will make him hungry
@@ -68,23 +64,31 @@ public class BankGui extends JFrame implements ActionListener {
      * @param c reference to the customer
      */
     
+    public BankCustomerGui addPerson(BankCustomerRole b) {
+    	BankCustomerGui g = new BankCustomerGui(b);
+    	animationPanel.addGui(g);
+    	b.setGui(g);
+    	return g;
+    }
+    
+    public TellerGui addPerson(TellerRole t) {
+     	TellerGui g2 = new TellerGui(t);
+     	animationPanel.addGui(g2);
+     	teller = g2;
+     	return g2;
+    }
+    
+    public void gotoLine(BankCustomerGui b) {
+    	b.setCust(customers.size());
+    	customers.add(b);
+    	b.isWaiting = true;
+    }
     
     /**
      * Main routine to get gui started
      */
     public static void main(String[] args) {
         BankGui gui = new BankGui();
-        BankCustomerRole b = new BankCustomerRole("bob");
-    	BankCustomerGui g = new BankCustomerGui(b, customers.size());
-    	animationPanel.addGui(g);
-    	b.setGui(g);
-    	customers.add(g);
-    	
-        BankCustomerRole b1 = new BankCustomerRole("bob1");
-    	BankCustomerGui g1 = new BankCustomerGui(b1, customers.size());
-    	animationPanel.addGui(g1);
-    	b1.setGui(g1);
-    	customers.add(g1);
     	
         gui.setTitle("SimCity Bank");
         gui.setVisible(true);

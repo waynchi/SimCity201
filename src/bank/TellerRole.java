@@ -1,6 +1,9 @@
 package bank;
 
 import agent.Agent;
+import bank.gui.BankCustomerGui;
+import bank.gui.BankGui;
+import bank.gui.TellerGui;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 
@@ -33,9 +36,15 @@ public class TellerRole extends Role implements Teller {
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	
 	Boolean LeavePost = false;
+	
+	private BankGui bgui;
+	
+	private TellerGui gui;
 
-	public TellerRole() {
+	public TellerRole(BankGui b) {
 		super();
+		this.bgui = b;
+		b.addPerson(this);
 	}
 	
 	public void addAccount(Market m) {
@@ -67,31 +76,38 @@ public class TellerRole extends Role implements Teller {
 	// Messages
 	
 	public void msgIsActive(){
+		print("Received msgIsActive");
 		isActive = true;
+		bgui.addPerson(this);
 		stateChanged();
 	}
 	
 	public void msgIsInactive(){
+		print("Received msgIsInactive");
 		LeavePost = true;
 		stateChanged();
 	}
 	
 	public void msgHere(BankCustomer cust, String name) {
+		print("New customer. Added him to queue");
 		waitingCustomers.add(new myBankCustomer(cust, name, "customer"));
 		stateChanged();
 	}
 	
 	public void msgNeedHelp(Cashier cashier, String name) {
+		print("Restaurant cashier called. Added him to queue");
 		waitingCustomers.add(new myBankCustomer(cashier, name, "cashier"));
 		stateChanged();
 	}
 	
 	public void msgNeedHelp(MarketCashier mcashier, String name) {
+		print("Market cashier called. Added him to queue");
 		waitingCustomers.add(new myBankCustomer(mcashier, name, "mcashier"));
 		stateChanged();
 	}
 	
 	public void msgWithdraw(int accountID, double moneyNeeded) {
+		print("Current customer has account and wants to withdraw");
 		currentCustomer.account = accounts.get(accountID);
 		currentCustomer.withdrawAmount = moneyNeeded;
 		currentCustomer.state = CustomerState.withdraw;
@@ -99,12 +115,14 @@ public class TellerRole extends Role implements Teller {
 	}
 	
 	public void msgWithdraw(double moneyNeeded) {
+		print("Current customer has no account and wants to withdraw. Customer must take a loan");
 		currentCustomer.withdrawAmount = moneyNeeded;
 		currentCustomer.state = CustomerState.newAccountLoan;
 		stateChanged();
 	}
 	
 	public void msgDeposit(int accountID, double moneyGiven) {
+		print("Current customer has account and wants to deposit");
 		currentCustomer.account = accounts.get(accountID);
 		currentCustomer.depositAmount = moneyGiven;
 		currentCustomer.state = CustomerState.deposit;
@@ -112,12 +130,14 @@ public class TellerRole extends Role implements Teller {
 	}
 	
 	public void msgDeposit(double moneyGiven) {
+		print("Current customer has no account and wants to deposit");
 		currentCustomer.depositAmount = moneyGiven;
 		currentCustomer.state = CustomerState.newAccount;
 		stateChanged();
 	}
 	
 	public void msgDoneAndLeaving() {
+		print("Current customer is finished and has left");
 		currentCustomer.state = CustomerState.done;
 		stateChanged();
 	}
@@ -241,6 +261,10 @@ public class TellerRole extends Role implements Teller {
 			this.id = id;
 			this.customerName = name;
 		}
+	}
+	
+	public void setGui(TellerGui g) {
+		gui = g;
 	}
 	
 	private class myBankCustomer {
