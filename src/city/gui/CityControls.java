@@ -30,7 +30,10 @@ public class CityControls extends JPanel implements ActionListener {
 		tabbedPane.addTab("Tab1", makePanel("People"));
 		tabbedPane.addTab("TraceLog", makePanel("Other"));
 
+		tabbedPane.setPreferredSize(new Dimension(500, 268));
+		
 		this.add(tabbedPane);
+		this.setSize(new Dimension(500, 268));
 		
 	}
 	
@@ -70,7 +73,7 @@ public class CityControls extends JPanel implements ActionListener {
 			
 			panel.add(tracePanel, BorderLayout.CENTER);
 			panel.add(controlPanel, BorderLayout.EAST);
-			panel.setPreferredSize(new Dimension(500, 268));
+			panel.setPreferredSize(new Dimension(800, 400));
 			JScrollPane pane = new JScrollPane(panel);
 			pane.setPreferredSize(new Dimension(500, 268));
 			JPanel panel2 = new JPanel();

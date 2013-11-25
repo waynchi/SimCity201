@@ -53,9 +53,6 @@ public class CityGui extends JFrame implements ActionListener {
 	TellerRole BankTellerRole = new TellerRole(bankGui);
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
-	
-	
-	
 
 
 	public int time;
