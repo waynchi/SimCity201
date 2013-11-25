@@ -2,10 +2,10 @@ package market;
 
 import java.awt.Dimension;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import market.gui.AnimationPanel;
 import market.gui.MarketCustomerGui;
 import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
@@ -13,7 +13,6 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import people.People;
 import people.Role;
-import restaurant.gui.CustomerGui;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
@@ -116,7 +115,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// scheduler
 	public boolean pickAndExecuteAnAction(){
 		
-	
+		if (state == marketCustomerState.IN_MARKET) {
+			orderItem();
+			return true;
+		}
 		
 		if (state == marketCustomerState.MADE_ORDER && event == marketCustomerEvent.RECEIVED_ORDER) {
 			state = marketCustomerState.WAITING_FOR_CHECK;
@@ -144,12 +146,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			done();
 			return true;
 		}
-		
-		if (state == marketCustomerState.IN_MARKET) {
-			orderItem();
-			return true;
-		}
-		
+	
 		return false;
 	}
 
@@ -157,6 +154,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private void orderItem() {
 		log.add(new LoggedEvent("in action order item"));
 		if (!inTest){
+			customerGui.DoLineUp();
 		customerGui.DoGoToMarketEmployee();
 		try {
 			atCounter.acquire();
@@ -228,5 +226,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public String getEvent() {
 		return event.toString();
+	}
+	
+	public AnimationPanel getAnimationPanel () {
+		return marketGui.getAnimationPanel();
 	}
 }

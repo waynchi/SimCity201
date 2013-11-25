@@ -77,9 +77,6 @@ public class PeopleTest extends TestCase
 		{
 			p.setTest();
 		}
-
-		restPanel = new RestaurantPanel();
-		theMonitor = restPanel.theMonitor;
 		
 		BankPeople = new ArrayList<PeopleAgent>();
 		teller = new PeopleAgent("teller", 100, false);
