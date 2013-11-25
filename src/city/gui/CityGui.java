@@ -83,7 +83,7 @@ public class CityGui extends JFrame implements ActionListener {
 					cityPanel.people.add(personGui);
 					person.startThread();
 					if (role.equals("RestaurantNormalWaiter")) {
-						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole();
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", 1000, 2000);
@@ -91,7 +91,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui);
 						person.addJob("RestaurantCook", 1000, 2000);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
@@ -102,7 +102,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCustomer")) {
-						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole();
+						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
 						person.addJob("RestaurantCustomer", 1000, 2000);
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 						RestaurantCustomerRole.setPerson(person);
