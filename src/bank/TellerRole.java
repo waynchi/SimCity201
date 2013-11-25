@@ -44,7 +44,6 @@ public class TellerRole extends Role implements Teller {
 	public TellerRole(BankGui b) {
 		super();
 		this.bgui = b;
-		b.addPerson(this);
 	}
 	
 	public void addAccount(Market m) {
