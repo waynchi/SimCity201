@@ -29,6 +29,9 @@ public class WaiterGui implements Gui {
     private int cashierX = 250;
     private int cashierY = 250;
     
+    private int revolvingStandX = 350;
+    private int revolvingStandY = 250;
+    
     private int xDestination = -20, yDestination = -20;//default start position
     private Customer currentCustomer;
     private BufferedImage img = null;
@@ -79,6 +82,10 @@ public class WaiterGui implements Gui {
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == 20) && (yDestination == 25)) {
            agent.msgAtWaitingCustomer();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
+           agent.msgAtRevolvingStand();
         }
     }
 
@@ -153,4 +160,10 @@ public class WaiterGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+	public void DoGoToRevolvingStand() {
+		// TODO Auto-generated method stub
+		xDestination = revolvingStandX;
+		yDestination = revolvingStandY;
+	}
 }

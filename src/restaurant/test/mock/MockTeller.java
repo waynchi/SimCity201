@@ -1,5 +1,7 @@
 package restaurant.test.mock;
 
+import market.interfaces.MarketCashier;
+import restaurant.interfaces.Cashier;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 
@@ -42,6 +44,24 @@ public class MockTeller extends Mock implements Teller{
 
 	@Override
 	public void msgHere(BankCustomer cust, String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void msgNeedHelp(Cashier cashier, String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void msgNeedHelp(MarketCashier mcashier, String name) {
 		// TODO Auto-generated method stub
 		
 	}

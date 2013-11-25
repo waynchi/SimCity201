@@ -14,6 +14,7 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	}
 	
 	public void goPlaceOrder(MyCustomer customer) {
+		cook = host.getCook();
 		print ("Here's an order for table " + customer.tableNumber);
 		cook.msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
@@ -22,6 +23,6 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	public void done () {
 		isActive = false;
 		leaveWork = false;
-		getPersonAgent().msgDone("RestaurantNormalWaiter");
+		getPersonAgent().msgDone("RestaurantNormalWaiterRole");
 	}
 }

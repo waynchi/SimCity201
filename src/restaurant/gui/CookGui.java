@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import restaurant.CookRole;
 
@@ -16,6 +17,15 @@ public class CookGui implements Gui {
 	Boolean isCooking;
 	String foodBeingCooked = null;
 	private List<String> foodPlated = new ArrayList<String>();
+	protected Semaphore atRevolvingStand = new Semaphore (0,true);
+
+	 
+    private int xDestination, cookX, xPos = 110;
+    private int yDestination, cookY, yPos = 200;
+    
+    private int revolvingStandX = 350;
+    private int revolvingStandY = 250;
+	
 	
 	public CookGui (CookRole cook) {
 		isCooking = false;
@@ -32,8 +42,22 @@ public class CookGui implements Gui {
 
 	@Override
 	public void updatePosition() {
-		// TODO Auto-generated method stub
-		
+        if (xPos < xDestination)
+            xPos++;
+        else if (xPos > xDestination)
+            xPos--;
+
+        if (yPos < yDestination)
+            yPos++;
+        else if (yPos > yDestination)
+            yPos--;
+
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
+        	xDestination = cookX;
+        	yDestination = cookY;
+           agent.msgAtRevolvingStand();
+        }
 	}
 
 	@Override
@@ -71,5 +95,11 @@ public class CookGui implements Gui {
 	
 	public void finishCooking () {
 		isCooking = false;
+	}
+
+	public void DoGoToRevolvingStand() {
+		xDestination = revolvingStandX;
+		yDestination = revolvingStandY;
+		
 	}
 }

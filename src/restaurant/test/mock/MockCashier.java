@@ -2,6 +2,7 @@ package restaurant.test.mock;
 
 import java.util.Map;
 
+import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -43,6 +44,30 @@ public class MockCashier extends Mock implements Cashier {
 
 	@Override
 	public void msgMarketOrderReceived(Map<String, Integer> marketOrder) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGiveLoan(double balance, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgWithdrawSuccessful(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
 		// TODO Auto-generated method stub
 		
 	}

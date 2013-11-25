@@ -44,18 +44,12 @@ public class CashierRole extends Role implements Cashier {
 
 	private Host host;
 	private Teller teller;
-	private int bankAccount = -1;
-	//private Semaphore depositCompleted = new Semaphore(0,true);
-	//private Semaphore withdrawalCompleted = new Semaphore(0,true);
-	private Boolean loanRequested, loanGranted, loanRefused = false;
-
-	//private Vector<BaseWaiterRole> waiters = null;
-
+	
 	private Boolean leaveWork;
 	private Boolean isActive;
 	private Boolean turnActive;
-	private Boolean depositSuccessful = false;
-	private Boolean withdrawalSuccessful = false;
+	private Boolean deposit = false;
+	private Boolean withdraw = false;
 
 	private double min_working_capital = 1000.0;
 	private double working_capital = 100000.0;
@@ -121,11 +115,9 @@ public class CashierRole extends Role implements Cashier {
 		working_capital = 100000;
 		bank_balance = 0.0;
 		waiter_salary = cook_salary = host_salary = cashier_salary = 100;
-		loanRequested = loanGranted = loanRefused = false;
 		leaveWork = false;
 		isActive = false;
 		turnActive = false;
-		//leaveWork = false;
 	}
 
 	// messages
@@ -200,13 +192,13 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgGiveLoan(double balance, double amount) {
-		bankEvent = bankActivityEvent.LOAN_GIVEN;
+		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= balance;
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgWithdrawalSuccessful(double funds, double amount){
+	public void msgWithdrawSuccessful(double funds, double amount){
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= funds;
@@ -222,20 +214,6 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
-	
-	
-	
-	public void loanGranted(double amount) {
-		working_capital += amount;
-		bank_balance -= amount;
-		loanGranted = true;
-		getPersonAgent().CallstateChanged();
-	}
-	
-	public void loanRefused(){
-		loanRefused = true;
-		getPersonAgent().CallstateChanged();
-	}
 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -273,7 +251,7 @@ public class CashierRole extends Role implements Cashier {
 			return true;
 		}
 
-		if (loanRequested && loanGranted) {
+		/*if (loanRequested && loanGranted) {
 			payWorkers();
 			closeRestaurant();
 			return true;
@@ -282,13 +260,26 @@ public class CashierRole extends Role implements Cashier {
 			depositExcessMoney();
 			closeRestaurant();	
 			return true;
+		}*/
+		if (bankState == bankActivityState.ASKED_FOR_HELP && bankEvent == bankActivityEvent.READY_TO_HELP) {
+			if (deposit) {
+				depositExcessMoney();
+				bankState = bankActivityState.ASKED_DEPOSIT;
+				return true;
+			}
+			if (withdraw) {
+				withdrawMoney();
+				bankState = bankActivityState.ASKED_WITHDRAW;
+				return true;
+			}
 		}
+				
 		if (leaveWork) {
-			if (depositSuccessful) {
+			if (bankState == bankActivityState.ASKED_DEPOSIT && bankEvent == bankActivityEvent.DEPOSIT_SUCCESSFUL) {
 				closeRestaurant();
 				return true;
 			}
-			if (withdrawalSuccessful) {
+			if (bankState == bankActivityState.ASKED_WITHDRAW && bankEvent == bankActivityEvent.WITHDRAW_SUCCESSFUL) {
 				payWorkers();
 				closeRestaurant();
 				return true;
@@ -310,12 +301,12 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 	
 	private void clockIn() {
-		host = (Host) getPersonAgent().getHost();
-		teller = (Teller) getPersonAgent().getTeller();
+		host = myPerson.Restaurants.get(0).h;
+		teller = myPerson.Banks.get(0).t;
 		host.setCashier(this);
 		turnActive = false;
-		depositSuccessful = false;
-		withdrawalSuccessful = false;
+		deposit = false;
+		withdraw = false;
 		bankState = bankActivityState.NONE;
 	}
 	
@@ -378,11 +369,15 @@ public class CashierRole extends Role implements Cashier {
 		double total = getTotalSalary() + min_working_capital;
 		if (working_capital >= total) {
 			payWorkers(); 	
-			depositExcessMoney();	
+			teller.msgNeedHelp(this, "blah");
+			bankState = bankActivityState.ASKED_FOR_HELP;	
+			deposit = true;
 		}
 		
 		else {
-			teller.msgWithdraw(bankAccount, total - working_capital);
+			teller.msgNeedHelp(this, "blah");
+			bankState = bankActivityState.ASKED_FOR_HELP;
+			withdraw = true;
 		}
 	}
 
@@ -398,12 +393,9 @@ public class CashierRole extends Role implements Cashier {
 
 	private void closeRestaurant() {
 		log.add(new LoggedEvent("In action closeRestaurant"));
-		loanRequested = false;
-		loanGranted = false;
-		loanRefused = false;
 		leaveWork = false;
 		isActive = false;
-		getPersonAgent().msgDone("RestaurantCashier");
+		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff
 	}
 
@@ -412,10 +404,12 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void depositExcessMoney() {
-		if (working_capital - min_working_capital >0){
-			teller.msgNeedHelp(this, "blah");
-			bankState = bankActivityState.ASKED_FOR_HELP;
-		}
+		teller.msgDeposit(myPerson.Restaurants.get(0).bankAccountID, working_capital - min_working_capital);;
+		
+	}
+	
+	private void withdrawMoney() {
+		teller.msgWithdraw(myPerson.Restaurants.get(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
 	}
 
 
