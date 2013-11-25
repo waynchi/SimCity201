@@ -1,4 +1,5 @@
 1,RestaurantNormalWaiter,John
 1,RestaurantCook,James
-1,RestaurantCustomer,Billy
+1,RestaurantHost,Billy
 1,RestaurantCashier,Todd
+1,Teller,teller
