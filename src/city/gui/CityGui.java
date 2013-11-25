@@ -146,8 +146,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setMinimumSize(new Dimension(500, 300));
-		buildingPanels.setMaximumSize(new Dimension(500, 300));
 		buildingPanels.setPreferredSize(new Dimension(500, 300));
 		buildingPanels.setBackground(Color.yellow);
 
@@ -161,22 +159,19 @@ public class CityGui extends JFrame implements ActionListener {
             b.setBuildingPanel(bp);
 		}
 		
-		
+		JScrollPane marketContainer = new JScrollPane(marketGui);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
-        buildingPanels.add(restaurantContainer, "" + 0);
-        buildingPanels.add(bankContainer, "" + 1);
-        buildingPanels.add(houseContainer, "" + 2);
+		buildingPanels.add(marketContainer,"" + 0);
+        buildingPanels.add(restaurantContainer, "" + 1);
+        buildingPanels.add(bankContainer, "" + 2);
+        buildingPanels.add(houseContainer, "" + 3);
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
 		
-		restPanel.setBounds(768, 0, 666, 215);
-		restPanel.setMinimumSize(new Dimension(500, 250));
-		restPanel.setMaximumSize(new Dimension(500, 250));
-		restPanel.setPreferredSize(new Dimension(500, 250));
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -214,7 +209,6 @@ public class CityGui extends JFrame implements ActionListener {
 		if(time == 12000) {
 			time=0;
 		}
-		//repaint();
 
 	}
 }
