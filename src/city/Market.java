@@ -9,11 +9,10 @@ public class Market {
 	public Dimension l;
 	public String n;
 	public int bankAccountID;
-	public Market(MarketEmployeeRole m, Dimension loc, String name, int id) {
+	public Market(MarketEmployeeRole m, Dimension loc, String name) {
 		this.mer = m;
 		this.l = loc;
 		this.n = name;
-		bankAccountID = id;
 		
 	}
 }

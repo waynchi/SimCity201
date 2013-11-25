@@ -67,4 +67,6 @@ public interface People {
 
 	public abstract void CallstateChanged();
 
+	int msgWhatIsTime();
+
 }
