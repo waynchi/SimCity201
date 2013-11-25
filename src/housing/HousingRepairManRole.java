@@ -65,6 +65,18 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void enterShop() {
 		location = Location.Shop;
 	}
+	
+	public void goToApartmentInSamePlace(MyHouse mh) {
+	}
+	
+	public void leaveApartmentComplex() {
+	}
+	
+	public void goToHouseInDifferentPlace() {
+	}
+	
+	public void goToVilla() {
+	}
 
 	//-----------------------------------------------------------//
 
@@ -94,16 +106,37 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			currentHouse = findMyHouseByState(HouseState.NeedsRepair);
 		}
 		if (currentHouse != null) {
-			if (location == Location.Shop) {
+			if (location == Location.Shop && currentHouse.s == HouseState.NeedsRepair) {
 				leaveShop();
 				return true;
 			}
-			else if (location == Location.Resident) {
-				if (currentHouse)
-			}
-			if (currentHouse.s == HouseState.NeedsRepair) {
-				goToHouse(currentHouse);
-				return true;
+			else if (location == Location.Resident && currentHouse.s == HouseState.NeedsRepair) {
+				if (currentLocationHouse.h.type == HouseType.Apartment) {
+					if (currentHouse.h.type == HouseType.Apartment) {
+						if (currentHouse.h.a == currentLocationHouse.h.a) {
+							goToApartmentInSamePlace(currentHouse);
+							return true;
+						}
+						else {
+							leaveApartmentComplex();
+							return true;
+						}
+					}
+					else {
+						leaveApartmentComplex();
+						return true;
+					}
+				}
+				else {
+					if (currentHouse.h.type == HouseType.Apartment) {
+						goToHouseInDifferentPlace();
+						return true;
+					}
+					else {
+						goToVilla();
+						return true;
+					}
+				}
 			}
 			if (currentHouse.s == HouseState.Reached) {
 				repairItems(currentHouse);

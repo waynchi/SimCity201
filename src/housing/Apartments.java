@@ -28,6 +28,7 @@ public class Apartments {
 			House h = new House("Apartment" + num, num, HouseType.Apartment);
 			houses.add(h);
 			h.setItems();
+			h.setApartments(this);
 			HouseGui g = new HouseGui(h);
 			h.setGui(g);
 			// Further implementation to add HouseGuis.
