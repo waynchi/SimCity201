@@ -156,6 +156,7 @@ public class HostRole extends Role implements Host{
 	public void IWantToEat(RestaurantCustomerRole cust) {
 
 		customers.add(new MyCustomer(cust));
+		System.out.println("got message i want to eat from customer");
 		getPersonAgent().CallstateChanged();
 
 	}
