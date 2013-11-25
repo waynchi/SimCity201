@@ -108,19 +108,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	public void msgIsActive() {
 		customerGui.setPresent(true);
 		print("I'm hungry");
+		state = CustomerState.DOING_NOTHING;
 		event = CustomerEvent.GOT_HUNGRY;
-		getPersonAgent().CallstateChanged();
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 
 	}
-	
-	
-	//public void gotHungry() {
-	//	print("I'm hungry");
-	//	event = CustomerEvent.GOT_HUNGRY;
-	//	person.stateChanged();
-	//}
 
 	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
 		event = CustomerEvent.REST_IS_FULL;

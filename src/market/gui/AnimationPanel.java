@@ -16,6 +16,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
+    public List<MarketCustomerGui> marketCustomerGui = new ArrayList<MarketCustomerGui>();
 
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);

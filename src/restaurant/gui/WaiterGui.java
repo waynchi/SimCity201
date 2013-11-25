@@ -18,7 +18,7 @@ public class WaiterGui implements Gui {
     private BaseWaiterRole role = null;
     private boolean isPresent = false;
 
-    private int xPos = -20, yPos = -20;//default waiter position
+    private int xPos = 20, yPos = 20;//default waiter position
     private int currentTableX = -100;
     private int currentTableY = -100; // position of current table
     
