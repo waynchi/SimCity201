@@ -271,7 +271,7 @@ public class PeopleAgent extends Agent implements People{
 					}
 					else
 					{
-						
+						System.out.println(Money);
 						if(Money >= 1000000 && Time >= 1130)
 						{
 							event = AgentEvent.GoingToDepositMoney;
@@ -381,9 +381,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		for(MyRole m : roles)
 		{
