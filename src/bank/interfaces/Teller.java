@@ -1,14 +1,19 @@
 package bank.interfaces;
 
+import market.interfaces.MarketCashier;
+import restaurant.interfaces.Cashier;
+
 /**
  * teller
  */
 
 public interface Teller {
 
-	public abstract void msgHere(BankCustomer cust);
+	public abstract void msgHere(BankCustomer cust, String name);
 	
-	public abstract void msgCreateAccount(String name, double initialFund);
+	public abstract void msgNeedHelp(Cashier cashier, String name);
+	
+	public abstract void msgNeedHelp(MarketCashier mcashier, String name);
 	
 	public abstract void msgWithdraw(int accountID, double moneyNeeded);
 	

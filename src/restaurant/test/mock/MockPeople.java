@@ -151,4 +151,16 @@ public class MockPeople extends Mock implements People{
 		
 	}
 
+	@Override
+	public Role getTeller() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Role getMarketEmployee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

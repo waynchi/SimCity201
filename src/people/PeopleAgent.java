@@ -5,6 +5,8 @@ import java.util.Random;
 
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import city.Bank;
+import city.Market;
 import city.Restaurant;
 import city.gui.CityGui;
 import agent.Agent;
@@ -13,8 +15,11 @@ public class PeopleAgent extends Agent implements People{
 
 	public List<MyRole> roles = new ArrayList<MyRole>();
 	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
+	public List<Market> Markets = new ArrayList<Market>();
+	public List<Bank> Banks = new ArrayList<Bank>();
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
+	public Double Balance;
 	private int Hunger = 10;
 	public Boolean hasCar;
 	public String name;
@@ -28,7 +33,8 @@ public class PeopleAgent extends Agent implements People{
 	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	public enum AgentEvent 
-	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
+	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
+		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public HungerState hunger = HungerState.NotHungry;
@@ -71,9 +77,9 @@ public class PeopleAgent extends Agent implements People{
 		return hunger.toString();
 	}
 	
-	public Role getHost()
+	public Role getHost(int i)
 	{
-		return Restaurants.get(0).h;
+		return Restaurants.get(i).h;
 	}
 	
 	public Role getTeller()
@@ -146,16 +152,39 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
+		if(role != "ResidentRole")
+		{
 		log.add(new LoggedEvent("Recieved msgDone"));
 		state = AgentState.Idle;
 		event = AgentEvent.Idle;
 		if(role.equals("RestaurantCustomerRole"))
 		{
 			hunger = HungerState.NotHungry;
+			Hunger = 100;
 		}
 		if(role.equals("BankCustomerRole"))
 		{
 			
+		}
+		if(role.equals("MarketCustomerRole"))
+		{
+			hasCar = true;
+		}
+		if(role.equals("RepairManFixing"))
+		{
+			state = AgentState.Working;
+			event = AgentEvent.RepairManMoving;
+			stateChanged();
+		}
+		if(role.equals("RepairManFixed"))
+		{
+			state = AgentState.Working;
+			event = AgentEvent.RepairManMovingShop;
+		}
+		}
+		else
+		{
+			//unfreeze the semaphore in the gui
 		}
 	}
 	
@@ -165,6 +194,7 @@ public class PeopleAgent extends Agent implements People{
 		this.name = name;
 		this.Money = Money;
 		this.hasCar = hasCar;
+		this.Balance = this.Money;
 	}
 	
 	
@@ -188,6 +218,11 @@ public class PeopleAgent extends Agent implements People{
 			print("GoingToCar");
 			return;
 		}*/
+		Hunger--;
+		if(Hunger == 0)
+		{
+			hunger = HungerState.Hungry;
+		}
 		if(Time == 800 && state == AgentState.Sleeping)
 		{
 			event = AgentEvent.WakingUp;
@@ -197,33 +232,41 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Idle)
 		{
-		if(jobs.get(0).start - Time >= 200 && Time <=2100)
-		{
-			if(!hasCar)
+			if(!jobs.isEmpty())
 			{
-				if(Money >= 30000)
+				for(int i = 0; i < jobs.size(); i++)
 				{
-				event = AgentEvent.GoingToBuyCar;
-				return;
+				if(jobs.get(i).start - Time >= 200 && Time <=2100)
+				{
+					if(!hasCar)
+					{
+						if(Money >= 30000)
+						{
+							event = AgentEvent.GoingToBuyCar;
+							log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+							return;
+						}
+						else
+						{
+							event = AgentEvent.GoingToRetrieveMoney;
+							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+							stateChanged();
+							return;
+						}
+					}
+					else
+					{
+						if(Money >= 50000)
+						{
+							event = AgentEvent.GoingToDepositMoney;
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+							stateChanged();
+							return;
+						}
+					}
 				}
-				else
-				{
-					event = AgentEvent.GoingToRetrieveMoney;
-					log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-					stateChanged();
-					return;
 				}
 			}
-			else
-			{
-				if(Money >= 50000)
-				{
-					event = AgentEvent.GoingToDepositMoney;
-					stateChanged();
-					return;
-				}
-			}
-		}
 		}
 		int lastTime = 100000;
 		for(Job job: jobs)
@@ -231,6 +274,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.start)
 		{
 			event = AgentEvent.GoingToWork;
+			print("Going To Work");
 			log.add(new LoggedEvent("Going To Work"));
 			stateChanged();
 			return;
@@ -244,7 +288,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		lastTime = job.end;
 		}
-		if(state != AgentState.Sleeping && state != AgentState.Working)
+		if(state != AgentState.Sleeping && state != AgentState.Working )
 		{
 			if(hunger == HungerState.Hungry)
 			{
@@ -317,6 +361,17 @@ public class PeopleAgent extends Agent implements People{
 				Roles = m.role.pickAndExecuteAnAction();
 			}
 		}
+		if(state == AgentState.Working && event == AgentEvent.RepairManMoving)
+		{
+			GoRepair();
+			//event = AgentEvent.RepairManArrived;
+			Person = true;		
+		}
+		if(state == AgentState.Working && event == AgentEvent.RepairManMovingShop)
+		{
+			GoRepairShop();
+			Person = true;
+		}
 		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
 		{
 			state = AgentState.Idle;
@@ -360,6 +415,7 @@ public class PeopleAgent extends Agent implements People{
 		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
 		{
 			state = AgentState.BuyingCar;
+			log.add(new LoggedEvent("Going To Buy Car. New State is " + state.toString()));
 			GoBuyCar();
 			Person = true;
 		}
@@ -394,6 +450,22 @@ public class PeopleAgent extends Agent implements People{
 
 
 //Actions
+
+	private void GoRepairShop() {
+		// TODO Auto-generated method stub
+		//gui message to ask for destination
+		//Semaphore
+		event = AgentEvent.RepairManArrivedShop;
+		
+	}
+
+	private void GoRepair() {
+		// TODO Auto-generated method stub
+		//gui message to ask for destination
+		//Semaphore
+		event = AgentEvent.RepairManArrived;
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see people.People#GoToRestaurant()
@@ -501,16 +573,21 @@ public class PeopleAgent extends Agent implements People{
 	//Going to Work
 	public void GoToWork()
 	{
+		for(int i = 0; i <jobs.size(); i++)
+		{
 		print("I am going to work now!");
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
 			{			
 				r.role.msgIsInActive();
+				//Stop
 			}
 		}
+		//Pause the Gui
 		//gui
-		if(jobs.get(0).job.equals("RestaurantNormalWaiter"))
+		//Release the Gui from msgDone
+		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
 			{
@@ -522,7 +599,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.WaiterRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("RestaurantHost"))
+		if(jobs.get(i).job.equals("RestaurantHost"))
 		{
 			for(MyRole r: roles)
 			{
@@ -534,7 +611,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.HostRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("RestaurantCook"))
+		if(jobs.get(i).job.equals("RestaurantCook"))
 		{
 			for(MyRole r: roles)
 			{
@@ -546,7 +623,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.CookRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("RestaurantCashier"))
+		if(jobs.get(i).job.equals("RestaurantCashier"))
 		{
 			for(MyRole r: roles)
 			{
@@ -559,40 +636,67 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.RepairRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Vendor"))
+		if(jobs.get(i).job.equals("Vendor"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Vendor"))
 				{			
+					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
 			}
 			//roles.VendorRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("Teller"))
+		if(jobs.get(i).job.equals("Teller"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Teller"))
 				{			
+					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
 			}
 			//roles.TellerRole.msgIsActive();
 		}
-		if(jobs.get(0).job.equals("RepairMan"))
+		if(jobs.get(i).job.equals("MarketCashier"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("MarketCashier"))
+				{			
+					print("I am now a " + r.description);
+					r.role.msgIsActive();
+				}
+			}
+			//roles.TellerRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("MarketEmployee"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("MarketEmployee"))
+				{			
+					print("I am now a " + r.description);
+					r.role.msgIsActive();
+				}
+			}
+			//roles.TellerRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RepairMan"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RepairMan"))
 				{			
+					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
 			}
 			//roles.RepairRole.msgIsActive();
 		}
-
+		}
 		//roles.ResidentRole.msgIsInActive();
 	}
 

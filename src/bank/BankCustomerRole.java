@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import people.PeopleAgent.AgentEvent;
 import people.Role;
 
 /**
@@ -38,8 +39,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private CustomerState state;
 	private CustomerAction action;
 	
-	private double withdraw;
-	private double deposit;
+	private double withdraw = 100;
+	private double deposit = 100;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -60,18 +61,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		teller = t;
 	}
 	// Messages
-
-	public void needMoney(double money) {//from animation
-		print("I need money");
-		action = CustomerAction.withdraw;
-		withdraw = money;
-		stateChanged();
-	}
 	
-	public void depositMoney(double money) {//from animation
-		print("I need to deposit money");
-		action = CustomerAction.deposit;
-		deposit = money;
+	public void msgIsActive() {
+		isActive = true;
 		stateChanged();
 	}
 	
@@ -88,15 +80,23 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgAccountAndLoan(int accountID, double balance, double money) {
+		this.accountID = accountID;
+		print("Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
+		myPerson.Money += money;
+		state = CustomerState.done;
+		stateChanged();
+	}
+	
 	public void msgGiveLoan(double balance, double money) {
 		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		wallet += money;
+		myPerson.Money += money;
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
-		wallet += money;
+		myPerson.Money += money;
 		print("Withdraw successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
@@ -114,25 +114,23 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
-
-		if (state == CustomerState.ready) {
-	        if (action == CustomerAction.deposit) {
-	        	DepositMoney();
-	        	return true;
-	        }
-	        if (action == CustomerAction.withdraw) {
-	            WithdrawMoney();
-	            return true;
-	        }
+		if (isActive) {
+			if (state == CustomerState.ready) {
+				if (myPerson.event == AgentEvent.GoingToDepositMoney) {
+					DepositMoney();
+					return true;
+				}
+				if (myPerson.event == AgentEvent.GoingToRetrieveMoney) {
+					WithdrawMoney();
+					return true;
+				}
+			}
+			if (state == CustomerState.done) {
+				LeaveBank();
+				return true;
+			}
 		}
-		if (state == CustomerState.done) {
-	        LeaveBank();
-	        return true;
-		}
-		if (state == CustomerState.needAccount) {
-	        CreateAccount();
-	        return true;
-		}
+		
 		return false;
 	}
 
@@ -168,11 +166,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void LeaveBank(){
 		//Do Leave Bank
 		teller.msgDoneAndLeaving();
-	}
-
-	private void CreateAccount(){
-		teller.msgCreateAccount(name, deposit);
-		state = CustomerState.finished;
+		myPerson.msgDone("BankCustomerRole");
+		isActive = false;
 	}
 
 	// Accessors, etc.

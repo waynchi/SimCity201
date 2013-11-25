@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bank.interfaces.Teller;
 import people.Role;
 import restaurant.interfaces.Cashier;
 import market.interfaces.MarketCashier;
@@ -113,6 +114,39 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPersonAgent().CallstateChanged();
 
 	}
+	
+	// from bank teller
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void msgGiveLoan(double balance, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void msgWithdrawalSuccessful(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	// scheduler
@@ -149,7 +183,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
-		marketEmployee = getPersonAgent().getMarketEmployee();
+		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
 		marketEmployee.setCashier(this);
 		turnActive = false;
 	}
@@ -198,6 +232,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public String getName() {
 		return getPersonAgent().getName();
 	}
+
+
 
 
 }

@@ -11,6 +11,7 @@ import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
 
+import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 import market.MarketCashierRole;
 import market.interfaces.MarketCashier;
@@ -32,6 +33,13 @@ public class CashierRole extends Role implements Cashier {
 
 	private Map<Customer, Double> balance = Collections.synchronizedMap(new HashMap<Customer, Double>());
 	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
+	
+	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE}
+	public bankActivityState bankState;
+	
+	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
+	public bankActivityEvent bankEvent;
+	
 	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 
 	private Host host;
@@ -186,26 +194,36 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	// from BankTellerRole
-	
-	public void msgAccountBalance (int id, double funds) {
-		bankAccount = id;
-		bank_balance = funds;
+	public void msgReadyToHelp(Teller teller) {
+		bankEvent = bankActivityEvent.READY_TO_HELP;
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgDepositSuccessful(double funds){
-		working_capital -= (funds - bank_balance);
-		bank_balance = funds;
-		depositSuccessful = true;
+	public void msgGiveLoan(double balance, double amount) {
+		bankEvent = bankActivityEvent.LOAN_GIVEN;
+		working_capital += amount;
+		bank_balance -= balance;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgWithdrawalSuccessful(double funds, double amount){
+		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= funds;
-		withdrawalSuccessful = true;
+		//withdrawalSuccessful = true;
 		getPersonAgent().CallstateChanged();
 	}
+	
+	public void msgDepositSuccessful(double funds){
+		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
+		working_capital -= (funds - bank_balance);
+		bank_balance = funds;
+		//depositSuccessful = true;
+		getPersonAgent().CallstateChanged();
+	}
+
+	
+	
 	
 	public void loanGranted(double amount) {
 		working_capital += amount;
@@ -293,14 +311,12 @@ public class CashierRole extends Role implements Cashier {
 	
 	private void clockIn() {
 		host = (Host) getPersonAgent().getHost();
-		teller = getPersonAgent().getTeller();
+		teller = (Teller) getPersonAgent().getTeller();
 		host.setCashier(this);
 		turnActive = false;
 		depositSuccessful = false;
 		withdrawalSuccessful = false;
-		if (bankAccount == -1) { // if bank account hasn't been created yet
-			tellermsgCreateAccount("restaurant", 0.0);
-		}
+		bankState = bankActivityState.NONE;
 	}
 	
 	private void sendCheckToWaiter (final Check c) {
@@ -397,7 +413,8 @@ public class CashierRole extends Role implements Cashier {
 
 	private void depositExcessMoney() {
 		if (working_capital - min_working_capital >0){
-			teller.msgDeposit(bankAccount, working_capital - min_working_capital);
+			teller.msgNeedHelp(this, "blah");
+			bankState = bankActivityState.ASKED_FOR_HELP;
 		}
 	}
 
