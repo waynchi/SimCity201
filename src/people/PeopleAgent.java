@@ -327,6 +327,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingHome;
+					stateChanged();
 					print("Going Home To Eat");
 				}
 				return;
