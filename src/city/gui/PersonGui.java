@@ -36,6 +36,8 @@ public class PersonGui extends Rectangle2D.Double {
 		this.cityPanel = cityPanel;
 		this.direction = "up";
 		this.person = person;
+		xDestination =(int)this.x;
+		yDestination = (int)this.y;
 
 	}
 
@@ -81,7 +83,7 @@ public class PersonGui extends Rectangle2D.Double {
 		g2.setColor( Color.red );
 		g2.fill( this );
 		g2.draw(this);
-		if(!redLight) {
+		if(!redLight &&( x != xDestination || y != yDestination)) {
 			this.move(sidewalk.xVelocity,sidewalk.yVelocity);
 		}
 		if(yPos >= 212 && xPos == 112) { 
