@@ -43,7 +43,6 @@ public class MockPeople extends Mock implements People{
 		return null;
 	}
 
-	@Override
 	public Role getHost() {
 		// TODO Auto-generated method stub
 		return null;
@@ -159,6 +158,12 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public Role getMarketEmployee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Role getHost(int i) {
 		// TODO Auto-generated method stub
 		return null;
 	}

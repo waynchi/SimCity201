@@ -17,7 +17,6 @@ public class CookGui implements Gui {
 	Boolean isCooking;
 	String foodBeingCooked = null;
 	private List<String> foodPlated = new ArrayList<String>();
-	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 
 	 
     private int xDestination, cookX, xPos = 110;
