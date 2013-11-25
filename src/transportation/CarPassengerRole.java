@@ -51,7 +51,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	public void msgAnimationFinishedDoLeaveCar() {
 		// TODO Auto-generated method stub
 		System.out.println("Recieved message that gui finished leaving car, sending done message to myPerson");
-		myPerson.msgDone(this);
+		myPerson.msgDone("CarPassenger");
 	}
 
 	/* (non-Javadoc)
