@@ -38,8 +38,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atCashier = new Semaphore(0,true);
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected int currentCustomerNum;
-
-	protected boolean isActive = false;
+	
 	private boolean turnActive = false;
 	protected boolean leaveWork = false;
 	
@@ -102,6 +101,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
+		System.out.println("MSG RECIEVED");
 
 	}
 	
@@ -319,6 +319,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private void clockIn() {
 		
 		// how to make sure the cook and cashier are already created?
+		System.out.println("CLOCKING IN");
 		waiterGui.setPresent(true);
 		host = myPerson.Restaurants.get(0).h;
 		host.addWaiter(this);

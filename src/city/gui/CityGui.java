@@ -118,8 +118,8 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
-						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-						RestaurantNormalWaiterRole.setGui(g);
+						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
+						//RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
@@ -275,14 +275,14 @@ public class CityGui extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
 		time++;
-		if(time % 2 == 0)
+		if(time % 1 == 0)
 		{
 			if(time%60 == 0)
 			{
-				System.out.println(time/2);
+				System.out.println(time/1);
 			}
 			for (PeopleAgent p : people) {
-				p.msgTimeIs(time/2);
+				p.msgTimeIs(time/1);
 			}
 		}
 		if(time == 4800) {

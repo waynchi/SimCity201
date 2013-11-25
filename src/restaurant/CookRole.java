@@ -43,7 +43,6 @@ public class CookRole extends Role implements Cook{
 	private CookGui cookGui = null;
 	private RestaurantGui restGui = null;
 
-	private Boolean isActive = false;
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
 

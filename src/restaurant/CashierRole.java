@@ -41,7 +41,6 @@ public class CashierRole extends Role implements Cashier {
 	private Teller teller;
 	
 	private Boolean leaveWork;
-	private Boolean isActive;
 	private Boolean turnActive;
 	private Boolean deposit = false;
 	private Boolean withdraw = false;

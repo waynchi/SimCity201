@@ -22,7 +22,6 @@ public class HostRole extends Role implements Host{
 	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
-	private boolean isActive;
 	private boolean leaveWork;
 
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
