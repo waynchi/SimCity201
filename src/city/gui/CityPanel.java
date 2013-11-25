@@ -47,12 +47,14 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		sidewalks.add(s);
 		Lane l = new Lane( hozX - 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
+		l = new Lane( hozX - 210, hozY + 110, hozWidth + 60, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
 		s = new Sidewalk( hozX - 210, hozY + 80 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		s = new Sidewalk( hozX, hozY + 130 , hozWidth - 150, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		l = new Lane( hozX, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
+		l = new Lane( hozX, hozY + 90, hozWidth - 150, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
 		s = new Sidewalk( hozX, hozY + 80 , hozWidth - 150, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
@@ -91,7 +93,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		s = new Sidewalk( hozX + 410, hozY + 210 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 210 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY + 240 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//FAR RIGHT VERTICAL
@@ -152,8 +154,11 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		lanes.add(l);
 		
 		//Vertical Cross Lanes
-		l = new Lane( crossX + 220, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
+		l = new Lane( crossX + 90, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
+		l = new Lane( crossX + 110, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
+		lanes.add(l);
+		
 		l = new Lane( crossX + 420, crossY, crossWidth, crossHeight, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		
