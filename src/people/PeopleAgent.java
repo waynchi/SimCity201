@@ -46,6 +46,7 @@ public class PeopleAgent extends Agent implements People{
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Sleeping;
 	public AgentEvent event = AgentEvent.GoingToSleep;
+	public AgentLocation location = AgentLocation.Home;
 	
 	
 	public void Arrived()
@@ -122,11 +123,6 @@ public class PeopleAgent extends Agent implements People{
 		cityGui = gui;
 	}
 	
-	//public void addPeopleGui()
-	//TODO
-	/* (non-Javadoc)
-	 * @see people.People#addRole(people.Role, java.lang.String)
-	 */
 	@Override
 	public void addRole(Role r, String description)
 	{
@@ -218,13 +214,10 @@ public class PeopleAgent extends Agent implements People{
 	/* (non-Javadoc)
 	 * @see people.People#msgTimeIs(int)
 	 */
-	@Override
-	
-	/*public int msgWhatIsTime()
+	public int msgWhatIsTime()
 	{
-		//TODO
-		return cityGui.Time;
-	}*/
+		return cityGui.time;
+	}
 	
 	public void msgTimeIs(int Time)
 	{
@@ -284,6 +277,12 @@ public class PeopleAgent extends Agent implements People{
 				}
 				}
 			}
+			if(location != AgentLocation.Home)
+			{
+				event = AgentEvent.GoingHome;
+				stateChanged();
+				return;
+			}
 		}
 		int lastTime = 100000;
 		for(Job job: jobs)
@@ -317,7 +316,7 @@ public class PeopleAgent extends Agent implements People{
 					print("Going To Restaurant To Eat");
 					stateChanged();
 				}
-				else
+				else if(location != AgentLocation.Home)
 				{
 					event = AgentEvent.GoingHome;
 					print("Going Home To Eat");
@@ -498,13 +497,8 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToRestaurant()
 	{
-		personGui.GoToRestaurantOne();
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		location = AgentLocation.Road;
+		
 		//roles.RestaurantCustomerAgent.msg(this);
 		if(hasCar)
 		{
@@ -524,6 +518,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		else
 		{
+			//TODO
 			/*if(rand.nextInt(1) == 1)
 			{
 				for(MyRole r: roles)
@@ -536,6 +531,13 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else*/
 				//GUI WALK
+				personGui.GoToRestaurantOne();
+				try {
+					moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				location = AgentLocation.Restaurant;
 				print("Walking to Restaurant");
 				hunger = HungerState.Eating;
 				//Semaphore
@@ -561,7 +563,6 @@ public class PeopleAgent extends Agent implements People{
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for(MyRole r: roles)
@@ -584,7 +585,6 @@ public class PeopleAgent extends Agent implements People{
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for(MyRole r: roles)
@@ -610,7 +610,6 @@ public class PeopleAgent extends Agent implements People{
 				r.role.msgIsInActive();
 			}
 		}
-		//msgTimeIs( jobs.get(0).end); //TODO I probably need to get the actual time here
 	}
 
 	/* (non-Javadoc)
@@ -623,7 +622,6 @@ public class PeopleAgent extends Agent implements People{
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for(MyRole r: roles)
@@ -664,7 +662,6 @@ public class PeopleAgent extends Agent implements People{
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("test test test");
