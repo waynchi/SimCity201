@@ -28,7 +28,7 @@ public class PersonGui extends Rectangle2D.Double {
 		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
 	}
 	
-	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
+	public PersonGui( int x, int y, double width, double height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
 		super( x, y, width, height );
 		this.sidewalk = s;
 		this.sidewalks = sidewalks;
