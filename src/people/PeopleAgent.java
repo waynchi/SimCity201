@@ -626,7 +626,7 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(MyRole r: roles)
 		{
-			if(r.description == jobs.get(0).job)
+			if(r.role.isActive)
 			{
 				r.role.msgIsInActive();
 			}
