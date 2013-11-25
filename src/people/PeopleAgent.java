@@ -322,7 +322,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(Time <= 1900)
 				{
-				if(rand.nextInt() < 1)
+				if(rand.nextInt(1) < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
 					print("Going To Restaurant To Eat");

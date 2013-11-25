@@ -1,4 +1,7 @@
 package city.gui;
+import housing.House;
+import housing.HouseType;
+import housing.HousingRepairManRole;
 import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
 
@@ -49,6 +52,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole(bankGui);
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
+	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	
 	
 	
@@ -59,7 +63,9 @@ public class CityGui extends JFrame implements ActionListener {
 	public CityGui() {
 		//this.setResizable(false);
 		cityPanel = new CityPanel(this);
-		cityPanel.setPreferredSize(new Dimension(500, 500));		
+		cityPanel.setPreferredSize(new Dimension(1024, 500));		
+		cityPanel.setMaximumSize(new Dimension(1024, 500));
+		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
 		Timer timer = new Timer(10, this);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
@@ -97,10 +103,14 @@ public class CityGui extends JFrame implements ActionListener {
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
-					HousingResidentRole residentRole = new HousingResidentRole();
-					residentRole.testModeOn();
-					residentRole.isActive = true;
-					person.addRole(residentRole, "Resident");
+//					House house = new House("House", 1, HouseType.Villa);
+//					HousingResidentRole residentRole = new HousingResidentRole();
+//					residentRole.testModeOn();
+//					residentRole.setPerson(person);
+//					residentRole.isActive = true;
+//					residentRole.setRepairMan(repairManRole);
+//					residentRole.setHouse(house);
+//					person.addRole(residentRole, "Resident");
 					
 					
 					person.startThread();
@@ -131,6 +141,10 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
 					}
+					if (job.equals("RestaurantCustomer"))
+					{
+						
+					}
 					if (job.equals("Teller")) {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
@@ -140,6 +154,14 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketEmployee", start, end);
 						person.addRole(MarketEmployeeRole,"MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
+						person.setMoney(1000000);
+						person.hasCar = true;
+					}
+					if(job.equals("RepairMan"))
+					{
+						person.addJob("RepairMan", start, end);
+						person.addRole(repairManRole,"RepairMan");
+						repairManRole.setPerson(person);
 						person.setMoney(1000000);
 						person.hasCar = true;
 					}
@@ -160,19 +182,26 @@ public class CityGui extends JFrame implements ActionListener {
 			p.Banks.add(bank);
 		}
 		setVisible(true);
-		setSize(1024, 1000);
+		setSize(1024, 768);
 
-		getContentPane().setLayout(new BorderLayout());
-
+		getContentPane().setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		cityControls = new CityControls();
+		cityControls.setPreferredSize(new Dimension(500, 268));
+		cityControls.setMaximumSize(new Dimension(500, 268));
+		cityControls.setMinimumSize(new Dimension(500, 268));
 		
 		cardLayout = new CardLayout();
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setPreferredSize(new Dimension(500, 300));
+		buildingPanels.setPreferredSize(new Dimension(500, 268));
+		buildingPanels.setMaximumSize(new Dimension(500, 268));
+		buildingPanels.setMinimumSize(new Dimension(500, 268));
 		buildingPanels.setBackground(Color.yellow);
 
-		cityControls = new CityControls();
 
 		// Create the BuildingPanel for each Building object
 		ArrayList<Building> buildings = cityPanel.getBuildings();
@@ -183,9 +212,13 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		
 		JScrollPane marketContainer = new JScrollPane(marketGui);
+		marketContainer.setOpaque(true);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
+		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
+		bankContainer.setOpaque(true);
 		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
+		houseContainer.setOpaque(true);
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
         buildingPanels.add(houseContainer, "" + 2);
@@ -193,8 +226,26 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
-		getContentPane().add(BorderLayout.NORTH, cityPanel);
-		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
+		//getContentPane().add(BorderLayout.NORTH, cityPanel);
+		//getContentPane().add(BorderLayout.SOUTH, buildingPanels);
+        
+        buildingPanels.setOpaque(true);
+        cityControls.setOpaque(true);
+        cityPanel.setOpaque(true);
+		
+	    c.gridx = 0; c.gridy = 0;
+	    c.gridwidth = 2; c.gridheight = 1;
+	    this.add(cityPanel, c);
+
+	    c.gridx = 0; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(buildingPanels, c);
+
+	    c.gridx = 1; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(cityControls, c);
+	    
+	    this.pack();
 		
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

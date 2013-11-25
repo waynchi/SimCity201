@@ -299,7 +299,8 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void setHouse(House h) {
 		this.house = h;
-		h.gui.add(gui);
+		house.setOccupant(this);
+//		house.gui.add(gui);
 	}
 	
 	public void setRepairMan(RepairMan r) {
