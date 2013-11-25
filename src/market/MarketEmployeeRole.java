@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import people.Role;
 import market.gui.MarketEmployeeGui;
+import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -18,7 +19,9 @@ import restaurant.interfaces.Cook;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	MarketCashier cashier;
-	MarketEmployeeGui gui;
+	MarketEmployeeGui employeeGui;
+	MarketGui marketGui;
+	
 	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
 	int marketTruckCount = 0;
 	Map <String, Item> items = new HashMap<String, Item>();
@@ -62,7 +65,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	Semaphore atCounter = new Semaphore(0,true);
 
 	// constructor
-	public MarketEmployeeRole(){
+	public MarketEmployeeRole(MarketGui gui){
+		marketGui = gui;
+		employeeGui = new MarketEmployeeGui(this);
+		marketGui.getAnimationPanel().addGui(employeeGui);
+		employeeGui.setPresent(false);
+		
 		for (int i=0; i<10; i++) { // create 10 market trucks
 			trucks.add(new MarketTruckAgent("MarketTruck "+i));
 		}
@@ -79,6 +87,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgIsActive() {
 		isActive = true;
+		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -129,7 +138,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
-			gui.doGetItem(entry.getKey());
+			employeeGui.doGetItem(entry.getKey());
 			try {
 				atCabinet.acquire();
 			} catch (InterruptedException e) {
@@ -138,7 +147,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			}
 			items.get(entry.getKey()).inventory -= entry.getValue();
 		}
-		gui.doGoToCounter();
+		employeeGui.doGoToCounter();
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -192,6 +201,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private void done() {
 		isActive = false;
 		leaveWork = false;
+		// gui walk to the exit
+		employeeGui.setPresent(false);
 		getPersonAgent().msgDone("MarketEmployeeRole");
 	}
 
@@ -211,10 +222,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	public String getName() {
 		return getPersonAgent().getName();
-	}
-
-	public void setGui(MarketEmployeeGui gui) {
-		this.gui = gui;
 	}
 
 }
