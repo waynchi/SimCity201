@@ -583,10 +583,12 @@ public class PeopleAgent extends Agent implements People{
 			if(r.description.equals("Resident"))
 			{	
 				r.role.msgIsActive();
-				
 			}
-		}	
+		}
+		if(state != AgentState.EatingAtHome && state != AgentState.IdleAtHome)
+		{
 		state = AgentState.Idle;
+		}
 	}
 
 	/* (non-Javadoc)
