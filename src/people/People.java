@@ -22,7 +22,7 @@ public interface People {
 	
 	public String getHunger();
 	
-	public Role getHost();
+	public Role getHost(int i);
 	
 	public Role getTeller();
 	

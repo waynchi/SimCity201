@@ -143,7 +143,7 @@ public class PeopleTest extends TestCase
 		}
 		
 		//Going to Work
-		for(PeopleAgent p: BankPeople)
+		for(PeopleAgent p: MarketPeople)
 		{
 			p.msgTimeIs(1200);
 			if(p != marketCustomer)
@@ -154,15 +154,49 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Retrieving Money. Event is now: GoingToRetrieveMoney" ));
+				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
+		
+		marketCustomer.msgDone("MarketCustomerRole");
+		assertTrue("Testing to see if scheduler changed state", marketCustomer.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+		marketCustomer.Money = 0.0;
+		//Taking them off work
+		for(PeopleAgent p : MarketPeople)
+		{
+			p.msgTimeIs(1800);
+			if (p != marketCustomer)
+			{
+				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+			}
+			else
+			{
+				System.out.println(p + " " + p.log.getLastLoggedEvent().toString());
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+			}
+		}
+		
+		//Sleeping Time!
+		for(PeopleAgent p : MarketPeople)
+		{
+			System.out.println(p + p.state.toString());
+			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+			p.msgTimeIs(2330);
+			System.out.println(p + p.state.toString());
+			System.out.println(p + p.event.toString());
+			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+		}	
 	}
 	
-	/*public void testBankScenario()
+	public void testBankScenario()
 	{
 		//AddingRoles
 		teller.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
@@ -248,12 +282,12 @@ public class PeopleTest extends TestCase
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
 			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}	
-	}*/
+	}
 	
 	/**
 	 * This tests the restaurantCashier under very simple terms: one restaurantCustomer is ready to pay the exact bill.
 	 */
-	/*public void testRestaurantScenario()
+	public void testRestaurantScenario()
 	{
 		//Adding Roles into all of the People
 		
@@ -374,6 +408,6 @@ public class PeopleTest extends TestCase
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
 			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}	
-	}*/
+	}
 
 }
