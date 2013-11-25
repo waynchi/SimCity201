@@ -74,9 +74,9 @@ public class CityGui extends JFrame implements ActionListener {
 				if (isInteger(amount)) {
 					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
 					person.setCityGui(this);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person);
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person,cityPanel.buildings.get(0));
 					person.setPersonGui(personGui);
-					//cityPanel.people.add(personGui);
+					cityPanel.people.add(personGui);
 					person.startThread();
 					if (role.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole();
@@ -189,6 +189,9 @@ public class CityGui extends JFrame implements ActionListener {
 		time++;
 		for (PeopleAgent p : people) {
 			p.msgTimeIs(time);
+		}
+		if(time == 24000) {
+			time=0;
 		}
 		repaint();
 

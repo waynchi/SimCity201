@@ -43,7 +43,7 @@ public class PersonGui extends Rectangle2D.Double {
 		setDestination(cityPanel.buildings.get(17).xLocation, cityPanel.buildings.get(17).yLocation);
 	}
 	
-	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
+	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person, Building home ) {
 		super( x, y, width, height );
 		this.sidewalk = s;
 		this.sidewalks = sidewalks;
@@ -54,6 +54,7 @@ public class PersonGui extends Rectangle2D.Double {
 		this.person = person;
 		xDestination =(int)this.x;
 		yDestination = (int)this.y;
+		this.home = home;
 
 	}
 
@@ -99,7 +100,6 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 	public void draw(Graphics2D g2) {
 		if(x != xDestination || y != yDestination) {
-			System.out.println(x + " " + xDestination + " " + y + " " +yDestination);
 			g2.setColor( Color.red );
 			g2.fill( this );
 			g2.draw(this);
