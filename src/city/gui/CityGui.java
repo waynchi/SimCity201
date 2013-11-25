@@ -103,14 +103,14 @@ public class CityGui extends JFrame implements ActionListener {
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
-					House house = new House("House", 1, HouseType.Villa);
-					HousingResidentRole residentRole = new HousingResidentRole();
-					residentRole.testModeOn();
-					residentRole.setPerson(person);
-					residentRole.isActive = true;
-					residentRole.setRepairMan(repairManRole);
-					residentRole.setHouse(house);
-					person.addRole(residentRole, "Resident");
+//					House house = new House("House", 1, HouseType.Villa);
+//					HousingResidentRole residentRole = new HousingResidentRole();
+//					residentRole.testModeOn();
+//					residentRole.setPerson(person);
+//					residentRole.isActive = true;
+//					residentRole.setRepairMan(repairManRole);
+//					residentRole.setHouse(house);
+//					person.addRole(residentRole, "Resident");
 					
 					
 					person.startThread();
@@ -140,6 +140,10 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
+					}
+					if (job.equals("RestaurantCustomer"))
+					{
+						
 					}
 					if (job.equals("Teller")) {
 						person.addJob("Teller", start, end);
