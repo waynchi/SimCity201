@@ -1,4 +1,6 @@
 package city.gui;
+import housing.gui.HouseAnimationPanel;
+
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -36,6 +38,8 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	MarketGui marketGui = new MarketGui();
+	HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole();
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
@@ -157,16 +161,13 @@ public class CityGui extends JFrame implements ActionListener {
             b.setBuildingPanel(bp);
 		}
 		
-		JPanel jPanel = new JPanel();
-		jPanel.setPreferredSize(new Dimension(500,250));
-		jPanel.setDoubleBuffered(true);
-		jPanel.add(bankGui);
 		
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
-
+		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
+        buildingPanels.add(houseContainer, "" + 2);
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
@@ -202,6 +203,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		bankGui.updatePosition();
 		time++;
 		if(time % 5 == 0)
 		{

@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-public class CityPanel extends JPanel implements MouseListener,ActionListener {
+public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
 	ArrayList<Lane> lanes;
 	ArrayList<Sidewalk> sidewalks;
@@ -186,10 +186,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		lanes.add(l);
 		l = new Lane( crossX - 230, crossY + 110, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
-		
-		//Start animation for the timer
-		javax.swing.Timer t = new javax.swing.Timer( 25, this );
-		t.start();
+
 		
 		//Add grid of homes on left
 		for ( int i=0; i<=1; i++ ) {
@@ -237,108 +234,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 
 	}
 	
-
-	
-	public void actionPerformed( ActionEvent ae ) {
-		count++;
-		
-		Vehicle vehicle;
-		PersonGui person;
-//		if ( count == 100) {
-//			//Second Row -- First Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-//			vehicle.setDestination(570, 60);
-//			vehicles.add(vehicle);
-//			
-//	
-//		}
-//		
-//		if( count == 200) {
-//			//First Row -- Second Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-//			vehicle.setDestination(570, 150);
-//			vehicles.add(vehicle);
-//
-//		}
-//		if( count == 250) {
-//			//First Row -- Third Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
-//			vehicle.setDestination(570, 200);
-//			vehicles.add(vehicle);
-//			
-//		
-//		}
-//
-//		if( count == 300) {
-//			//Second Row -- First Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(770, 60);
-//			vehicles.add(vehicle);
-//	
-//		}
-//		if( count == 350) {
-//			//Second Row -- Second Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(770, 100);
-//			vehicles.add(vehicle);
-//			
-//			
-//		}
-//		if( count == 400) {
-//			//Second Row -- Third Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(770, 150);
-//			vehicles.add(vehicle);
-//			
-//		}
-//		if( count == 450) {
-//			//Second Row -- Fourth Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(770, 200);
-//			vehicles.add(vehicle);
-//			
-//	
-//
-//		}
-//		if( count == 500) {
-//			//Fourth row -- First building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(990, 100);
-//			vehicles.add(vehicle);
-//			
-//
-//		}
-//		if( count == 550) {
-//			//Fourth row -- First building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(990, 200);
-//			vehicles.add(vehicle);
-//			
-//
-//		}
-		
-//		//Make them all lanes stop
-//		if ( count % 500 == 0 ) {
-//			System.out.println("RED LIGHT");
-//			for ( int i=0; i<vehicles.size(); i++ ) {
-//				vehicles.get(i).redLight();
-//			}
-//		}
-//		
-//		if ( count % 1000 == 0 ) {
-//			System.out.println("GREEN LIGHT");
-//
-//			for ( int i=0; i<vehicles.size(); i++ ) {
-//				vehicles.get(i).greenLight();
-//			}
-//		}
-		
-
-		
-		repaint();
-	}
-	
-	public void paint( Graphics g ) {
+	public void paintComponent( Graphics g ) {
 		Graphics2D g2 = (Graphics2D)g;
 		
 
@@ -364,12 +260,6 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			p.draw(g2);
 		}
 		
-		
-		
-		
-//		Lane l = lanes.get(0);
-//		Vehicle vehicle = new Vehicle( 15, 15, 16, 16);
-//		l.addVehicle( vehicle );
 	}
 	
 	public void removeVehicle(Vehicle v) {
