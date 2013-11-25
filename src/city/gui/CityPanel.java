@@ -180,52 +180,49 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		//Add grid of homes
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20 );
+				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10 );
 				buildings.add( home );
 			}
 		}
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20 );
+				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20, i*60 + 90, j*40 + 18 );
 				buildings.add( home );
 			}
 		}
 		
 		//First Section, Top Row
-		Building restaurant1 = new Building( hozX + 230, hozY + 160, 20, 20 );
-		buildings.add(restaurant1);
 		
-		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20 );
+		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60 );
 		buildings.add(restaurant2);
-		
-		Building restaurant3 = new Building( hozX + 430, hozY + 30, 20, 20 );
+		Building restaurant7 = new Building( hozX + 230, hozY + 120, 20, 20, 570, 100 );
+		buildings.add(restaurant7);
+		Building restaurant1 = new Building( hozX + 230, hozY + 160, 20, 20, 570, 200 );
+		buildings.add(restaurant1);
+	
+		Building restaurant3 = new Building( hozX + 430, hozY + 30, 20, 20, 770, 60 );
 		buildings.add(restaurant3);
-		
-		//First Section, Bottom Row
-		Building market = new Building( hozX + 370, hozY + 160, 20, 20 );
+		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 770, 100 );
+		buildings.add(bank);
+		Building restaurant6 = new Building( hozX + 430, hozY + 120, 20, 20, 770, 150 );
+		buildings.add(restaurant6);
+		Building market = new Building( hozX + 370, hozY + 160, 20, 20, 770, 200 );
 		buildings.add(market);
 		
-		Building bank = new Building( hozX + 370, hozY + 60, 20, 20 );
-		buildings.add(bank);
-		
-		Building restaurant4 = new Building( hozX + 600, hozY + 60, 20, 20 );
-		buildings.add(restaurant4);
-		
-		//Second Section, Top Row 
-		Building restaurant5 = new Building( hozX + 600, hozY + 160, 20, 20 );
+	
+		Building restaurant4 = new Building( hozX + 600, hozY + 60, 20, 20, 990, 100 );
+		buildings.add(restaurant4);		
+		Building restaurant5 = new Building( hozX + 600, hozY + 160, 20, 20, 990, 200 );
 		buildings.add(restaurant5);
 		
-		Building restaurant7 = new Building( hozX + 230, hozY + 120, 20, 20 );
-		buildings.add(restaurant7);
-		
-		//Second Section, Bottom Row
-		Building restaurant6 = new Building( hozX + 430, hozY + 120, 20, 20 );
-		buildings.add(restaurant6);
+
+
 		
 		addMouseListener( this );
 
 	}
+	
 
 	
 	public void actionPerformed( ActionEvent ae ) {
