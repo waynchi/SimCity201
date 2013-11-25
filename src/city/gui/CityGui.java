@@ -182,24 +182,24 @@ public class CityGui extends JFrame implements ActionListener {
 			p.Banks.add(bank);
 		}
 		setVisible(true);
-		setSize(1024, 1000);
+		setSize(1024, 768);
 
 		getContentPane().setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
 		cityControls = new CityControls();
-		cityControls.setPreferredSize(new Dimension(500, 500));
-		cityControls.setMaximumSize(new Dimension(500, 500));
-		cityControls.setMinimumSize(new Dimension(500, 500));
+		cityControls.setPreferredSize(new Dimension(500, 268));
+		cityControls.setMaximumSize(new Dimension(500, 268));
+		cityControls.setMinimumSize(new Dimension(500, 268));
 		
 		cardLayout = new CardLayout();
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setPreferredSize(new Dimension(500, 500));
-		buildingPanels.setMaximumSize(new Dimension(500, 500));
-		buildingPanels.setMinimumSize(new Dimension(500, 500));
+		buildingPanels.setPreferredSize(new Dimension(500, 268));
+		buildingPanels.setMaximumSize(new Dimension(500, 268));
+		buildingPanels.setMinimumSize(new Dimension(500, 268));
 		buildingPanels.setBackground(Color.yellow);
 
 
@@ -212,9 +212,13 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		
 		JScrollPane marketContainer = new JScrollPane(marketGui);
+		marketContainer.setOpaque(true);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
+		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
+		bankContainer.setOpaque(true);
 		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
+		houseContainer.setOpaque(true);
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
         buildingPanels.add(houseContainer, "" + 2);
