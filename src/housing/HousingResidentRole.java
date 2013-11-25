@@ -17,6 +17,7 @@ public class HousingResidentRole extends Role implements Resident {
 	private RepairMan repairMan;
 	private RepairStage repairStage;
 	protected State myState;
+	public Location location = Location.Home;
 	private boolean leisure = false;
 	protected boolean isActive = false;
 	private boolean needToLeave = false;
@@ -205,7 +206,6 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	@Override
 	public void msgIsInActive() {
-		myState = State.Entering;
 		needToLeave = true;
 	}
 
@@ -232,7 +232,7 @@ public class HousingResidentRole extends Role implements Resident {
 			leaveHome();
 			return true;
 		}
-		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Hungry")) {
+		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Eating")) {
 			cookAtHome();
 			leisure = false;
 			return true;
@@ -348,4 +348,6 @@ public class HousingResidentRole extends Role implements Resident {
 	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
+	
+	public enum Location {Home, NotHome};
 }
