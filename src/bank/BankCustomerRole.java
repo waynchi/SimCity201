@@ -22,7 +22,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private String name;
 
 	Timer timer = new Timer();
-	private BankCustomerGui bankCustomerGui;
+	private BankCustomerGui gui;
 
 	// agent correspondents
 	private Teller teller;
@@ -136,6 +136,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Actions
 
 	private void DepositMoney(){
+		gui.DoGoToTeller();
 		if (accountID == -1) {
 			wallet -= deposit;
 			teller.msgDeposit(deposit);
@@ -180,11 +181,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	public void setGui(BankCustomerGui g) {
-		bankCustomerGui = g;
+		gui = g;
 	}
 
 	public BankCustomerGui getGui() {
-		return bankCustomerGui;
+		return gui;
 	}
 	
 }

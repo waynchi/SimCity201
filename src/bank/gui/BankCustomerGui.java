@@ -79,6 +79,10 @@ public class BankCustomerGui implements Gui{
 		command = Command.LeaveRestaurant;
 	}
 	
+	public void DoGoToTeller() {
+		
+	}
+	
     public int getXPos() {
         return xPos;
     }
