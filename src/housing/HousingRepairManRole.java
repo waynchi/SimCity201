@@ -1,5 +1,6 @@
 package housing;
 
+import housing.HousingResidentRole.State;
 import housing.gui.RepairManGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
@@ -19,6 +20,8 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public RepairManGui gui;
 	public Semaphore activity = new Semaphore(0, true);
 	public MyHouse currentLocationHouse;
+	public boolean isActive;
+	public boolean needToLeave = false;
 
 	public HousingRepairManRole() {
 		super();
@@ -109,6 +112,13 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		location = Location.Shop;
 		gui.DoEnterShop();
 	}
+	
+	public void leaveJob() {
+		gui.DoLeaveJob();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+	}
 
 	//-----------------------------------------------------------//
 
@@ -124,18 +134,43 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void activityDone() {
 		activity.release();
 	}
+	
+	public void msgIsActive() {
+		isActive = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		needToLeave = true;
+		stateChanged();
+	}
+	
+	public void doneLeaving() {
+		location = Location.Nowhere;
+		isActive = false;
+		activity.release();
+		myPerson.msgDone("RepairManRole");
+	}
 
 	//-----------------------------------------------------------//
 
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
+		if (location == Location.Nowhere && isActive == true) {
+			enterShop();
+			return true;
+		}
 		if (location == Location.OutsideReturning && myPerson.getAgentEvent().equals("RepairManArrivedShop")) {
 			enterShop();
 			return true;
 		}
 		if (location == Location.OutsideFixing && myPerson.getAgentEvent().equals("RepairManArrived") && currentHouse.s == HouseState.NeedsRepair) {
 			enterHouse(currentHouse);
+			return true;
+		}
+		if ((currentHouse == null || currentHouse.s != HouseState.Reached) && (location != Location.OutsideFixing || location != Location.OutsideReturning) && needToLeave == true) {
+			leaveJob();
 			return true;
 		}
 		if (currentHouse == null) {
@@ -251,5 +286,5 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public enum HouseState {None, NeedsRepair, Reached}
-	public enum Location {Shop, OutsideFixing, OutsideReturning, Resident};
+	public enum Location {Shop, OutsideFixing, OutsideReturning, Resident, Nowhere};
 }
