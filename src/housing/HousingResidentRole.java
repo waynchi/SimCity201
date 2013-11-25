@@ -56,7 +56,6 @@ public class HousingResidentRole extends Role implements Resident {
 				activity.acquire();
 			} catch (InterruptedException e) {}
 		}
-		myState = State.Idle;
 	}
 
 	public void eatFood() {
@@ -183,7 +182,6 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void activityDone() {
-		myState = State.Idle;
 		activity.release();
 		stateChanged();
 	}
