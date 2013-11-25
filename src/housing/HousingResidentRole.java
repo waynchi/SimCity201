@@ -203,11 +203,13 @@ public class HousingResidentRole extends Role implements Resident {
 	public void msgIsActive() {
 		myState = State.Entering;
 		isActive = true;
+		stateChanged();
 	}
 	
 	@Override
 	public void msgIsInActive() {
 		needToLeave = true;
+		stateChanged();
 	}
 
 	//-----------------------------------------------------------//
