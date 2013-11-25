@@ -158,14 +158,15 @@ public class CityGui extends JFrame implements ActionListener {
             b.setBuildingPanel(bp);
 		}
 		
-		//JScrollPane marketContainer = new JScrollPane(marketGui);
+		JScrollPane marketContainer = new JScrollPane(marketGui);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
-		//buildingPanels.add(marketContainer,"" + 0);
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
         buildingPanels.add(houseContainer, "" + 2);
+        buildingPanels.add(marketContainer,"" + 3);
+
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
