@@ -1,4 +1,7 @@
 package city.gui;
+import housing.House;
+import housing.HouseType;
+import housing.HousingRepairManRole;
 import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
 
@@ -49,6 +52,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole(bankGui);
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
+	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	
 	
 	
@@ -97,9 +101,13 @@ public class CityGui extends JFrame implements ActionListener {
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
+					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
 					residentRole.testModeOn();
+					residentRole.setPerson(person);
 					residentRole.isActive = true;
+					residentRole.setRepairMan(repairManRole);
+					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
 					
 					
@@ -140,6 +148,14 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketEmployee", start, end);
 						person.addRole(MarketEmployeeRole,"MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
+						person.setMoney(1000000);
+						person.hasCar = true;
+					}
+					if(job.equals("RepairMan"))
+					{
+						person.addJob("RepairMan", start, end);
+						person.addRole(repairManRole,"RepairMan");
+						repairManRole.setPerson(person);
 						person.setMoney(1000000);
 						person.hasCar = true;
 					}
