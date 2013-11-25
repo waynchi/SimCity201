@@ -40,7 +40,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		// Leaving.
 	}
 	
-	public void leaveShop() {
+	public void leaveShop(MyHouse mh) {
 		gui.DoLeaveShop();
 		try {
 			activity.acquire();
@@ -53,21 +53,28 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void returnToShop() {
+		if (currentLocationHouse.h.type == HouseType.Apartment) {	
+		}
+		else {
+		}
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 		location = Location.OutsideReturning;
 		myPerson.msgDone("RepairManFixed");
 	}
 	
-	public void leaveApartmentComplex() {
+	public void leaveApartmentComplexToFix(MyHouse mh) {
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToHouseInDifferentPlace() {
+	public void goToHouseInDifferentPlaceToFix(MyHouse mh) {
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToVilla() {
+	public void goToVilla(MyHouse mh) {
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
@@ -80,6 +87,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	
 	public void enterShop() {
 		location = Location.Shop;
+		gui.DoEnterShop();
 	}
 
 	//-----------------------------------------------------------//
@@ -103,11 +111,11 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (location == Location.OutsideReturning && myPerson.getAgentEvent().equals("")) {
+		if (location == Location.OutsideReturning && myPerson.getAgentEvent().equals("RepairManArrivedShop")) {
 			enterShop();
 			return true;
 		}
-		if (location == Location.OutsideFixing && myPerson.getAgentEvent().equals("")) {
+		if (location == Location.OutsideFixing && myPerson.getAgentEvent().equals("RepairManArrived") && currentHouse.s == HouseState.NeedsRepair) {
 			enterHouse(currentHouse);
 			return true;
 		}
@@ -115,8 +123,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			currentHouse = findMyHouseByState(HouseState.NeedsRepair);
 		}
 		if (currentHouse != null) {
+			if (currentHouse.s == HouseState.Reached) {
+				repairItems(currentHouse);
+				return true;
+			}
 			if (location == Location.Shop && currentHouse.s == HouseState.NeedsRepair) {
-				leaveShop();
+				leaveShop(currentHouse);
 				return true;
 			}
 			else if (location == Location.Resident && currentHouse.s == HouseState.NeedsRepair) {
@@ -127,29 +139,25 @@ public class HousingRepairManRole extends Role implements RepairMan {
 							return true;
 						}
 						else {
-							leaveApartmentComplex();
+							leaveApartmentComplexToFix(currentHouse);
 							return true;
 						}
 					}
 					else {
-						leaveApartmentComplex();
+						leaveApartmentComplexToFix(currentHouse);
 						return true;
 					}
 				}
 				else {
 					if (currentHouse.h.type == HouseType.Apartment) {
-						goToHouseInDifferentPlace();
+						goToHouseInDifferentPlaceToFix(currentHouse);
 						return true;
 					}
 					else {
-						goToVilla();
+						goToVilla(currentHouse);
 						return true;
 					}
 				}
-			}
-			if (currentHouse.s == HouseState.Reached) {
-				repairItems(currentHouse);
-				return true;
 			}
 		}
 		else {
