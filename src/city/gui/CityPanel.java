@@ -229,6 +229,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		Vehicle vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
 		vehicle.setDestination(570, 60);
 		vehicles.add(vehicle);
+		
 	}
 
 	

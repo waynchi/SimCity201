@@ -82,7 +82,6 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 	}
 	public void draw(Graphics2D g2) {
-		//this.shortestDistance();
 		g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
@@ -94,15 +93,11 @@ public class Vehicle extends Rectangle2D.Double {
 		//Intersections
 		//9 = first; 10 = second; 11=third
 		
-
-		//Residential Intersection
-		if(xPos == 122 && yPos == 238) {
-			System.out.println("UP");
-			this.direction = "up";
-		} else {
+		if(yPos <= 120 && xPos == 122) {
 			this.direction = "down";
-
 		}
+		
+		//Residential Intersection
 		if(yPos == 120 && xPos == 122) {
 			this.lane = lanes.get(0);
 			this.setOrientation();
