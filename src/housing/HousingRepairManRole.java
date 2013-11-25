@@ -49,7 +49,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void leaveShop(MyHouse mh) {
-		gui.DoLeaveShop();
+		gui.DoLeaveShop(mh.h.gui);
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
@@ -97,6 +97,9 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	
 	public void enterHouse(MyHouse mh) {
 		gui.DoEnterHouse(mh.h.gui);
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 		location = Location.Resident;
 		mh.s = HouseState.Reached;
 		mh.r.ImHere();

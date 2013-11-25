@@ -15,7 +15,7 @@ public class RepairManGui implements HGui{
 	public State state = State.Idle;
 	public HouseGui targetGui;
 	
-	public enum State {Idle, EnteringHouse, LeavingHouse, Repairing, LeavingApartmentComplex};
+	public enum State {Idle, EnteringHouse, LeavingHouse, Repairing, LeavingApartmentComplex, LeavingShop};
 	public enum Location {Outside, Shop, ApartmentComplex, Apartment, Villa};
 
 	public RepairManGui(RepairMan r) {
@@ -64,6 +64,11 @@ public class RepairManGui implements HGui{
 				state = State.Idle;
 				r.activityDone();
 			}
+			else if (state == State.LeavingShop) {
+				state = State.Idle;
+				location = Location.Outside;
+				r.activityDone();
+			}
 		}
 	}
 
@@ -88,7 +93,10 @@ public class RepairManGui implements HGui{
 		return false;
 	}
 	
-	public void DoLeaveShop() {
+	public void DoLeaveShop(HouseGui g) {
+		targetGui = g;
+		state = State.LeavingShop;
+		goToLocation(gui.entranceCoordinatesInternal);
 	}
 	
 	public void DoEnterShop() {
