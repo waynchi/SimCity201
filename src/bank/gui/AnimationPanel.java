@@ -64,5 +64,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(TellerGui gui) {
         guis.add(gui);
     }
+    
+    public void updatePosition() {
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+    }
 
 }

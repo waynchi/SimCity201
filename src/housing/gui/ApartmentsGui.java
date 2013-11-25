@@ -6,12 +6,15 @@ import housing.House;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApartmentsGui implements HGui{
 	public Apartments a;
 	int houseWidth = 76;
 	int houseHeight = 76;
 	public Dimension entranceCoordinates = new Dimension(250, 530);
+	List<HGui> guis = new ArrayList<HGui>();
 
 	public ApartmentsGui(Apartments a) {
 		this.a = a;
@@ -39,10 +42,21 @@ public class ApartmentsGui implements HGui{
 			y = 0;
 			x += (houseHeight + 30);
 		}
+		for (HGui g1 : guis) {
+			g1.draw(g);
+		}
 	}
 
 	@Override
 	public boolean isPresent() {
 		return true;
+	}
+	
+	public void add(HGui g) {
+		guis.add(g);
+	}
+	
+	public void remove(HGui g) {
+		guis.remove(g);
 	}
 }
