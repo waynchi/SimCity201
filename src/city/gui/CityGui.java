@@ -58,8 +58,6 @@ public class CityGui extends JFrame implements ActionListener {
 		this.setResizable(false);
 		cityPanel = new CityPanel(this);
 		cityPanel.setPreferredSize(new Dimension(500, 500));
-		cityPanel.setMaximumSize(new Dimension(500, 500));
-		cityPanel.setMinimumSize(new Dimension(500, 500));
 		
 		
 		Timer timer = new Timer(10, this);
