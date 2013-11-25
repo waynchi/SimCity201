@@ -8,6 +8,7 @@ public interface RepairMan {
 	// Messages
 
 	public void needHelp(House h, double money);
+	public void activityDone();
 
 	//-----------------------------------------------------------//
 	
