@@ -76,9 +76,9 @@ public class PeopleAgent extends Agent implements People{
 		return hunger.toString();
 	}
 	
-	public Role getHost()
+	public Role getHost(int i)
 	{
-		return Restaurants.get(0).h;
+		return Restaurants.get(i).h;
 	}
 	
 	public Role getTeller()
@@ -163,6 +163,10 @@ public class PeopleAgent extends Agent implements People{
 		{
 			
 		}
+		if(role.equals("MarketCustomerRole"))
+		{
+			hasCar = true;
+		}
 	}
 	
 	public PeopleAgent(String name, double Money, boolean hasCar)
@@ -171,6 +175,7 @@ public class PeopleAgent extends Agent implements People{
 		this.name = name;
 		this.Money = Money;
 		this.hasCar = hasCar;
+		this.Balance = this.Money;
 	}
 	
 	
@@ -219,6 +224,7 @@ public class PeopleAgent extends Agent implements People{
 						if(Money >= 30000)
 						{
 							event = AgentEvent.GoingToBuyCar;
+							log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
 							return;
 						}
 						else
@@ -234,7 +240,7 @@ public class PeopleAgent extends Agent implements People{
 						if(Money >= 50000)
 						{
 							event = AgentEvent.GoingToDepositMoney;
-							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
 							stateChanged();
 							return;
 						}
@@ -249,6 +255,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.start)
 		{
 			event = AgentEvent.GoingToWork;
+			print("Going To Work");
 			log.add(new LoggedEvent("Going To Work"));
 			stateChanged();
 			return;
@@ -378,6 +385,7 @@ public class PeopleAgent extends Agent implements People{
 		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
 		{
 			state = AgentState.BuyingCar;
+			log.add(new LoggedEvent("Going To Buy Car. New State is " + state.toString()));
 			GoBuyCar();
 			Person = true;
 		}
