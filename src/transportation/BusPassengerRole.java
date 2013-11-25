@@ -61,7 +61,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	public void msgAnimationFinishedDoLeaveBus() {
 		// TODO Auto-generated method stub
 		System.out.println("Bus passenger recieved message that gui left bus, now messaging myPerson");
-		myPerson.msgDone(this);
+		myPerson.msgDone("BusPassenger");
 	}
 
 	/* (non-Javadoc)
