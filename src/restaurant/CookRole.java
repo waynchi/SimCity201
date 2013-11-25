@@ -41,6 +41,7 @@ public class CookRole extends Role implements Cook{
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
+	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 
 	private CookGui cookGui = null;
 
@@ -96,6 +97,12 @@ public class CookRole extends Role implements Cook{
 	public void msgIsInActive() {
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtRevolvingStand() {
+		atRevolvingStand.release();
+		myPerson.CallstateChanged();
+		
 	}
 
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
@@ -204,6 +211,7 @@ public class CookRole extends Role implements Cook{
 				new TimerTask(){
 					public void run(){
 						while (theMonitor.getOrderSize() != 0){
+							getOrderFromRevolvingStand();
 							orders.add (new MyOrder(theMonitor.removeOrder()));
 						}									
 					} 
@@ -276,6 +284,17 @@ public class CookRole extends Role implements Cook{
 		marketOrders.add(new MarketOrder(marketOrder));
 		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
+	
+	
+	public void getOrderFromRevolvingStand() {
+		cookGui.DoGoToRevolvingStand();
+		try {
+			atRevolvingStand.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	/*private void orderFromAnotherMarket (MarketOrder mo) {
@@ -320,7 +339,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void done() {
-		getPersonAgent().msgDone("RestaurantCook");
+		getPersonAgent().msgDone("RestaurantCookRole");
 	}
 	//utilities
 

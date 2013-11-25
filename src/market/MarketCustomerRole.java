@@ -37,6 +37,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// messages
 	public void msgIsActive () {
 		isActive = true;
+		itemsNeeded.put("Car", 1);
+		state = marketCustomerState.IN_MARKET;
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -129,7 +131,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	private void done() {
 		isActive = false;
-		getPersonAgent().msgDone("MarketCustomer");
+		getPersonAgent().msgDone("MarketCustomerRole");
 		state = marketCustomerState.DONE;
 	}
 

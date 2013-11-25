@@ -1,5 +1,7 @@
 package restaurant;
 
+import javax.smartcardio.ATR;
+
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Waiter;
 
@@ -15,8 +17,11 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 		theMonitor = monitor;
 	}
 	
-	public void goPlaceOrder(MyCustomer customer) {
+	public void goPlaceOrder(MyCustomer customer) throws InterruptedException {
+		cook = host.getCook();
 		print ("Here's an order for table " + customer.tableNumber + ". Adding to the revolving stand!");
+		waiterGui.DoGoToRevolvingStand();
+		atRevolvingStand.acquire();
         theMonitor.addOrder(customer.tableNumber, customer.choice, this);
         customer.state = customerState.waitingForFood;
 	}
@@ -24,6 +29,6 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 	public void done () {
 		isActive = false;
 		leaveWork = false;
-		getPersonAgent().msgDone("RestaurantSpecialWaiter");
+		getPersonAgent().msgDone("RestaurantSpecialWaiterRole");
 	}
 }

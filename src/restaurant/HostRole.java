@@ -350,7 +350,7 @@ public class HostRole extends Role implements Host{
 		// reset the two lists of waiters
 		waiters = new ArrayList<MyWaiter>();
 		allWaiters = new ArrayList<Waiter>();
-		getPersonAgent().msgDone("RestaurantHost");
+		getPersonAgent().msgDone("RestaurantHostRole");
 	}
 
 	//utilities

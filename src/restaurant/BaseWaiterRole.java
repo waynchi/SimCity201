@@ -35,6 +35,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atCook = new Semaphore(0,true);
 	private Semaphore atWaitingCustomer = new Semaphore(0,true);
 	private Semaphore atCashier = new Semaphore(0,true);
+	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected int currentCustomerNum;
 
 	protected boolean isActive = false;
@@ -128,6 +129,13 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		getPersonAgent().CallstateChanged();
 	}
 	
+
+	public void msgAtRevolvingStand() {
+		atRevolvingStand.release();
+		myPerson.CallstateChanged();
+		
+	}
+	
 	public void msgAskForBreak() { //from gui onBreak button
 		state = agentState.ASKING_FOR_BREAK;
 		getPersonAgent().CallstateChanged();
@@ -219,6 +227,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
+	 * @throws InterruptedException 
 	 */
 	public boolean pickAndExecuteAnAction() {
 		try{
@@ -258,7 +267,12 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			
 			for (MyCustomer customer : customers) {
 				if (customer.state == customerState.ordered){
-					goPlaceOrder(customer);
+					try {
+						goPlaceOrder(customer);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					return true;
 				}
 			}
@@ -301,7 +315,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		host = (Host) getPersonAgent().getHost();
+		host = myPerson.Restaurants.get(0).h;
 		host.addWaiter(this);
 		cook = host.getCook();
 		cashier = host.getCashier();
@@ -344,7 +358,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.state = customerState.askedToOrder;	
 	} 
 
-	public abstract void goPlaceOrder(MyCustomer customer);
+	public abstract void goPlaceOrder(MyCustomer customer) throws InterruptedException;
 	
 	public void goTellCustomerToReorder (MyCustomer customer) {
 		waiterGui.DoApproachCustomer(customer.c);
@@ -491,6 +505,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	public String getName() {
 		return getPersonAgent().getName();
 	}
+
 
 	
 	

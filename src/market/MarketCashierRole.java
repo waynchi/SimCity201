@@ -134,7 +134,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	@Override
-	public void msgWithdrawalSuccessful(double funds, double amount) {
+	public void msgWithdrawSuccessful(double funds, double amount) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -221,7 +221,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void done() {
 		isActive = false;
 		leaveWork = false;
-		getPersonAgent().msgDone("MarketCashier");
+		getPersonAgent().msgDone("MarketCashierRole");
 	}
 
 	//utilities

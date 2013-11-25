@@ -166,7 +166,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private void done() {
 		isActive = false;
 		leaveWork = false;
-		getPersonAgent().msgDone("MarketEmployee");
+		getPersonAgent().msgDone("MarketEmployeeRole");
 	}
 
 	//utilities
