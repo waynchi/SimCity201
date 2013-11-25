@@ -154,8 +154,11 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
-        buildingPanels.add(bankGui, "" + 0);
-        buildingPanels.add(restaurantGui, "" + 1);
+		JPanel jPanel = new JPanel();
+		jPanel.setPreferredSize(new Dimension(500,250));
+		jPanel.add(bankGui);
+        buildingPanels.add(jPanel, "" + 0);
+        //buildingPanels.add(restaurantGui, "" + 1);
 
 		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
