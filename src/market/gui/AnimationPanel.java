@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class AnimationPanel extends JPanel implements ActionListener {
 
-    private final int WINDOWX = 450;
-    private final int WINDOWY = 350;
+    private final int WINDOWX = 600;
+    private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
 
@@ -40,14 +40,15 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
         //Here is the main entrance
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(400,120, 40, 100);
+        g2.fillRect(500,120, 40, 100);
         
         //Here is the counter
         g2.setColor(Color.black);
         g2.fillRect(200, 120, 40, 100);//200 and 250 need to be table params
 
         // here is the register
-        
+        g2.setColor(Color.orange);
+        g2.fillRect(350, 30, 100, 40);
         
         // here are the cabinets
         g2.setColor(Color.blue);

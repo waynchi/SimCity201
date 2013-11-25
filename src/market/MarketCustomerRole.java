@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
+import market.gui.MarketCustomerGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -16,11 +18,16 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	enum marketCustomerState {IN_MARKET, MADE_ORDER, WAITING_FOR_CHECK, WAITING_FOR_ORDER, PAYING, PAID, DONE};
 	enum marketCustomerEvent {NONE, RECEIVED_ORDER, RECEIVED_CHECK, RECEIVED_CHANGE};
 	
+	MarketCustomerGui gui;
 	MarketEmployee employee;//should know it from PeopleAgent
 	MarketCashier cashier;
 	marketCustomerState state;
 	marketCustomerEvent event;
 	Dimension location; // should get from PeopleAgent
+	
+	Semaphore atCounter = new Semaphore(0,true);
+	Semaphore atRegister = new Semaphore(0,true);
+	Semaphore atExit = new Semaphore(0,true);
 
 	// one shopping list at a time
 	private	Map<String, Integer> itemsNeeded = new HashMap<String, Integer>();
@@ -42,6 +49,20 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		getPersonAgent().CallstateChanged();
 	}
 	
+	public void msgAtCounter () {
+		atCounter.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtRegister() {
+		atRegister.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtExit() {
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
 	
 	public void msgBuy(Map<String,Integer> items){ //From PeopleAgent 
 		isActive = true;
@@ -118,21 +139,41 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	//action
 	private void orderItem() {
-		//gui.doGoToMarketEmployee();
+		gui.DoGoToMarketEmployee();
+		try {
+			atCounter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
 	
 
 	private void payBill() {
+		gui.DoGoToRegister();
+		try {
+			atRegister.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		state = marketCustomerState.PAID;	
 	}
 
 	private void done() {
-		isActive = false;
+		gui.DoGoToExit();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		getPersonAgent().msgDone("MarketCustomerRole");
 		state = marketCustomerState.DONE;
+		isActive = false;
 	}
 
 
@@ -148,6 +189,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public String getName() {
 		return getPersonAgent().getName();
+	}
+	
+	public void setGui(MarketCustomerGui gui) {
+		this.gui = gui;
 	}
 
 }

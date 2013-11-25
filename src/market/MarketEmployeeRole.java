@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import people.Role;
 import market.gui.MarketEmployeeGui;
@@ -56,6 +57,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	private boolean isActive = false;
 	private boolean leaveWork = false;
+	
+	Semaphore atCabinet = new Semaphore(0,true);
+	Semaphore atCounter = new Semaphore(0,true);
 
 	// constructor
 	public MarketEmployeeRole(){
@@ -80,6 +84,16 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgIsInActive() {
 		leaveWork = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtCabinet() {
+		atCabinet.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtCounter() {
+		atCounter.release();
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -116,7 +130,20 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private void getOrder(Map<String, Integer> itemList) { //gui
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
 			gui.doGetItem(entry.getKey());
+			try {
+				atCabinet.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			items.get(entry.getKey()).inventory -= entry.getValue();
+		}
+		gui.doGoToCounter();
+		try {
+			atCounter.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -134,7 +161,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//if customer is in market, give it the order
 		else {
 			//if (order.customer.getPerson().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
-				gui.doWalkToCustomer(order.customer);
+				//gui.doWalkToCustomer(order.customer);
 				order.customer.msgHereIsYourOrder(order.items);
 			//}
 
@@ -186,6 +213,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		return getPersonAgent().getName();
 	}
 
-
+	public void setGui(MarketEmployeeGui gui) {
+		this.gui = gui;
+	}
 
 }

@@ -1,7 +1,5 @@
 package restaurant;
 
-import javax.smartcardio.ATR;
-
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Waiter;
 
