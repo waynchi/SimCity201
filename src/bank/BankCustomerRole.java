@@ -33,7 +33,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private int accountID = -1; //Initialize with an impossible value that will be checked later
 	
 	public enum CustomerState
-	{none, waiting, ready, needAccount, finished, done};
+	{none, waiting, ready, needAccount, finished, done, inline};
 	
 	public enum CustomerAction 
 	{deposit, withdraw}
@@ -76,6 +76,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		print("Recveived msgIsActive");
 		bgui.gotoLine(gui);
 		isActive = true;
+		state = CustomerState.inline;
 		stateChanged();
 	}
 	
@@ -128,6 +129,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	protected boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 		if (isActive) {
+			if (state == CustomerState.inline) {
+				CallTeller();
+			}
 			if (state == CustomerState.ready) {
 				if (myPerson.event == AgentEvent.GoingToDepositMoney) {
 					DepositMoney();
@@ -148,6 +152,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	// Actions
+	
+	private void CallTeller() {
+		myPerson.Banks.get(0).t.msgHere(this, name);
+		state = CustomerState.none;
+	}
 
 	private void DepositMoney(){
 		atTeller.drainPermits();
