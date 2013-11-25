@@ -14,6 +14,7 @@ public class RepairManGui implements HGui{
 	public Location location = Location.Shop;
 	public State state = State.Idle;
 	public HouseGui targetGui;
+	public HouseGui ref;
 	
 	public enum State {Idle, EnteringHouse, LeavingHouse, Repairing, LeavingApartmentComplex, LeavingShop};
 	public enum Location {Outside, Shop, ApartmentComplex, Apartment, Villa};
@@ -40,12 +41,15 @@ public class RepairManGui implements HGui{
 				xPos = targetGui.entranceCoordinatesInternal.width;
 				yPos = targetGui.entranceCoordinatesInternal.height;
 				Dimension d = targetGui.getPosition("DiningTable");
+				targetGui.h.a.gui.remove(this);
 				goToLocation(d);
+				targetGui.add(this);
 				r.activityDone();
 			}
 			else if (state == State.LeavingHouse) {
 				if (targetGui.h.type == HouseType.Apartment) {
 					location = Location.ApartmentComplex;
+					targetGui.h.a.gui.add(this);
 				}
 				else {
 					location = Location.Outside;
@@ -53,6 +57,7 @@ public class RepairManGui implements HGui{
 				state = State.Idle;
 				xPos = targetGui.entranceCoordinatesExternal.width;
 				yPos = targetGui.entranceCoordinatesExternal.height;
+				targetGui.remove(this);
 				r.activityDone();
 			}
 			else if (state == State.Repairing) {
@@ -62,6 +67,7 @@ public class RepairManGui implements HGui{
 			else if (state == State.LeavingApartmentComplex && location == Location.ApartmentComplex) {
 				location = Location.Outside;
 				state = State.Idle;
+				ref.h.a.gui.remove(this);
 				r.activityDone();
 			}
 			else if (state == State.LeavingShop) {
@@ -81,9 +87,6 @@ public class RepairManGui implements HGui{
 
 	@Override
 	public boolean isPresent() {
-		if (location == Location.ApartmentComplex)
-			return false;
-		else
 		return true;
 	}
 	
@@ -116,6 +119,7 @@ public class RepairManGui implements HGui{
 			location = Location.ApartmentComplex;
 			xPos = g.h.a.gui.entranceCoordinates.width;
 			yPos = g.h.a.gui.entranceCoordinates.height;
+			g.h.a.gui.add(this);
 			Dimension d = g.entranceCoordinatesExternal;
 			goToLocation(d);
 		}
@@ -123,6 +127,7 @@ public class RepairManGui implements HGui{
 			state = State.Idle;
 			Dimension d = g.getPosition("DiningTable");
 			goToLocation(d);
+			g.add(this);
 			r.activityDone();
 		}
 		targetGui = g;
@@ -155,6 +160,7 @@ public class RepairManGui implements HGui{
 		state = State.LeavingApartmentComplex;
 		location = Location.ApartmentComplex;
 		goToLocation(targetGui.h.a.gui.entranceCoordinates);
+		ref = targetGui;
 		this.targetGui = g;
 	}
 	

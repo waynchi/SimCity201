@@ -78,6 +78,10 @@ public class HouseGui implements HGui{
 		guis.add(g);
 	}
 	
+	public void remove(HGui g) {
+		guis.remove(g);
+	}
+	
 	public void setExternalCoordinates(Dimension d) {
 		entranceCoordinatesExternal.width = d.width;
 		entranceCoordinatesExternal.height = d.height;
