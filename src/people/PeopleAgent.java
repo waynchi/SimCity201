@@ -2,6 +2,7 @@ package people;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -30,6 +31,8 @@ public class PeopleAgent extends Agent implements People{
 	PersonGui personGui;
 	CityGui cityGui;
 	
+	private Semaphore moving = new Semaphore(0,true);
+	
 	public EventLog log = new EventLog();
 
 	
@@ -43,6 +46,12 @@ public class PeopleAgent extends Agent implements People{
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Sleeping;
 	public AgentEvent event = AgentEvent.GoingToSleep;
+	
+	
+	public void Arrived()
+	{
+		moving.release();
+	}
 	
 	public double getMoney()
 	{
@@ -587,13 +596,22 @@ public class PeopleAgent extends Agent implements People{
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
-			{			
+			{	
+				if(r.role.isActive == false)
+				{
 				r.role.msgIsInActive();
+				}
 				//Stop
 			}
 		}
 		//Pause the Gui
-		//gui
+		personGui.msgGoToRestaurantOne();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Release the Gui from msgDone
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
