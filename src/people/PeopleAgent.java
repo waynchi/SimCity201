@@ -571,7 +571,12 @@ public class PeopleAgent extends Agent implements People{
 	public void GoBuyCar()
 	{
 		personGui.GoToMarket();
-		moving.acquire();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("MarketCustomer"))
@@ -604,6 +609,20 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToBank()
 	{
+		personGui.goToBank();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(MyRole r: roles)
+		{
+			if(r.description == "BankCustomer")
+			{
+				r.role.msgIsActive();
+			}
+		}
 		//gui.GoToBank;
 		//roles.BankCustomerRole.msgIsActive();
 	}
