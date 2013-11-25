@@ -169,15 +169,13 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			e.printStackTrace();
 		}
 		if (accountID == -1) {
-			wallet -= deposit;
+			myPerson.Money -= 100;
 			teller.msgDeposit(deposit);
-			deposit = 0;
 			state = CustomerState.finished;
 		}
 		else {
-			wallet -= deposit;
+			myPerson.Money -= 100;
 			teller.msgDeposit(accountID, deposit);
-			deposit = 0;
 			state = CustomerState.finished;
 		}
 	}
