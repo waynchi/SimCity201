@@ -49,16 +49,15 @@ public class CityGui extends JFrame implements ActionListener {
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	
 	
+	
 
 
 	public int time;
 
 	public CityGui() {
-
+		this.setResizable(false);
 		cityPanel = new CityPanel(this);
 		cityPanel.setPreferredSize(new Dimension(500, 500));
-		cityPanel.setMaximumSize(new Dimension(500, 500));
-		cityPanel.setMinimumSize(new Dimension(500, 500));
 		
 		
 		Timer timer = new Timer(10, this);
@@ -70,7 +69,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input;
 		try {
-			input = new FileReader("config.txt");
+			input = new FileReader("src\\config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -146,8 +145,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setMinimumSize(new Dimension(500, 300));
-		buildingPanels.setMaximumSize(new Dimension(500, 300));
 		buildingPanels.setPreferredSize(new Dimension(500, 300));
 		buildingPanels.setBackground(Color.yellow);
 
@@ -161,10 +158,11 @@ public class CityGui extends JFrame implements ActionListener {
             b.setBuildingPanel(bp);
 		}
 		
-		
+		//JScrollPane marketContainer = new JScrollPane(marketGui);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
+		//buildingPanels.add(marketContainer,"" + 0);
         buildingPanels.add(restaurantContainer, "" + 0);
         buildingPanels.add(bankContainer, "" + 1);
         buildingPanels.add(houseContainer, "" + 2);
@@ -173,10 +171,6 @@ public class CityGui extends JFrame implements ActionListener {
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
 		getContentPane().add(BorderLayout.SOUTH, buildingPanels);
 		
-		restPanel.setBounds(768, 0, 666, 215);
-		restPanel.setMinimumSize(new Dimension(500, 250));
-		restPanel.setMaximumSize(new Dimension(500, 250));
-		restPanel.setPreferredSize(new Dimension(500, 250));
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -214,7 +208,6 @@ public class CityGui extends JFrame implements ActionListener {
 		if(time == 12000) {
 			time=0;
 		}
-		repaint();
 
 	}
 }

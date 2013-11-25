@@ -38,7 +38,7 @@ public class PeopleAgent extends Agent implements People{
 
 	
 	public enum AgentState 
-	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
+	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
 	public enum AgentEvent 
 	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
 		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
@@ -437,7 +437,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-			state = AgentState.Idle;
+			state = AgentState.IdleAtHome;
 			}
 			if(location != AgentLocation.Home)
 			{
@@ -465,7 +465,7 @@ public class PeopleAgent extends Agent implements People{
 			GoToBank();
 			Person = true;
 		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToSleep)
+		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToSleep)
 		{
 			state = AgentState.Sleeping;
 			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
@@ -583,10 +583,12 @@ public class PeopleAgent extends Agent implements People{
 			if(r.description.equals("Resident"))
 			{	
 				r.role.msgIsActive();
-				
 			}
-		}	
+		}
+		if(state != AgentState.EatingAtHome && state != AgentState.IdleAtHome)
+		{
 		state = AgentState.Idle;
+		}
 	}
 
 	/* (non-Javadoc)
