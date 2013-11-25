@@ -7,18 +7,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import city.gui.trace.AlertLevel;
+import city.gui.trace.AlertLog;
+import city.gui.trace.AlertTag;
+import city.gui.trace.TracePanel;
+
 
 public class CityControls extends JPanel implements ActionListener {
 	private JTextField textField;
 	private JTextField textField_1;
+	TracePanel tracePanel;
+	ControlPanel controlPanel;
+	
 	public CityControls() {
 		
-		
-		// Create and set up the window.
-		final JFrame frame = new JFrame("Split Pane Example");
-
-		// Display the window.
-		this.setSize(500, 300);
 		this.setVisible(true);
 
 		// set grid layout for the frame
@@ -26,12 +28,9 @@ public class CityControls extends JPanel implements ActionListener {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		tabbedPane.addTab("Tab1", makePanel("People"));
-		tabbedPane.addTab("Tab2", makePanel("Other"));
+		tabbedPane.addTab("TraceLog", makePanel("Other"));
 
 		this.add(tabbedPane);
-		
-		
-		
 		
 	}
 	
@@ -46,19 +45,133 @@ public class CityControls extends JPanel implements ActionListener {
 			panel.add(btnAddPerson);
 			
 			panel.setBackground( Color.ORANGE );
-			panel.setPreferredSize( new Dimension(200, 77) );
+			panel.setPreferredSize( new Dimension(500, 268) );
 			return panel;
 
-		} else {
+		} 
+		if (text.equals("Other")) {
 			JPanel panel = new JPanel();
-			return panel;
+			panel.setLayout(new BorderLayout());
+			tracePanel = new TracePanel();
+			
+			tracePanel.showAlertsWithLevel(AlertLevel.ERROR);		//THESE PRINT RED, WARNINGS PRINT YELLOW on a black background... :/
+			tracePanel.showAlertsWithLevel(AlertLevel.INFO);		//THESE PRINT BLUE
+			tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);		//THESE SHOULD BE THE MOST COMMON AND PRINT BLACK
+			
+			tracePanel.hideAlertsWithLevel(AlertLevel.DEBUG);
+			
+			tracePanel.showAlertsWithTag(AlertTag.PERSON);
+			tracePanel.showAlertsWithTag(AlertTag.BANK_CUSTOMER);
+			
+			tracePanel.hideAlertsWithTag(AlertTag.BUS_STOP);
+
+			AlertLog.getInstance().addAlertListener(tracePanel);
+			this.controlPanel = new ControlPanel(tracePanel);
+			
+			panel.add(tracePanel, BorderLayout.CENTER);
+			panel.add(controlPanel, BorderLayout.EAST);
+			panel.setPreferredSize(new Dimension(500, 268));
+			JScrollPane pane = new JScrollPane(panel);
+			pane.setPreferredSize(new Dimension(500, 268));
+			JPanel panel2 = new JPanel();
+			panel2.setLayout(new BorderLayout());
+			panel2.add(pane, BorderLayout.CENTER);
+			return panel2;
 		}
+		else return null;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private class ControlPanel extends JPanel {
+		TracePanel tp;	//Hack so I can easily call showAlertsWithLevel for this demo.
+		
+		JButton enableMessagesButton;		//You could (and probably should) substitute a JToggleButton to replace both
+		JButton disableMessagesButton;		//of these, but I split it into enable and disable for clarity in the demo.
+		JButton enableErrorButton;		
+		JButton disableErrorButton;		
+		JButton enableBankCustTagButton;		//You could (and probably should) substitute a JToggleButton to replace both
+		JButton disableBankCustTagButton;		//of these, but I split it into enable and disable for clarity in the demo.
+		
+		public ControlPanel(final TracePanel tracePanel) {
+			this.tp = tracePanel;
+			enableMessagesButton = new JButton("Show Level: MESSAGE");
+			disableMessagesButton = new JButton("Hide Level: MESSAGE");
+			enableErrorButton = new JButton("Show Level: ERROR");
+			disableErrorButton = new JButton("Hide Level: ERROR");
+			enableBankCustTagButton = new JButton("Show Tag: BANK_CUSTOMER");
+			disableBankCustTagButton = new JButton("Hide Tag: BANK_CUSTOMER");
+			
+			
+			enableMessagesButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This is how you make messages with a certain Level (normal MESSAGE here) show up in the trace panel.
+					tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);
+					//================================================================================
+				}
+			});
+			disableMessagesButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This is how you make messages with a certain Level not show up in the trace panel.
+					tracePanel.hideAlertsWithLevel(AlertLevel.MESSAGE);
+					//================================================================================
+				}
+			});
+			enableErrorButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This is how you make messages with a level of ERROR show up in the trace panel.
+					tracePanel.showAlertsWithLevel(AlertLevel.ERROR);
+					//================================================================================
+				}
+			});
+			disableErrorButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This is how you make messages with a level of ERROR not show up in the trace panel.
+					tracePanel.hideAlertsWithLevel(AlertLevel.ERROR);
+					//================================================================================
+				}
+			});
+			enableBankCustTagButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This works the same way as AlertLevels, only you're using tags instead.
+					//In this demo, I generate message with tag BANK_CUSTOMER when you click in the 
+					//AnimationPanel somewhere.
+					tracePanel.showAlertsWithTag(AlertTag.BANK_CUSTOMER);
+					//================================================================================
+				}
+			});
+			disableBankCustTagButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//============================ TUTORIAL ==========================================
+					//This works the same way as AlertLevels, only you're using tags instead.
+					tracePanel.hideAlertsWithTag(AlertTag.BANK_CUSTOMER);
+					//================================================================================
+				}
+			});
+			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			this.add(enableMessagesButton);
+			this.add(disableMessagesButton);
+			this.add(enableErrorButton);
+			this.add(disableErrorButton);
+			this.add(enableBankCustTagButton);
+			this.add(disableBankCustTagButton);
+			//this.setMinimumSize(new Dimension(50, 600));
+		}
 	}
 	
 }
