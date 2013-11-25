@@ -12,11 +12,11 @@ public class BankCustomerGui implements Gui{
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
-	private boolean isWaiting;
+	boolean isWaiting;
 	
 
 	//private HostAgent host;
-	BankGui gui;
+	public BankGui gui;
     private int xTable, yTable;
     private int xFinal, yFinal;
 	private int xPos, yPos;
@@ -26,16 +26,14 @@ public class BankCustomerGui implements Gui{
 	
 	static final int CUST_SIZE = 20;
 
-	public BankCustomerGui(BankCustomerRole c, int custNum){ //HostAgent m) {
+	public BankCustomerGui(BankCustomerRole c){ //HostAgent m) {
 		agent = c;
-		this.custNum = custNum;
 		xPos = -20;
 		yPos = 125;
-		isWaiting = true;
-		xDestination = 200 - (CUST_SIZE + 10)*custNum;
+		isWaiting = false;
+		xDestination = -20;
 		yDestination = 125;
 		setPresent(true);
-		
 	}
 
 	public void updatePosition() {
@@ -89,5 +87,9 @@ public class BankCustomerGui implements Gui{
 
     public int getYPos() {
         return yPos;
+    }
+    
+    public void setCust(int num) {
+    	custNum = num;
     }
 }

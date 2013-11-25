@@ -3,6 +3,7 @@ package bank;
 
 import agent.Agent;
 import bank.gui.BankCustomerGui;
+import bank.gui.BankGui;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 
@@ -41,6 +42,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	private double withdraw = 100;
 	private double deposit = 100;
+	private BankGui bgui;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -48,8 +50,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public BankCustomerRole(){
+	public BankCustomerRole(BankGui b){
 		super();
+		this.bgui = b;
+		b.addPerson(this);
 	}
 
 	public String getCustomerName() {
@@ -63,6 +67,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
+		bgui.gotoLine(gui);
 		isActive = true;
 		stateChanged();
 	}
