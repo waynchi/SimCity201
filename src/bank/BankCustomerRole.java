@@ -67,6 +67,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
+		bgui.gotoLine(gui);
 		isActive = true;
 		stateChanged();
 	}

@@ -65,10 +65,9 @@ public class BankGui extends JFrame implements ActionListener {
      */
     
     public BankCustomerGui addPerson(BankCustomerRole b) {
-    	BankCustomerGui g = new BankCustomerGui(b, customers.size());
+    	BankCustomerGui g = new BankCustomerGui(b);
     	animationPanel.addGui(g);
     	b.setGui(g);
-    	customers.add(g);
     	return g;
     }
     
@@ -77,6 +76,12 @@ public class BankGui extends JFrame implements ActionListener {
      	animationPanel.addGui(g2);
      	teller = g2;
      	return g2;
+    }
+    
+    public void gotoLine(BankCustomerGui b) {
+    	b.setCust(customers.size());
+    	customers.add(b);
+    	b.isWaiting = true;
     }
     
     /**
