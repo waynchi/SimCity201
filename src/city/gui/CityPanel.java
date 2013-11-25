@@ -11,6 +11,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	ArrayList<Lane> lanes;
 	ArrayList<Sidewalk> sidewalks;
 	ArrayList<Vehicle> vehicles;
+	ArrayList<Person> people;
 	int count = 0;
 	static final int hozX = 350;
 	static final int hozY = 40;
@@ -31,6 +32,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		lanes = new ArrayList<Lane>();
 		sidewalks = new ArrayList<Sidewalk>();
 		vehicles = new ArrayList<Vehicle>();
+		people = new ArrayList<Person>();
 	
 		
 
@@ -38,100 +40,100 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		//Create grid of lanes
 		
 		//Horizontal Top Lanes
-		Sidewalk s = new Sidewalk( hozX - 210, hozY + 110 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		Sidewalk s = new Sidewalk( hozX - 210, hozY + 110 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		Lane l = new Lane( hozX - 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
-		s = new Sidewalk( hozX - 210, hozY + 80 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY + 80 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX, hozY + 110 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX, hozY + 110 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
-		s = new Sidewalk( hozX, hozY + 80 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX, hozY + 80 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 200, hozY - 10 , hozWidth - 10, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 200, hozY - 10 , hozWidth - 10, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX + 210, hozY, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
 
-		s = new Sidewalk( hozX + 400, hozY - 10 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 400, hozY - 10 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX + 420, hozY, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add( l );
 		
-		s = new Sidewalk( hozX + 400, hozY + 110 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 400, hozY + 110 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		s = new Sidewalk( hozX + 400, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 400, hozY + 80 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//TOP AND BOTTOM OF HORIZONTAL ROADS
-		s = new Sidewalk( hozX + 410, hozY + 180 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 410, hozY + 180 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 180 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY + 180 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 20 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY + 20 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 410, hozY + 20 , hozWidth, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 410, hozY + 20 , hozWidth, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 410, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 410, hozY + 210 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 210 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY + 210 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//FAR RIGHT VERTICAL
-		s = new Sidewalk( hozX + 650, hozY - 10 , sidewalkHeight, hozWidth + 10, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 650, hozY - 10 , sidewalkHeight, hozWidth + 10, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//SMALL INNER BLOCKS - TOP
-		s = new Sidewalk( hozX + 620, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 620, hozY + 20 , sidewalkHeight, 60, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 420, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 420, hozY + 20 , sidewalkHeight, 60, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 390, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 390, hozY + 20 , sidewalkHeight, 60, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 220, hozY + 20 , sidewalkHeight, 60, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 220, hozY + 20 , sidewalkHeight, 60, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//FAR LEFT VERTICAL
-		s = new Sidewalk( hozX + 190, hozY - 10 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY - 10 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 190, hozY + 120 , sidewalkHeight, 90, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 190, hozY + 120 , sidewalkHeight, 90, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		//SMALL INNER BLOCKS - BOTTOM
-		s = new Sidewalk( hozX + 620, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 620, hozY + 120 , sidewalkHeight, 70, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 420, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 420, hozY + 120 , sidewalkHeight, 70, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 390, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 390, hozY + 120 , sidewalkHeight, 70, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
-		s = new Sidewalk( hozX + 220, hozY + 120 , sidewalkHeight, 70, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 220, hozY + 120 , sidewalkHeight, 70, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		
 
 		
 		//Middle
-		s = new Sidewalk( hozX + 210, hozY + 110 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 210, hozY + 110 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		l = new Lane( hozX + 210, hozY + 90, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
-		s = new Sidewalk( hozX + 210, hozY + 80 , hozWidth + 40, sidewalkHeight, 1, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 210, hozY + 80 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		
@@ -157,14 +159,14 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		l = new Lane( crossX - 210, crossY - 50, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
 		lanes.add(l);
 		//Right sidewalks
-		s = new Sidewalk( hozX - 210, hozY - 40 , sidewalkHeight, 120, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY - 40 , sidewalkHeight, 120, 0.5, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		s = new Sidewalk( hozX - 210, hozY + 120 , sidewalkHeight, 140, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY + 120 , sidewalkHeight, 140, 0.5, 0, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		//Left sidewalks
-		s = new Sidewalk( hozX - 240, hozY - 40 , sidewalkHeight, 120, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 240, hozY - 40 , sidewalkHeight, 120, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
-		s = new Sidewalk( hozX - 240, hozY + 80 , sidewalkHeight, 200, 1, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 240, hozY + 80 , sidewalkHeight, 200, 0, 0.5, false, Color.gray, Color.black ); 
 		sidewalks.add(s);
 		
 		l = new Lane( crossX - 210, crossY + 110, crossWidth, crossHeight - 50, 0, 1, false, Color.DARK_GRAY, Color.black );
@@ -222,14 +224,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		buildings.add(restaurant6);
 		
 		addMouseListener( this );
-//		Vehicle vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
-//		vehicle.setDestination(570, 60);
-//		vehicles.add(vehicle);
-		
-		Vehicle vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-		vehicle.setDestination(570, 60);
-		vehicles.add(vehicle);
-		
+
 	}
 
 	
@@ -237,69 +232,100 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		count++;
 		
 		Vehicle vehicle;
-//		if ( count == 100) {
-//			//Second Row -- First Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-//			vehicle.setDestination(570, 60);
-//			vehicles.add(vehicle);
-//			
-//		}
-//		
-//		if (count == 150) {
-//			//First Row -- Second Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-//			vehicle.setDestination(570, 100);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 200) {
-//			//First Row -- Third Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
-//			vehicle.setDestination(570, 150);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 250) {
-//			//First Row -- Fourth Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
-//			vehicle.setDestination(570, 200);
-//			vehicles.add(vehicle);
-//		}
-//
-//		if( count == 300) {
-//			//Second Row -- First Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(770, 60);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 350) {
-//			//Second Row -- Second Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(770, 100);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 400) {
-//			//Second Row -- Third Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(770, 150);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 450) {
-//			//Second Row -- Fourth Building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(770, 200);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 500) {
-//			//Fourth row -- First building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
-//			vehicle.setDestination(990, 100);
-//			vehicles.add(vehicle);
-//		}
-//		if( count == 550) {
-//			//Fourth row -- First building
-//			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
-//			vehicle.setDestination(990, 200);
-//			vehicles.add(vehicle);
-//		}
+		Person person;
+		if ( count == 100) {
+			//Second Row -- First Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
+			vehicle.setDestination(570, 60);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person.setDestination(570, 60);
+			people.add(person);
+			
+		}
+		
+		if( count == 200) {
+			//First Row -- Second Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
+			vehicle.setDestination(570, 150);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person.setDestination(570, 150);
+			people.add(person);
+		}
+		if( count == 250) {
+			//First Row -- Third Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes,this);
+			vehicle.setDestination(570, 200);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person.setDestination(570, 200);
+			people.add(person);
+		}
+
+		if( count == 300) {
+			//Second Row -- First Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+			vehicle.setDestination(770, 60);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person.setDestination(770, 60);
+			people.add(person);
+		}
+		if( count == 350) {
+			//Second Row -- Second Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+			vehicle.setDestination(770, 100);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person.setDestination(770, 100);
+			people.add(person);
+		}
+		if( count == 400) {
+			//Second Row -- Third Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+			vehicle.setDestination(770, 150);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person.setDestination(770, 150);
+			people.add(person);
+		}
+		if( count == 450) {
+			//Second Row -- Fourth Building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+			vehicle.setDestination(770, 200);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person.setDestination(770, 200);
+			people.add(person);
+		}
+		if( count == 500) {
+			//Fourth row -- First building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(11),lanes, this);
+			vehicle.setDestination(990, 100);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person.setDestination(990, 100);
+			people.add(person);
+		}
+		if( count == 550) {
+			//Fourth row -- First building
+			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes, this);
+			vehicle.setDestination(990, 200);
+			vehicles.add(vehicle);
+			
+			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person.setDestination(990, 150);
+			people.add(person);
+		}
 		
 //		//Make them all lanes stop
 //		if ( count % 500 == 0 ) {
@@ -343,6 +369,10 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			Vehicle v = vehicles.get(i);
 			v.draw(g2);
 		}
+		for(int i=0;i<people.size();i++) {
+			Person p = people.get(i);
+			p.draw(g2);
+		}
 		
 		
 		
@@ -354,6 +384,9 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	
 	public void removeVehicle(Vehicle v) {
 		vehicles.remove(v);
+	}
+	public void removePerson(Person p) {
+		people.remove(p);
 	}
 	public ArrayList<Building> getBuildings() {
 		return buildings;

@@ -21,10 +21,6 @@ public class Vehicle extends Rectangle2D.Double {
 	ArrayList<Lane> bestRoute;
 	HashMap<Integer,Lane> distances;
 	String direction;
-	
-	
-
-	
 	Color vehicleColor;
 	
 	public Vehicle( int x, int y, int width, int height, Lane l, ArrayList<Lane>lanes, CityPanel cityPanel ) {
@@ -89,9 +85,9 @@ public class Vehicle extends Rectangle2D.Double {
 			this.move(lane.xVelocity,lane.yVelocity);
 		}
 		//Crosswalks, X Coordinates:
-		//330  & 550 & 750 & 950
+		//122 & 330  & 550 & 750 & 950
 		//Intersections
-		//9 = first; 10 = second; 11=third
+		//0 = first; 9 = second; 10 = third; 11=fourth
 		
 		if(yPos <= 120 && xPos == 122) {
 			this.direction = "down";
