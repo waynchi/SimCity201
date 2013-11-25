@@ -24,7 +24,9 @@ public class PersonGui extends Rectangle2D.Double {
 	
 	public void msgGoToRestaurantOne()
 	{
+		System.out.println("test1");
 		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
+		System.out.println("test2");
 	}
 	
 	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
