@@ -490,7 +490,13 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToRestaurant()
 	{
-		//gui.GoToRestaurant();
+		personGui.GoToRestaurantOne();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//roles.RestaurantCustomerAgent.msg(this);
 		if(hasCar)
 		{
@@ -542,8 +548,20 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToHouse()
 	{
-		//gui.GoToHouse();
-		//roles.HouseAgent.msg(this);	
+		personGui.GoToHouse();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(MyRole r: roles)
+		{
+			if(r.description.equals("Resident"))
+			{	
+				r.role.msgIsActive();
+			}
+		}	
 	}
 
 	/* (non-Javadoc)
@@ -552,7 +570,20 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoBuyCar()
 	{
-		//gui.GoToMarket();
+		personGui.GoToMarket();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(MyRole r: roles)
+		{
+			if(r.description.equals("MarketCustomer"))
+			{	
+				r.role.msgIsActive();
+			}
+		}
 		//roles.MarketCustomerRole.msgBuyCar()
 	}
 
@@ -578,6 +609,20 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToBank()
 	{
+		personGui.goToBank();
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(MyRole r: roles)
+		{
+			if(r.description == "BankCustomer")
+			{
+				r.role.msgIsActive();
+			}
+		}
 		//gui.GoToBank;
 		//roles.BankCustomerRole.msgIsActive();
 	}
@@ -605,7 +650,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		//Pause the Gui
-		personGui.msgGoToRestaurantOne();
+		personGui.GoToRestaurantOne();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
