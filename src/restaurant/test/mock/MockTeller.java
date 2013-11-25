@@ -10,14 +10,8 @@ public class MockTeller extends Mock implements Teller{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void msgHere(BankCustomer cust) {}
-
-	@Override
-	public void msgCreateAccount(String name, double initialFund) {
-		log.add(new LoggedEvent("Received msgCreateAccount from " + name));
-		
-	}
+	
+	
 
 	@Override
 	public void msgWithdraw(int accountID, double moneyNeeded) {
@@ -44,6 +38,12 @@ public class MockTeller extends Mock implements Teller{
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+
+	@Override
+	public void msgHere(BankCustomer cust, String name) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
