@@ -159,6 +159,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void WithdrawMoney(){
+		gui.DoGoToTeller();
 		if (accountID == -1) {
 			print("Cannot withdraw money without an account");
 			state = CustomerState.done;
