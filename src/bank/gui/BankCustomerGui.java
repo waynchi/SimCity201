@@ -51,6 +51,10 @@ public class BankCustomerGui implements Gui{
 			xDestination = 200 - (CUST_SIZE + 10)*custNum;
 			yDestination = 125;
 		}
+		
+		if (xPos == 280 && yPos == 90) {
+			agent.msgAtTeller();
+		}
 	}
 
 	public void draw(Graphics2D g) {
@@ -78,7 +82,13 @@ public class BankCustomerGui implements Gui{
 	}
 	
 	public void DoGoToTeller() {
-		
+		xDestination = 280;
+		yDestination = 90;
+	}
+	
+	public void DoLeaveBank() {
+		xDestination = -20;
+		yDestination = 125;
 	}
 	
     public int getXPos() {
