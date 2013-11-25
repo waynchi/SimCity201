@@ -21,5 +21,11 @@ public interface MarketCustomer {
 	
 	public abstract People getPerson();
 
+	public abstract void msgAtCounter();
+
+	public abstract void msgAtExit();
+
+	public abstract void msgAtRegister();
+
 
 }

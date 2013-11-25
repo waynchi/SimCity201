@@ -11,7 +11,7 @@ public class MarketGui extends JFrame implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
-	JFrame animationFrame = new JFrame("Restaurant Animation");
+	JFrame animationFrame = new JFrame("Market Animation");
 	AnimationPanel animationPanel = new AnimationPanel();
 	
     /* restPanel holds 2 panels
@@ -19,59 +19,24 @@ public class MarketGui extends JFrame implements ActionListener {
      *    in RestaurantPanel()
      * 2) the infoPanel about the clicked Customer (created just below)
      */    
-    private MarketPanel marketPanel = new MarketPanel(this);
+   // private MarketPanel marketPanel = new MarketPanel(this);
     
     /* infoPanel holds information about the clicked customer, if there is one*/
-    private JPanel infoPanel;
-    private JLabel infoLabel; //part of infoPanel
-    private JCheckBox stateCB;//part of infoLabel
-
-    private Object currentPerson;/* Holds the agent that the info is about.
-    								Seems like a hack */
-
+  
     /**
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
     public MarketGui() {
-        int WINDOWX = 450;
-        int WINDOWY = 350;
+        int WINDOWX = 600;
+        int WINDOWY = 400;
 
         animationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX, WINDOWY);
+        animationFrame.setBounds(100, 50 , WINDOWX, WINDOWY);
         animationFrame.setVisible(true);
     	animationFrame.add(animationPanel); 
     	
-    	setBounds(50, 50, WINDOWX, WINDOWY);
-
-        setLayout(new BoxLayout((Container) getContentPane(), 
-        		BoxLayout.Y_AXIS));
-
-        Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .6));
-        marketPanel.setPreferredSize(restDim);
-        marketPanel.setMinimumSize(restDim);
-        marketPanel.setMaximumSize(restDim);
-        add(marketPanel);
-        
-        // Now, setup the info panel
-        Dimension infoDim = new Dimension(WINDOWX, (int) (WINDOWY * .25));
-        infoPanel = new JPanel();
-        infoPanel.setPreferredSize(infoDim);
-        infoPanel.setMinimumSize(infoDim);
-        infoPanel.setMaximumSize(infoDim);
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Information"));
-
-        stateCB = new JCheckBox();
-        stateCB.setVisible(false);
-        stateCB.addActionListener(this);
-
-        infoPanel.setLayout(new GridLayout(1, 2, 30, 0));
-        
-        infoLabel = new JLabel(); 
-        infoLabel.setText("<html><pre><i>Click Add to make customers</i></pre></html>");
-        infoPanel.add(infoLabel);
-        infoPanel.add(stateCB);
-        add(infoPanel);
+  
     }
     /**
      * updateInfoPanel() takes the given customer (or, for v3, Host) object and
