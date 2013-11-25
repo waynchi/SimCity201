@@ -4,6 +4,8 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import people.People;
+
 
 public class PersonGui extends Rectangle2D.Double {
 	Color personColor;
@@ -18,8 +20,14 @@ public class PersonGui extends Rectangle2D.Double {
 	ArrayList<Sidewalk> sidewalks;
 	String direction;
 	Color vehicleColor;
+	People person;
 	
-	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel ) {
+	public void msgGoToRestaurantOne()
+	{
+		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
+	}
+	
+	public PersonGui( int x, int y, int width, int height, Sidewalk s, ArrayList<Sidewalk>sidewalks, CityPanel cityPanel, People person ) {
 		super( x, y, width, height );
 		this.sidewalk = s;
 		this.sidewalks = sidewalks;
@@ -27,8 +35,10 @@ public class PersonGui extends Rectangle2D.Double {
 		this.setOrientation();
 		this.cityPanel = cityPanel;
 		this.direction = "up";
+		this.person = person;
 
 	}
+
 	public void setLocation( int x, int y ) {
 		setRect( x, y, getWidth(), getHeight() );
 	}
@@ -102,6 +112,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if(yPos == yDestination) {
 				cityPanel.removePerson(this);
+				person.Arrived();
 				
 			}
 		}		
@@ -123,7 +134,7 @@ public class PersonGui extends Rectangle2D.Double {
 			
 			if(yPos == yDestination) {
 				cityPanel.removePerson(this);
-				
+				person.Arrived();
 			}
 		}
 		//Third Intersection
@@ -143,7 +154,7 @@ public class PersonGui extends Rectangle2D.Double {
 			
 			if(yPos == yDestination) {
 				cityPanel.removePerson(this);
-				
+				person.Arrived();
 			}
 		}
 	

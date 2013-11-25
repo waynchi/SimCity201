@@ -30,10 +30,10 @@ public class BankCustomerGui implements Gui{
 		agent = c;
 		this.custNum = custNum;
 		xPos = -20;
-		yPos = 325;
+		yPos = 125;
 		isWaiting = true;
 		xDestination = 200 - (CUST_SIZE + 10)*custNum;
-		yDestination = 325;
+		yDestination = 125;
 		setPresent(true);
 		
 	}
@@ -51,7 +51,7 @@ public class BankCustomerGui implements Gui{
 
 		if (isWaiting) {
 			xDestination = 200 - (CUST_SIZE + 10)*custNum;
-			yDestination = 325;
+			yDestination = 125;
 		}
 	}
 
@@ -77,6 +77,10 @@ public class BankCustomerGui implements Gui{
 		xDestination = xFinal;
 		yDestination = yFinal;
 		command = Command.LeaveRestaurant;
+	}
+	
+	public void DoGoToTeller() {
+		
 	}
 	
     public int getXPos() {
