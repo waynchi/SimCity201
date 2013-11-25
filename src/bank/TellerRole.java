@@ -34,7 +34,7 @@ public class TellerRole extends Role implements Teller {
 	
 	Boolean LeavePost = false;
 
-	public TellerRole(String name) {
+	public TellerRole() {
 		super();
 	}
 	
