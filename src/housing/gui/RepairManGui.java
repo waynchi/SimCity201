@@ -16,4 +16,7 @@ public class RepairManGui implements HGui{
 	public boolean isPresent() {
 		return false;
 	}
+	
+	public void DoLeaveShop() {
+	}
 }
