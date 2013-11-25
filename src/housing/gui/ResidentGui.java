@@ -1,6 +1,7 @@
 package housing.gui;
 
 import housing.HouseType;
+import housing.HousingResidentRole;
 import housing.interfaces.Resident;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,6 +25,7 @@ public class ResidentGui implements HGui{
 	private final int BATHING_TIME = 7000;
 	private final int PREPING_TIME = 1000;
 	private final int COOKING_TIME = 2000;
+	private final int EATING_TIME = 3000;
 	private boolean readingBook = false;
 	private boolean videoGames = false;
 	private boolean cellPhone = false;
@@ -98,6 +100,10 @@ public class ResidentGui implements HGui{
 				videoGames = true;
 			}
 			else if (state == State.PlayingFussball) {
+				state = State.Idle;
+			}
+			else if (state == State.Eating) {
+				timer.schedule(getTimerTask(state), EATING_TIME);
 				state = State.Idle;
 			}
 			else if (state == State.Leaving) {
@@ -322,6 +328,13 @@ public class ResidentGui implements HGui{
 				public void run() {
 					System.out.println("Cooking done.");
 					t.foodCooked();
+				}
+			};
+		}
+		else if (s == State.Eating) {
+			return new TimerTask() {
+				public void run() {
+					((HousingResidentRole)r).doneEating();
 				}
 			};
 		}

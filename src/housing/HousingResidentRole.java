@@ -22,6 +22,7 @@ public class HousingResidentRole extends Role implements Resident {
 	private boolean needToLeave = false;
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
+	public boolean testMode = false;
 
 	public HousingResidentRole() {
 		house = null;
@@ -37,28 +38,36 @@ public class HousingResidentRole extends Role implements Resident {
 	public void callRepairMan() {
 		repairMan.needHelp(house, 20);
 		repairStage = RepairStage.HelpRequested;
-		gui.DoUseCellPhone();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoUseCellPhone();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 	}
 
 	public void cookAtHome() {
 		myState = State.Cooking;
-		gui.DoCook();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoCook();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 	}
 
 	public void eatFood() {
 		myState = State.Eating;
-		gui.DoEat();
+		if (testMode == false)
+			gui.DoEat();
 	}
 
 	public void sleep() {
 		myState = State.Sleeping;
-		gui.DoSleep();
+		if (testMode == false)
+			gui.DoSleep();
 	}
 
 	public void repairMyHomeItems() {
@@ -72,54 +81,71 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void watchTV() {
-		gui.DoWatchTV();
+		if (testMode == false)
+			gui.DoWatchTV();
 	}
 	
 	public void doMorningStuff() {
 		myState = State.DoingMorningStuff;
-		gui.DoPoop();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoPoop();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 		
-		gui.DoBathe();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoBathe();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 	}
 	
 	public void read() {
-		gui.DoRead();
+		if (testMode == false)
+			gui.DoRead();
 	}
 	
 	public void relaxOnSofa() {
-		gui.DoRelaxOnSofa();
+		if (testMode == false)
+			gui.DoRelaxOnSofa();
 	}
 	
 	public void playVideoGames() {
-		gui.DoPlayVideoGames();
+		if (testMode == false)
+			gui.DoPlayVideoGames();
 	}
 	
 	public void playFussball() {
-		gui.DoPlayFussball();
+		if (testMode == false)
+			gui.DoPlayFussball();
 	}
 	
 	public void leaveHome() {
 		leisure = false;
 		needToLeave = false;
 		isActive = false;
-		gui.DoLeaveHome();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveHome();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 		myPerson.msgDone("ResidentRole");
 	}
 	
 	public void enterHome() {
-		gui.DoEnterHome();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoEnterHome();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		myState = State.Idle;
 	}
 
 	//-----------------------------------------------------------//
@@ -162,6 +188,12 @@ public class HousingResidentRole extends Role implements Resident {
 		if (myPerson != null) {
 			myPerson.msgDone("Resident");
 		}
+		stateChanged();
+	}
+	
+	public void doneEating() {
+		this.myState = State.Idle;
+		myPerson.msgDone("DoneEating");
 		stateChanged();
 	}
 	
@@ -295,6 +327,14 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public boolean isActive() {
 		return isActive();
+	}
+	
+	public void testModeOn() {
+		testMode = true;
+	}
+	
+	public void testModeOff() {
+		testMode = false;
 	}
 
 	//-----------------------------------------------------------//

@@ -50,20 +50,17 @@ public class MockPeopleHousing extends Mock implements People {
 
 	@Override
 	public String getAgentState() {
-		// TODO Auto-generated method stub
-		return null;
+		return state.toString();
 	}
 
 	@Override
 	public String getAgentEvent() {
-		// TODO Auto-generated method stub
-		return null;
+		return event.toString();
 	}
 
 	@Override
 	public String getHunger() {
-		// TODO Auto-generated method stub
-		return null;
+		return hunger.toString();
 	}
 
 	@Override
@@ -192,4 +189,15 @@ public class MockPeopleHousing extends Mock implements People {
 		return 0;
 	}
 	
+	public void setAgentState(AgentState s) {
+		this.state = s;
+	}
+	
+	public void setAgentState(AgentEvent e) {
+		this.event = e;
+	}
+	
+	public void setHungerState(HungerState h) {
+		this.hunger = h;
+	}
 }
