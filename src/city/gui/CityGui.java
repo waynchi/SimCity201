@@ -155,6 +155,7 @@ public class CityGui extends JFrame implements ActionListener {
             b.setBuildingPanel(bp);
 		}
         buildingPanels.add(bankGui, "" + 1);
+        buildingPanels.add(restaurantGui, "" + 2);
 
 		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
