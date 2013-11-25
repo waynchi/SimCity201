@@ -556,6 +556,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToHouse()
 	{
+		hunger = HungerState.Eating;
 		personGui.GoToHouse();
 		try {
 			moving.acquire();
@@ -568,6 +569,7 @@ public class PeopleAgent extends Agent implements People{
 			if(r.description.equals("Resident"))
 			{	
 				r.role.msgIsActive();
+				
 			}
 		}	
 	}
