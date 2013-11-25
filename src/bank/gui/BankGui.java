@@ -29,8 +29,8 @@ public class BankGui extends JFrame implements ActionListener {
      * Sets up all the gui components.
      */
     public BankGui() {
-        int WINDOWX = 450;
-        int WINDOWY = 450;
+        int WINDOWX = 500;
+        int WINDOWY = 250;
 
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
         animationPanel.setPreferredSize(animationDim);
@@ -74,13 +74,13 @@ public class BankGui extends JFrame implements ActionListener {
      */
     public static void main(String[] args) {
         BankGui gui = new BankGui();
-        BankCustomerRole b = new BankCustomerRole("bob");
+        BankCustomerRole b = new BankCustomerRole();
     	BankCustomerGui g = new BankCustomerGui(b, customers.size());
     	animationPanel.addGui(g);
     	b.setGui(g);
     	customers.add(g);
     	
-        BankCustomerRole b1 = new BankCustomerRole("bob1");
+        BankCustomerRole b1 = new BankCustomerRole();
     	BankCustomerGui g1 = new BankCustomerGui(b1, customers.size());
     	animationPanel.addGui(g1);
     	b1.setGui(g1);
