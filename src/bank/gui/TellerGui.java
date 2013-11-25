@@ -13,7 +13,7 @@ public class TellerGui implements Gui{
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
-	private boolean isAtDesk;
+	public boolean isAtDesk;
 	
 
 	//private HostAgent host;
@@ -78,7 +78,6 @@ public class TellerGui implements Gui{
 		xDestination = 520;
 		yDestination = 90;
 	}
-	
 	
     public int getXPos() {
         return xPos;

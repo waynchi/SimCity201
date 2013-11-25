@@ -77,13 +77,15 @@ public class TellerRole extends Role implements Teller {
 	public void msgIsActive(){
 		print("Received msgIsActive");
 		isActive = true;
-		bgui.addPerson(this);
+		if (gui == null) gui = bgui.addPerson(this);
+		else gui.isAtDesk = true;
 		stateChanged();
 	}
 	
-	public void msgIsInactive(){
+	public void msgIsInActive(){
 		print("Received msgIsInactive");
 		LeavePost = true;
+		gui.isAtDesk = false;
 		stateChanged();
 	}
 	
