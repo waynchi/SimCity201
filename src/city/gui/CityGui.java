@@ -1,4 +1,5 @@
 package city.gui;
+import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
 
 import javax.swing.*;
@@ -96,6 +97,10 @@ public class CityGui extends JFrame implements ActionListener {
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
+					HousingResidentRole residentRole = new HousingResidentRole();
+					person.addRole(residentRole, "Resident");
+					
+					
 					person.startThread();
 					person.setTest();
 					
