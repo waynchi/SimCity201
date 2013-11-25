@@ -49,6 +49,7 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 
 	public void cookAtHome() {
+		System.out.println("Cooking food!");
 		myState = State.Cooking;
 		if (testMode == false) {
 			gui.DoCook();
@@ -56,10 +57,12 @@ public class HousingResidentRole extends Role implements Resident {
 				activity.acquire();
 			} catch (InterruptedException e) {}
 		}
+		myState = State.FoodCooked;
 	}
 
 	public void eatFood() {
 		myState = State.Eating;
+		System.out.println("Eating food!");
 		if (testMode == false) {
 			gui.DoEat();
 			try {
