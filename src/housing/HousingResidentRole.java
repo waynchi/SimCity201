@@ -17,8 +17,8 @@ public class HousingResidentRole extends Role implements Resident {
 	private RepairMan repairMan;
 	private RepairStage repairStage;
 	protected State myState;
+	public Location location = Location.Home;
 	private boolean leisure = false;
-	protected boolean isActive = false;
 	private boolean needToLeave = false;
 	public ResidentGui gui = null;
 	public Semaphore activity = new Semaphore(0, true);
@@ -28,7 +28,7 @@ public class HousingResidentRole extends Role implements Resident {
 		house = null;
 		repairMan = null;
 		repairStage = RepairStage.None;
-		myState = State.Idle;
+		myState = State.Sleeping;
 		gui = new ResidentGui(this);
 	}
 
@@ -61,8 +61,14 @@ public class HousingResidentRole extends Role implements Resident {
 
 	public void eatFood() {
 		myState = State.Eating;
-		if (testMode == false)
+		if (testMode == false) {
 			gui.DoEat();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		this.myState = State.Idle;
+		myPerson.msgDone("DoneEating");
 	}
 
 	public void sleep() {
@@ -192,21 +198,17 @@ public class HousingResidentRole extends Role implements Resident {
 		stateChanged();
 	}
 	
-	public void doneEating() {
-		this.myState = State.Idle;
-		myPerson.msgDone("DoneEating");
+	@Override
+	public void msgIsActive() {
+		myState = State.Entering;
+		isActive = true;
 		stateChanged();
 	}
 	
 	@Override
-	public void msgIsActive() {
-		isActive = true;
-	}
-	
-	@Override
 	public void msgIsInActive() {
-		myState = State.Entering;
 		needToLeave = true;
+		stateChanged();
 	}
 
 	//-----------------------------------------------------------//
@@ -232,7 +234,7 @@ public class HousingResidentRole extends Role implements Resident {
 			leaveHome();
 			return true;
 		}
-		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Hungry")) {
+		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Eating")) {
 			cookAtHome();
 			leisure = false;
 			return true;
@@ -297,7 +299,8 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void setHouse(House h) {
 		this.house = h;
-		h.gui.add(gui);
+		house.setOccupant(this);
+//		house.gui.add(gui);
 	}
 	
 	public void setRepairMan(RepairMan r) {
@@ -348,4 +351,6 @@ public class HousingResidentRole extends Role implements Resident {
 	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
 	
 	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
+	
+	public enum Location {Home, NotHome};
 }

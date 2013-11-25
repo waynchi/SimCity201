@@ -199,6 +199,11 @@ public class PeopleAgent extends Agent implements People{
 			state = AgentState.Working;
 			event = AgentEvent.RepairManMovingShop;
 		}
+		if(role.equals("DoneEating"))
+		{
+			hunger = HungerState.NotHungry;
+			Hunger = 1200;
+		}
 		}
 		else
 		{
@@ -311,13 +316,13 @@ public class PeopleAgent extends Agent implements People{
 		lastTime = job.end;
 		}
 		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
-		if(state == AgentState.Idle)
+		if(state == AgentState.Idle || state == AgentState.IdleAtHome)
 		{
 			if(hunger == HungerState.Hungry)
 			{
 				if(Time <= 1900)
 				{
-				if(rand.nextInt() < 1)
+				if(rand.nextInt(1) < 1)
 				{
 					event = AgentEvent.GoingToRestaurant;
 					print("Going To Restaurant To Eat");
@@ -381,9 +386,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-//		print("My Current State is: " + state.toString());
-//		print("My Current Event is: " + event.toString());
-//		print("My Current Hunger is : " + hunger.toString());
+		print("My Current State is: " + state.toString());
+		print("My Current Event is: " + event.toString());
+		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		for(MyRole m : roles)
 		{
@@ -569,6 +574,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToHouse()
 	{
+		print("Going Back Home");
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
@@ -584,6 +590,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(r.description.equals("Resident"))
 			{	
+				print("I am now a Resident");
 				r.role.msgIsActive();
 			}
 		}
@@ -612,6 +619,14 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Market;
 		for(MyRole r: roles)
 		{
+			if(r.description.equals("Resident"))
+			{	
+				if(r.role.isActive == true)
+				{
+				r.role.msgIsInActive();
+				}
+				//Stop
+			}
 			if(r.description.equals("MarketCustomer"))
 			{	
 				r.role.msgIsActive();
@@ -628,6 +643,14 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(MyRole r: roles)
 		{
+			if(r.description.equals("Resident"))
+			{	
+				if(r.role.isActive == true)
+				{
+				r.role.msgIsInActive();
+				}
+				//Stop
+			}
 			if(r.description.equals(jobs.get(0).job))
 			{
 				System.out.println("I am leaving work");
@@ -654,8 +677,18 @@ public class PeopleAgent extends Agent implements People{
 		}
 		}
 		location = AgentLocation.Bank;
+		
 		for(MyRole r: roles)
 		{
+			if(r.description.equals("Resident"))
+			{	
+				if(r.role.isActive == true)
+				{
+					print("Resident Role turned off");
+					r.role.msgIsInActive();
+				}
+				//Stop
+			}
 			if(r.description == "BankCustomer")
 			{
 				r.role.msgIsActive();
@@ -680,9 +713,10 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(r.description.equals("Resident"))
 			{	
-				if(r.role.isActive == false)
+				if(r.role.isActive == true)
 				{
-				r.role.msgIsInActive();
+					print("Resident Role turned off");
+					r.role.msgIsInActive();
 				}
 				//Stop
 			}

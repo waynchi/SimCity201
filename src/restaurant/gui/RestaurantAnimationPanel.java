@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 	//static final int?
-    private final int WINDOWX = 450;
-    private final int WINDOWY = 350;
+    private final int WINDOWX = 500;
+    private final int WINDOWY = 400;
     private final int TABLENUM = 3;
     //private final int TABLEX = 200;
     //private final int TABLEY = 250;
@@ -24,7 +24,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public AnimationPanel() {
+    public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         

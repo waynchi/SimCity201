@@ -28,25 +28,10 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     private HostRole host;
     //private HostGui hostGui = new HostGui(host);
 	private CookRole cook;
-	//private CookGui cookGui = new CookGui(cook);
-	
-	//private MarketRole market1 = new MarketRole("Market 1");
-	//private MarketRole market2 = new MarketRole("Market 2");
-	//private MarketRole market3 = new MarketRole("Market 3");
-	
-	private Double min_working_capital = 10.00;
-	private Double working_capital = 100.00;
-	private Double bank_balance = 0.0;
-	private int bank_account = 0;
-	
-
     private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
     private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
 	//private CashierRole cashier = new CashierRole("Cashier", this);
-
-    
-    private JPanel restLabel = new JPanel();
 
     private RestaurantGui gui; //reference to main gui
     
@@ -85,174 +70,15 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public RestaurantPanel(RestaurantGui gui, HostRole h) {
     	host = h;
         this.gui = gui;
-		//gui.animationPanel.addGui(cookGui);
-        //host.setGui(hostGui);
-        //cook.setGui(cookGui);
-        
-        //cook.addMarket(market1);
-        //cook.addMarket(market2);
-        //cook.addMarket(market3);
-        //cook.setCashier(cashier);
-        
-        //market1.setCook(cook);
-        //market2.setCook(cook);
-        //market3.setCook(cook);
-                
-        //host.startThread();
-        //cook.startThread();
-        //market1.startThread();
-        //market2.startThread();
-        //market3.startThread();
-        //cashier.startThread();
-        
-        setLayout(new GridLayout(1, 2, 20, 20));
-        
-
-        initRestLabel();
-        initImagePanel();
-        add(restLabel);
-        add(imagePanel);
-        //add(customerPanel);
     }
     
     public RestaurantPanel(RestaurantGui gui) {
         this.gui = gui;
-        
-        setLayout(new GridLayout(1, 2, 20, 20));
-        
-
-        initRestLabel();
-        initImagePanel();
-        add(restLabel);
-        add(imagePanel);
-        //add(customerPanel);
     }
 
-    public RestaurantPanel() {
-		// TODO Auto-generated constructor stub
-	}
 
 
-
-	private void initImagePanel() {
-    	 
-    	ImageIcon image = new ImageIcon(getClass().getResource("saber.jpg"));
-        JLabel imageLabel = new JLabel(image);
-        imageLabel.setText("Welcome to Yinyi's!");
-        imageLabel.setHorizontalTextPosition(JLabel.CENTER);
-        imageLabel.setVerticalTextPosition(JLabel.TOP);
-        imageLabel.setFont(new Font("Courier New", Font.BOLD, 20));
-
-        imagePanel.add(imageLabel);
-        imagePanel.add(pauseButton);
-       // imagePanel.add(addWaiterButton);
-        
-        pauseButton.addActionListener(this);
-        //addWaiterButton.addActionListener(this);
-       	
-	}
-
-	/**
-     * Sets up the restaurant label that includes the menu,
-     * and host and cook information
-     */
-    private void initRestLabel() {
-        JLabel label = new JLabel();
-        restLabel.setLayout(new BorderLayout());
-//        label.setText(
-//                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>host:</td><td>" + host.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
-
-        restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
-        restLabel.add(label, BorderLayout.CENTER);
-        restLabel.add(new JLabel("               "), BorderLayout.EAST);
-        restLabel.add(new JLabel("               "), BorderLayout.WEST);
-    }
-
-    /**
-     * When a customer or waiter is clicked, this function calls
-     * updatedInfoPanel() from the main gui so that person's information
-     * will be shown
-     *
-     * @param type indicates whether the person is a customer or waiter
-     * @param name name of person
-     */
-    /*public void showInfo(String type, String name, Boolean hungryCheck) {
-
-        if (type.equals("Customers")) {
-
-            for (int i = 0; i < customers.size(); i++) {
-                RestaurantCustomerRole temp = customers.get(i);
-                if (temp.getName() == name)
-                    gui.updateInfoPanel(temp, hungryCheck);
-            }
-        }
-        
-        if (type.equals("Waiters")) {
-        	for (BaseWaiterRole temp: waiters) {
-        		if (temp.getName() == name)
-        			gui.updateInfoPanel(temp, false);
-        	}
-        }
-    }
-
-	public void actionPerformed(ActionEvent e) {
-/*
-	    if (e.getSource() == pauseButton){
-	    	System.out.println("pause button pressed");
-	    	if (agentPaused == false) {
-	    		pauseAgents();
-	    		agentPaused = true;
-	    	}
-	    	else {
-	    		restartAgents();
-	    		agentPaused = false;
-	    	}
-	    }
-	  
-	}*/
-    
-    // pause all the agents when pause button is clicked
-    /*public void pauseAgents(){
-    	host.pause();
-    	cook.pause();
-    	cashier.pause();
-    	market1.pause();
-    	market2.pause();
-    	market3.pause();
-    	
-    	// since all waiters and customers are created in the restaurant panel, we have a list to keep track
-    	// of them
-    	// should be able to pause all agents now.
-    	for (BaseWaiterRole waiter : waiters) {
-    		waiter.pause();
-    	}
-    	for (RestaurantCustomerRole cust : customers){
-    		cust.pause();
-    	}
-    }*/
-    
-    /*public void restartAgents() {
-		host.restart();
-    	cook.restart();
-    	cashier.restart();
-    	market1.restart();
-    	market2.restart();
-    	market3.restart();
-    	for (BaseWaiterRole waiter : waiters) {
-    		waiter.restart();
-    	}
-    	for (RestaurantCustomerRole cust : customers){
-    		//cust.restart();
-    	}
-	}
-	/*
-    
-    /**
-     * Adds a customer or waiter to the appropriate list
-     *
-     * @param type indicates whether the person is a customer or waiter (later)
-     * @param name name of person
-     */
+	
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
@@ -289,21 +115,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	}
     }
     
-    public void setWorkingCapital (double amount) {
-    	working_capital = amount;
-    }
-    
-    public double getWorkingCapital () {
-    	return working_capital;
-    }
-    
-    public void setBankBalance (double amount) {
-    	bank_balance = amount;
-    }
-    
-    public double getBankBalance () {
-    	return bank_balance;
-    }
+   
 
     public Vector<BaseWaiterRole> getWaiters () {
     	return waiters;
@@ -326,22 +138,6 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
 
-	public Double getMinWorkingCapital() {
-		return min_working_capital;
-	}
-
-
-
-	public void setMinWorkingCapital(Double min_working_capital) {
-		this.min_working_capital = min_working_capital;
-	}
-
-
-
-	public int getBankAccount() {
-		// TODO Auto-generated method stub
-		return bank_account;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
