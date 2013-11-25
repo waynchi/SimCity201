@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import people.PeopleAgent.AgentEvent;
 import people.Role;
@@ -36,6 +37,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public enum CustomerAction 
 	{deposit, withdraw}
+	
+	private Semaphore atTeller = new Semaphore(0,true);
 	
 	private CustomerState state;
 	private CustomerAction action;
@@ -64,6 +67,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		teller = t;
 	}
 	// Messages
+	
+	public void msgAtTeller() {
+		atTeller.release();
+	}
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
@@ -143,7 +150,14 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Actions
 
 	private void DepositMoney(){
+		atTeller.drainPermits();
 		gui.DoGoToTeller();
+		try {
+			atTeller.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (accountID == -1) {
 			wallet -= deposit;
 			teller.msgDeposit(deposit);
@@ -159,6 +173,14 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void WithdrawMoney(){
+		atTeller.drainPermits();
+		gui.DoGoToTeller();
+		try {
+			atTeller.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (accountID == -1) {
 			print("Cannot withdraw money without an account");
 			state = CustomerState.done;
@@ -171,7 +193,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void LeaveBank(){
-		//Do Leave Bank
+		gui.DoLeaveBank();
 		teller.msgDoneAndLeaving();
 		myPerson.msgDone("BankCustomerRole");
 		isActive = false;
