@@ -33,7 +33,8 @@ public class PeopleAgent extends Agent implements People{
 	public enum AgentState 
 	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
 	public enum AgentEvent 
-	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome}
+	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
+		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public HungerState hunger = HungerState.NotHungry;
@@ -151,6 +152,8 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
+		if(role != "ResidentRole")
+		{
 		log.add(new LoggedEvent("Recieved msgDone"));
 		state = AgentState.Idle;
 		event = AgentEvent.Idle;
@@ -166,6 +169,22 @@ public class PeopleAgent extends Agent implements People{
 		if(role.equals("MarketCustomerRole"))
 		{
 			hasCar = true;
+		}
+		if(role.equals("RepairManFixing"))
+		{
+			state = AgentState.Working;
+			event = AgentEvent.RepairManMoving;
+			stateChanged();
+		}
+		if(role.equals("RepairManFixed"))
+		{
+			state = AgentState.Working;
+			event = AgentEvent.RepairManMovingShop;
+		}
+		}
+		else
+		{
+			//unfreeze the semaphore in the gui
 		}
 	}
 	
@@ -269,7 +288,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		lastTime = job.end;
 		}
-		if(state != AgentState.Sleeping && state != AgentState.Working)
+		if(state != AgentState.Sleeping && state != AgentState.Working )
 		{
 			if(hunger == HungerState.Hungry)
 			{
@@ -341,6 +360,17 @@ public class PeopleAgent extends Agent implements People{
 			{
 				Roles = m.role.pickAndExecuteAnAction();
 			}
+		}
+		if(state == AgentState.Working && event == AgentEvent.RepairManMoving)
+		{
+			GoRepair();
+			//event = AgentEvent.RepairManArrived;
+			Person = true;		
+		}
+		if(state == AgentState.Working && event == AgentEvent.RepairManMovingShop)
+		{
+			GoRepairShop();
+			Person = true;
 		}
 		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
 		{
@@ -420,6 +450,22 @@ public class PeopleAgent extends Agent implements People{
 
 
 //Actions
+
+	private void GoRepairShop() {
+		// TODO Auto-generated method stub
+		//gui message to ask for destination
+		//Semaphore
+		event = AgentEvent.RepairManArrivedShop;
+		
+	}
+
+	private void GoRepair() {
+		// TODO Auto-generated method stub
+		//gui message to ask for destination
+		//Semaphore
+		event = AgentEvent.RepairManArrived;
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see people.People#GoToRestaurant()
@@ -535,9 +581,12 @@ public class PeopleAgent extends Agent implements People{
 			if(r.description.equals("Resident"))
 			{			
 				r.role.msgIsInActive();
+				//Stop
 			}
 		}
+		//Pause the Gui
 		//gui
+		//Release the Gui from msgDone
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
