@@ -4,6 +4,7 @@ import agent.Agent;
 import restaurant.BaseWaiterRole;
 import restaurant.gui.CookGui;
 import restaurant.gui.HostGui;
+import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -42,7 +43,9 @@ public class CookRole extends Role implements Cook{
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
+	
 	private CookGui cookGui = null;
+	private RestaurantGui restGui = null;
 
 	private Boolean isActive = false;
 	private Boolean turnActive = false;
@@ -74,8 +77,12 @@ public class CookRole extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRole(CookWaiterMonitor monitor) {
+	public CookRole(CookWaiterMonitor monitor, RestaurantGui gui) {
 		super();
+		this.restGui = gui;
+		cookGui = new CookGui(this);
+		restGui.getAnimationPanel().addGui(cookGui);
+		cookGui.setPresent(false);
 		foods.put("Steak", new Food("Steak"));
 		foods.put("Chicken", new Food("Chicken"));
 		foods.put("Salad", new Food("Salad"));
@@ -330,14 +337,18 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
+		cookGui.setPresent(true);
 		host = myPerson.Restaurants.get(0).h;
 		host.setCook(this);
-		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
-		cashier = host.getCashier();
+		marketEmployee = myPerson.Markets.get(0).mer;
+		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
 	}
 
 	public void done() {
+		// gui do go to the exit
+		cookGui.setPresent(false);
+		leaveWork = false;
 		getPersonAgent().msgDone("RestaurantCookRole");
 	}
 	//utilities

@@ -7,18 +7,22 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import market.gui.MarketCustomerGui;
+import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import people.People;
 import people.Role;
+import restaurant.gui.CustomerGui;
 
 public class MarketCustomerRole extends Role implements MarketCustomer{
 	// data
 	enum marketCustomerState {IN_MARKET, MADE_ORDER, WAITING_FOR_CHECK, WAITING_FOR_ORDER, PAYING, PAID, DONE};
 	enum marketCustomerEvent {NONE, RECEIVED_ORDER, RECEIVED_CHECK, RECEIVED_CHANGE};
 	
-	MarketCustomerGui gui;
+	MarketGui marketGui = null;
+	MarketCustomerGui customerGui = null;
+	
 	MarketEmployee employee;//should know it from PeopleAgent
 	MarketCashier cashier;
 	marketCustomerState state;
@@ -37,7 +41,11 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	Boolean isActive = false;
 
 	//constructor
-	MarketCustomerRole(){
+	MarketCustomerRole(MarketGui gui){
+		this.marketGui = gui;
+		customerGui = new MarketCustomerGui(this);
+		marketGui.getAnimationPanel().addGui(customerGui);
+		customerGui.setPresent(false);
 		
 	}
 	
@@ -139,7 +147,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	//action
 	private void orderItem() {
-		gui.DoGoToMarketEmployee();
+		customerGui.DoGoToMarketEmployee();
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -152,7 +160,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 
 	private void payBill() {
-		gui.DoGoToRegister();
+		customerGui.DoGoToRegister();
 		try {
 			atRegister.acquire();
 		} catch (InterruptedException e) {
@@ -164,7 +172,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	private void done() {
-		gui.DoGoToExit();
+		customerGui.DoGoToExit();
 		try {
 			atExit.acquire();
 		} catch (InterruptedException e) {
@@ -174,6 +182,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		getPersonAgent().msgDone("MarketCustomerRole");
 		state = marketCustomerState.DONE;
 		isActive = false;
+		customerGui.setPresent(false);
 	}
 
 
@@ -190,9 +199,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public String getName() {
 		return getPersonAgent().getName();
 	}
-	
-	public void setGui(MarketCustomerGui gui) {
-		this.gui = gui;
-	}
+
 
 }

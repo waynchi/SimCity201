@@ -29,7 +29,7 @@ public class MarketCashierTest extends TestCase{
 		super.setUp();  
 		people = new PeopleAgent("people", 0.0, false);
 		cashier = new MarketCashierRole();
-		people.addRole(cashier, "MarketCashier");
+		people.addRole(cashier, "MarketCashierRole");
 		cashier.setPerson(people);
 		mme = new MockMarketEmployee("mme");
 		mmc = new MockMarketCustomer("mmc");
@@ -38,7 +38,9 @@ public class MarketCashierTest extends TestCase{
 	}
 	
 	public void testPeopleMessage (){
-		people.addRole(r, description);
+		cashier.msgIsActive();
+		people.pickAndExecuteAnAction();
+		
 	}
 	
 }
