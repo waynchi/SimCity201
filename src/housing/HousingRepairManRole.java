@@ -22,6 +22,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	public HousingRepairManRole() {
 		super();
+		gui = new RepairManGui(this);
 	}
 
 	//-----------------------------------------------------------//
@@ -31,17 +32,24 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void repairItems(MyHouse mh) {
 		List<Item> brokenItems = mh.h.getBrokenItems();
 		for (Item i : brokenItems) {
+			gui.DoRepairItem(mh.h.gui.getPosition(i.name));
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
 			i.repair();
 		}
 		mh.r.repairDone();
 		mh.s = HouseState.None;
 		currentLocationHouse = currentHouse;
 		currentHouse = null;
-		// Leaving.
+		gui.DoLeaveHouse();
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 	}
 	
 	public void leaveShop(MyHouse mh) {
-		gui.DoLeaveShop();
+		gui.DoLeaveShop(mh.h.gui);
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
@@ -49,14 +57,16 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToApartmentInSamePlace(MyHouse mh) {
+	public void goToApartmentInSamePlaceFromApartment(MyHouse mh) {
+		gui.DoGoToApartmentInSamePlaceFromApartment(mh.h.gui);
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+		mh.r.ImHere();
 	}
 	
 	public void returnToShop() {
-		if (currentLocationHouse.h.type == HouseType.Apartment) {	
-		}
-		else {
-		}
+		gui.DoReturnToShop();
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
@@ -64,25 +74,35 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixed");
 	}
 	
-	public void leaveApartmentComplexToFix(MyHouse mh) {
+	public void leaveApartmentComplexToFixFromApartment(MyHouse mh) {
+		gui.DoLeaveApartmentComplexToFixFromApartment(mh.h.gui);
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToHouseInDifferentPlaceToFix(MyHouse mh) {
+	public void goToHouseInDifferentPlaceToFixFromVilla(MyHouse mh) {
+		gui.DoGoToHouseInDifferentPlaceToFixFromVilla(mh.h.gui);
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-	public void goToVilla(MyHouse mh) {
+	public void goToVillaFromVilla(MyHouse mh) {
+		gui.DoGoToVillaFromVilla(mh.h.gui);
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void enterHouse(MyHouse mh) {
+		gui.DoEnterHouse(mh.h.gui);
+		try {
+			activity.acquire();
+		} catch (InterruptedException e) {}
+		location = Location.Resident;
 		mh.s = HouseState.Reached;
 		mh.r.ImHere();
-		// Gui stuff.
 	}
 	
 	public void enterShop() {
@@ -102,8 +122,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void activityDone() {
-		location = Location.OutsideReturning;
-		stateChanged();
+		activity.release();
 	}
 
 	//-----------------------------------------------------------//
@@ -135,26 +154,26 @@ public class HousingRepairManRole extends Role implements RepairMan {
 				if (currentLocationHouse.h.type == HouseType.Apartment) {
 					if (currentHouse.h.type == HouseType.Apartment) {
 						if (currentHouse.h.a == currentLocationHouse.h.a) {
-							goToApartmentInSamePlace(currentHouse);
+							goToApartmentInSamePlaceFromApartment(currentHouse);
 							return true;
 						}
 						else {
-							leaveApartmentComplexToFix(currentHouse);
+							leaveApartmentComplexToFixFromApartment(currentHouse);
 							return true;
 						}
 					}
 					else {
-						leaveApartmentComplexToFix(currentHouse);
+						leaveApartmentComplexToFixFromApartment(currentHouse);
 						return true;
 					}
 				}
 				else {
 					if (currentHouse.h.type == HouseType.Apartment) {
-						goToHouseInDifferentPlaceToFix(currentHouse);
+						goToHouseInDifferentPlaceToFixFromVilla(currentHouse);
 						return true;
 					}
 					else {
-						goToVilla(currentHouse);
+						goToVillaFromVilla(currentHouse);
 						return true;
 					}
 				}
