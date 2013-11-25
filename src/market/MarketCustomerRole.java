@@ -52,6 +52,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	// messages
 	public void msgIsActive () {
 		isActive = true;
+		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
 		getPersonAgent().CallstateChanged();

@@ -12,12 +12,11 @@ import market.interfaces.MarketEmployee;
 
 public class MarketEmployeeGui implements Gui{
 	private Map<String,Dimension> itemMap = new HashMap<String, Dimension>();
-	MarketGui gui;
 	MarketEmployee employee;
 	boolean goBackToCounter = false;
+	boolean isPresent = false;
 	
-	MarketEmployeeGui(MarketEmployee me, MarketGui gui){
-		this.gui = gui;
+	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
 		itemMap.put("Steak", new Dimension(150,50));
 		itemMap.put("Chicken", new Dimension(150,100));
@@ -67,7 +66,7 @@ public class MarketEmployeeGui implements Gui{
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return true;
+		return isPresent;
 	}
 	
 	//Dimension(width, height)
@@ -84,4 +83,7 @@ public class MarketEmployeeGui implements Gui{
 		goBackToCounter = true;
 	}
 
+	public void setPresent(boolean p) {
+		isPresent = p;
+	}
 }

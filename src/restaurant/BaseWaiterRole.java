@@ -319,7 +319,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private void clockIn() {
 		
 		// how to make sure the cook and cashier are already created?
-		
+		waiterGui.setPresent(true);
 		host = myPerson.Restaurants.get(0).h;
 		host.addWaiter(this);
 		cook = host.getCook();

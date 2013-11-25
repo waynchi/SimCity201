@@ -50,9 +50,9 @@ public class CityGui extends JFrame implements ActionListener {
 	public CityGui() {
 
 		cityPanel = new CityPanel(this);
-		cityPanel.setPreferredSize(new Dimension(400, 300));
-		cityPanel.setMaximumSize(new Dimension(400, 300));
-		cityPanel.setMinimumSize(new Dimension(400, 300));
+		cityPanel.setPreferredSize(new Dimension(500, 500));
+		cityPanel.setMaximumSize(new Dimension(500, 500));
+		cityPanel.setMinimumSize(new Dimension(500, 500));
 		
 		
 		Timer timer = new Timer(10, this);
@@ -140,9 +140,9 @@ public class CityGui extends JFrame implements ActionListener {
 
 		buildingPanels = new JPanel();
 		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setMinimumSize(new Dimension(500, 400));
-		buildingPanels.setMaximumSize(new Dimension(500, 400));
-		buildingPanels.setPreferredSize(new Dimension(500, 400));
+		buildingPanels.setMinimumSize(new Dimension(500, 300));
+		buildingPanels.setMaximumSize(new Dimension(500, 300));
+		buildingPanels.setPreferredSize(new Dimension(500, 300));
 		buildingPanels.setBackground(Color.yellow);
 
 		cityControls = new CityControls();
@@ -154,11 +154,16 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
+		
 		JPanel jPanel = new JPanel();
 		jPanel.setPreferredSize(new Dimension(500,250));
+		jPanel.setDoubleBuffered(true);
 		jPanel.add(bankGui);
-        buildingPanels.add(jPanel, "" + 0);
-        //buildingPanels.add(restaurantGui, "" + 1);
+		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
+		JScrollPane bankContainer = new JScrollPane(bankGui);
+
+        buildingPanels.add(restaurantContainer, "" + 0);
+        buildingPanels.add(bankContainer, "" + 1);
 
 		getContentPane().add(BorderLayout.WEST, cityControls);
 		getContentPane().add(BorderLayout.NORTH, cityPanel);
@@ -169,6 +174,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restPanel.setMaximumSize(new Dimension(500, 250));
 		restPanel.setPreferredSize(new Dimension(500, 250));
 		timer.start();
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 	}
 
