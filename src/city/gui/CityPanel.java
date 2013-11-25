@@ -12,6 +12,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	ArrayList<Sidewalk> sidewalks;
 	ArrayList<Vehicle> vehicles;
 	ArrayList<PersonGui> people;
+	CityGui city;
 	int count = 0;
 	static final int hozX = 350;
 	static final int hozY = 40;
@@ -27,12 +28,14 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	
 
 
-	public CityPanel() {
+	public CityPanel(CityGui city) {
 		buildings = new ArrayList<Building>();
 		lanes = new ArrayList<Lane>();
 		sidewalks = new ArrayList<Sidewalk>();
 		vehicles = new ArrayList<Vehicle>();
 		people = new ArrayList<PersonGui>();
+		this.city = city;
+		
 	
 		
 
@@ -180,40 +183,40 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		//Add grid of homes
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10 );
+				Building home = new Building( i*60+ 90, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10, "Home " + i );
 				buildings.add( home );
 			}
 		}
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20, i*60 + 90, j*40 + 18 );
+				Building home = new Building( i*60+ 90, j*40 + 180, 20, 20, i*60 + 90, j*40 + 18, "Home " + i );
 				buildings.add( home );
 			}
 		}
 		
 		//First Section, Top Row
 		
-		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60 );
+		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60, "Restaurant 2" );
 		buildings.add(restaurant2);
-		Building restaurant7 = new Building( hozX + 230, hozY + 120, 20, 20, 570, 100 );
+		Building restaurant7 = new Building( hozX + 230, hozY + 120, 20, 20, 570, 100, "Restaurant 7" );
 		buildings.add(restaurant7);
-		Building restaurant1 = new Building( hozX + 230, hozY + 160, 20, 20, 570, 200 );
+		Building restaurant1 = new Building( hozX + 230, hozY + 160, 20, 20, 570, 200, "Restaurant 1" );
 		buildings.add(restaurant1);
 	
-		Building restaurant3 = new Building( hozX + 430, hozY + 30, 20, 20, 770, 60 );
+		Building restaurant3 = new Building( hozX + 430, hozY + 30, 20, 20, 770, 60, "Restaurant 3" );
 		buildings.add(restaurant3);
-		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 770, 100 );
+		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 770, 100, "Bank" );
 		buildings.add(bank);
-		Building restaurant6 = new Building( hozX + 430, hozY + 120, 20, 20, 770, 150 );
+		Building restaurant6 = new Building( hozX + 430, hozY + 120, 20, 20, 770, 150, "Restaurant 6" );
 		buildings.add(restaurant6);
-		Building market = new Building( hozX + 370, hozY + 160, 20, 20, 770, 200 );
+		Building market = new Building( hozX + 370, hozY + 160, 20, 20, 770, 200, "Market" );
 		buildings.add(market);
 		
 	
-		Building restaurant4 = new Building( hozX + 600, hozY + 60, 20, 20, 990, 100 );
+		Building restaurant4 = new Building( hozX + 600, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
 		buildings.add(restaurant4);		
-		Building restaurant5 = new Building( hozX + 600, hozY + 160, 20, 20, 990, 200 );
+		Building restaurant5 = new Building( hozX + 600, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
 
@@ -373,6 +376,8 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		for ( int i=0; i<buildings.size(); i++ ) {
 			Building b = buildings.get(i);
 			if ( b.contains( me.getX(), me.getY() ) ) {
+				
+				
 				b.displayBuilding();
 			}
 		}

@@ -39,13 +39,14 @@ public class CityGui extends JFrame implements ActionListener {
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole();
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
+	
 
 
-	int time;
+	public int time;
 
 	public CityGui() {
 
-		cityPanel = new CityPanel();
+		cityPanel = new CityPanel(this);
 		cityPanel.setPreferredSize(new Dimension(400, 300));
 		cityPanel.setMaximumSize(new Dimension(400, 300));
 		cityPanel.setMinimumSize(new Dimension(400, 300));
@@ -166,6 +167,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void displayBuildingPanel(BuildingPanel bp) {
 		System.out.println(bp.getName());
+		
 		cardLayout.show(buildingPanels, bp.getName());
 	}
 
@@ -187,10 +189,13 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		time++;
-		for (PeopleAgent p : people) {
-			p.msgTimeIs(time);
+		if(time % 5 == 0)
+		{
+			for (PeopleAgent p : people) {
+				p.msgTimeIs(time/5);
+			}
 		}
-		if(time == 24000) {
+		if(time == 12000) {
 			time=0;
 		}
 		repaint();

@@ -1,6 +1,8 @@
 package city.gui;
 import javax.swing.*;
 
+import restaurant.gui.RestaurantGui;
+
 import java.awt.*;
 import java.awt.geom.*;
 
@@ -19,8 +21,6 @@ public class BuildingPanel extends JPanel {
 		setMaximumSize( new Dimension( 500, 250 ) );
 		setPreferredSize( new Dimension( 500, 250 ) );
 		
-		JLabel j = new JLabel( myName );
-		add( j );
 	}
 	
 	public String getName() {
