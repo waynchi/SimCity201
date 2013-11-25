@@ -151,6 +151,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 
 	private void DepositMoney(){
 		atTeller.drainPermits();
+		bgui.popCustomer();
 		gui.DoGoToTeller();
 		try {
 			atTeller.acquire();
@@ -174,6 +175,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 
 	private void WithdrawMoney(){
 		atTeller.drainPermits();
+		bgui.popCustomer();
 		gui.DoGoToTeller();
 		try {
 			atTeller.acquire();

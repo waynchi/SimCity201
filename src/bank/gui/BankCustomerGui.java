@@ -82,6 +82,7 @@ public class BankCustomerGui implements Gui{
 	}
 	
 	public void DoGoToTeller() {
+		isWaiting = false;
 		xDestination = 280;
 		yDestination = 90;
 	}
