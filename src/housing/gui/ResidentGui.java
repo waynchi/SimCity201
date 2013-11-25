@@ -19,13 +19,13 @@ public class ResidentGui implements HGui{
 	private Location location = Location.Home;
 	private Timer timer = new Timer();
 	private Timer cellPhoneTimer = new Timer();
-	private final int CELLPHONE_TIME = 2000;
-	private final int POOPING_TIME = 5000;
-	private final int PEEING_TIME = 2000;
-	private final int BATHING_TIME = 7000;
+	private final int CELLPHONE_TIME = 1000;
+	private final int POOPING_TIME = 1000;
+	private final int PEEING_TIME = 1000;
+	private final int BATHING_TIME = 1000;
 	private final int PREPING_TIME = 1000;
-	private final int COOKING_TIME = 2000;
-	private final int EATING_TIME = 3000;
+	private final int COOKING_TIME = 1000;
+	private final int EATING_TIME = 1000;
 	private boolean readingBook = false;
 	private boolean videoGames = false;
 	private boolean cellPhone = false;
@@ -334,7 +334,7 @@ public class ResidentGui implements HGui{
 		else if (s == State.Eating) {
 			return new TimerTask() {
 				public void run() {
-					((HousingResidentRole)r).doneEating();
+					((HousingResidentRole)r).activityDone();
 				}
 			};
 		}

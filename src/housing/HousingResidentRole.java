@@ -61,8 +61,14 @@ public class HousingResidentRole extends Role implements Resident {
 
 	public void eatFood() {
 		myState = State.Eating;
-		if (testMode == false)
+		if (testMode == false) {
 			gui.DoEat();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
+		this.myState = State.Idle;
+		myPerson.msgDone("DoneEating");
 	}
 
 	public void sleep() {
@@ -189,12 +195,6 @@ public class HousingResidentRole extends Role implements Resident {
 		if (myPerson != null) {
 			myPerson.msgDone("Resident");
 		}
-		stateChanged();
-	}
-	
-	public void doneEating() {
-		this.myState = State.Idle;
-		myPerson.msgDone("DoneEating");
 		stateChanged();
 	}
 	
