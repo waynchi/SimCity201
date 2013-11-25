@@ -2,7 +2,10 @@ package city.gui;
 import javax.swing.*;
 import javax.swing.Timer;
 
+import bank.TellerRole;
 import market.MarketEmployeeRole;
+import city.Bank;
+import city.Market;
 import city.Restaurant;
 import people.PeopleAgent;
 import restaurant.*;
@@ -31,9 +34,12 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole();
-	MarketEmployeeRole market = new MarketEmployeeRole();
-	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(
-			100, 100), "Restaurant 1");
+	TellerRole BankTellerRole = new TellerRole("Teller 1");
+	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole();
+	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
+	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
+	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
+
 	int time;
 
 	public CityGui() {
@@ -58,37 +64,38 @@ public class CityGui extends JFrame implements ActionListener {
 				String role = configIteration.next();
 				String name = configIteration.next();
 				if (isInteger(amount)) {
-					PeopleAgent person = new PeopleAgent(role, 1000.0, false);
+					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel);
+					person.setPersonGui(personGui);
 					person.startThread();
 					if (role.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole();
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
-						person.addJob("RestaurantNormalWaiter", 800, 2400);
+						person.addJob("RestaurantNormalWaiter", 1000, 2000);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor);
-						person.addJob("RestaurantCook", 800, 2400);
+						person.addJob("RestaurantCook", 1000, 2000);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
-						RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
 					if (role.equals("RestaurantHost")) {
-						person.addJob("RestaurantHost", 700, 2400);
+						person.addJob("RestaurantHost", 900, 2000);
 						person.addRole(RestaurantHostRole, "RestaurantHost");
 						RestaurantHostRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCustomer")) {
 						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole();
-						person.addJob("RestaurantCustomer", 800, 2400);
+						person.addJob("RestaurantCustomer", 1000, 2000);
 						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole();
-						person.addJob("RestaurantCashier", 800, 2400);
+						person.addJob("RestaurantCashier", 1000, 2000);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
 
@@ -106,6 +113,8 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		for (PeopleAgent p : people) {
 			p.Restaurants.add(restaurant);
+			p.Markets.add(market);
+			p.Banks.add(bank);
 		}
 		setVisible(true);
 		setSize(1024, 1000);
