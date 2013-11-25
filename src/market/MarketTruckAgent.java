@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import restaurant.interfaces.Cook;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import agent.Agent;
 import market.gui.MarketTruckGui;
 import market.interfaces.MarketCustomer;
@@ -12,6 +14,8 @@ import market.interfaces.MarketTruck;
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
 	//data
+	public boolean inTest = false;
+	
 	MarketTruckGui gui = new MarketTruckGui(this);
 	List<Order> orders = new ArrayList<Order>();
 	String name;
@@ -43,6 +47,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//}
 	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
+		log.add(new LoggedEvent("received message here is an order"));
 		orders.add(new Order (cook, items));
 		stateChanged();
 	}
@@ -59,14 +64,13 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 
-	
-
-	
 	//actions
 	private void deliverOrder(Order order) {
 		// if order is from restaurant, deliver to restaurant
 		//if (order.cook != null) {
+		if(!inTest){
 			gui.deliver(order.cook.getPerson());
+		}
 			order.cook.msgHereIsYourOrder(order.items);
 		//}
 		//else {

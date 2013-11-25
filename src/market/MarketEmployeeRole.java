@@ -15,9 +15,14 @@ import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
+	public EventLog log = new EventLog();
+	public boolean inTest =false;
+	
 	MarketCashier cashier;
 	MarketEmployeeGui employeeGui;
 	MarketGui marketGui;
@@ -35,7 +40,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
-	List<Order> orders = new ArrayList<Order>();
+	public List<Order> orders = new ArrayList<Order>();
 
 	class Order {
 		Map<String, Integer> items = new HashMap<String, Integer>();
@@ -159,7 +164,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		getOrder(order.items);
+		log.add(new LoggedEvent("in action give order to customer"));
+		if(!inTest)		getOrder(order.items);
 		// if order is from restaurant
 		if (order.cook != null) {
 			getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
@@ -224,4 +230,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		return getPersonAgent().getName();
 	}
 
+	public List<MarketTruck> getTrucks() {
+		return trucks;
+	}
 }

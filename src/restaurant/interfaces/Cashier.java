@@ -14,7 +14,7 @@ public interface Cashier {
 	public abstract void msgPayMyCheck (Customer c, Double amount);
 	public abstract String getName();
 	public abstract void msgHereIsChange(double change);
-	public abstract void msgMarketOrderReceived(Map<String, Integer> marketOrder);
+	public abstract void msgGotMarketOrder(Map<String, Integer> marketOrder);
 	public abstract void msgReadyToHelp(Teller teller);
 	
 	public abstract void msgGiveLoan(double balance, double amount);

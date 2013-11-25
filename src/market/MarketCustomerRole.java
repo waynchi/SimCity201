@@ -60,7 +60,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
-		//employee = (MarketEmployee) myPerson.getMarketEmployee();
+		employee = (MarketEmployee) myPerson.getMarketEmployee();
 		getPersonAgent().CallstateChanged();
 	}//tested
 	
@@ -109,7 +109,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}//tested
 
 	public void msgHereIsChange(double totalChange) {
-		//getPersonAgent().Money += totalChange;
 		myPerson.Money += totalChange;
 		event = marketCustomerEvent.RECEIVED_CHANGE;
 		getPersonAgent().CallstateChanged();

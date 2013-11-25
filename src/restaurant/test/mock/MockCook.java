@@ -5,6 +5,7 @@ import java.util.Map;
 import people.People;
 import restaurant.gui.CookGui;
 import restaurant.interfaces.Cook;
+import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
 public class MockCook extends Mock implements Cook{
@@ -40,5 +41,10 @@ public class MockCook extends Mock implements Cook{
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+
+	public void setHost(Host host) {
+		// TODO Auto-generated method stub
+		
 	}
 }
