@@ -28,6 +28,7 @@ public class PersonGui extends Rectangle2D.Double {
 		setDestination(cityPanel.buildings.get(13).xLocation, cityPanel.buildings.get(13).yLocation);
 	}
 	
+
 	public void GoToHouse()
 	{
 		setDestination(home.xLocation, home.yLocation);
