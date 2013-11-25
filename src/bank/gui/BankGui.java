@@ -3,6 +3,7 @@ package bank.gui;
 import javax.swing.*;
 
 import bank.BankCustomerRole;
+import bank.TellerRole;
 import agent.Agent;
 
 import java.awt.*;
@@ -85,6 +86,10 @@ public class BankGui extends JFrame implements ActionListener {
     	animationPanel.addGui(g1);
     	b1.setGui(g1);
     	customers.add(g1);
+    	
+        TellerRole t1 = new TellerRole();
+     	TellerGui g2 = new TellerGui(t1);
+     	animationPanel.addGui(g2);
     	
         gui.setTitle("SimCity Bank");
         gui.setVisible(true);
