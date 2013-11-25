@@ -38,6 +38,12 @@ public class ApartmentsGui implements HGui{
 				h.gui.setExternalCoordinates(new Dimension(x + (houseWidth / 2), y + houseHeight));
 				y += (houseHeight + 30);
 				k++;
+				if (i == 4) {
+					h.gui.setExternalCoordinates(new Dimension(x, y + houseHeight));
+				}
+				else {
+					h.gui.setExternalCoordinates(new Dimension(x + houseWidth, y + houseHeight));
+				}
 			}
 			y = 0;
 			x += (houseHeight + 30);
