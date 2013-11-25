@@ -604,6 +604,7 @@ public class PeopleAgent extends Agent implements People{
 				//Stop
 			}
 		}
+		System.out.println("test test test");
 		//Pause the Gui
 //		personGui.msgGoToRestaurantOne();
 //		try {
