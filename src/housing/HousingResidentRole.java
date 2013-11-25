@@ -30,7 +30,6 @@ public class HousingResidentRole extends Role implements Resident {
 		repairStage = RepairStage.None;
 		myState = State.Sleeping;
 		gui = new ResidentGui(this);
-		isActive = true;
 	}
 
 	//-----------------------------------------------------------//
