@@ -42,7 +42,6 @@ public class CookRole extends Role implements Cook{
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
-	private String name;
 	private CookGui cookGui = null;
 
 	private Boolean isActive = false;
@@ -75,9 +74,8 @@ public class CookRole extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRole(CookWaiterMonitor monitor, String name) {
+	public CookRole(CookWaiterMonitor monitor) {
 		super();
-		this.name = name;
 		foods.put("Steak", new Food("Steak"));
 		foods.put("Chicken", new Food("Chicken"));
 		foods.put("Salad", new Food("Salad"));
