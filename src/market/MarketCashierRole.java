@@ -18,23 +18,23 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// data
 	private boolean isActive = false;
-	private boolean turnActive = false;
-	private boolean leaveWork = false;
+	public boolean turnActive = false;
+	public boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
 	public EventLog log = new EventLog();
 
 	
 	Map<String, Double> priceList = new HashMap<String, Double>();
-	double marketMoney = 10000.0;
+	public double marketMoney = 10000.0;
 
 	private enum checkState {PENDING, SENT, PAID};
-	List<Check> checks = new ArrayList<Check>();
-	private class Check {
+	public List<Check> checks = new ArrayList<Check>();
+	public class Check {
 		MarketCustomer customer = null;
 		Cashier restaurantCashier = null;
 		Map<String, Integer> items = new HashMap<String, Integer>();
 		double totalPaid;
-		double totalDue;
+		public double totalDue;
 		checkState state;
 
 		// Check constructor for a regular MarketCustomer
@@ -70,21 +70,20 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
-	}
+	}//tested
 
 	public void msgIsInActive() {
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
+	}//tested
 
-	}
-
-	// from regular Market Customer
+	// for regular Market Customer
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
 		checks.add(new Check(customer, items));
 		getPersonAgent().CallstateChanged();
-	}
+	}//tested
 
-	// from restaurant Cashier
+	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items) {
 		checks.add(new Check(restaurantCashier, items));
 		getPersonAgent().CallstateChanged();
@@ -187,13 +186,15 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
-		log.add(new LoggedEvent(""));
-		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee();
+		log.add(new LoggedEvent("in action clockIn"));
+		//marketEmployee = myPerson.Markets.get(0).mer;
 		marketEmployee.setCashier(this);
 		turnActive = false;
 	}
 	
 	private void computeAndSendCheck(Check check) {
+		log.add(new LoggedEvent("in action compute and send check"));
+
 		//compute the total amount
 		for (Map.Entry<String,Integer> entry : check.items.entrySet()) {
 			check.totalDue += priceList.get(entry.getKey());
@@ -211,6 +212,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	private void giveChangeToCustomer(Check check) {
+		log.add(new LoggedEvent("in action give change to customer"));
 		double change = check.totalPaid - check.totalDue;
 		marketMoney -= change;
 		if (check.restaurantCashier != null) {
@@ -224,6 +226,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	private void done() {
+		log.add(new LoggedEvent("in action done"));
 		isActive = false;
 		leaveWork = false;
 		getPersonAgent().msgDone("MarketCashierRole");
@@ -238,7 +241,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		return getPersonAgent().getName();
 	}
 
-
+	public void setMarketEmployee(MarketEmployee me) {
+		this.marketEmployee = me;
+	}
 
 
 }

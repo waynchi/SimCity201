@@ -20,7 +20,7 @@ import java.util.Vector;
  * Panel in frame that contains all the restaurant information,
  * including host, cook, waiters, and customers.
  */
-public class RestaurantPanel extends JPanel{
+public class RestaurantPanel extends JPanel implements ActionListener{
 
     //Host, cook, waiters and customers
 	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
@@ -54,6 +54,16 @@ public class RestaurantPanel extends JPanel{
 	private JPanel imagePanel = new JPanel();
 	Boolean agentPaused = false;
 
+	/*public class Order {
+        int table;
+        String food;
+        WaiterAgent waiter;
+        Order (int t, String f,WaiterAgent w) {
+                table  = t;
+                food = f;
+                waiter = w;
+        }
+    }*/
 
     public class CookWaiterMonitor extends Object {
         private List<MyOrder> orders = new ArrayList<MyOrder>();
@@ -72,7 +82,39 @@ public class RestaurantPanel extends JPanel{
     }
 
     
+    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    	host = h;
+        this.gui = gui;
+		//gui.animationPanel.addGui(cookGui);
+        //host.setGui(hostGui);
+        //cook.setGui(cookGui);
+        
+        //cook.addMarket(market1);
+        //cook.addMarket(market2);
+        //cook.addMarket(market3);
+        //cook.setCashier(cashier);
+        
+        //market1.setCook(cook);
+        //market2.setCook(cook);
+        //market3.setCook(cook);
+                
+        //host.startThread();
+        //cook.startThread();
+        //market1.startThread();
+        //market2.startThread();
+        //market3.startThread();
+        //cashier.startThread();
+        
+        setLayout(new GridLayout(1, 2, 20, 20));
+        
 
+        initRestLabel();
+        initImagePanel();
+        add(restLabel);
+        add(imagePanel);
+        //add(customerPanel);
+    }
+    
     public RestaurantPanel(RestaurantGui gui) {
         this.gui = gui;
         
@@ -105,6 +147,7 @@ public class RestaurantPanel extends JPanel{
         imagePanel.add(pauseButton);
        // imagePanel.add(addWaiterButton);
         
+        pauseButton.addActionListener(this);
         //addWaiterButton.addActionListener(this);
        	
 	}
@@ -125,6 +168,127 @@ public class RestaurantPanel extends JPanel{
         restLabel.add(new JLabel("               "), BorderLayout.WEST);
     }
 
+    /**
+     * When a customer or waiter is clicked, this function calls
+     * updatedInfoPanel() from the main gui so that person's information
+     * will be shown
+     *
+     * @param type indicates whether the person is a customer or waiter
+     * @param name name of person
+     */
+    /*public void showInfo(String type, String name, Boolean hungryCheck) {
+
+        if (type.equals("Customers")) {
+
+            for (int i = 0; i < customers.size(); i++) {
+                RestaurantCustomerRole temp = customers.get(i);
+                if (temp.getName() == name)
+                    gui.updateInfoPanel(temp, hungryCheck);
+            }
+        }
+        
+        if (type.equals("Waiters")) {
+        	for (BaseWaiterRole temp: waiters) {
+        		if (temp.getName() == name)
+        			gui.updateInfoPanel(temp, false);
+        	}
+        }
+    }
+
+	public void actionPerformed(ActionEvent e) {
+/*
+	    if (e.getSource() == pauseButton){
+	    	System.out.println("pause button pressed");
+	    	if (agentPaused == false) {
+	    		pauseAgents();
+	    		agentPaused = true;
+	    	}
+	    	else {
+	    		restartAgents();
+	    		agentPaused = false;
+	    	}
+	    }
+	  
+	}*/
+    
+    // pause all the agents when pause button is clicked
+    /*public void pauseAgents(){
+    	host.pause();
+    	cook.pause();
+    	cashier.pause();
+    	market1.pause();
+    	market2.pause();
+    	market3.pause();
+    	
+    	// since all waiters and customers are created in the restaurant panel, we have a list to keep track
+    	// of them
+    	// should be able to pause all agents now.
+    	for (BaseWaiterRole waiter : waiters) {
+    		waiter.pause();
+    	}
+    	for (RestaurantCustomerRole cust : customers){
+    		cust.pause();
+    	}
+    }*/
+    
+    /*public void restartAgents() {
+		host.restart();
+    	cook.restart();
+    	cashier.restart();
+    	market1.restart();
+    	market2.restart();
+    	market3.restart();
+    	for (BaseWaiterRole waiter : waiters) {
+    		waiter.restart();
+    	}
+    	for (RestaurantCustomerRole cust : customers){
+    		//cust.restart();
+    	}
+	}
+	/*
+    
+    /**
+     * Adds a customer or waiter to the appropriate list
+     *
+     * @param type indicates whether the person is a customer or waiter (later)
+     * @param name name of person
+     */
+    public void addPerson(String type, String name) {
+
+    	if (type.equals("Customers")) {
+    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		CustomerGui g = new CustomerGui(c);
+
+    		gui.animationPanel.addGui(g);// dw
+    		c.setHost(host);
+    		c.setGui(g);
+    		customers.add(c);
+    		//c.startThread();
+    	}
+    	
+    	if (type.equals("Waiters")) {
+    		//if (name.equalsIgnoreCase("special")){
+    			BaseWaiterRole w = new NormalWaiterRole(gui);
+    			if (name.equalsIgnoreCase("special")) {
+        			w = new SpecialWaiterRole(theMonitor,gui);
+    			}
+    			WaiterGui g = new WaiterGui(w);
+        		g.setHomePosition(waiters.size());
+        		
+                gui.animationPanel.addGui(g);
+        		host.addWaiter(w);
+        		waiters.add(w);
+        		w.setHost(host);
+        		w.setGui(g);
+        		w.setCook(cook);
+        		//w.setCashier(cashier);
+        		
+                //w.startThread();
+    		//}
+    	
+    	}
+    }
+    
     public void setWorkingCapital (double amount) {
     	working_capital = amount;
     }
@@ -177,6 +341,12 @@ public class RestaurantPanel extends JPanel{
 	public int getBankAccount() {
 		// TODO Auto-generated method stub
 		return bank_account;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
     

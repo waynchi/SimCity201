@@ -28,14 +28,22 @@ public class MarketGui extends JPanel implements ActionListener {
      * Sets up all the gui components.
      */
     public MarketGui() {
-        int WINDOWX = 600;
+        int WINDOWX = 550;
         int WINDOWY = 400;
+        
+        Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
+        animationPanel.setPreferredSize(animationDim);
+        animationPanel.setMinimumSize(animationDim);
+        animationPanel.setMaximumSize(animationDim);
 
+    	setBounds(50, 50, WINDOWX, WINDOWY);
+
+    	
         //animationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //animationFrame.setBounds(100, 50 , WINDOWX, WINDOWY);
         //animationFrame.setVisible(true);
     	//animationFrame.add(animationPanel); 
-        this.add(animationPanel);
+        add(animationPanel);
     	
   
     }
