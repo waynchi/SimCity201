@@ -38,9 +38,9 @@ public class PeopleAgent extends Agent implements People{
 
 	
 	public enum AgentState 
-	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
+	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
 	public enum AgentEvent 
-	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
+	{Waiting, GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
 		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
@@ -261,17 +261,18 @@ public class PeopleAgent extends Agent implements People{
 							log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
 							return;
 						}
-						else
-						{
-							event = AgentEvent.GoingToRetrieveMoney;
-							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-							stateChanged();
-							return;
-						}
+//						else
+//						{
+//							event = AgentEvent.GoingToRetrieveMoney;
+//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//							stateChanged();
+//							return;
+//						}
 					}
 					else
 					{
-						if(Money >= 50000)
+						
+						if(Money >= 1000000 && Time >= 1130)
 						{
 							event = AgentEvent.GoingToDepositMoney;
 							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
@@ -309,7 +310,8 @@ public class PeopleAgent extends Agent implements People{
 		}
 		lastTime = job.end;
 		}
-		if(state != AgentState.Sleeping && state != AgentState.Working )
+		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
+		if(state == AgentState.Idle)
 		{
 			if(hunger == HungerState.Hungry)
 			{
@@ -416,8 +418,8 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
 		{
-			event = AgentEvent.Idle;
-			state = AgentState.Idle;
+			event = AgentEvent.Waiting;
+			state = AgentState.Waiting;
 			log.add(new LoggedEvent("Leaving Work. New State is " + state.toString()));
 			LeaveWork();
 			Person = true;
@@ -505,24 +507,24 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Road;
 		
 		//roles.RestaurantCustomerAgent.msg(this);
-		if(hasCar)
-		{
-			hunger = HungerState.Eating;
-		for(MyRole r: roles)
-		{
-			if(r.description.equals("carPassenger"))
-			{
-				r.role.msgIsActive();
-			}
-			//Guifor Car Animation
-			
-			/*if(r.description.equals("CustomerAgent"))
-			{			
-				r.role.msgIsActive();
-			}*/
-		}
-		}
-		else
+//		if(hasCar)
+//		{
+//			hunger = HungerState.Eating;
+//		for(MyRole r: roles)
+//		{
+//			if(r.description.equals("carPassenger"))
+//			{
+//				r.role.msgIsActive();
+//			}
+//			//Guifor Car Animation
+//			
+//			/*if(r.description.equals("CustomerAgent"))
+//			{			
+//				r.role.msgIsActive();
+//			}*/
+//		}
+//		}
+//		else
 		{
 			//TODO
 			/*if(rand.nextInt(1) == 1)
@@ -626,9 +628,11 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(MyRole r: roles)
 		{
-			if(r.role.isActive)
+			if(r.description.equals(jobs.get(0).job))
 			{
+				System.out.println("I am leaving work");
 				r.role.msgIsInActive();
+				
 			}
 		}
 	}

@@ -68,7 +68,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input;
 		try {
-			input = new FileReader("config.txt");
+			input = new FileReader("src//config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -86,6 +86,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person,cityPanel.buildings.get(0));
 					person.setPersonGui(personGui);
+					person.Restaurants.add(restaurant);
+					person.Banks.add(bank);
+					person.Markets.add(market);
 					cityPanel.people.add(personGui);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
@@ -94,6 +97,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					person.startThread();
+					person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
@@ -129,6 +133,8 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketEmployee", start, end);
 						person.addRole(MarketEmployeeRole,"MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
+						person.setMoney(1000000);
+						person.hasCar = true;
 					}
 					people.add(person);
 				}
@@ -213,11 +219,15 @@ public class CityGui extends JFrame implements ActionListener {
 		time++;
 		if(time % 2 == 0)
 		{
+			if(time%60 == 0)
+			{
+				System.out.println(time/2);
+			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/2);
 			}
 		}
-		if(time == 12000) {
+		if(time == 4800) {
 			time=0;
 		}
 
