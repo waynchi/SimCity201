@@ -21,13 +21,14 @@ public class PeopleAgent extends Agent implements People{
 	public List<Job> jobs = new ArrayList<Job>();
 	public Double Money;
 	public Double Balance;
-	private int Hunger = 10;
+	private int Hunger = 100;
 	public Boolean hasCar;
 	public String name;
 	public enum HungerState
 	{NotHungry, Hungry, Eating};
 	Random rand = new Random();
 	PersonGui personGui;
+	CityGui cityGui;
 	
 	public EventLog log = new EventLog();
 
@@ -105,6 +106,11 @@ public class PeopleAgent extends Agent implements People{
 	public void setPersonGui(PersonGui gui)
 	{
 		personGui = gui;
+	}
+	
+	public void setCityGui(CityGui gui)
+	{
+		cityGui = gui;
 	}
 	
 	//public void addPeopleGui()
@@ -735,8 +741,6 @@ public class PeopleAgent extends Agent implements People{
 			description = d;
 		}
 	}
-
-
 }
 
 		

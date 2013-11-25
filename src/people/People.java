@@ -7,6 +7,7 @@ import people.PeopleAgent.Job;
 import people.PeopleAgent.MyRole;
 import restaurant.test.mock.LoggedEvent;
 import city.gui.CityGui;
+import city.gui.PersonGui;
 
 public interface People {
 	
@@ -32,7 +33,9 @@ public interface People {
 	
 	public String getName();
 	
-	public void addCityGui(CityGui gui);
+	public void setPersonGui(PersonGui gui);
+	
+	public void setCityGui(CityGui gui);
 
 	public abstract void addRole(Role r, String description);
 
