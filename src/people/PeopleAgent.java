@@ -605,7 +605,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		//Pause the Gui
-		personGui.msgGoToRestaurantOne();
+//		personGui.msgGoToRestaurantOne();
 //		try {
 //			moving.acquire();
 //		} catch (InterruptedException e) {
