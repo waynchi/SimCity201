@@ -1,7 +1,5 @@
 package restaurant;
 
-import restaurant.BaseWaiterRole;
-import restaurant.gui.RestaurantPanel;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Host;
@@ -11,11 +9,8 @@ import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
 
-import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
-import market.MarketCashierRole;
 import market.interfaces.MarketCashier;
-import people.People;
 import people.Role;
 
 

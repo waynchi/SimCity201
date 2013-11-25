@@ -1,9 +1,6 @@
 package restaurant;
 
-import agent.Agent;
-import restaurant.BaseWaiterRole;
 import restaurant.gui.CookGui;
-import restaurant.gui.HostGui;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.interfaces.Cashier;
@@ -11,14 +8,11 @@ import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
-import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import market.MarketEmployeeRole;
 import market.interfaces.MarketEmployee;
 import people.People;
-import people.PeopleAgent;
 import people.Role;
 
 /**

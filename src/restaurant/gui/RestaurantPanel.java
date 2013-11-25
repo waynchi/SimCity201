@@ -256,8 +256,8 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole();	
-    		CustomerGui g = new CustomerGui(c, gui);
+    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		CustomerGui g = new CustomerGui(c);
 
     		gui.animationPanel.addGui(g);// dw
     		c.setHost(host);
@@ -268,9 +268,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	
     	if (type.equals("Waiters")) {
     		//if (name.equalsIgnoreCase("special")){
-    			BaseWaiterRole w = new NormalWaiterRole();
+    			BaseWaiterRole w = new NormalWaiterRole(gui);
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(theMonitor);
+        			w = new SpecialWaiterRole(theMonitor,gui);
     			}
     			WaiterGui g = new WaiterGui(w);
         		g.setHomePosition(waiters.size());
