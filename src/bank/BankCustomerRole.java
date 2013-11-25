@@ -62,11 +62,13 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Messages
 	
 	public void msgIsActive() {
+		print("Recveived msgIsActive");
 		isActive = true;
 		stateChanged();
 	}
 	
 	public void msgReadyToHelp(Teller t) {
+		print("Received msgReadyToHelp from teller");
 		this.teller = t;
 		state = CustomerState.ready;
 		stateChanged();
