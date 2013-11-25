@@ -48,9 +48,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public BankCustomerRole(String name){
+	public BankCustomerRole(){
 		super();
-		this.name = name;
 	}
 
 	public String getCustomerName() {
