@@ -1,6 +1,9 @@
 package bank;
 
 import agent.Agent;
+import bank.gui.BankCustomerGui;
+import bank.gui.BankGui;
+import bank.gui.TellerGui;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 
@@ -33,9 +36,15 @@ public class TellerRole extends Role implements Teller {
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	
 	Boolean LeavePost = false;
+	
+	private BankGui bgui;
+	
+	private TellerGui gui;
 
-	public TellerRole() {
+	public TellerRole(BankGui b) {
 		super();
+		this.bgui = b;
+		b.addPerson(this);
 	}
 	
 	public void addAccount(Market m) {
@@ -69,6 +78,7 @@ public class TellerRole extends Role implements Teller {
 	public void msgIsActive(){
 		print("Received msgIsActive");
 		isActive = true;
+		bgui.addPerson(this);
 		stateChanged();
 	}
 	
@@ -251,6 +261,10 @@ public class TellerRole extends Role implements Teller {
 			this.id = id;
 			this.customerName = name;
 		}
+	}
+	
+	public void setGui(TellerGui g) {
+		gui = g;
 	}
 	
 	private class myBankCustomer {

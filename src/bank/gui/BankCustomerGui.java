@@ -16,7 +16,7 @@ public class BankCustomerGui implements Gui{
 	
 
 	//private HostAgent host;
-	BankGui gui;
+	public BankGui gui;
     private int xTable, yTable;
     private int xFinal, yFinal;
 	private int xPos, yPos;
