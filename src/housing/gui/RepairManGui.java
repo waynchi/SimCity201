@@ -80,6 +80,7 @@ public class RepairManGui implements HGui{
 				if (location == Location.ApartmentComplex) {
 					ref.h.a.gui.remove(this);
 				}
+				location = Location.Outside;
 				state = State.Idle;
 				((HousingRepairManRole)r).doneLeaving();
 			}
