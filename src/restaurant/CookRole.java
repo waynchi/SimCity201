@@ -55,12 +55,12 @@ public class CookRole extends Role implements Cook{
 	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	private class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
-		Boolean isResponded;
+		Boolean delivered;
 		int marketCount;
 
 		private MarketOrder (Map<String,Integer> mo){
 			marketOrder = mo;
-			isResponded = false;
+			delivered = false;
 			marketCount = 1;
 		};
 	}
@@ -118,14 +118,15 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
-
+	// from market truck
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		print ("received order from market");
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
 		}
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items) {
-				mo.isResponded = true;
+				mo.delivered = true;
 			}
 		}
 		getPersonAgent().CallstateChanged();
@@ -199,7 +200,7 @@ public class CookRole extends Role implements Cook{
 		
 		synchronized(marketOrders) {
 			for (MarketOrder mo:marketOrders) {
-				if (mo.isResponded) {
+				if (mo.delivered) {
 					askCashierToPayForOrder(mo);
 					return true;
 				}
@@ -231,7 +232,8 @@ public class CookRole extends Role implements Cook{
 	// Actions
 
 	public void askCashierToPayForOrder(MarketOrder order) {
-		cashier.msgMarketOrderReceived(order.marketOrder);
+		cashier = host.getCashier();
+		cashier.msgGotMarketOrder(order.marketOrder);
 		marketOrders.remove(order);
 	}
 	
