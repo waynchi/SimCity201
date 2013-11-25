@@ -33,11 +33,11 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole = new HostRole("Restaurant Host");
-	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole("Market Employee");
+	HostRole RestaurantHostRole = new HostRole();
+	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole();
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
-	TellerRole BankTellerRole = new TellerRole("Teller 1");
+	TellerRole BankTellerRole = new TellerRole();
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 
 
@@ -56,7 +56,7 @@ public class CityGui extends JFrame implements ActionListener {
 				RestaurantHostRole);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole("Market Employee");
+		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole();
 
 		FileReader input;
 		try {
@@ -86,7 +86,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, "Cook");
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor);
 						person.addJob("RestaurantCook", 1000, 2000);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
@@ -103,7 +103,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole("Cashier");
+						CashierRole RestaurantCashierRole = new CashierRole();
 						person.addJob("RestaurantCashier", 1000, 2000);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
