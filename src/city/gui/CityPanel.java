@@ -11,7 +11,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	ArrayList<Lane> lanes;
 	ArrayList<Sidewalk> sidewalks;
 	ArrayList<Vehicle> vehicles;
-	ArrayList<Person> people;
+	ArrayList<PersonGui> people;
 	int count = 0;
 	static final int hozX = 350;
 	static final int hozY = 40;
@@ -32,7 +32,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		lanes = new ArrayList<Lane>();
 		sidewalks = new ArrayList<Sidewalk>();
 		vehicles = new ArrayList<Vehicle>();
-		people = new ArrayList<Person>();
+		people = new ArrayList<PersonGui>();
 	
 		
 
@@ -232,14 +232,14 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 		count++;
 		
 		Vehicle vehicle;
-		Person person;
+		PersonGui person;
 		if ( count == 100) {
 			//Second Row -- First Building
 			vehicle = new Vehicle( 15, 15, 16, 16, lanes.get(12),lanes,this);
 			vehicle.setDestination(570, 60);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
 			person.setDestination(570, 60);
 			people.add(person);
 			
@@ -251,7 +251,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(570, 150);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
 			person.setDestination(570, 150);
 			people.add(person);
 		}
@@ -261,7 +261,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(570, 200);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
 			person.setDestination(570, 200);
 			people.add(person);
 		}
@@ -272,7 +272,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(770, 60);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
 			person.setDestination(770, 60);
 			people.add(person);
 		}
@@ -282,7 +282,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(770, 100);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
 			person.setDestination(770, 100);
 			people.add(person);
 		}
@@ -292,7 +292,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(770, 150);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
 			person.setDestination(770, 150);
 			people.add(person);
 		}
@@ -302,7 +302,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(770, 200);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
 			person.setDestination(770, 200);
 			people.add(person);
 		}
@@ -312,7 +312,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(990, 100);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(30),sidewalks,this);
 			person.setDestination(990, 100);
 			people.add(person);
 		}
@@ -322,7 +322,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			vehicle.setDestination(990, 200);
 			vehicles.add(vehicle);
 			
-			person = new Person( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
+			person = new PersonGui( 5, 5, 5, 5, sidewalks.get(29),sidewalks,this);
 			person.setDestination(990, 150);
 			people.add(person);
 		}
@@ -370,7 +370,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 			v.draw(g2);
 		}
 		for(int i=0;i<people.size();i++) {
-			Person p = people.get(i);
+			PersonGui p = people.get(i);
 			p.draw(g2);
 		}
 		
@@ -385,7 +385,7 @@ public class CityPanel extends JPanel implements MouseListener,ActionListener {
 	public void removeVehicle(Vehicle v) {
 		vehicles.remove(v);
 	}
-	public void removePerson(Person p) {
+	public void removePerson(PersonGui p) {
 		people.remove(p);
 	}
 	public ArrayList<Building> getBuildings() {

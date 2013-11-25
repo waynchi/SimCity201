@@ -6,8 +6,6 @@ import market.MarketEmployeeRole;
 import city.Restaurant;
 import people.PeopleAgent;
 import restaurant.*;
-import transportation.*;
-import housing.*;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
@@ -67,8 +65,7 @@ public class CityGui extends JFrame implements ActionListener {
 						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", 800, 2400);
-						person.addRole(RestaurantNormalWaiterRole,
-								"RestaurantNormalWaiter");
+						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCook")) {
@@ -76,7 +73,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("RestaurantCook", 800, 2400);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
-						//RestaurantCookRole.addMarket(RestaurantMarketRole);
+						RestaurantCookRole.addMarket(RestaurantMarketRole);
 					}
 					if (role.equals("RestaurantHost")) {
 						person.addJob("RestaurantHost", 700, 2400);
@@ -86,15 +83,13 @@ public class CityGui extends JFrame implements ActionListener {
 					if (role.equals("RestaurantCustomer")) {
 						RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole();
 						person.addJob("RestaurantCustomer", 800, 2400);
-						person.addRole(RestaurantCustomerRole,
-								"RestaurantCustomer");
+						person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 						RestaurantCustomerRole.setPerson(person);
 					}
 					if (role.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole();
 						person.addJob("RestaurantCashier", 800, 2400);
-						person.addRole(RestaurantCashierRole,
-								"RestaurantCashier");
+						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
 
 					}
