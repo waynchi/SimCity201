@@ -36,6 +36,8 @@ public interface People {
 	public void setPersonGui(PersonGui gui);
 	
 	public void setCityGui(CityGui gui);
+	
+	public void Arrived();
 
 	public abstract void addRole(Role r, String description);
 
