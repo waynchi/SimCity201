@@ -14,9 +14,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	// Data
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
-	private double salary;
-	private double money;
-	private double homeMoney;
 	private MyHouse currentHouse = null;
 	public Location location = Location.Shop;
 	public RepairManGui gui;
@@ -30,12 +27,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	//-----------------------------------------------------------//
 
 	// Actions
-
-	public void goToHouse(final MyHouse mh) {
-		// Animation implementation.
-		mh.r.ImHere();
-		mh.s = HouseState.Reached;
-	}
 
 	public void repairItems(MyHouse mh) {
 		List<Item> brokenItems = mh.h.getBrokenItems();
@@ -58,24 +49,37 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixing");
 	}
 	
+	public void goToApartmentInSamePlace(MyHouse mh) {
+	}
+	
 	public void returnToShop() {
 		location = Location.OutsideReturning;
+		myPerson.msgDone("RepairManFixed");
+	}
+	
+	public void leaveApartmentComplex() {
+		location = Location.OutsideFixing;
+		myPerson.msgDone("RepairManFixing");
+	}
+	
+	public void goToHouseInDifferentPlace() {
+		location = Location.OutsideFixing;
+		myPerson.msgDone("RepairManFixing");
+	}
+	
+	public void goToVilla() {
+		location = Location.OutsideFixing;
+		myPerson.msgDone("RepairManFixing");
+	}
+	
+	public void enterHouse(MyHouse mh) {
+		mh.s = HouseState.Reached;
+		mh.r.ImHere();
+		// Gui stuff.
 	}
 	
 	public void enterShop() {
 		location = Location.Shop;
-	}
-	
-	public void goToApartmentInSamePlace(MyHouse mh) {
-	}
-	
-	public void leaveApartmentComplex() {
-	}
-	
-	public void goToHouseInDifferentPlace() {
-	}
-	
-	public void goToVilla() {
 	}
 
 	//-----------------------------------------------------------//
@@ -85,12 +89,13 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void needHelp(House h, double money) {
 		MyHouse mh = find(h);
 		mh.s = HouseState.NeedsRepair;
-		this.money += money;
+		myPerson.Money += money;
 		stateChanged();
 	}
 	
 	public void activityDone() {
 		location = Location.OutsideReturning;
+		stateChanged();
 	}
 
 	//-----------------------------------------------------------//
@@ -98,8 +103,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (location == Location.OutsideReturning) {
+		if (location == Location.OutsideReturning && myPerson.getAgentEvent().equals("")) {
 			enterShop();
+			return true;
+		}
+		if (location == Location.OutsideFixing && myPerson.getAgentEvent().equals("")) {
+			enterHouse(currentHouse);
 			return true;
 		}
 		if (currentHouse == null) {
@@ -155,12 +164,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	//-----------------------------------------------------------//
 
 	// Utilities
-
-	// Ensure thread safety for homeMoney.
-	public void pickUpSalaryMoney() {
-		money += homeMoney;
-		homeMoney = 0;
-	}
 
 	public MyHouse find(House h) {
 		for (MyHouse mh : houses) {
