@@ -106,44 +106,44 @@ public class House extends Item{
 	
 	public void setItems() {
 		Item i1 = new Item("Bed", this);
-		ItemGui g1 = new ItemGui(i1, 15, 135, 120, 60, new Color(150, 0, 100));
+		ItemGui g1 = new ItemGui(i1, 15, 135, 120, 60, "src/housing/images/bed.png");
 		i1.setGui(g1);
 		items.add(i1);
 		
 		Item i2 = new Item("SideStool", this);
-		ItemGui g2 = new ItemGui(i2, 15, 75, 40, 40, 20,20, Color.red);
+		ItemGui g2 = new ItemGui(i2, 15, 75, 40, 40, "src/housing/images/sidestool.png");
 		i2.setGui(g2);
 		items.add(i2);
 		
 		Item i3 = new Item("Fridge", this);
-		ItemGui g3 = new ItemGui(i3, 15, 425, 30, 60, Color.gray);
+		ItemGui g3 = new ItemGui(i3, 15, 425, 30, 60, "src/housing/images/fridge.png");
 		i3.setGui(g3);
 		items.add(i3);
 		
 		Item i4 = new Item("TV", this);
-		ItemGui g4 = new ItemGui(i4, 15, 270, 20, 30, Color.black);
+		ItemGui g4 = new ItemGui(i4, 15, 270, 20, 30, "src/housing/images/tv.png");
 		i4.setGui(g4);
 		items.add(i4);
 		
-		if (type == HouseType.Villa) {
-			Item i5 = new Item("CookingSlab1", this);
-			ItemGui g5 = new ItemGui(i5, 100, 435, 70, 50, Color.CYAN);
-			i5.setGui(g5);
-			items.add(i5);
-		}
-		
+		Item i5 = new Item("CookingSlab1", this);
+		ItemGui g5 = new ItemGui(i5, 210, 435, 70, 50, "src/housing/images/cookingSlab.png");
+		i5.setGui(g5);
+		items.add(i5);
+				
 		Item i6 = new Item("CookingGrill", this);
-		ItemGui g6 = new ItemGui(i6, 170, 435, 40, 50, Color.MAGENTA);
+		ItemGui g6 = new ItemGui(i6, 170, 435, 40, 50, "src/housing/images/cookingGrill.png");
 		i6.setGui(g6);
 		items.add(i6);
 		
-		Item i7 = new Item("CookingSlab2", this);
-		ItemGui g7 = new ItemGui(i7, 210, 435, 70, 50, Color.CYAN);
-		i7.setGui(g7);
-		items.add(i7);
+		if (type == HouseType.Villa) {
+			Item i7 = new Item("CookingSlab2", this);
+			ItemGui g7 = new ItemGui(i7, 100, 435, 70, 50, "src/housing/images/cookingSlab.png");
+			i7.setGui(g7);
+			items.add(i7);
+		}
 		
 		Item i8 = new Item("Basin", this);
-		ItemGui g8 = new ItemGui(i8, 280, 435, 40, 50, Color.DARK_GRAY);
+		ItemGui g8 = new ItemGui(i8, 280, 435, 40, 50, "src/housing/images/basin.png");
 		i8.setGui(g8);
 		items.add(i8);
 		
@@ -160,61 +160,61 @@ public class House extends Item{
 		}
 		
 		Item i11 = new Item("Sofa1", this);
-		ItemGui g11 = new ItemGui(i11, 150, 250, 40, 80, 20, 20, Color.LIGHT_GRAY);
+		ItemGui g11 = new ItemGui(i11, 150, 250, 40, 80, "src/housing/images/sofa1.png");
 		i11.setGui(g11);
 		items.add(i11);
 		
 		if (type == HouseType.Villa) {
 			Item i12 = new Item("Sofa2", this);
-			ItemGui g12 = new ItemGui(i12, 100, 210, 40, 30, 20, 20, Color.LIGHT_GRAY);
+			ItemGui g12 = new ItemGui(i12, 100, 210, 40, 30, "src/housing/images/sofa2.png");
 			i12.setGui(g12);
 			items.add(i12);
 		
 			Item i13 = new Item("Sofa3", this);
-			ItemGui g13 = new ItemGui(i13, 100, 340, 40, 30, 20, 20, Color.LIGHT_GRAY);
+			ItemGui g13 = new ItemGui(i13, 100, 340, 40, 30, "src/housing/images/sofa3.png");
 			i13.setGui(g13);
 			items.add(i13);
 		}
 		
 		Item i14 = new Item("CenterTable", this);
-		ItemGui g14 = new ItemGui(i14, 90, 260, 40, 60, Color.BLUE);
+		ItemGui g14 = new ItemGui(i14, 90, 260, 40, 60, "src/housing/images/centerTable.jpg");
 		i14.setGui(g14);
 		items.add(i14);
 		
 		Item i15 = new Item("DiningTable", this);
-		ItemGui g15 = new ItemGui(i15, 310, 260, 50, 50, 20, 20, Color.RED);
+		ItemGui g15 = new ItemGui(i15, 310, 260, 50, 50, "src/housing/images/diningTable.jpg");
 		i15.setGui(g15);
 		items.add(i15);
 		
 		Item i16 = new Item("Chair1", this);
-		ItemGui g16 = new ItemGui(i16, 370, 275, 20, 20, Color.RED);
+		ItemGui g16 = new ItemGui(i16, 370, 275, 20, 20, "src/housing/images/chair1.png");
 		i16.setGui(g16);
 		items.add(i16);
 		
 		Item i17 = new Item("Chair2", this);
-		ItemGui g17 = new ItemGui(i17, 280, 275, 20, 20, Color.RED);
+		ItemGui g17 = new ItemGui(i17, 280, 275, 20, 20, "src/housing/images/chair2.png");
 		i17.setGui(g17);
 		items.add(i17);
 				
 		if (type == HouseType.Villa) {
 			Item i18 = new Item("Chair3", this);
-			ItemGui g18 = new ItemGui(i18, 325, 230, 20, 20, Color.RED);
+			ItemGui g18 = new ItemGui(i18, 325, 230, 20, 20, "src/housing/images/chair3.png");
 			i18.setGui(g18);
 			items.add(i18);
 		
 			Item i19 = new Item("Chair4", this);
-			ItemGui g19 = new ItemGui(i19, 325, 320, 20, 20, Color.RED);
+			ItemGui g19 = new ItemGui(i19, 325, 320, 20, 20, "src/housing/images/chair4.png");
 			i19.setGui(g19);
 			items.add(i19);
 		}
 		
 		Item i20 = new Item("BathTub", this);
-		ItemGui g20 = new ItemGui(i20, 295, 15, 40, 100, 20, 20, Color.lightGray);
+		ItemGui g20 = new ItemGui(i20, 295, 15, 40, 100, "src/housing/images/bathtub.jpg");
 		i20.setGui(g20);
 		items.add(i20);
 		
 		Item i21 = new Item("Toilet", this);
-		ItemGui g21 = new ItemGui(i21, 400, 165, 30, Color.YELLOW);
+		ItemGui g21 = new ItemGui(i21, 400, 165, 30, 30, "src/housing/images/toilet.png");
 		i21.setGui(g21);
 		items.add(i21);
 		
@@ -244,22 +244,22 @@ public class House extends Item{
 		items.add(i26);
 		
 		Item i27 = new Item("StudyTable", this);
-		ItemGui g27 = new ItemGui(i27, 70, 15, 60, 40, 10, 10, new Color(200, 100, 0));
+		ItemGui g27 = new ItemGui(i27, 70, 15, 60, 40, "src/housing/images/studyTable.jpg");
 		i27.setGui(g27);
 		items.add(i27);
 		
 		Item i28 = new Item("StudyChair", this);
-		ItemGui g28 = new ItemGui(i28, 90, 65, 20, 20, new Color(200, 100, 0));
+		ItemGui g28 = new ItemGui(i28, 90, 65, 20, 20, "src/housing/images/chair.png");
 		i28.setGui(g28);
 		items.add(i28);
 		
 		Item i29 = new Item("Dustbin1", this);
-		ItemGui g29 = new ItemGui(i29, 15, 15, 20, new Color(0, 200, 100));
+		ItemGui g29 = new ItemGui(i29, 15, 15, 20, 20, "src/housing/images/dustbin1.png");
 		i29.setGui(g29);
 		items.add(i29);
 		
 		Item i30 = new Item("Dustbin2", this);
-		ItemGui g30 = new ItemGui(i30, 430, 380, 20, new Color(0, 200, 100));
+		ItemGui g30 = new ItemGui(i30, 430, 380, 20, 20, "src/housing/images/dustbin2.png");
 		i30.setGui(g30);
 		items.add(i30);
 		

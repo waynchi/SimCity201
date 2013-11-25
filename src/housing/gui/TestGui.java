@@ -1,20 +1,26 @@
 package housing.gui;
 
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 
 public class TestGui extends JFrame {
-	public HouseAnimationPanel p = new HouseAnimationPanel();
-	HousingPanel hp = new HousingPanel(this, p);
+	public HouseAnimationPanel hp = new HouseAnimationPanel();
+	public ApartmentsAnimationPanel ap = new ApartmentsAnimationPanel();
+	HousingPanel h = new HousingPanel(this, hp, ap);
 	
 	public TestGui() {
-		this.add(p);
-		this.setSize(500, 570);
+		this.setLayout(new GridLayout());
+		this.add(ap);
+		this.add(hp);
+		this.setSize(1100, 570);
 	}
 	
-	public void addGui(HGui gui) {
-		p.addGui(gui);
-	}
+//	public void addGui(HGui gui) {
+//		p.addGui(gui);
+//	}
 	
 	public static void main(String[] arg) {
 		TestGui gui = new TestGui();

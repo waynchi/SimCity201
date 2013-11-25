@@ -35,7 +35,7 @@ public class HousingResidentRole extends Role implements Resident {
 	// Actions
 
 	public void callRepairMan() {
-		repairMan.needHelp(house);
+		repairMan.needHelp(house, 20);
 		repairStage = RepairStage.HelpRequested;
 		gui.DoUseCellPhone();
 		try {
@@ -112,7 +112,7 @@ public class HousingResidentRole extends Role implements Resident {
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
-		myPerson.msgDone("Resident");
+		myPerson.msgDone("ResidentRole");
 	}
 	
 	public void enterHome() {

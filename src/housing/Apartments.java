@@ -1,6 +1,7 @@
 package housing;
 
 import housing.gui.ApartmentsGui;
+import housing.gui.HouseGui;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ public class Apartments {
 			int num = i + 1;
 			House h = new House("Apartment" + num, num, HouseType.Apartment);
 			houses.add(h);
-			h.setItemsWithoutGui();
+			h.setItems();
+			HouseGui g = new HouseGui(h);
+			h.setGui(g);
 			// Further implementation to add HouseGuis.
 		}
 	}
