@@ -15,12 +15,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
 	private MyHouse currentHouse = null;
-	public Location location = Location.Shop;
+	public Location location = Location.Nowhere;
 	public RepairManGui gui;
 	public Semaphore activity = new Semaphore(0, true);
 	public MyHouse currentLocationHouse;
-	public boolean isActive;
 	public boolean needToLeave = false;
+	public boolean testMode = false;
 
 	public HousingRepairManRole() {
 		super();
@@ -38,10 +38,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 				i.repair();
 			}
 			else {
-				gui.DoRepairItem(mh.h.gui.getPosition(i.name));
-				try {
-					activity.acquire();
-				} catch (InterruptedException e) {}
+				if (testMode == false) {
+					gui.DoRepairItem(mh.h.gui.getPosition(i.name));
+					try {
+						activity.acquire();
+					} catch (InterruptedException e) {}
+				}
 				i.repair();
 			}
 		}
@@ -49,58 +51,72 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		mh.s = HouseState.None;
 		currentLocationHouse = currentHouse;
 		currentHouse = null;
-		gui.DoLeaveHouse();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveHouse();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 	
 	public void leaveShop(MyHouse mh) {
-		gui.DoLeaveShop(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveShop(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void goToApartmentInSameComplexFromApartment(MyHouse mh) {
-		gui.DoGoToApartmentInSameComplexFromApartment(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoGoToApartmentInSameComplexFromApartment(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		mh.r.ImHere();
 	}
 	
 	public void returnToShop() {
-		gui.DoReturnToShop();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoReturnToShop();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideReturning;
 		myPerson.msgDone("RepairManFixed");
 	}
 	
 	public void leaveApartmentComplexToFixFromApartment(MyHouse mh) {
-		gui.DoLeaveApartmentComplexToFixFromApartment(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveApartmentComplexToFixFromApartment(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void goToHouseFromVilla(MyHouse mh) {
-		gui.DoGoToHouseFromVilla(mh.h.gui);
+		if (testMode == false) {
+			gui.DoGoToHouseFromVilla(mh.h.gui);
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void enterHouse(MyHouse mh) {
-		gui.DoEnterHouse(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoEnterHouse(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.Resident;
 		mh.s = HouseState.Reached;
 		mh.r.ImHere();
@@ -108,14 +124,18 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	
 	public void enterShop() {
 		location = Location.Shop;
-		gui.DoEnterShop();
+		if (testMode == false) {
+			gui.DoEnterShop();
+		}
 	}
 	
 	public void leaveJob() {
-		gui.DoLeaveJob();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveJob();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.Nowhere;
 		isActive = false;
 		needToLeave = false;
@@ -145,10 +165,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void msgIsInActive() {
 		needToLeave = true;
 		stateChanged();
-	}
-	
-	public void doneLeaving() {
-		activity.release();
 	}
 
 	//-----------------------------------------------------------//
@@ -269,6 +285,14 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	@Override
 	public void setPerson(PeopleAgent p) {
 		myPerson = p;
+	}
+	
+	public void testModeOn() {
+		testMode = true;
+	}
+	
+	public void testModeOff() {
+		testMode = false;
 	}
 
 	//-----------------------------------------------------------//

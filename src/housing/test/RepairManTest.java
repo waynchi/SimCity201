@@ -6,10 +6,12 @@ import housing.Apartments;
 import housing.House;
 import housing.HouseType;
 import housing.HousingRepairManRole;
+import housing.HousingRepairManRole.Location;
 import housing.Item;
 import housing.interfaces.Resident;
 import org.junit.Test;
 import people.PeopleAgent;
+import people.Role;
 
 public class RepairManTest {
 	Resident r1, r2, r3, r4, r5;
@@ -21,6 +23,17 @@ public class RepairManTest {
 	@Test
 	public void test() {
 		setUp();
+		
+		((Role)m).isActive = false;
+		((Role)m).msgIsActive();
+		
+		assertTrue(((Role)m).isActive);
+		assertEquals(Location.Nowhere, m.location);
+		
+		m.pickAndExecuteAnAction();
+		
+		assertTrue(((Role)m).isActive);
+		assertEquals(Location.Shop, m.location);
 	}
 	
 	public void setUp() {
@@ -77,5 +90,6 @@ public class RepairManTest {
 		m.addHouse(ha1, r3);
 		m.addHouse(ha2, r4);
 		m.addHouse(ha3, r5);
+		m.testModeOn();
 	}
 }
