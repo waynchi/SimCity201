@@ -27,7 +27,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	MarketGui marketGui = null;
 	MarketCustomerGui customerGui = null;
 	
-	MarketEmployee employee;//should know it from PeopleAgent
+	MarketEmployee employee = null;//should know it from PeopleAgent
 	MarketCashier cashier;
 	marketCustomerState state;
 	marketCustomerEvent event;
@@ -58,13 +58,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
-		employee = (MarketEmployee) myPerson.getMarketEmployee(0);
+		employee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
+		//employee = (MarketEmployee) myPerson.getMarketEmployee(0);
 		getPersonAgent().CallstateChanged();
 	}//tested
 	
 	public void msgAtCounter () {
 		atCounter.release();
-		getPersonAgent().CallstateChanged();
+		//getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtRegister() {
@@ -156,8 +157,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private void orderItem() {
 		log.add(new LoggedEvent("in action order item"));
 		if (!inTest){
-			customerGui.DoLineUp();
-		customerGui.DoGoToMarketEmployee();
+			//customerGui.DoLineUp();
+			customerGui.DoGoToMarketEmployee();
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -165,6 +166,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			e.printStackTrace();
 		}
 		}
+		System.out.println("in action order item");
+		employee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
+		System.out.println("in action order item #2");
+		//print("make order from employee " + employee.toString());
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
@@ -190,12 +195,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		log.add(new LoggedEvent("in action done"));
 		if (!inTest){
 		customerGui.DoGoToExit();
-		try {
-			atExit.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//try {
+		//	atExit.acquire();
+		//} catch (InterruptedException e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
 		}
 		getPersonAgent().msgDone("MarketCustomerRole");
 		state = marketCustomerState.DONE;

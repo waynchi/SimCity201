@@ -474,9 +474,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -916,24 +916,23 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.RepairRole.msgIsActive();
 		}
-		if(jobs.get(i).job.equals("Vendor"))
-		{
-			for(MyRole r: roles)
-			{
-				if(r.description.equals("Vendor"))
-				{			
-					print("I am now a " + r.description);
-					r.role.msgIsActive();
-				}
-			}
-			//roles.VendorRole.msgIsActive();
-		}
 		if(jobs.get(i).job.equals("Teller"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Teller"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.goToBank();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Bank;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
@@ -945,7 +944,18 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketCashier"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
@@ -957,7 +967,18 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketEmployee"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
