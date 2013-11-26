@@ -181,7 +181,7 @@ public class PeopleAgent extends Agent implements People{
 		if(role.equals("RestaurantCustomerRole"))
 		{
 			hunger = HungerState.NotHungry;
-			Hunger = 1200;
+			Hunger = 2400;
 		}
 		if(role.equals("BankCustomerRole"))
 		{
@@ -205,7 +205,7 @@ public class PeopleAgent extends Agent implements People{
 		if(role.equals("DoneEating"))
 		{
 			hunger = HungerState.NotHungry;
-			Hunger = 1200;
+			Hunger = 2400;
 		}
 		}
 		else
@@ -263,7 +263,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(!hasCar)
 					{
-						if(rand.nextInt(100) <= 5)
+						if(rand.nextInt(100) <= 0)
 						{
 							buy = BuyState.GoingToBuy;
 						if(Money >= 30000)
@@ -359,7 +359,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(!hasCar)
 			{
-				if(rand.nextInt(100) <= 5)
+				if(rand.nextInt(100) <= 0)
 				{
 					buy = BuyState.GoingToBuy;
 				if(!(Time >= 2100) && Money >= 30000)

@@ -50,7 +50,7 @@ public class CityGui extends JFrame implements ActionListener {
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
-	TellerRole BankTellerRole = new TellerRole(bankGui);
+	TellerRole BankTellerRole = new TellerRole(bankGui); 
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 
@@ -65,6 +65,8 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
 		Timer timer = new Timer(10, this);
+		BankTellerRole.addAccount(market);
+		BankTellerRole.addAccount(restaurant);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
@@ -108,8 +110,6 @@ public class CityGui extends JFrame implements ActionListener {
 					residentRole.setRepairMan(repairManRole);
 					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
-					
-					
 					person.startThread();
 					person.setTest();
 					
@@ -173,11 +173,11 @@ public class CityGui extends JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (PeopleAgent p : people) {
-			p.Restaurants.add(restaurant);
-			p.Markets.add(market);
-			p.Banks.add(bank);
-		}
+//		for (PeopleAgent p : people) {
+//			p.Restaurants.add(restaurant);
+//			p.Markets.add(market);
+//			p.Banks.add(bank);
+//		}
 		setVisible(true);
 		setSize(1024, 768);
 
