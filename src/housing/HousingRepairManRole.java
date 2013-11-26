@@ -78,6 +78,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			} catch (InterruptedException e) {}
 		}
 		mh.r.ImHere();
+		mh.s = HouseState.Reached;
 	}
 	
 	public void returnToShop() {
