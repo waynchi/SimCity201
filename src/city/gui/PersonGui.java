@@ -25,6 +25,7 @@ public class PersonGui extends Rectangle2D.Double {
 	int time;
 	public String typeOfVehicle;
 	People person;
+	boolean called;
 	
 	public PersonGui( int x, int y, int width, int height, ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell, ArrayList<ArrayList<Sidewalk>> allsidewalkSegments, CityPanel cityPanel, People person) {
 		super( x, y, width, height );
@@ -37,6 +38,7 @@ public class PersonGui extends Rectangle2D.Double {
 		this.cityPanel = cityPanel;
 		this.direction = "right";
 		this.person = person;
+		called = false;
 
 
 	}
@@ -91,6 +93,7 @@ public class PersonGui extends Rectangle2D.Double {
 		
 	}
 	public void setDestination(int xd, int yd) {
+		called = true;
 		xDestination = xd;
 		yDestination = yd;
 	}
@@ -141,7 +144,8 @@ public class PersonGui extends Rectangle2D.Double {
 
 		//System.out.println(getCurrentLane());
 		
-		if(x == xDestination && y == (yDestination + 20)) {
+		if(x == xDestination && y == (yDestination + 20) && called == true) {
+			called = false;
 			cityPanel.removePerson(this);
 			person.msgDone("PersonGui");
 			
