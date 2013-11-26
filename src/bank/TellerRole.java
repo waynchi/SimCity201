@@ -148,7 +148,7 @@ public class TellerRole extends Role implements Teller {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		if (isActive) {
-			if (waitingCustomers.size() != 0) {
+			if (waitingCustomers.size() != 0 || currentCustomer != null) {
 				if (currentCustomer == null) {
 					currentCustomer = waitingCustomers.get(0);
 					callCustomer(currentCustomer);
@@ -177,7 +177,7 @@ public class TellerRole extends Role implements Teller {
 					}
 				}
 			}
-			if (LeavePost && waitingCustomers.size() == 0) {
+			if (LeavePost && waitingCustomers.size() == 0 && currentCustomer == null) {
 				Leave();
 			}
 		}
@@ -192,7 +192,9 @@ public class TellerRole extends Role implements Teller {
 
 	private void callCustomer(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
-		customer.customer.msgReadyToHelp(this);
+		if (customer.type.equals("customer")) customer.customer.msgReadyToHelp(this);
+		if (customer.type.equals("mcashier")) customer.mcashier.msgReadyToHelp(this);
+		if (customer.type.equals("cashier")) customer.cashier.msgReadyToHelp(this);
 	}
 	
 	private void newAccount(myBankCustomer customer) {

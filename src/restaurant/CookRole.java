@@ -37,11 +37,12 @@ public class CookRole extends Role implements Cook{
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
+	protected Semaphore atGrill= new Semaphore (0,true);
+
 	
 	private CookGui cookGui = null;
 	private RestaurantGui restGui = null;
 
-	private Boolean isActive = false;
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
 
@@ -72,7 +73,6 @@ public class CookRole extends Role implements Cook{
 	 * @param name name of the cook
 	 */
 	public CookRole(CookWaiterMonitor monitor, RestaurantGui gui) {
-		super();
 		this.restGui = gui;
 		cookGui = new CookGui(this);
 		restGui.getAnimationPanel().addGui(cookGui);
@@ -89,6 +89,7 @@ public class CookRole extends Role implements Cook{
 
 	// Cook receives an order from the waiter and stores it into a list
 	public void msgIsActive() {
+		System.out.println ("got msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
@@ -103,6 +104,12 @@ public class CookRole extends Role implements Cook{
 		atRevolvingStand.release();
 		myPerson.CallstateChanged();
 		
+	}
+	
+
+	public void msgAtGrill() {
+		atGrill.release();
+		myPerson.CallstateChanged();
 	}
 
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
@@ -296,6 +303,14 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		cookGui.DoGoBack();
+			try {
+				atGrill.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 	}
 
 
@@ -436,6 +451,8 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
+
+
 
 
 }

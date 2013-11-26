@@ -15,13 +15,17 @@ public class CookGui implements Gui {
 
 	private CookRole role = null;
 	Boolean isCooking;
+	boolean goingBack = false;
 	String foodBeingCooked = null;
 	RestaurantGui gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination, cookX, xPos = 110;
-    private int yDestination, cookY, yPos = 200;
+    private int xDestination = 70, xPos = 70;
+    private int yDestination = 270, yPos = 270;
+    
+    private int cookX = 70;
+    private int cookY = 270;
     
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
@@ -37,10 +41,6 @@ public class CookGui implements Gui {
 		}
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void updatePosition() {
@@ -60,12 +60,18 @@ public class CookGui implements Gui {
         	yDestination = cookY;
            role.msgAtRevolvingStand();
         }
-	}
+        
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == cookX) && (yDestination == cookY) && goingBack) {
+        	goingBack = false;
+        	role.msgAtGrill();
+        }
+        }
 
 	@Override
 	public void draw(Graphics2D g) {
         g.setColor(Color.blue);
-		g.fillRect(70, 270, 20, 20);
+		g.fillRect(xPos, yPos, 20, 20);
         g.setColor(Color.BLACK);
         g.drawString("Cook", 65, 300);
         if (isCooking) {
@@ -107,5 +113,13 @@ public class CookGui implements Gui {
 	
 	public void setPresent(boolean b) {
 		isPresent = b;
+	}
+
+	public void DoGoBack() {
+		goingBack = true;
+		xDestination = cookX;
+		yDestination = cookY;
+		// TODO Auto-generated method stub
+		
 	}
 }

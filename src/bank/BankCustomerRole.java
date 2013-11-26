@@ -14,6 +14,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import city.gui.trace.AlertLog;
+import city.gui.trace.AlertTag;
 import people.PeopleAgent.AgentEvent;
 import people.Role;
 

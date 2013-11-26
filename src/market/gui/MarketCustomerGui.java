@@ -9,6 +9,7 @@ public class MarketCustomerGui implements Gui{
 
 	private MarketCustomer marketCustomer;
 	MarketGui gui;
+	AnimationPanel animationPanel = null;
 	
 	private int xPos = 470, yPos = 150;
 	private int xDestination = 470, yDestination = 150;
@@ -18,6 +19,7 @@ public class MarketCustomerGui implements Gui{
 	
 	public MarketCustomerGui(MarketCustomer mc){
 		marketCustomer = mc;
+		animationPanel = mc.getAnimationPanel();
 	}
 	private boolean isPresent;
 	
@@ -58,6 +60,9 @@ public class MarketCustomerGui implements Gui{
 		return isPresent;
 	}
 
+	public void DoLineUp() {
+		
+	}
 
 	public void DoGoToMarketEmployee() {
 		// TODO Auto-generated method stub

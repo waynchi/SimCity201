@@ -25,8 +25,8 @@ public class MarketEmployeeGui implements Gui{
 		itemMap.put("Car", new Dimension(150,250));
 	}
 	//170,150,30,30
-	int xPos, xDestination = 170;
-	int yPos, yDestination = 150;
+	int xPos= 170, xDestination = 170;
+	int yPos=150, yDestination = 150;
 	
 	int xCounter = 170;
 	int yCounter = 150;

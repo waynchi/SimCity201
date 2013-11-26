@@ -2,7 +2,7 @@ package market.interfaces;
 
 import java.util.Map;
 
-
+import market.gui.AnimationPanel;
 import people.People;
 
 public interface MarketCustomer {
@@ -26,6 +26,8 @@ public interface MarketCustomer {
 	public abstract void msgAtExit();
 
 	public abstract void msgAtRegister();
+
+	public abstract AnimationPanel getAnimationPanel();
 
 
 }

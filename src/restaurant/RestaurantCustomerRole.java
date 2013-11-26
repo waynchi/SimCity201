@@ -43,9 +43,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private Boolean orderFoodThatICanAfford = false;
 	private Boolean leaveIfCheapestFoodOutOfStock = false;
 	private Boolean reorderAcceptable = false;
-		
-	private Boolean isActive = false;
-	
+			
 	// State of a customer
 	public enum CustomerState
 	{DOING_NOTHING, COMING_TO_RESTAURANT, WAITING_IN_RESTAURANT, BEING_SEATED, MAKING_DECISION, READY_TO_ORDER, 
@@ -107,20 +105,14 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	public void msgIsActive() {
 		customerGui.setPresent(true);
+		host = (HostRole) myPerson.getHost(0);
 		print("I'm hungry");
+		state = CustomerState.DOING_NOTHING;
 		event = CustomerEvent.GOT_HUNGRY;
-		getPersonAgent().CallstateChanged();
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 
 	}
-	
-	
-	//public void gotHungry() {
-	//	print("I'm hungry");
-	//	event = CustomerEvent.GOT_HUNGRY;
-	//	person.stateChanged();
-	//}
 
 	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
 		event = CustomerEvent.REST_IS_FULL;
@@ -200,12 +192,13 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		//	CustomerAgent is a finite state machine
 
 		if (state == CustomerState.DOING_NOTHING && event == CustomerEvent.GOT_HUNGRY ){
-			state = CustomerState.COMING_TO_RESTAURANT;
+			state = CustomerState.WAITING_IN_RESTAURANT;
+			//state = CustomerState.COMING_TO_RESTAURANT;
 			goToRestaurant();
 			return true;
 		}
 		
-		if (state == CustomerState.COMING_TO_RESTAURANT && event == CustomerEvent.REST_IS_FULL){
+	/*	if (state == CustomerState.COMING_TO_RESTAURANT && event == CustomerEvent.REST_IS_FULL){
 			//Customer comes to restaurant and restaurant is full, customer is told and leaves.
 			if (leaveIfRestIsFull){
 				state = CustomerState.LEAVING;
@@ -218,7 +211,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 				stayInRestaurant();
 				return true;
 			}
-		}
+		}*/
 			
 		if (state == CustomerState.WAITING_IN_RESTAURANT && event == CustomerEvent.FOLLOW_WAITER ){
 			state = CustomerState.BEING_SEATED;

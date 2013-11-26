@@ -53,9 +53,6 @@ public class CityGui extends JFrame implements ActionListener {
 	TellerRole BankTellerRole = new TellerRole(bankGui);
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
-	
-	
-	
 
 
 	public int time;
@@ -75,7 +72,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input;
 		try {
-			input = new FileReader("src//config.txt");
+			input = new FileReader("src/config.txt");
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -103,14 +100,14 @@ public class CityGui extends JFrame implements ActionListener {
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
-//					House house = new House("House", 1, HouseType.Villa);
-//					HousingResidentRole residentRole = new HousingResidentRole();
-//					residentRole.testModeOn();
-//					residentRole.setPerson(person);
-//					residentRole.isActive = true;
-//					residentRole.setRepairMan(repairManRole);
-//					residentRole.setHouse(house);
-//					person.addRole(residentRole, "Resident");
+					House house = new House("House", 1, HouseType.Villa);
+					HousingResidentRole residentRole = new HousingResidentRole();
+					residentRole.testModeOn();
+					residentRole.setPerson(person);
+					residentRole.isActive = true;
+					residentRole.setRepairMan(repairManRole);
+					residentRole.setHouse(house);
+					person.addRole(residentRole, "Resident");
 					
 					
 					person.startThread();
@@ -118,8 +115,8 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
-						WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-						RestaurantNormalWaiterRole.setGui(g);
+						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
+						//RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
@@ -274,18 +271,19 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
+		int x = 3;
 		time++;
-		if(time % 2 == 0)
+		if(time % x == 0)
 		{
 			if(time%60 == 0)
 			{
-				//System.out.println(time/2);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
-				p.msgTimeIs(time/2);
+				p.msgTimeIs(time/x);
 			}
 		}
-		if(time == 4800) {
+		if(time == 2400*x) {
 			time=0;
 		}
 		repaint();

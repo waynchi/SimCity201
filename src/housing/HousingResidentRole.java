@@ -49,6 +49,7 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 
 	public void cookAtHome() {
+		System.out.println("Cooking food!");
 		myState = State.Cooking;
 		if (testMode == false) {
 			gui.DoCook();
@@ -56,11 +57,12 @@ public class HousingResidentRole extends Role implements Resident {
 				activity.acquire();
 			} catch (InterruptedException e) {}
 		}
-		myState = State.Idle;
+		myState = State.FoodCooked;
 	}
 
 	public void eatFood() {
 		myState = State.Eating;
+		System.out.println("Eating food!");
 		if (testMode == false) {
 			gui.DoEat();
 			try {
@@ -87,13 +89,9 @@ public class HousingResidentRole extends Role implements Resident {
 		System.out.println("Repaired my own items.");
 	}
 	
-	public void watchTV() {
-		if (testMode == false)
-			gui.DoWatchTV();
-	}
-	
 	public void doMorningStuff() {
 		myState = State.DoingMorningStuff;
+		System.out.println("DOING MORNING STUFF");
 		if (testMode == false) {
 			gui.DoPoop();
 			try {
@@ -112,23 +110,33 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void read() {
+		print("Reading.");
 		if (testMode == false)
 			gui.DoRead();
 	}
 	
 	public void relaxOnSofa() {
+		print("Relaxing on sofa.");
 		if (testMode == false)
 			gui.DoRelaxOnSofa();
 	}
 	
 	public void playVideoGames() {
+		print("Playing video games.");
 		if (testMode == false)
 			gui.DoPlayVideoGames();
 	}
 	
 	public void playFussball() {
+		print("Playing fussball.");
 		if (testMode == false)
 			gui.DoPlayFussball();
+	}
+	
+	public void watchTV() {
+		print("WatchingTV.");
+		if (testMode == false)
+			gui.DoWatchTV();
 	}
 	
 	public void leaveHome() {
@@ -183,7 +191,6 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void activityDone() {
-		myState = State.Idle;
 		activity.release();
 		stateChanged();
 	}

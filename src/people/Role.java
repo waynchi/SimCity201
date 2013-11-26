@@ -1,5 +1,8 @@
 package people;
 
+import city.gui.trace.AlertLog;
+import city.gui.trace.AlertTag;
+
 public class Role {
 
 	public Role() {
@@ -8,9 +11,14 @@ public class Role {
 
 	protected PeopleAgent myPerson;
 	public boolean isActive = false;
+	public AlertTag tag;
 
 	public void setPerson(PeopleAgent a) {
 		myPerson = a;
+	}
+	
+	public void setTag(AlertTag t) {
+		tag = t;
 	}
 
 	public People getPersonAgent() {
@@ -34,6 +42,7 @@ public class Role {
 	};
 	
 	protected void print(String text) {
+		AlertLog.getInstance().logMessage(this.tag, myPerson.name, text);
 		myPerson.CallPrint(text);
 	}
 	
