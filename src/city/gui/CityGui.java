@@ -142,7 +142,7 @@ public class CityGui extends JFrame implements ActionListener {
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
 					houseAnimationPanel.addGui(house.gui);
-					residentRole.testModeOn();
+					//residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
