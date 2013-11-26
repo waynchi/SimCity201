@@ -529,6 +529,7 @@ public class Vehicle extends Rectangle2D.Double {
 					canMove = false;
 				}
 			}
+			
 			if(canMove) {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}
