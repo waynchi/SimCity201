@@ -604,7 +604,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		buildings.add(bank);
 		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
 		buildings.add(restaurant6);
-		Building market = new Building( hozX + 370, hozY + 160, 20, 20, 770, 200, "Market" );
+		Building market = new Building( hozX + 450, hozY + 190, 20, 20, 770, 200, "Market" );
 		buildings.add(market);
 		
 	
@@ -624,7 +624,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		//vehicle.setDestination(580, 152);
 		//vehicle.setDestination(580,322);
 		//vehicle.setDestination(752,120); //not working
-		//vehicle.setDestination(752, 180);
+		vehicle.setDestination(772, 180);
 		vehicles.add(vehicle);
 
 	}
