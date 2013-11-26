@@ -195,7 +195,6 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void activityDone() {
 		activity.release();
-//		stateChanged();
 	}
 	
 	@Override
