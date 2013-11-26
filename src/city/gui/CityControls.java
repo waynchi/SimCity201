@@ -95,6 +95,7 @@ public class CityControls extends JPanel implements ActionListener {
 		
 		JButton enableMessagesButton;		//You could (and probably should) substitute a JToggleButton to replace both
 		JButton disableMessagesButton;		//of these, but I split it into enable and disable for clarity in the demo.
+		JToggleButton messagesButton;
 		JButton enableErrorButton;		
 		JButton disableErrorButton;		
 		JButton enableBankCustTagButton;		//You could (and probably should) substitute a JToggleButton to replace both
@@ -104,6 +105,7 @@ public class CityControls extends JPanel implements ActionListener {
 			this.tp = tracePanel;
 			enableMessagesButton = new JButton("Show Level: MESSAGE");
 			disableMessagesButton = new JButton("Hide Level: MESSAGE");
+			messagesButton = new JToggleButton("Toggle Level: MESSAGE");
 			enableErrorButton = new JButton("Show Level: ERROR");
 			disableErrorButton = new JButton("Hide Level: ERROR");
 			enableBankCustTagButton = new JButton("Show Tag: BANK_CUSTOMER");

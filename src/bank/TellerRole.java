@@ -148,7 +148,7 @@ public class TellerRole extends Role implements Teller {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		if (isActive) {
-			if (waitingCustomers.size() != 0) {
+			if (waitingCustomers.size() != 0 || currentCustomer != null) {
 				if (currentCustomer == null) {
 					currentCustomer = waitingCustomers.get(0);
 					callCustomer(currentCustomer);
