@@ -36,6 +36,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private String choice;
 	private Random randomGenerator = new Random();
 	private Semaphore atCashier = new Semaphore(0,true);
+	private Semaphore atExit = new Semaphore(0,true);
 	//private Double due;
 	
 	//customer behaviors
@@ -113,6 +114,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		getPersonAgent().CallstateChanged();
 
 	}
+	
+	public void msgAtExit() {
+		event = CustomerEvent.DONE_LEAVING;
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
 
 	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
 		event = CustomerEvent.REST_IS_FULL;
@@ -178,11 +185,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		getPersonAgent().CallstateChanged();
 	}
 
-	//from animation
-	public void msgAnimationFinishedLeaveRestaurant() {
-		event = CustomerEvent.DONE_LEAVING;
-		getPersonAgent().CallstateChanged();
-	}
 	
 	
 	/**
@@ -454,11 +456,14 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 	
 	private void leaveTable() {
-		
-		
-		// gui stuff set gui 
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// gui needs to walk to the exit
 		isActive = false;
@@ -517,5 +522,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// TODO Auto-generated method stub
 		
 	}
+
 }
 
