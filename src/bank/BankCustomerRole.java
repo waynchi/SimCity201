@@ -47,6 +47,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private double withdraw = 100;
 	private double deposit = 100;
 	private BankGui bgui;
+	
+	Boolean isTest = false;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -57,7 +59,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public BankCustomerRole(BankGui b){
 		super();
 		this.bgui = b;
-		b.addPerson(this);
+		if (!isTest) b.addPerson(this);
 	}
 
 	public String getCustomerName() {
@@ -75,7 +77,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
-		bgui.gotoLine(gui);
+		if (!isTest) bgui.gotoLine(gui);
 		isActive = true;
 		state = CustomerState.inline;
 		stateChanged();
@@ -160,14 +162,16 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void DepositMoney(){
-		atTeller.drainPermits();
-		bgui.popCustomer();
-		gui.DoGoToTeller();
-		try {
-			atTeller.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (!isTest) {
+			atTeller.drainPermits();
+			bgui.popCustomer();
+			gui.DoGoToTeller();
+			try {
+				atTeller.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (accountID == -1) {
 			myPerson.setMoney(myPerson.getMoney()-100);
@@ -182,14 +186,16 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void WithdrawMoney(){
-		atTeller.drainPermits();
-		bgui.popCustomer();
-		gui.DoGoToTeller();
-		try {
-			atTeller.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (!isTest) {
+			atTeller.drainPermits();
+			bgui.popCustomer();
+			gui.DoGoToTeller();
+			try {
+				atTeller.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (accountID == -1) {
 			print("Cannot withdraw money without an account");
@@ -202,7 +208,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 
 	private void LeaveBank(){
-		gui.DoLeaveBank();
+		if (!isTest) gui.DoLeaveBank();
 		teller.msgDoneAndLeaving();
 		myPerson.msgDone("BankCustomerRole");
 		isActive = false;

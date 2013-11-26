@@ -62,23 +62,12 @@ public class BankCustomerTest extends TestCase
 				customer.pickAndExecuteAnAction());
 		
 		assertTrue("Teller should have logged \"Received msgHere\" but didn't. His log reads instead: "
-                + teller.log.getLastLoggedEvent().toString(), teller.log.containsString("Received msgHereIsMoney from cashier. Total = 120.8"));
+                + teller.log.getLastLoggedEvent().toString(), teller.log.containsString("received msgHere from customer"));
 		
-		assertEquals("Cashier should have 1 market bill in it. It doesn't.", cashier.mBills.size(), 1);
+		assertEquals("BankCustomer state should be inline, it isn't",customer.state, CustomerState.none);
 		
-		assertEquals("The bill should contain the amount given in the message", cashier.mBills.get(0).amount, 120.8);
+		assertFalse("BankCustomer's scheduler should have returned false (no actions to do), but didn't.", 
+				customer.pickAndExecuteAnAction());
 		
-		assertTrue("Cashier's scheduler should have returned true (needs to react to the new market bill), but didn't.", 
-					cashier.pickAndExecuteAnAction());
-		
-		assertEquals("Cashier's wallet should have $1000 - 120.80. It doesn't.",cashier.wallet, 879.2);
-	
-		assertTrue("Market should have logged \"Received msgHereIsMoney\" but didn't. His log reads instead: "
-                + market.log.getLastLoggedEvent().toString(), market.log.containsString("Received msgHereIsMoney from cashier. Total = 120.8"));
-		
-		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.mBills.size(), 0);
-		
-		assertFalse("Cashier's scheduler should have returned false (no actions left to do), but didn't.", 
-				cashier.pickAndExecuteAnAction());
 	}
 }
