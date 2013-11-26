@@ -146,7 +146,7 @@ public class WaiterGui implements Gui {
     }
     
     public void DoGoRest () {
-    	xDestination = 50+25*homeIndex;
+    	xDestination = 50+30*homeIndex;
     	yDestination = 10;
     }
     

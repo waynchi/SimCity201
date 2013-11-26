@@ -371,7 +371,6 @@ public class CookRole extends Role implements Cook{
 
 	public void done() {
 		// gui do go to the exit
-		cookGui.setPresent(false);
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -380,6 +379,7 @@ public class CookRole extends Role implements Cook{
 			e.printStackTrace();
 		}
 		leaveWork = false;
+		cookGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantCookRole");
 	}
 	//utilities
