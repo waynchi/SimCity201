@@ -618,16 +618,13 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		addMouseListener( this );
 		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-<<<<<<< HEAD
 		vehicle.setDestination(752, 120);
-=======
 		//vehicle.setDestination(580, 42);
 		//vehicle.setDestination(800, 42);
 		//vehicle.setDestination(580, 152);
 		//vehicle.setDestination(580,322);
 		vehicle.setDestination(752,120); //not working
 		//vehicle.setDestination(752, 180);
->>>>>>> 537ad5f7891e75dfe680fef6704d5f5acdb7c08a
 		vehicles.add(vehicle);
 
 	}

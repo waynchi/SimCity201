@@ -281,7 +281,6 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		if(getCurrentLane().equals("3_16")) {
 			//Intersection
-			System.out.println(xDestination);
 			if(xDestination > 752) {
 				this.direction="right";
 				laneSegment = allLanes.get(4);
@@ -290,7 +289,6 @@ public class Vehicle extends Rectangle2D.Double {
 				this.direction="down";
 				laneSegment = allLanes.get(14);
 				currentCell = laneSegment.get(0);
-				System.out.println(direction);
 			}
 		}
 		if(getCurrentLane().equals("14_0")) {
