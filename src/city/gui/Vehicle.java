@@ -13,31 +13,33 @@ public class Vehicle extends Rectangle2D.Double {
 	public int yDestination;
 	public double xPos;
 	public double yPos;
-	public Lane lane;
+	public ArrayList<Lane> laneSegment;
+	public Lane currentCell;
 	public CityPanel cityPanel;
 	boolean redLight;
 	Rectangle2D.Double rectangle;
-	ArrayList<Lane> lanes;
 	ArrayList<Lane> bestRoute;
+	ArrayList<ArrayList<Lane>> allLanes;
 	HashMap<Integer,Lane> distances;
 	String direction;
 	Color vehicleColor;
+	int time;
 	
-	public Vehicle( int x, int y, int width, int height, Lane l, ArrayList<Lane>lanes, CityPanel cityPanel ) {
+	public Vehicle( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel ) {
 		super( x, y, width, height );
-		this.lane = l;
-		this.lanes = lanes;
+		this.laneSegment = laneSegment;
+		this.currentCell = currentCell;
 		rectangle = new Rectangle2D.Double( 100, 100, 20, 20 );
 		this.setOrientation();
-		distances = new HashMap<Integer,Lane>();
+		this.allLanes = allLaneSegments;
 		redLight = false;
 		this.cityPanel = cityPanel;
-		this.direction = "up";
+		this.direction = "right";
 
 
 	}
 	public void setLane(Lane l) {
-		this.lane = l;
+		this.currentCell = laneSegment.get(laneSegment.indexOf(l));
 	}
 	public void setLocation( int x, int y ) {
 		setRect( x, y, getWidth(), getHeight() );
@@ -48,16 +50,31 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
-
-		if(this.direction.equals("up")) {
-			setRect( x+xv, y-yv, getWidth(), getHeight() );
-			this.xPos = x+xv;
-			this.yPos = y-yv;	
-		} else {
-			setRect( x+xv, y+yv, getWidth(), getHeight() );
-			this.xPos = x+xv;
-			this.yPos = y+yv;
+		if(currentCell.yVelocity > 0) {
+			if(this.direction.equals("up")) {
+				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+			} else {
+				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+			}
+		} 
+		if(currentCell.xVelocity > 0) {
+			if(this.direction.equals("left")) {
+				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+			} else {
+				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+			}
 		}
+		this.setOrientation();
+
+//		if(this.direction.equals("up")) {
+//			setRect( x+xv, y-yv, getWidth(), getHeight() );
+//			this.xPos = x+xv;
+//			this.yPos = y-yv;	
+//		} else {
+//			setRect( x+xv, y+yv, getWidth(), getHeight() );
+//			this.xPos = x+xv;
+//			this.yPos = y+yv;
+//		}
 
 	}
 	public void setDestination(int xd, int yd) {
@@ -65,98 +82,335 @@ public class Vehicle extends Rectangle2D.Double {
 		yDestination = yd;
 	}
 	public void setOrientation() {
-		if ( lane.xVelocity > 0 ) {
-			this.setRect( lane.xOrigin, lane.yOrigin+2, this.getWidth(), this.getHeight() ); 
-		} else if ( lane.yVelocity > 0 ) {
-			this.setRect( lane.xOrigin+2, lane.yOrigin+90, this.getWidth(), this.getHeight() ); 
+		if ( currentCell.xVelocity > 0 ) {
+			this.setRect( currentCell.xOrigin, currentCell.yOrigin+2, this.getWidth(), this.getHeight() ); 
+		} else if ( currentCell.yVelocity > 0 ) {
+			this.setRect( currentCell.xOrigin+2, currentCell.yOrigin, this.getWidth(), this.getHeight() ); 
 		} else {
-			if ( lane.isHorizontal ) {
-				this.setRect( lane.xOrigin + width - this.getWidth(), lane.yOrigin + 2, this.getWidth(), this.getHeight() );
+			if ( currentCell.isHorizontal ) {
+				this.setRect( currentCell.xOrigin + width - this.getWidth(), currentCell.yOrigin + 2, this.getWidth(), this.getHeight() );
 			} else {
-				this.setRect( lane.xOrigin + 2, lane.yOrigin + height - this.getHeight(), this.getWidth(), this.getHeight() ) ;
+				this.setRect( currentCell.xOrigin + 2, currentCell.yOrigin + height - this.getHeight(), this.getWidth(), this.getHeight() ) ;
 			}
 		}
 	}
+	
+	public String getCurrentLane() {
+		int l = laneSegment.indexOf(currentCell);
+		return laneSegment.get(l).name; 
+		
+	}
+	
 	public void draw(Graphics2D g2) {
+		time++;
 		g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		if(!redLight) {
-			this.move(lane.xVelocity,lane.yVelocity);
-		}
-		//Crosswalks, X Coordinates:
-		//122 & 330  & 550 & 750 & 950
-		//Intersections
-		//0 = first; 9 = second; 10 = third; 11=fourth
 		
-		if(yPos <= 120 && xPos == 122) {
+		System.out.println(x + " " + xDestination + " " + y + " " + yDestination + " " + getCurrentLane());
+		if(x == xDestination && y == yDestination) {
+			cityPanel.removeVehicle(this);
+		}
+		//if(getCurrentLane().equals);
+		if(getCurrentLane().equals("13_2")) {
+			this.direction="left";
+			laneSegment = allLanes.get(0);
+			currentCell = laneSegment.get(13);
+		}
+		if(getCurrentLane().equals("4_0")) {
+			this.direction="down";
+			laneSegment = allLanes.get(12);
+			currentCell = laneSegment.get(1);
+		}
+		if(getCurrentLane().equals("6_1")) {
+			//Intersection
+			this.direction="left";
+			laneSegment = allLanes.get(3);
+			currentCell = laneSegment.get(15);
+		}
+		if(getCurrentLane().equals("17_0")) {
+			this.direction="left";
+			laneSegment = allLanes.get(5);
+			currentCell = laneSegment.get(8);
+		}
+		if(getCurrentLane().equals("12_24")) {
+			this.direction="up";
+			laneSegment = allLanes.get(16);
+			currentCell = laneSegment.get(15);
+		}
+		if(getCurrentLane().equals("13_13")) {
+			this.direction="right";
+			laneSegment = allLanes.get(11);
+			currentCell = laneSegment.get(1);
+		}
+		if(getCurrentLane().equals("6_9")) {
+			this.direction="down";
+			laneSegment = allLanes.get(16);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("4_16")) {
+			//Intersection
+			this.direction="right";
+			laneSegment = allLanes.get(5);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("13_0")) {
+			this.direction = "right";
+			laneSegment = allLanes.get(3);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("12_0")) {
+			this.direction="up";
+			laneSegment = allLanes.get(12);
+			currentCell = laneSegment.get(13);
+		}
+		if(getCurrentLane().equals("15_12")) {
+			//Intersection
+			if(x > xDestination) {
+				//Option 1
+				this.direction="right";
+				laneSegment = allLanes.get(11);
+				currentCell = laneSegment.get(15);
+			} else {
+				//Option #2
+				this.direction="left";
+				laneSegment = allLanes.get(10);
+				currentCell = laneSegment.get(15);
+				}
+			}
+			
+		
+		if(getCurrentLane().equals("10_9")) {
+			//Intersection
+			
+			//Option #1
+//			this.direction="down";
+//			laneSegment = allLanes.get(17);
+//			currentCell = laneSegment.get(7);
+			
+			//Option #2
+			this.direction="up";
+			laneSegment = allLanes.get(16);
+			currentCell = laneSegment.get(7);
+		}
+		
+		if(getCurrentLane().equals("16_0")) {
+			//Intersection
+			//Option #1
+//			this.direction="left";
+//			laneSegment = allLanes.get(3);
+//			currentCell = laneSegment.get(15);
+//			
+			//Option #2
+			this.direction="right";
+			laneSegment = allLanes.get(4);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("8_14")) {
+			//Intersection
+			
+			if(yDestination < 152) {
+				this.direction="up";
+				laneSegment = allLanes.get(15);
+				currentCell = laneSegment.get(5);
+			}
+			else if(yDestination == 152) {
+				this.direction="right";
+				laneSegment = allLanes.get(9);
+				currentCell = laneSegment.get(0);
+			}
+			else if(yDestination > 152) {
+				this.direction="down";
+				laneSegment = allLanes.get(14);
+				currentCell = laneSegment.get(5);
+			
+			}
+
+			
+		}
+		
+		if(getCurrentLane().equals("14_6")) {
+			//Intersection
+			//Option #1
+			if(yDestination == 152) {
+				this.direction = "right";
+				laneSegment = allLanes.get(7);
+				currentCell = laneSegment.get(0);
+			} else {
+				this.direction = "left";
+				laneSegment = allLanes.get(0);
+				currentCell = laneSegment.get(13);
+			}
+		}
+		if(getCurrentLane().equals("11_0")) {
+			this.direction = "up";
+			laneSegment = allLanes.get(13);
+			currentCell = laneSegment.get(12);
+		}
+		if(getCurrentLane().equals("11_16")) {
+			//Intersection
+			if((xDestination - x) < (yDestination - y)) {
+				this.direction = "up";
+				laneSegment = allLanes.get(15);
+				currentCell = laneSegment.get(12);
+			}
+			
+		}
+		if(getCurrentLane().equals("5_9")) {
 			this.direction = "down";
+			laneSegment = allLanes.get(17);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("18_14")) {
+			this.direction = "left";
+			int hackFirstCell = laneSegment.size() + 8;
+			System.out.println(laneSegment.size());
+			laneSegment = allLanes.get(10);
+			currentCell = laneSegment.get(hackFirstCell);
+		}
+		if(getCurrentLane().equals("3_16")) {
+			//Intersection
+			if(xDestination > 740) {
+				this.direction="right";
+				laneSegment = allLanes.get(4);
+				currentCell = laneSegment.get(0);
+			} else {
+				this.direction="down";
+				laneSegment = allLanes.get(14);
+				currentCell = laneSegment.get(0);
+				System.out.println(direction);
+			}
+		}
+		if(getCurrentLane().equals("14_0")) {
+			this.direction = "right";
+			laneSegment = allLanes.get(2);
+			currentCell = laneSegment.get(0);
+		
+		}
+		if(getCurrentLane().equals("2_13")) {
+			//Intersection
+			//Option #1	
+			if(yDestination < 152) {
+				this.direction = "up";
+				laneSegment = allLanes.get(13);
+				currentCell = laneSegment.get(5);
+			}
+			//Option #2
+			else if(yDestination == 152) {
+				this.direction = "right";
+				laneSegment = allLanes.get(7);
+				currentCell = laneSegment.get(0);
+			}
+			else if(yDestination > 152) {
+			//Option #3
+				this.direction="down";
+				laneSegment = allLanes.get(12);
+				currentCell = laneSegment.get(3);
+			}
+			
+		}
+
+		if(this.direction.equals("right") || this.direction.equals("up")) {
+			setRect(x + currentCell.xVelocity, y - currentCell.yVelocity, getWidth(), getHeight());
+		} 
+		else if(this.direction.equals("left") || this.direction.equals("down")) {
+			setRect(x - currentCell.xVelocity, y + currentCell.yVelocity, getWidth(), getHeight());
+		}
+
+		if(time % 20 == 0) {
+				
+			if(!redLight) {
+				this.move(currentCell.xVelocity,currentCell.yVelocity);
+			}
+			
 		}
 		
-		//Residential Intersection
-		if(yPos == 120 && xPos == 122) {
-			this.lane = lanes.get(0);
-			this.setOrientation();
-		}
-		if(xPos >= 550 && xPos <= 552) {
-			//Up or down?
-			if(yDestination <= 100) {
-				this.direction = "up";
-			} else {
-				this.direction = "down";
-			}
-
-			//570 = Second Row Buildings
-			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(8);
-				this.setOrientation();
-			}
-			if(yPos == yDestination) {
-				cityPanel.removeVehicle(this);
-				
-			}
-			
-		}
-		if(xPos >= 750 && xPos <= 752) {
-			
-			if(yDestination <= 100) {
-				this.direction = "up";
-			} else {
-				this.direction = "down";
-			}
-
-			
-			//770 3rd row buildings
-			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(9);
-				this.setOrientation();
-			}
-			
-			if(yPos == yDestination) {
-				cityPanel.removeVehicle(this);
-				
-			}
-		}
 		
-		if(xPos >= 970 && xPos <= 982) {
-			
-			if(yDestination <= 100) {
-				this.direction = "up";
-			} else {
-				this.direction = "down";
-			}
-
-			//990 4th row buildings
-			if(Math.abs(xDestination - xPos) == 20) {
-				this.lane = lanes.get(10);
-				this.setOrientation();
-			}
-			
-			if(yPos == yDestination) {
-				cityPanel.removeVehicle(this);
-				
-			}
-		}
+		
+		
+//		
+//		
+//		//Crosswalks, X Coordinates:
+//		//122 & 330  & 550 & 750 & 950
+//		//Intersections
+//		//0 = first; 9 = second; 10 = third; 11=fourth
+//		
+//		if(yPos <= 120 && xPos == 122) {
+//			this.direction = "down";
+//		}
+//		
+//		//Residential Intersection
+//		if(yPos == 150 && xPos == 122) {
+//			this.lane = lanes.get(1);
+//			this.setOrientation();
+//		}
+//		
+//		if(xPos >= 430 && xPos <= 432) {
+//			//Up or down?
+////			if(yDestination <= 100) {
+////				this.direction = "up";
+////			} else {
+////				this.direction = "down";
+////			}
+////			
+//			if(Math.abs(xDestination - xPos) == 140) { //Switch lanes
+//				if(yDestination == 60) {
+//					this.direction = "up";
+//					this.lane = lanes.get(16);
+//					this.setOrientation();
+//				} else {
+//					this.direction = "down";
+//					this.lane = lanes.get(15);
+//					this.setOrientation();
+//				}
+//				
+//			}
+//			if(yPos == yDestination) {
+//				cityPanel.removeVehicle(this);
+//				
+//			}
+//			
+//		}
+//		if(xPos >= 750 && xPos <= 752) {
+//			
+//			if(yDestination <= 100) {
+//				this.direction = "up";
+//			} else {
+//				this.direction = "down";
+//			}
+//
+//			
+//			//770 3rd row buildings
+//			if(Math.abs(xDestination - xPos) == 20) {
+//				this.lane = lanes.get(9);
+//				this.setOrientation();
+//			}
+//			
+//			if(yPos == yDestination) {
+//				cityPanel.removeVehicle(this);
+//				
+//			}
+//		}
+//		
+//		if(xPos >= 970 && xPos <= 982) {
+//			
+//			if(yDestination <= 100) {
+//				this.direction = "up";
+//			} else {
+//				this.direction = "down";
+//			}
+//
+//			//990 4th row buildings
+//			if(Math.abs(xDestination - xPos) == 20) {
+//				this.lane = lanes.get(10);
+//				this.setOrientation();
+//			}
+//			
+//			if(yPos == yDestination) {
+//				cityPanel.removeVehicle(this);
+//				
+//			}
+//		}
 		
 		
 	}
