@@ -743,15 +743,31 @@ public class PeopleAgent extends Agent implements People{
 	{
 		print("Going Back Home");
 		location = AgentLocation.Road;
-		if(!testmode)
-		{
+//		if(!testmode)
+//		{
 		//personGui.GoToHouse(); TODO
+			if(hasCar)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description == "CarPassenger")
+					{
+						((CarPassengerRole)r.role).setDestination("Home 1");
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else
+			{
+				print("Do Not Have Car");
+			}
+			
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		}
+//		}
 		location = AgentLocation.Home;
 		for(MyRole r: roles)
 		{
@@ -819,8 +835,7 @@ public class PeopleAgent extends Agent implements People{
 			if(r.description.equals(jobs.get(0).job))
 			{
 				System.out.println("I am leaving work");
-				r.role.msgIsInActive();
-				
+				r.role.msgIsInActive();	
 			}
 		}
 	}
