@@ -175,6 +175,14 @@ public class Vehicle extends Rectangle2D.Double {
 			laneSegment = allLanes.get(12);
 			currentCell = laneSegment.get(13);
 		}
+		
+		if(getCurrentLane().equals("12_15")) {
+			if(xDestination == 752) {
+				this.direction="up";
+				laneSegment = allLanes.get(15);
+				currentCell = laneSegment.get(12);
+			}
+		}
 		if(getCurrentLane().equals("15_12")) {
 			//Intersection
 			if(x > xDestination) {
@@ -328,7 +336,7 @@ public class Vehicle extends Rectangle2D.Double {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
 				if(intersection.redLight) {
-					canMove = false;
+					//canMove = false;
 				}
 			}
 			if(canMove) {
