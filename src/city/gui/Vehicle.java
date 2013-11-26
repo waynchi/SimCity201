@@ -53,16 +53,20 @@ public class Vehicle extends Rectangle2D.Double {
 		if(currentCell.yVelocity > 0) {
 			if(this.direction.equals("up")) {
 				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
-			} else {
+			} 
+			if(this.direction.equals("down")) {
 				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
 			}
+			
+			
 		} 
 		if(currentCell.xVelocity > 0) {
 			if(this.direction.equals("left")) {
 				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
-			} else {
+			} 
+			if(this.direction.equals("right")) {
 				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
-			}
+			} 
 		}
 		this.setOrientation();
 
@@ -322,11 +326,84 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
+		System.out.println(getCurrentLane());
 		if(time % 20 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
 				if(intersection.redLight) {
-					//canMove = false;
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("14_1")) {
+				Lane intersection = getLaneInformation("14_1");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("8_13")) {
+				Lane intersection = getLaneInformation("8_13");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("10_8")) {
+				Lane intersection = getLaneInformation("10_8");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("6_2")) {
+				Lane intersection = getLaneInformation("6_2");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("13_1")) {
+				Lane intersection = getLaneInformation("13_1");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("16_7")) {
+				Lane intersection = getLaneInformation("16_7");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("16_1")) {
+				Lane intersection = getLaneInformation("16_1");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("18_4")) {
+				Lane intersection = getLaneInformation("18_4");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("11_17")) {
+				Lane intersection = getLaneInformation("11_17");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("3_15")) {
+				Lane intersection = getLaneInformation("3_15");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("15_11")) {
+				Lane intersection = getLaneInformation("15_11");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("15_4")) {
+				Lane intersection = getLaneInformation("15_4");
+				if(intersection.redLight) {
+					canMove = false;
 				}
 			}
 			if(canMove) {
