@@ -124,6 +124,10 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		try {
 			activity.acquire();
 		} catch (InterruptedException e) {}
+		location = Location.Nowhere;
+		isActive = false;
+		needToLeave = false;
+		myPerson.msgDone("RepairManRole");
 	}
 
 	//-----------------------------------------------------------//
@@ -152,11 +156,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void doneLeaving() {
-		location = Location.Nowhere;
-		isActive = false;
-		needToLeave = false;
 		activity.release();
-		myPerson.msgDone("RepairManRole");
 	}
 
 	//-----------------------------------------------------------//
