@@ -897,7 +897,6 @@ public class CityPanel extends JPanel implements MouseListener {
 		}
 		for(int i=0;i<people.size();i++) {
 			PersonGui p = people.get(i);
-			p.setDestination(1002,80 );
 			p.draw(g2);
 		}
 		
