@@ -4,6 +4,7 @@ import housing.HouseType;
 import housing.HousingRepairManRole;
 import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
+import housing.gui.HouseGui;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -136,6 +137,8 @@ public class CityGui extends JFrame implements ActionListener {
 					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
 					house.setItems();
+					HouseGui hGui = new HouseGui(house);
+					house.setGui(hGui);
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
 					houseAnimationPanel.addGui(house.gui);
