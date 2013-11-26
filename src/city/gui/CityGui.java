@@ -335,6 +335,8 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(bankContainer, "" + 14);
         
         buildingPanels.add(marketContainer,"" + 13);
+        
+        
         for(int j = 0; j < houseAnimationPanels.size(); j++)
         {
         	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
@@ -372,6 +374,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void displayBuildingPanel(BuildingPanel bp) {
 		cardLayout.show(buildingPanels, bp.getName());
+		System.out.println(bp.getName());
 	}
 
 	public static void main(String[] args) {
