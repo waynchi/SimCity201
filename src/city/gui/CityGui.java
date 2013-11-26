@@ -144,7 +144,6 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);
 					person.Markets.add(market);
-					cityPanel.people.add(personGui);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui1);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
 					person.addRole(marketCustomerRole, "MarketCustomer");
