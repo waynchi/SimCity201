@@ -23,9 +23,9 @@ public class CookGui implements Gui {
 
 	 
     private int xDestination = 70, 
-    		xPos = 350;
+    		xPos = 0;
     private int yDestination = 270,
-    		yPos = 100;
+    		yPos = 0;
     
     private int cookX = 70;
     private int cookY = 270;
@@ -33,7 +33,7 @@ public class CookGui implements Gui {
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
     
-    private int xExit = 350, yExit = 100;
+    private int xExit = 0, yExit = 0;
     
     boolean isPresent;
 	

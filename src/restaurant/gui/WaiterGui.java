@@ -18,7 +18,7 @@ public class WaiterGui implements Gui {
     private BaseWaiterRole role = null;
     private boolean isPresent = false;
 
-    private int xPos = 350, yPos = 100;//default waiter position
+    private int xPos = 0, yPos = 0;//default waiter position
     private int currentTableX = -100;
     private int currentTableY = -100; // position of current table
     
@@ -33,7 +33,7 @@ public class WaiterGui implements Gui {
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
     
-    private int xExit = 350, yExit = 100;
+    private int xExit = 0, yExit = 0;
     
     private int xDestination = 20, yDestination = 20;//default start position
     private Customer currentCustomer;
