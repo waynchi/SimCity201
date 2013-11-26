@@ -268,7 +268,7 @@ public class CashierRole extends Role implements Cashier {
 			}
 		}
 				
-		if (leaveWork) {
+		
 			if (bankState == bankActivityState.ASKED_DEPOSIT && bankEvent == bankActivityEvent.DEPOSIT_SUCCESSFUL) {
 				closeRestaurant();
 				return true;
@@ -278,9 +278,10 @@ public class CashierRole extends Role implements Cashier {
 				closeRestaurant();
 				return true;
 			} 
+			if (leaveWork) 	{
 			prepareToClose();
 			return true;
-		}
+			}
 
 		return false;
 		//we have tried all our rules and found
@@ -373,6 +374,8 @@ public class CashierRole extends Role implements Cashier {
 			bankState = bankActivityState.ASKED_FOR_HELP;
 			withdraw = true;
 		}
+		leaveWork = false;
+
 	}
 
 	private void payWorkers() {
@@ -387,7 +390,6 @@ public class CashierRole extends Role implements Cashier {
 
 	private void closeRestaurant() {
 		log.add(new LoggedEvent("In action closeRestaurant"));
-		leaveWork = false;
 		isActive = false;
 		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff

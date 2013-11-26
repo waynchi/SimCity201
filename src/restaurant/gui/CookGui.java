@@ -21,8 +21,8 @@ public class CookGui implements Gui {
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination, xPos = 70;
-    private int yDestination, yPos = 270;
+    private int xDestination = 70, xPos = 70;
+    private int yDestination = 270, yPos = 270;
     
     private int cookX = 70;
     private int cookY = 270;
@@ -41,13 +41,10 @@ public class CookGui implements Gui {
 		}
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void updatePosition() {
+		System.out.println("xdestin is " + xDestination + "ydestin is " + yDestination);
         if (xPos < xDestination)
             xPos++;
         else if (xPos > xDestination)
