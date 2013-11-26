@@ -102,14 +102,29 @@ public class PeopleAgent extends Agent implements People{
 		return Restaurants.get(i).h;
 	}
 	
-	public Role getTeller()
+	public Role getTeller(int i)
 	{
-		return null;
+		return Banks.get(i).t;
 	}
 	
-	public Role getMarketEmployee()
+	public Bank getBank(int i)
 	{
-		return null;
+		return Banks.get(i);
+	}
+	
+	public Market getMarket(int i)
+	{
+		return Markets.get(i);
+	}
+	
+	public Restaurant getRestaurant(int i)
+	{
+		return Restaurants.get(i);
+	}
+	
+	public Role getMarketEmployee(int i)
+	{
+		return Markets.get(i).mer;
 	}
 	
 	public String getMaitreDName() {
@@ -279,6 +294,7 @@ public class PeopleAgent extends Agent implements People{
 								print("I am going to buy a car");
 								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
 								buy = BuyState.NotBuying;
+								stateChanged();
 								return;
 							}
 //							else
