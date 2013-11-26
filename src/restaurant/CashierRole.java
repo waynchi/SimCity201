@@ -262,12 +262,14 @@ public class CashierRole extends Role implements Cashier {
 			}
 		}
 
+		synchronized (marketBills) {
 		if (!marketBills.isEmpty()) {
 			for (MarketBill mb : marketBills) {
 				if (mb.itemsReceived = true)
 					payMarket(mb);
 			}
 			return true;
+		}
 		}
 
 		/*if (loanRequested && loanGranted) {

@@ -71,8 +71,4 @@ public class RestaurantGui extends JPanel implements ActionListener {
 		
 	}
 	
-	  public void updatePosition() {
-	    	animationPanel.updatePosition();
-	    }
-	    
 }
