@@ -2,7 +2,12 @@ package restaurant.test.mock;
 
 import java.util.List;
 
+import bank.interfaces.Teller;
+import city.Bank;
+import city.Market;
+import city.Restaurant;
 import city.gui.CityGui;
+import city.gui.PersonGui;
 import people.People;
 import people.Role;
 
@@ -52,12 +57,6 @@ public class MockPeople extends Mock implements People{
 	public String getMaitreDName() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void addCityGui(CityGui gui) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -150,20 +149,69 @@ public class MockPeople extends Mock implements People{
 		
 	}
 
-	@Override
-	public Role getTeller() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Role getMarketEmployee() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Role getHost(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Role getTeller(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Role getMarketEmployee(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Restaurant getRestaurant(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Market getMarket(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Bank getBank(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPersonGui(PersonGui gui) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCityGui(CityGui gui) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Arrived() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int msgWhatIsTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Teller getTeller() {
 		// TODO Auto-generated method stub
 		return null;
 	}
