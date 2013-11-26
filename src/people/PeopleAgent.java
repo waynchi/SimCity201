@@ -196,6 +196,10 @@ public class PeopleAgent extends Agent implements People{
 		{
 			moving.release();
 		}
+		else if(role == "PersonGui")
+		{
+			moving.release();
+		}
 		else if(role != "ResidentRole")
 		{
 			log.add(new LoggedEvent("Recieved msgDone"));
@@ -262,24 +266,24 @@ public class PeopleAgent extends Agent implements People{
 		}
 		else
 		{
-			//unfreeze the semaphore in the gui
-			if(event == AgentEvent.GoingToWork)
-			{
-				//event == AgentEvent.GoingToWorkTwo;
-				GoToWorkTwo();
-			}
-			if(event == AgentEvent.GoingToBuyCar)
-			{
-				GoBuyCarTwo();
-			}
-			if(event == AgentEvent.GoingToRestaurant)
-			{
-				GoToRestaurantTwo();
-			}
-			if(event == AgentEvent.GoingToDepositMoney || event == AgentEvent.GoingToRetrieveMoney)
-			{
-				GoToBankTwo();
-			}
+//			//unfreeze the semaphore in the gui
+//			if(event == AgentEvent.GoingToWork)
+//			{
+//				//event == AgentEvent.GoingToWorkTwo;
+//				GoToWorkTwo();
+//			}
+//			if(event == AgentEvent.GoingToBuyCar)
+//			{
+//				GoBuyCarTwo();
+//			}
+//			if(event == AgentEvent.GoingToRestaurant)
+//			{
+//				GoToRestaurantTwo();
+//			}
+//			if(event == AgentEvent.GoingToDepositMoney || event == AgentEvent.GoingToRetrieveMoney)
+//			{
+//				GoToBankTwo();
+//			}
 		}
 	}
 	
@@ -352,7 +356,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(!hasCar)
 					{
-						if(rand.nextInt(100) <= 100)
+						if(rand.nextInt(100) <= 50)
 						{
 							buy = BuyState.GoingToBuy;
 						}
@@ -667,8 +671,7 @@ public class PeopleAgent extends Agent implements People{
 
 	public void GoToRestaurant()
 	{
-		location = AgentLocation.Road;
-		
+//		boolean temp = true;
 		//roles.RestaurantCustomerAgent.msg(this);
 //		if(hasCar)
 //		{
@@ -708,35 +711,56 @@ public class PeopleAgent extends Agent implements People{
 					if(r.role.isActive)
 					{
 						r.role.msgIsInActive();
+//						temp = false;
 					}
 				}
 			}
 		}
-	}
-	public void GoToRestaurantTwo()
-	{
-				//GUI WALK
-				if(!testmode)
-				{
-				//personGui.GoToRestaurantOne();
-				try {
-					moving.acquire();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				location = AgentLocation.Restaurant;
-				print("Walking to Restaurant");
-				hunger = HungerState.Eating;
-				//Semaphore
+//		if(temp)
+//		{
+//			GoToRestaurantTwo();
+//		}
+//	}
+//	public void GoToRestaurantTwo()
+//	{
+		//GUI WALK
+		location = AgentLocation.Road;
+		if(!testmode)
+		{
+			if(hasCar)
+			{
 				for(MyRole r: roles)
 				{
-					if(r.description.equals("RestaurantCustomer"))
+					if(r.description == "CarPassenger")
 					{
+						((CarPassengerRole)r.role).setDestination("Home 1");
 						r.role.msgIsActive();
 					}
 				}
+			}
+			else
+			{
+				print("Do Not Have Car");
+			}
+		//personGui.GoToRestaurantOne();
+		try {
+			moving.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		location = AgentLocation.Restaurant;
+		print("Walking to Restaurant");
+		hunger = HungerState.Eating;
+		//Semaphore
+		for(MyRole r: roles)
+		{
+			if(r.description.equals("RestaurantCustomer"))
+			{
+				r.role.msgIsActive();
+			}
+		}
+	}
 		
 
 	/* (non-Javadoc)
@@ -793,6 +817,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoBuyCar()
 	{
+//		boolean temp = true;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -800,17 +825,37 @@ public class PeopleAgent extends Agent implements People{
 				if(r.role.isActive == true)
 				{
 				r.role.msgIsInActive();
+//				temp = false;
 				}
 				//Stop
 			}
 		}
-	}
-	
-	public void GoBuyCarTwo()
-	{
+//		if(temp)
+//		{
+//			GoBuyCarTwo();
+//		}
+//	}
+//	
+//	public void GoBuyCarTwo()
+//	{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
+			if(hasCar)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description == "CarPassenger")
+					{
+						((CarPassengerRole)r.role).setDestination("Home 1");
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else
+			{
+				print("Do Not Have Car");
+			}
 		//personGui.GoToMarket(); TODO
 		try {
 			moving.acquire();
@@ -850,7 +895,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToBank()
 	{		
-		boolean temp = true;
+//		boolean temp = true;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -859,22 +904,22 @@ public class PeopleAgent extends Agent implements People{
 				if(r.role.isActive == true)
 				{
 					print("Resident Role turned off");
-					temp = false;
+//					temp = false;
 					r.role.msgIsInActive();
 				}
 				//Stop
 			}
 		}
-		if(temp)
-		{
-			GoToBankTwo();
-		}
-		//gui.GoToBank;
-		//roles.BankCustomerRole.msgIsActive();
-	}
-	
-	public void GoToBankTwo()
-	{
+//		if(temp)
+//		{
+//			GoToBankTwo();
+//		}
+//		//gui.GoToBank;
+//		//roles.BankCustomerRole.msgIsActive();
+//	}
+//	
+//	public void GoToBankTwo()
+//	{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
@@ -936,9 +981,9 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//Pause the Gui
 		}
-	}
-		
-	public void GoToWorkTwo(){
+//	}
+//		
+//	public void GoToWorkTwo(){
 		//Release the Gui from msgDone
 		for(int i = 0; i <jobs.size(); i++)
 		{

@@ -75,6 +75,7 @@ public class CityGui extends JFrame implements ActionListener {
 	TellerRole BankTellerRole = new TellerRole(bankGui); 
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
+	Random rand = new Random();
 
 	private int count = 0;
 
@@ -128,7 +129,15 @@ public class CityGui extends JFrame implements ActionListener {
 				int start = Integer.parseInt(configIteration.next());
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
-					PeopleAgent person = new PeopleAgent(name, 1000.0, false); //TODO
+					PeopleAgent person;
+					if(rand.nextInt(5) < 2)
+					{
+						 person = new PeopleAgent(name, 1000.0, false); //TODO
+					}
+					else
+					{
+						 person = new PeopleAgent(name, 1000.0, true );
+					}//TODO
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
@@ -267,6 +276,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
 						person.setMoney(40000);
+						person.hasCar = false;
 					}
 					people.add(person);
 				}
