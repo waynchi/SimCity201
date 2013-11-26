@@ -107,6 +107,8 @@ public class House extends Item{
 			if (i.isBroken())
 				result.add(i);
 		}
+		if (this.isBroken())
+			result.add(this);
 		return result;
 	}
 	
