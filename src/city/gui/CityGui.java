@@ -346,6 +346,10 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
+		for(int i = 0; i < houseAnimationPanels.size(); i++)
+		{
+			houseAnimationPanels.get(i).updatePosition();
+		}
 		int x = 1;
 		time++;
 		if(time % x == 0)
@@ -366,3 +370,4 @@ public class CityGui extends JFrame implements ActionListener {
 
 	}
 }
+

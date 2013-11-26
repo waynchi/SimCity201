@@ -42,4 +42,11 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public void addGui(HGui gui) {
 		guis.add(gui);
 	}
+	
+	public void updatePosition() {
+		for (HGui gui : guis) {
+			gui.updatePosition();
+		}
+		repaint();
+	}
 }
