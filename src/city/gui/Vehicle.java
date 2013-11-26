@@ -140,6 +140,9 @@ public class Vehicle extends Rectangle2D.Double {
 			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
+
+		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+
 		if(x == xDestination && y == yDestination) {
 			currentCell.hasCar = false;
 
@@ -540,6 +543,7 @@ public class Vehicle extends Rectangle2D.Double {
 			}
 		}
 		}
+
 //		else if(typeOfVehicle.equals("Bus"))
 //		{
 //			for(BusStop bs : cityPanel.busStops)
@@ -551,6 +555,20 @@ public class Vehicle extends Rectangle2D.Double {
 //				}
 //			}
 //		}
+
+		else if(typeOfVehicle.equals("Bus"))
+		{
+			for(BusStop bs : cityPanel.busStops)
+			{
+				if(bs.name.equals(place))
+				{
+					System.out.println("FOUND");
+					this.setDestination(bs.xLocation, bs.yLocation);
+					return;
+				}
+			}
+		}
+
 		
 	}
 }
