@@ -88,4 +88,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(MarketTruckGui gui) {
     	guis.add(gui);
     }
+
+	public void updatePosition() {
+		// TODO Auto-generated method stub
+		for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+		}
+	}
 }
