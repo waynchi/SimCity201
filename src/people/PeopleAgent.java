@@ -47,6 +47,7 @@ public class PeopleAgent extends Agent implements People{
 		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
+	
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Sleeping;
 	public AgentEvent event = AgentEvent.GoingToSleep;
@@ -190,7 +191,7 @@ public class PeopleAgent extends Agent implements People{
 	public void msgDone(String role)
 	{
 		print("Recieved msgDone from "+ role);
-		if(role == "CarRole")
+		if(role == "CarPassenger")
 		{
 			moving.release();
 		}
@@ -849,8 +850,8 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToBankTwo()
 	{
 		location = AgentLocation.Road;
-		//if(!testmode)
-		//{
+		if(!testmode)
+		{
 		//TODO personGui.goToBank();
 			if(hasCar)
 			{
@@ -872,7 +873,7 @@ public class PeopleAgent extends Agent implements People{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//}
+		}
 		location = AgentLocation.Bank;
 		
 		for(MyRole r: roles)
@@ -1076,8 +1077,8 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("Teller"))
 				{		
 					location = AgentLocation.Road;
-					//if(!testmode)
-					//{
+					if(!testmode)
+					{
 						if(hasCar)
 						{
 							for(MyRole ro: roles)
@@ -1099,7 +1100,7 @@ public class PeopleAgent extends Agent implements People{
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					//}
+					}
 					location = AgentLocation.Bank;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();

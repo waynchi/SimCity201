@@ -86,7 +86,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	private void LeaveCar(){
 	myCar.msgImLeaving(this);
 //	myGui.DoLeaveCar(this);
-	myPerson.msgDone("CarRole");
+	myPerson.msgDone("CarPassenger");
 	}
 	
 	
