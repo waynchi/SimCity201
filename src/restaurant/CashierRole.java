@@ -364,9 +364,11 @@ public class CashierRole extends Role implements Cashier {
 	private void prepareToClose() {
 
 		log.add(new LoggedEvent("In action prepareToClose"));
+		leaveWork = false;
 		double total = getTotalSalary() + min_working_capital;
 		if (working_capital >= total) {
 			payWorkers(); 	
+			System.out.println("Depositing Money");
 			teller.msgNeedHelp(this, "blah");
 			bankState = bankActivityState.ASKED_FOR_HELP;	
 			deposit = true;
@@ -374,10 +376,11 @@ public class CashierRole extends Role implements Cashier {
 
 		else {
 			teller.msgNeedHelp(this, "blah");
+			System.out.println("Withdrawing Money");
 			bankState = bankActivityState.ASKED_FOR_HELP;
 			withdraw = true;
 		}
-		leaveWork = false;
+		
 
 	}
 
