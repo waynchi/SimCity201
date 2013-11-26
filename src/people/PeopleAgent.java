@@ -329,6 +329,7 @@ public class PeopleAgent extends Agent implements People{
 			state = AgentState.IdleAtHome;
 			event = AgentEvent.GoingToSleep;
 			buy = BuyState.NextDay;
+			print("Sleeping because of a bug");
 			log.add(new LoggedEvent("Sleeping In Message"));
 			Hunger = 1215;
 			stateChanged();
