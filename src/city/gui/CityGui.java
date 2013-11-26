@@ -46,7 +46,8 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	MarketGui marketGui = new MarketGui();
-	HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	//HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole();
@@ -130,11 +131,14 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
+					HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+					houseAnimationPanels.add(houseAnimationPanel);
 					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
-					
+					house.setItems();
+					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
-					
+					houseAnimationPanel.addGui(house.gui);
 					residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
@@ -277,12 +281,17 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
-		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
-		houseContainer.setOpaque(true);
-        buildingPanels.add(restaurantContainer, "" + 0);
-        buildingPanels.add(bankContainer, "" + 1);
-        buildingPanels.add(houseContainer, "" + 2);
-        buildingPanels.add(marketContainer,"" + 3);
+		
+        buildingPanels.add(restaurantContainer, "" + 15);
+        buildingPanels.add(bankContainer, "" + 14);
+        
+        buildingPanels.add(marketContainer,"" + 13);
+        for(int j = 0; j < houseAnimationPanels.size(); j++)
+        {
+        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+    		houseContainer.setOpaque(true);
+    		buildingPanels.add(houseContainer, "" + j);
+        }
 
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
