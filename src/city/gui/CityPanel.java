@@ -264,7 +264,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		road5.add(l);
 		}
 		
-		for(int k = 0; k <(hozWidth - 10)/20;k++)
+		for(int k = 0; k <(hozWidth + 20)/20;k++)
 		{
 			l = new Lane( hozX + 420 + 20*k, hozY-20, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "6_" + k );
 			lanes.add( l );
@@ -492,9 +492,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 		//Vertical Cross Lanes
-		for(int k = 0 ; k < (crossHeight + 70) / 20  ; k++)
+		for(int k = 0 ; k < (crossHeight + 90) / 20  ; k++)
 		{
-			l = new Lane( crossX + 90, crossY + 20 + 20*k, laneWidth, laneWidth , 0, 1, false, Color.DARK_GRAY, Color.black, "13_" + k );
+			l = new Lane( crossX + 90, crossY  + 20*k, laneWidth, laneWidth , 0, 1, false, Color.DARK_GRAY, Color.black, "13_" + k );
 			lanes.add(l);
 			road13.add(l);
 			if(k == 1) {
