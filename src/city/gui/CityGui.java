@@ -270,7 +270,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		cityControls = new CityControls();
+		cityControls = new CityControls(cityPanel);
 		cityControls.setPreferredSize(new Dimension(500, 268));
 		cityControls.setMaximumSize(new Dimension(500, 268));
 		cityControls.setMinimumSize(new Dimension(500, 268));
