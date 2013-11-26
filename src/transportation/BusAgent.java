@@ -72,6 +72,7 @@ stateChanged();
 
 
 public boolean pickAndExecuteAnAction() {
+	
 for (Passenger passenger : myBusPassengers)
 {
     if (busState == BusState.newStop && passenger.st == PassState.waiting)
@@ -80,6 +81,12 @@ for (Passenger passenger : myBusPassengers)
             NotifyPassengerAboutCurrentStop(passenger);
             return true;
     }
+}
+if(myBusPassengers.isEmpty() && busState == BusState.newStop)
+{
+	busState = BusState.waitingForNewPassengers;
+	WaitForNewPassengers();
+	return true;
 }
 
 
