@@ -21,7 +21,7 @@ public class RepairManTest {
 	Apartments a1, a2;
 
 	@Test
-	public void test() {
+	public void test1() {
 		setUp();
 		
 		((Role)m).isActive = false;
@@ -34,6 +34,15 @@ public class RepairManTest {
 		
 		assertTrue(((Role)m).isActive);
 		assertEquals(Location.Shop, m.location);
+	}
+	
+	public void test2() {
+		setUp();
+		
+		m.location = Location.Shop;
+		m.needHelp(ha1, 20);
+		
+		assertTrue(m.houseNeedsRepair(ha1));
 	}
 	
 	public void setUp() {

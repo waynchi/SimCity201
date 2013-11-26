@@ -294,6 +294,13 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void testModeOff() {
 		testMode = false;
 	}
+	
+	public boolean houseNeedsRepair(House h) {
+		MyHouse mh = find(h);
+		if (mh.s == HouseState.NeedsRepair)
+			return true;
+		return false;
+	}
 
 	//-----------------------------------------------------------//
 
