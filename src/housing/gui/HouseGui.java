@@ -3,7 +3,6 @@ package housing.gui;
 import housing.House;
 import housing.HouseType;
 import housing.Item;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
