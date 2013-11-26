@@ -90,18 +90,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-//	public void goToHouseInDifferentPlaceToFixFromVilla(MyHouse mh) {
-//		gui.DoGoToHouseInDifferentPlaceToFixFromVilla(mh.h.gui);
-//		location = Location.OutsideFixing;
-//		myPerson.msgDone("RepairManFixing");
-//	}
-//	
-//	public void goToVillaFromVilla(MyHouse mh) {
-//		gui.DoGoToVillaFromVilla(mh.h.gui);
-//		location = Location.OutsideFixing;
-//		myPerson.msgDone("RepairManFixing");
-//	}
-	
 	public void goToHouseFromVilla(MyHouse mh) {
 		gui.DoGoToHouseFromVilla(mh.h.gui);
 		location = Location.OutsideFixing;
@@ -214,14 +202,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 					}
 				}
 				else {
-//					if (currentHouse.h.type == HouseType.Apartment) {
-//						goToHouseInDifferentPlaceToFixFromVilla(currentHouse);
-//						return true;
-//					}
-//					else {
-//						goToVillaFromVilla(currentHouse);
-//						return true;
-//					}
 					goToHouseFromVilla(currentHouse);
 					return true;
 				}
@@ -258,6 +238,15 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	public void addHouse(House h, Resident r) {
 		houses.add(new MyHouse(h, r));
+	}
+	
+	public void addHouse(House h) {
+		houses.add(new MyHouse(h, null));
+	}
+	
+	public void addResidentToHouse(House h, Resident r) {
+		MyHouse mh = find(h);
+		mh.r = r;
 	}
 	
 	public People getAgent() {

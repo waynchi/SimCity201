@@ -60,11 +60,22 @@ public class RepairManTest {
 		r3.setHouse(ha1);
 		r4.setHouse(ha2);
 		r5.setHouse(ha3);
+		r1.setRepairMan(m);
+		r2.setRepairMan(m);
+		r3.setRepairMan(m);
+		r4.setRepairMan(m);
+		r5.setRepairMan(m);
 		
 		hv1.setOccupant(r1);
 		hv2.setOccupant(r2);
 		ha1.setOccupant(r3);
 		ha2.setOccupant(r4);
 		ha3.setOccupant(r5);
+		
+		m.addHouse(hv1, r1);
+		m.addHouse(hv2, r2);
+		m.addHouse(ha1, r3);
+		m.addHouse(ha2, r4);
+		m.addHouse(ha3, r5);
 	}
 }
