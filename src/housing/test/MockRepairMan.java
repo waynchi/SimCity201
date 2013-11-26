@@ -23,6 +23,7 @@ public class MockRepairMan extends Role implements RepairMan {
 	
 	@Override
 	public void needHelp(House h, double money) {
+		log.add(new LoggedEvent("House called for help. Money given: $" + money + "."));
 	}
 	
 	@Override

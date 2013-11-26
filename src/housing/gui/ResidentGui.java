@@ -119,12 +119,13 @@ public class ResidentGui implements HGui{
 					else if (this.location == Location.Apartments) {
 						state = State.Idle;
 						location = Location.Outside;
-						r.leftHouse();
+						r.activityDone();
 					}
 				}
 				else {
 					state = State.Idle;
-					r.leftHouse();
+					location = Location.Outside;
+					r.activityDone();
 				}
 			}
 			else if (state == State.Entering) {

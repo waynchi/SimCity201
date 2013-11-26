@@ -28,7 +28,10 @@ public class HouseGui implements HGui{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.ORANGE);
+		if (h.isBroken == true)
+			g.setColor(Color.RED);
+		else
+			g.setColor(Color.ORANGE);
 		g.fillRect(0, 0, 15, 500);
 		g.fillRect(0, 0, 500, 15);
 		g.fillRect(0, 485, 500, 15);
