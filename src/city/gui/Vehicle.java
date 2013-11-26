@@ -167,7 +167,7 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		
 		if(getCurrentLane().equals("12_15")) {
-			if(xDestination == 770) {
+			if(xDestination == 772) {
 				this.direction="up";
 				laneSegment = allLanes.get(15);
 				currentCell = laneSegment.get(12);
