@@ -30,7 +30,7 @@ public class PersonGui extends Rectangle2D.Double {
 		this.currentCell = currentCell;
 		rectangle = new Rectangle2D.Double( 100, 100, 20, 20 );
 		this.setOrientation();
-		this.allSidewalks = allSidewalks;
+		this.allSidewalks = allsidewalkSegments;
 		redLight = false;
 		this.cityPanel = cityPanel;
 		this.direction = "right";
@@ -127,261 +127,195 @@ public class PersonGui extends Rectangle2D.Double {
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
-		if(typeOfVehicle.equals("Bus"))
-			g2.setColor(Color.yellow);
-		else
-			g2.setColor( Color.blue );
+		g2.setColor( Color.red );
 		g2.fill( this );
 		g2.draw(this);
 
-		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
-		if(getCurrentLane().equals("1_0")) {
-			if(typeOfVehicle.equals("Bus")) {
-				this.direction="right";
-				sidewalkSegment = allSidewalks.get(1);
-				currentCell = sidewalkSegment.get(0);
-				
-			}
-		}
-		if(x == xDestination && y == yDestination) {
-
+		System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+		//System.out.println(getCurrentLane());
+		
+		if(x == xDestination && y == (yDestination + 20)) {
 			cityPanel.removePerson(this);
 			this.reachedDestination();
 		}
-		if(getCurrentLane().equals("13_2")) {
-			
-			this.direction="left";
-			sidewalkSegment = allSidewalks.get(0);
-			currentCell = sidewalkSegment.get(13);
-
-		}
-		if(getCurrentLane().equals("4_0")) {
-			this.direction="down";
-			sidewalkSegment = allSidewalks.get(12);
-			currentCell = sidewalkSegment.get(1);
-
-		}
-		if(getCurrentLane().equals("6_1")) {
-			//Intersection
-			this.direction="left";
-			sidewalkSegment = allSidewalks.get(3);
-			currentCell = sidewalkSegment.get(15);
-
-		}
-		if(getCurrentLane().equals("17_0")) {
-
-			this.direction="left";
-			sidewalkSegment = allSidewalks.get(5);
-			currentCell = sidewalkSegment.get(8);
-
-		}
-		if(getCurrentLane().equals("12_24")) {
-
-			this.direction="up";
-			sidewalkSegment = allSidewalks.get(16);
-			currentCell = sidewalkSegment.get(15);
-
-		}
-		if(getCurrentLane().equals("13_13")) {
-
+		
+		if(getCurrentLane().equals("1_20")) {
 			this.direction="right";
-			sidewalkSegment = allSidewalks.get(11);
-			currentCell = sidewalkSegment.get(1);
-
-		}
-		if(getCurrentLane().equals("6_9")) {
-			this.direction="down";
-			sidewalkSegment = allSidewalks.get(16);
+			sidewalkSegment = allSidewalks.get(2);
 			currentCell = sidewalkSegment.get(0);
-
-		}
-		if(getCurrentLane().equals("4_16")) {
-			//Intersection
-			this.direction="right";
-			sidewalkSegment = allSidewalks.get(5);
-			currentCell = sidewalkSegment.get(0);
-
-		}
-		if(getCurrentLane().equals("13_0")) {
-			this.direction = "right";
-			sidewalkSegment = allSidewalks.get(3);
-			currentCell = sidewalkSegment.get(0);
-
-		}
-		if(getCurrentLane().equals("12_0")) {
-			this.direction="up";
-			sidewalkSegment = allSidewalks.get(12);
-			currentCell = sidewalkSegment.get(13);
-
 		}
 		
-		if(getCurrentLane().equals("12_15")) {
-
-			if(xDestination == 772) {
-				this.direction="up";
-				sidewalkSegment = allSidewalks.get(15);
-				currentCell = sidewalkSegment.get(12);
-			}
-		}
-		if(getCurrentLane().equals("15_12")) {
-			//Intersection
-			if(x > xDestination) {
-				//Option 1
-				this.direction="right";
-				sidewalkSegment = allSidewalks.get(11);
-				currentCell = sidewalkSegment.get(15);
-
-			} else {
-				//Option #2
-				this.direction="left";
-				sidewalkSegment = allSidewalks.get(10);
-				currentCell = sidewalkSegment.get(15);
-
-				}
-			}
-			
-		
-		if(getCurrentLane().equals("10_9")) {
-			//Intersection
-			
-			//Option #1
-//			this.direction="down";
-//			laneSegment = allLanes.get(17);
-//			currentCell = laneSegment.get(7);
-			
-			//Option #2
-			this.direction="up";
-			sidewalkSegment = allSidewalks.get(16);
-			currentCell = sidewalkSegment.get(7);
-
-		}
-		
-		if(getCurrentLane().equals("16_0")) {
-			//Intersection
-			//Option #1
-//			this.direction="left";
-//			laneSegment = allLanes.get(3);
-//			currentCell = laneSegment.get(15);
-//			
-			//Option #2
-			this.direction="right";
-			sidewalkSegment = allSidewalks.get(4);
-			currentCell = sidewalkSegment.get(0);
-
-		}
-		if(getCurrentLane().equals("8_14")) {
+		if(getCurrentLane().equals("3_5")) {
 			//Intersection
 			if(yDestination < 152) {
+				//We need to cross
 				this.direction="up";
-				sidewalkSegment = allSidewalks.get(15);
-				currentCell = sidewalkSegment.get(5);
-			}
-			else if(yDestination == 152) {
-				this.direction="right";
-				sidewalkSegment = allSidewalks.get(9);
-				currentCell = sidewalkSegment.get(0);
-
-			}
-			else if(yDestination > 152) {
-				this.direction="down";
-				sidewalkSegment = allSidewalks.get(14);
-				currentCell = sidewalkSegment.get(5);
-
-			
-			}
-
-			
-		}
-		
-		if(getCurrentLane().equals("14_6")) {
-			//Intersection
-			//Option #1
-			if(yDestination == 152) {
-				this.direction = "right";
-				sidewalkSegment = allSidewalks.get(7);
-				currentCell = sidewalkSegment.get(0);
-			} else {
-				this.direction = "left";
-				sidewalkSegment = allSidewalks.get(0);
-				currentCell = sidewalkSegment.get(13);
-			}
-		}
-		if(getCurrentLane().equals("11_0")) {
-
-			this.direction = "up";
-			sidewalkSegment = allSidewalks.get(13);
-			currentCell = sidewalkSegment.get(12);
-		}
-		if(getCurrentLane().equals("11_16")) {
-			//Intersection
-			if((xDestination - x) < (yDestination - y)) {
-				this.direction = "up";
-				sidewalkSegment = allSidewalks.get(15);
+				sidewalkSegment = allSidewalks.get(16);
 				currentCell = sidewalkSegment.get(12);
 			}
+			if(yDestination == 152) {
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(22);
+				currentCell = sidewalkSegment.get(0);
+			}
+			if(yDestination > 152) {
+				this.direction="down";
+				sidewalkSegment = allSidewalks.get(18);
+				currentCell = sidewalkSegment.get(0);
+			}
+		}
+		if(getCurrentLane().equals("17_0")) {
+			this.direction="right";
+			sidewalkSegment = allSidewalks.get(10);
+			currentCell = sidewalkSegment.get(1);
+		}
+		if(getCurrentLane().equals("11_27")) {
+			if(xDestination > x) {
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(11);
+				currentCell = sidewalkSegment.get(0);
+			} else {
+				this.direction="down";
+				sidewalkSegment = allSidewalks.get(15);
+				currentCell = sidewalkSegment.get(0);
+			}
 			
 		}
-		if(getCurrentLane().equals("5_9")) {
-			this.direction = "down";
+		if(getCurrentLane().equals("16_5")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(23);
+			currentCell = sidewalkSegment.get(25);
+		}
+		if(getCurrentLane().equals("24_0")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(3);
+			currentCell = sidewalkSegment.get(5);
+		}
+		if(getCurrentLane().equals("4_0")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(1);
+			currentCell = sidewalkSegment.get(17);
+		}
+		if(getCurrentLane().equals("19_17")) {
+			this.direction="right";
+			sidewalkSegment = allSidewalks.get(25);
+			currentCell = sidewalkSegment.get(0);
+		}
+		if(getCurrentLane().equals("27_33")) {
+			this.direction="right";
+			sidewalkSegment = allSidewalks.get(24);
+			currentCell = sidewalkSegment.get(0);
+		}
+		if(getCurrentLane().equals("26_4")) {
+			if(xDestination > x) {
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(24);
+				currentCell = sidewalkSegment.get(5);
+			} else {
+				this.direction="up";
+				sidewalkSegment = allSidewalks.get(20);
+				currentCell = sidewalkSegment.get(9);
+			}
+			
+		}
+		if(getCurrentLane().equals("26_24")) {
+			this.direction="up";
+			sidewalkSegment = allSidewalks.get(12);
+			currentCell = sidewalkSegment.get(31);
+		}
+		if(getCurrentLane().equals("13_0")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(5);
+			currentCell = sidewalkSegment.get(25);
+		}
+		if(getCurrentLane().equals("6_0")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(4);
+			currentCell = sidewalkSegment.get(26);
+		}
+		if(getCurrentLane().equals("5_0")) {
+			this.direction="down";
 			sidewalkSegment = allSidewalks.get(17);
 			currentCell = sidewalkSegment.get(0);
 		}
-		if(getCurrentLane().equals("18_14")) {
-			this.direction = "left";
-			int hackFirstCell = sidewalkSegment.size() + 8;
-			sidewalkSegment = allSidewalks.get(10);
-			currentCell = sidewalkSegment.get(hackFirstCell);
+		if(getCurrentLane().equals("18_10")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(3);
+			currentCell = sidewalkSegment.get(5);
 		}
-		if(getCurrentLane().equals("3_16")) {
-			//Intersection
-			if(xDestination > 752) {
+		if(getCurrentLane().equals("23_27")) {
+			if(xDestination > x) {
 				this.direction="right";
-				sidewalkSegment = allSidewalks.get(4);
+				sidewalkSegment = allSidewalks.get(6);
 				currentCell = sidewalkSegment.get(0);
-
-			} else {
+			}
+			else {
 				this.direction="down";
-				sidewalkSegment = allSidewalks.get(14);
+				sidewalkSegment = allSidewalks.get(20);
 				currentCell = sidewalkSegment.get(0);
-
 			}
 		}
-		if(getCurrentLane().equals("14_0")) {
-			this.direction = "right";
-			sidewalkSegment = allSidewalks.get(2);
+		if(getCurrentLane().equals("21_10")) {
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(9);
+			currentCell = sidewalkSegment.get(26);
+		}
+		if(getCurrentLane().equals("10_0")) {
+			this.direction="up";
+			sidewalkSegment = allSidewalks.get(16);
+			currentCell = sidewalkSegment.get(20);
+		}
+		if(getCurrentLane().equals("12_15")) {
+			this.direction="down";
+			sidewalkSegment = allSidewalks.get(13);
 			currentCell = sidewalkSegment.get(0);
+		}
+		if(getCurrentLane().equals("14_5")) {
+			this.direction="right";
+			sidewalkSegment = allSidewalks.get(12);
+			currentCell = sidewalkSegment.get(8);
+		}
+		if(getCurrentLane().equals("2_0")) {
+			if(xDestination > 140) {
+				//Cross
+				if(yDestination < y) {
+					//Go up
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(28);
+					currentCell = sidewalkSegment.get(10);
+					
+				} else {
+					//Go down
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(29);
+					currentCell = sidewalkSegment.get(0);
+				}
+			} else {
+				if(yDestination < y) {
+					//Go up
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(26);
+					currentCell = sidewalkSegment.get(10);
+
+					
+				} else {
+					//Go down
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(27);
+					currentCell = sidewalkSegment.get(0);
+				}
+			}
+			
+			
+			
+		}
 		
-		}
-		if(getCurrentLane().equals("2_13")) {
-			//Intersection
-			//Option #1	
-			if(yDestination < 152) {
-				this.direction = "up";
-				sidewalkSegment = allSidewalks.get(13);
-				currentCell = sidewalkSegment.get(5);
-				
-
-			}
-			//Option #2
-			else if(yDestination == 152) {
-				this.direction = "right";
-				sidewalkSegment = allSidewalks.get(7);
-				currentCell = sidewalkSegment.get(0);
-
-			}
-			else if(yDestination > 152) {
-			//Option #3
-				this.direction="down";
-				sidewalkSegment = allSidewalks.get(12);
-				currentCell = sidewalkSegment.get(3);
-			}
-			
-			
-		}
+		
+	
 
 
 		boolean canMove = true;
-		if(time % 40 == 0) {
+		if(time % 20 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Sidewalk intersection = getSidewalkInformation("2_13");
 				if(intersection.redLight) {
@@ -476,47 +410,6 @@ public class PersonGui extends Rectangle2D.Double {
 	
 	public void reachedDestination() {
 		// TODO Auto-generated method stub
-		
-	}
-	public void driveHere(String place) {
-		// TODO Auto-generated method stub
-		if(typeOfVehicle.equals("Car"))
-		{
-		for(Building b : cityPanel.buildings)
-		{
-			if(b.name.equals(place))
-			{
-				this.setDestination(b.xLocation, b.yLocation);
-				return;
-			}
-		}
-		}
-
-//		else if(typeOfVehicle.equals("Bus"))
-//		{
-//			for(BusStop bs : cityPanel.busStops)
-//			{
-//				if(bs.name.equals(place))
-//				{
-//					this.setDestination(bs.xLocation, bs.yLocation);
-//					return;
-//				}
-//			}
-//		}
-
-		else if(typeOfVehicle.equals("Bus"))
-		{
-			for(BusStop bs : cityPanel.busStops)
-			{
-				if(bs.name.equals(place))
-				{
-					System.out.println("FOUND");
-					this.setDestination(bs.xLocation, bs.yLocation);
-					return;
-				}
-			}
-		}
-
 		
 	}
 }
