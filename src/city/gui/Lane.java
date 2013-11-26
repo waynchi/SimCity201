@@ -7,19 +7,19 @@ import java.util.*;
 public class Lane {
 	Rectangle2D.Double rectangle;
 	ArrayList<Line2D.Double> sides;
-	int xVelocity;
-	int yVelocity;
-	boolean redLight;
-	int xOrigin;
-	int yOrigin;
+	public int xVelocity;
+	public int yVelocity;
+	public boolean redLight;
+	public int xOrigin;
+	public int yOrigin;
 	int width;
 	int height;
-	boolean isHorizontal;
+	public boolean isHorizontal;
 	boolean startAtOrigin;
 	Color laneColor;
 	Color sideColor;
 	ArrayList<Vehicle> vehicles;
-	String name;
+	public String name;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc, String name ) {
 		this.name = name;

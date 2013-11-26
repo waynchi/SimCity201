@@ -83,7 +83,7 @@ public class CookGui implements Gui {
         g.setColor(Color.blue);
 		g.fillRect(xPos, yPos, 20, 20);
         g.setColor(Color.BLACK);
-        g.drawString("Cook", 65, 300);
+        g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
         	g.drawString(foodBeingCooked, 50, 265);
         }

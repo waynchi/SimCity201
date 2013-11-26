@@ -9,11 +9,11 @@ public class Role {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected PeopleAgent myPerson;
+	protected People myPerson;
 	public boolean isActive = false;
 	public AlertTag tag;
 
-	public void setPerson(PeopleAgent a) {
+	public void setPerson(People a) {
 		myPerson = a;
 	}
 	
@@ -42,7 +42,7 @@ public class Role {
 	};
 	
 	protected void print(String text) {
-		AlertLog.getInstance().logMessage(this.tag, myPerson.name, text);
+		AlertLog.getInstance().logMessage(this.tag, myPerson.getName(), text);
 		myPerson.CallPrint(text);
 	}
 	

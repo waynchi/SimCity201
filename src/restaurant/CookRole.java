@@ -90,7 +90,6 @@ public class CookRole extends Role implements Cook{
 
 	// Cook receives an order from the waiter and stores it into a list
 	public void msgIsActive() {
-		System.out.println ("got msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();

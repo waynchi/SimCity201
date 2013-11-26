@@ -1,5 +1,8 @@
 package restaurant;
 
+import restaurant.gui.CookGui;
+import restaurant.gui.RestaurantCashierGui;
+import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Host;
@@ -8,6 +11,7 @@ import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
@@ -35,6 +39,11 @@ public class CashierRole extends Role implements Cashier {
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
 	public bankActivityEvent bankEvent;
 
+	RestaurantGui restGui;
+	RestaurantCashierGui cashierGui;
+	private Semaphore atExit = new Semaphore(0,true);
+	private Semaphore atPosition = new Semaphore(0,true);
+	
 	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 
 	private Host host;
@@ -98,8 +107,11 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public CashierRole() {
-		super();
+	public CashierRole(RestaurantGui gui) {
+		cashierGui = new RestaurantCashierGui(this);
+		restGui = gui;
+		restGui.getAnimationPanel().addGui(cashierGui);
+		cashierGui.setPresent(false);
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
@@ -116,6 +128,16 @@ public class CashierRole extends Role implements Cashier {
 
 	// messages
 
+	public void msgAtExit() {
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtPosition() {
+		atPosition.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgIsActive() {
 		turnActive = true;
 		isActive = true;
@@ -304,6 +326,16 @@ public class CashierRole extends Role implements Cashier {
 		host = myPerson.Restaurants.get(0).h;
 		teller = myPerson.Banks.get(0).t;
 		host.setCashier(this);
+		cashierGui.setPresent(true);
+		cashierGui.DoGoToWorkingPosition();
+		try {
+			atPosition.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("fhio");
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
@@ -400,6 +432,15 @@ public class CashierRole extends Role implements Cashier {
 		log.add(new LoggedEvent("In action closeRestaurant"));
 		deposit = withdraw = false;
 		isActive = false;
+		cashierGui.DoLeaveWork();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		leaveWork = false;
+		cashierGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff
 	}

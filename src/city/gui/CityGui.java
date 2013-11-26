@@ -11,6 +11,8 @@ import javax.swing.Timer;
 import bank.BankCustomerRole;
 import bank.TellerRole;
 import bank.gui.BankGui;
+import market.MarketCashierRole;
+import market.MarketCustomerRole;
 import market.MarketEmployeeRole;
 import market.gui.MarketGui;
 import city.Bank;
@@ -104,12 +106,17 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Markets.add(market);
 					cityPanel.people.add(personGui);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
+					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
+					person.addRole(marketCustomerRole, "MarketCustomer");
+					marketCustomerRole.setPerson(person);
 					
 					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT);
 					
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
+					
+					
 					
 					bankCustomerRole.setTag(AlertTag.RESTAURANT);
 					
@@ -155,7 +162,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRole.setPerson(person);
 					}
 					if (job.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole();
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui);
 						
 						RestaurantCashierRole.setTag(AlertTag.RESTAURANT);
 						
@@ -186,6 +193,29 @@ public class CityGui extends JFrame implements ActionListener {
 						repairManRole.setPerson(person);
 						person.setMoney(1000000);
 						person.hasCar = true;
+					}
+					if(job.equals("MarketEmployee"))
+					{
+						person.addJob("MarketEmployee", start,end);
+						person.addRole(MarketEmployeeRole, "MarketEmployee");
+						MarketEmployeeRole.setPerson(person);
+						person.setMoney(10000);
+					}
+					if(job.equals("MarketCashier"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+					}
+					if(job.equals("MarketCustomer"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(40000);
 					}
 					people.add(person);
 				}
@@ -296,7 +326,7 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
-		int x = 3;
+		int x = 2;
 		time++;
 		if(time % x == 0)
 		{
