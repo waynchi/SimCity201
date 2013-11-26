@@ -205,6 +205,7 @@ public class TellerRole extends Role implements Teller {
 
 	private void callCustomer(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
+		print("" +waitingCustomers.size());
 		if (customer.type.equals("customer")) customer.customer.msgReadyToHelp(this);
 		if (customer.type.equals("mcashier")) customer.mcashier.msgReadyToHelp(this);
 		if (customer.type.equals("cashier")) customer.cashier.msgReadyToHelp(this);

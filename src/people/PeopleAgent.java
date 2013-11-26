@@ -535,9 +535,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-//		print("My Current State is: " + state.toString());
-//		print("My Current Event is: " + event.toString());
-//		print("My Current Hunger is : " + hunger.toString());
+		print("My Current State is: " + state.toString());
+		print("My Current Event is: " + event.toString());
+		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -705,7 +705,10 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(r.description.equals("Resident"))
 				{
-					r.role.msgIsInActive();
+					if(r.role.isActive)
+					{
+						r.role.msgIsInActive();
+					}
 				}
 			}
 		}
@@ -847,17 +850,24 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void GoToBank()
 	{		
+		boolean temp = true;
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
 			{	
+				
 				if(r.role.isActive == true)
 				{
 					print("Resident Role turned off");
+					temp = false;
 					r.role.msgIsInActive();
 				}
 				//Stop
 			}
+		}
+		if(temp)
+		{
+			GoToBankTwo();
 		}
 		//gui.GoToBank;
 		//roles.BankCustomerRole.msgIsActive();

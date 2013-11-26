@@ -133,6 +133,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
+		
 		if (isActive) {
 			if (state == CustomerState.inline) {
 				CallTeller();
