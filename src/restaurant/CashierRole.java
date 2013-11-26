@@ -257,7 +257,7 @@ public class CashierRole extends Role implements Cashier {
 			clockIn();
 			return true;
 		}
-
+		
 		synchronized (checks) {
 			for (Check check : checks) {
 				if (check.getState() == checkState.COMPUTED){
@@ -332,7 +332,7 @@ public class CashierRole extends Role implements Cashier {
 			closeRestaurant();
 			return true;
 		} 
-		if (leaveWork) 	{
+		if (leaveWork && host.getCustomerSize() == 0) 	{
 			prepareToClose();
 			return true;
 		}

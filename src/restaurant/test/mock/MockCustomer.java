@@ -88,4 +88,10 @@ public class MockCustomer extends Mock implements Customer{
 		// TODO Auto-generated method stub
 		return name;
 	}
+
+	@Override
+	public void msgAtExit() {
+		// TODO Auto-generated method stub
+		
+	}
 }

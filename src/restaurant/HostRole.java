@@ -3,6 +3,7 @@ package restaurant;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
+import restaurant.interfaces.Customer;
 import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
@@ -416,4 +417,9 @@ public class HostRole extends Role implements Host{
 		}
 		return temp;
 	}
+	
+	public int getCustomerSize() {
+		return customers.size();
+	}
+	
 }
