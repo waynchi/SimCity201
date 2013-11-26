@@ -54,25 +54,28 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
-		if(currentCell.yVelocity > 0) {
-			if(this.direction.equals("up")) {
-				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+		Lane previousCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+		if(!previousCell.hasCar) {
+			if(currentCell.yVelocity > 0) {
+				if(this.direction.equals("up")) {
+					this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+				} 
+				if(this.direction.equals("down")) {
+					this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+				}
+				
+				
 			} 
-			if(this.direction.equals("down")) {
-				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+			if(currentCell.xVelocity > 0) {
+				if(this.direction.equals("left")) {
+					this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+				} 
+				if(this.direction.equals("right")) {
+					this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+				} 
 			}
-			
-			
-		} 
-		if(currentCell.xVelocity > 0) {
-			if(this.direction.equals("left")) {
-				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
-			} 
-			if(this.direction.equals("right")) {
-				this.currentCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
-			} 
+			this.setOrientation();
 		}
-		this.setOrientation();
 
 
 	}
@@ -122,7 +125,6 @@ public class Vehicle extends Rectangle2D.Double {
 			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		System.out.println(x+","+y);
 		if(x == xDestination && y == yDestination) {
 			if(typeOfVehicle.equals("Car"))
 				cityPanel.removeVehicle(this);
@@ -130,82 +132,128 @@ public class Vehicle extends Rectangle2D.Double {
 			return;
 		}
 		if(getCurrentLane().equals("13_2")) {
+			currentCell.hasCar = false;
+
 			this.direction="left";
 			laneSegment = allLanes.get(0);
 			currentCell = laneSegment.get(13);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("4_0")) {
+			currentCell.hasCar = false;
+
 			this.direction="down";
 			laneSegment = allLanes.get(12);
 			currentCell = laneSegment.get(1);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("6_1")) {
+			currentCell.hasCar = false;
+
 			//Intersection
 			this.direction="left";
 			laneSegment = allLanes.get(3);
 			currentCell = laneSegment.get(15);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("17_0")) {
+			currentCell.hasCar = false;
+
 			this.direction="left";
 			laneSegment = allLanes.get(5);
 			currentCell = laneSegment.get(8);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("12_24")) {
+			currentCell.hasCar = false;
+
 			this.direction="up";
 			laneSegment = allLanes.get(16);
 			currentCell = laneSegment.get(15);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("13_13")) {
+			currentCell.hasCar = false;
+
 			this.direction="right";
 			laneSegment = allLanes.get(11);
 			currentCell = laneSegment.get(1);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("6_9")) {
+			currentCell.hasCar = false;
+
 			this.direction="down";
 			laneSegment = allLanes.get(16);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("4_16")) {
+			currentCell.hasCar = false;
 			//Intersection
 			this.direction="right";
 			laneSegment = allLanes.get(5);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("13_0")) {
+			currentCell.hasCar = false;
+
 			this.direction = "right";
 			laneSegment = allLanes.get(3);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("12_0")) {
+			currentCell.hasCar = false;
 			this.direction="up";
 			laneSegment = allLanes.get(12);
 			currentCell = laneSegment.get(13);
+			currentCell.hasCar = true;
+
 		}
 		
 		if(getCurrentLane().equals("12_15")) {
+			currentCell.hasCar = false;
 			if(xDestination == 772) {
 				this.direction="up";
 				laneSegment = allLanes.get(15);
 				currentCell = laneSegment.get(12);
+				currentCell.hasCar = true;
 			}
 		}
 		if(getCurrentLane().equals("15_12")) {
+			currentCell.hasCar = false;
 			//Intersection
 			if(x > xDestination) {
 				//Option 1
 				this.direction="right";
 				laneSegment = allLanes.get(11);
 				currentCell = laneSegment.get(15);
+				currentCell.hasCar = true;
+
 			} else {
 				//Option #2
 				this.direction="left";
 				laneSegment = allLanes.get(10);
 				currentCell = laneSegment.get(15);
+				currentCell.hasCar = true;
+
 				}
 			}
 			
 		
 		if(getCurrentLane().equals("10_9")) {
+			currentCell.hasCar = false;
 			//Intersection
 			
 			//Option #1
@@ -217,9 +265,12 @@ public class Vehicle extends Rectangle2D.Double {
 			this.direction="up";
 			laneSegment = allLanes.get(16);
 			currentCell = laneSegment.get(7);
+			currentCell.hasCar = true;
+
 		}
 		
 		if(getCurrentLane().equals("16_0")) {
+			currentCell.hasCar = false;
 			//Intersection
 			//Option #1
 //			this.direction="left";
@@ -230,24 +281,31 @@ public class Vehicle extends Rectangle2D.Double {
 			this.direction="right";
 			laneSegment = allLanes.get(4);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
+
 		}
 		if(getCurrentLane().equals("8_14")) {
 			//Intersection
-			
+			currentCell.hasCar = false;
 			if(yDestination < 152) {
 				this.direction="up";
 				laneSegment = allLanes.get(15);
 				currentCell = laneSegment.get(5);
+				currentCell.hasCar = true;
 			}
 			else if(yDestination == 152) {
 				this.direction="right";
 				laneSegment = allLanes.get(9);
 				currentCell = laneSegment.get(0);
+				currentCell.hasCar = true;
+
 			}
 			else if(yDestination > 152) {
 				this.direction="down";
 				laneSegment = allLanes.get(14);
 				currentCell = laneSegment.get(5);
+				currentCell.hasCar = true;
+
 			
 			}
 
@@ -255,82 +313,107 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		
 		if(getCurrentLane().equals("14_6")) {
+			currentCell.hasCar = false;
 			//Intersection
 			//Option #1
 			if(yDestination == 152) {
 				this.direction = "right";
 				laneSegment = allLanes.get(7);
 				currentCell = laneSegment.get(0);
+				currentCell.hasCar = true;
 			} else {
 				this.direction = "left";
 				laneSegment = allLanes.get(0);
 				currentCell = laneSegment.get(13);
+				currentCell.hasCar = true;
 			}
 		}
 		if(getCurrentLane().equals("11_0")) {
+			currentCell.hasCar = false;
 			this.direction = "up";
 			laneSegment = allLanes.get(13);
 			currentCell = laneSegment.get(12);
+			currentCell.hasCar = true;
 		}
 		if(getCurrentLane().equals("11_16")) {
 			//Intersection
+			currentCell.hasCar = false;
 			if((xDestination - x) < (yDestination - y)) {
 				this.direction = "up";
 				laneSegment = allLanes.get(15);
 				currentCell = laneSegment.get(12);
+				currentCell.hasCar = true;
 			}
 			
 		}
 		if(getCurrentLane().equals("5_9")) {
+			currentCell.hasCar = false;
 			this.direction = "down";
 			laneSegment = allLanes.get(17);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
 		}
 		if(getCurrentLane().equals("18_14")) {
+			currentCell.hasCar = false;
 			this.direction = "left";
 			int hackFirstCell = laneSegment.size() + 8;
-			System.out.println(laneSegment.size());
 			laneSegment = allLanes.get(10);
 			currentCell = laneSegment.get(hackFirstCell);
+			currentCell.hasCar = true;
 		}
 		if(getCurrentLane().equals("3_16")) {
+			currentCell.hasCar = false;
 			//Intersection
 			if(xDestination > 752) {
 				this.direction="right";
 				laneSegment = allLanes.get(4);
 				currentCell = laneSegment.get(0);
+				currentCell.hasCar = true;
+
 			} else {
 				this.direction="down";
 				laneSegment = allLanes.get(14);
 				currentCell = laneSegment.get(0);
+				currentCell.hasCar = true;
+
 			}
 		}
 		if(getCurrentLane().equals("14_0")) {
+			currentCell.hasCar = false;
 			this.direction = "right";
 			laneSegment = allLanes.get(2);
 			currentCell = laneSegment.get(0);
+			currentCell.hasCar = true;
 		
 		}
-
 		if(getCurrentLane().equals("2_13")) {
 			//Intersection
 			//Option #1	
 			if(yDestination < 152) {
+				currentCell.hasCar = false;
 				this.direction = "up";
 				laneSegment = allLanes.get(13);
 				currentCell = laneSegment.get(5);
+				currentCell.hasCar = true;
+				
+
 			}
 			//Option #2
 			else if(yDestination == 152) {
+				currentCell.hasCar = false;
 				this.direction = "right";
 				laneSegment = allLanes.get(7);
 				currentCell = laneSegment.get(0);
+				currentCell.hasCar = true;
+
 			}
 			else if(yDestination > 152) {
 			//Option #3
+				currentCell.hasCar = false;
 				this.direction="down";
 				laneSegment = allLanes.get(12);
 				currentCell = laneSegment.get(3);
+				currentCell.hasCar = true;
 			}
 			
 			
@@ -338,7 +421,6 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
-		System.out.println(getCurrentLane());
 		if(time % 20 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
@@ -449,17 +531,17 @@ public class Vehicle extends Rectangle2D.Double {
 			}
 		}
 		}
-		else if(typeOfVehicle.equals("Bus"))
-		{
-			for(BusStop bs : cityPanel.busStops)
-			{
-				if(bs.name.equals(place))
-				{
-					this.setDestination(bs.xLocation, bs.yLocation);
-					return;
-				}
-			}
-		}
+//		else if(typeOfVehicle.equals("Bus"))
+//		{
+//			for(BusStop bs : cityPanel.busStops)
+//			{
+//				if(bs.name.equals(place))
+//				{
+//					this.setDestination(bs.xLocation, bs.yLocation);
+//					return;
+//				}
+//			}
+//		}
 		
 	}
 }

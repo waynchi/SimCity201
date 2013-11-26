@@ -20,6 +20,7 @@ public class Lane {
 	Color sideColor;
 	ArrayList<Vehicle> vehicles;
 	public String name;
+	boolean hasCar;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc, String name ) {
 		this.name = name;
@@ -33,6 +34,7 @@ public class Lane {
 		isHorizontal = ish;
 		laneColor = lc;
 		sideColor = sc;
+		hasCar = false;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );
