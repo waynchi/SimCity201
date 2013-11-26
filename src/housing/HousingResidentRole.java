@@ -15,7 +15,7 @@ public class HousingResidentRole extends Role implements Resident {
 
 	protected House house;
 	private RepairMan repairMan;
-	private RepairStage repairStage;
+	public RepairStage repairStage;
 	public State myState;
 	public Location location = Location.Home;
 	private boolean leisure = false;
