@@ -148,7 +148,6 @@ public class Vehicle extends Rectangle2D.Double {
 			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		System.out.println(this.getCurrentLane() + "  " + x +"," + y);
 
 		if(getCurrentLane().equals("1_0")) {
 			if(typeOfVehicle.equals("Bus")) {
