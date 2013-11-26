@@ -168,7 +168,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					
 					bankCustomerRole.setTag(AlertTag.RESTAURANT1);
-					
+					cityPanel.people.add(personGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
@@ -218,6 +218,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("RestaurantHost", start, end);
 						person.addRole(RestaurantHostRole1, "RestaurantHost");
 						RestaurantHostRole1.setPerson(person);
+						person.hasCar = true;
 					}
 					if (job.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui1);
