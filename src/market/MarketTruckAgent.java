@@ -3,6 +3,7 @@ package market;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
@@ -19,6 +20,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	MarketTruckGui gui = new MarketTruckGui(this);
 	List<Order> orders = new ArrayList<Order>();
 	String name;
+	Semaphore orderDelivered = new Semaphore(0,true);	
+	
 	
 	public MarketTruckAgent(String n) {
 		name = n;
@@ -46,6 +49,11 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//	stateChanged();
 	//}
 	
+	public void msgOrderDelivered() {
+		orderDelivered.release();
+		stateChanged();;
+	}
+	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
 		log.add(new LoggedEvent("received message here is an order"));
 		orders.add(new Order (cook, items));
@@ -71,7 +79,13 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		if(!inTest){
 			gui.deliver(order.cook.getPerson());
 		}
-			order.cook.msgHereIsYourOrder(order.items);
+		try {
+			orderDelivered.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		order.cook.msgHereIsYourOrder(order.items);
 		//}
 		//else {
 		//	gui.deliver(order.customer.getPerson().getPosition();
