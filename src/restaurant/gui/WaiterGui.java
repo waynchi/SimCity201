@@ -18,7 +18,7 @@ public class WaiterGui implements Gui {
     private BaseWaiterRole role = null;
     private boolean isPresent = false;
 
-    private int xPos = 20, yPos = 20;//default waiter position
+    private int xPos = 350, yPos = 100;//default waiter position
     private int currentTableX = -100;
     private int currentTableY = -100; // position of current table
     
@@ -33,10 +33,13 @@ public class WaiterGui implements Gui {
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
     
-    private int xDestination = -20, yDestination = -20;//default start position
+    private int xExit = 350, yExit = 100;
+    
+    private int xDestination = 20, yDestination = 20;//default start position
     private Customer currentCustomer;
     private BufferedImage img = null;
-    private Boolean BringingFoodToCustomer = false;
+    private boolean BringingFoodToCustomer = false;
+    private boolean leaving =false;
     
     private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
     
@@ -86,6 +89,11 @@ public class WaiterGui implements Gui {
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
            role.msgAtRevolvingStand();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == xExit) && (yDestination == yExit && leaving)) {
+           role.msgAtExit();
+           leaving = false;
         }
     }
 
@@ -169,5 +177,13 @@ public class WaiterGui implements Gui {
 	
 	public void setPresent(boolean p) {
 		isPresent = p;
+	}
+
+	public void DoExit() {
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
+		// TODO Auto-generated method stub
+		
 	}
 }
