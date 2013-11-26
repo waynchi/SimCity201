@@ -89,11 +89,6 @@ public class HousingResidentRole extends Role implements Resident {
 		System.out.println("Repaired my own items.");
 	}
 	
-	public void watchTV() {
-		if (testMode == false)
-			gui.DoWatchTV();
-	}
-	
 	public void doMorningStuff() {
 		myState = State.DoingMorningStuff;
 		System.out.println("DOING MORNING STUFF");
@@ -115,23 +110,33 @@ public class HousingResidentRole extends Role implements Resident {
 	}
 	
 	public void read() {
+		print("Reading.");
 		if (testMode == false)
 			gui.DoRead();
 	}
 	
 	public void relaxOnSofa() {
+		print("Relaxing on sofa.");
 		if (testMode == false)
 			gui.DoRelaxOnSofa();
 	}
 	
 	public void playVideoGames() {
+		print("Playing video games.");
 		if (testMode == false)
 			gui.DoPlayVideoGames();
 	}
 	
 	public void playFussball() {
+		print("Playing fussball.");
 		if (testMode == false)
 			gui.DoPlayFussball();
+	}
+	
+	public void watchTV() {
+		print("WatchingTV.");
+		if (testMode == false)
+			gui.DoWatchTV();
 	}
 	
 	public void leaveHome() {
