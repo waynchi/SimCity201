@@ -1,6 +1,5 @@
 package housing;
 
-import housing.HousingResidentRole.State;
 import housing.gui.RepairManGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
