@@ -74,7 +74,9 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoLeaveWork() {
 		// TODO Auto-generated method stub
-		
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
 	}
 
 }

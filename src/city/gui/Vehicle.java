@@ -139,6 +139,7 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
+		System.out.println(getCurrentLane());
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
@@ -149,18 +150,48 @@ public class Vehicle extends Rectangle2D.Double {
 		g2.fill( this );
 		g2.draw(this);
 
-
-//		System.out.println(this.getCurrentLane() + "  " + x +"," + y);
-
-
 		if(getCurrentLane().equals("1_0")) {
+			currentCell.hasCar = false;
 			if(typeOfVehicle.equals("Bus")) {
-				currentCell.hasCar = false;
 				this.direction="right";
 				laneSegment = allLanes.get(1);
 				currentCell = laneSegment.get(0);
 				
+			} else {
+				if(yDestination < y) {
+					this.direction="up";
+					laneSegment = allLanes.get(18);
+					currentCell = laneSegment.get(5);
+				} else {
+					this.direction="down";
+					laneSegment = allLanes.get(20);
+					currentCell = laneSegment.get(0);
+				}
 			}
+		}
+		if(getCurrentLane().equals("19_0")) {
+			currentCell.hasCar = false;
+			this.direction="down";
+			laneSegment = allLanes.get(19);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("20_7")) {
+			currentCell.hasCar = false;
+			this.direction="down";
+			laneSegment = allLanes.get(21);
+			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("22_7")) {
+			currentCell.hasCar = false;
+			this.direction="up";
+			laneSegment = allLanes.get(20);
+			currentCell = laneSegment.get(6);
+		}
+		if(getCurrentLane().equals("21_1")) {
+			currentCell.hasCar = false;
+			this.direction="right";
+			laneSegment = allLanes.get(1);
+			currentCell = laneSegment.get(0);
 		}
 		if(x == xDestination && y == yDestination) {
 
@@ -618,14 +649,12 @@ public class Vehicle extends Rectangle2D.Double {
 				Lane intersection = getLaneInformation("9_2");
 				if(intersection.redLight) {
 					canMove = false;
-//					System.out.println("REDLIGHT");
 				}
 			}
 			else if(getCurrentLane().equals("7_1")) {
 				Lane intersection = getLaneInformation("7_1");
 				if(intersection.redLight) {
 					canMove = false;
-//					System.out.println("REDLIGHT");
 				}
 			}
 
