@@ -11,6 +11,7 @@ import bank.test.Mock;
 public class MockBankCustomer extends Mock implements BankCustomer {
 	
 	public double money = 1000;
+	public int accountID = -1;
 
 	public MockBankCustomer(String name) {
 		super(name);
@@ -46,6 +47,6 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	}
 	
 	public void msgDepositSuccessful(double balance) {
-		
+		log.add(new LoggedEvent("received account balance " + balance));
 	}
 }
