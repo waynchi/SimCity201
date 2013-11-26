@@ -39,7 +39,7 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
-		
+		log.add(new LoggedEvent("received Loan of: " + money + " balance is: " + balance));
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
