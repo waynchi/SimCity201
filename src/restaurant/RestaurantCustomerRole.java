@@ -180,7 +180,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 	
 	public void msgHereIsYourChange (Double change) {
-		myPerson.Money = change;
+		getPersonAgent().setMoney(change);
+		
 		event = CustomerEvent.DONE_PAYING;
 		getPersonAgent().CallstateChanged();
 	}
@@ -343,7 +344,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		}
 		//Case 1 - Can't afford anything on the menu. Customer leaves
 		if (event == CustomerEvent.SEATED){
-			if (myPerson.Money < minimumPrice && orderFoodThatICanAfford){
+			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -356,7 +357,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == CustomerEvent.ASKED_TO_REORDER){
 
-			if (myPerson.Money < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
+			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
 				print ("Can't afford anything else, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -387,7 +388,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// than 8.99.
 		if (orderFoodThatICanAfford) {
 			for (FoodOnMenu temp : menu) {
-				if (temp.price > maximumPrice && temp.price <= myPerson.Money) {
+				if (temp.price > maximumPrice && temp.price <= getPersonAgent().getMoney()) {
 					maximumPrice = temp.price;
 					choice = temp.type;
 					//print ("in makeOrder, should be here, choice is " + temp.type + "price is " + temp.price);
@@ -450,8 +451,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashier.msgPayMyCheck(this, myPerson.Money);
-		myPerson.Money = 0.0;
+		cashier.msgPayMyCheck(this, getPersonAgent().getMoney());
+		getPersonAgent().setMoney(0.0);
 		print ("Paying my bill");
 	}
 	

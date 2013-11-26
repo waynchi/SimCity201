@@ -323,8 +323,8 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 
 	private void clockIn() {
-		host = myPerson.Restaurants.get(0).h;
-		teller = myPerson.Banks.get(0).t;
+		host = (Host) getPersonAgent().getHost(0);
+		teller = (Teller) getPersonAgent().getTeller(0);
 		host.setCashier(this);
 		cashierGui.setPresent(true);
 		cashierGui.DoGoToWorkingPosition();
@@ -452,14 +452,14 @@ public class CashierRole extends Role implements Cashier {
 	private void depositExcessMoney() {
 		double amount = working_capital - min_working_capital;
 		System.out.println("deposit monely " + amount + " to bank");
-		teller.msgDeposit(myPerson.Restaurants.get(0).bankAccountID, working_capital - min_working_capital);;
+		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, working_capital - min_working_capital);;
 
 	}
 
 	private void withdrawMoney() {
 		double amount = getTotalSalary() + min_working_capital - working_capital;
 		System.out.println("withdraw monely " + amount + " to bank");
-		teller.msgWithdraw(myPerson.Restaurants.get(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
+		teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
 	}
 
 

@@ -361,9 +361,9 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = myPerson.Restaurants.get(0).h;
+		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
-		marketEmployee = myPerson.Markets.get(0).mer;
+		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
 	}
