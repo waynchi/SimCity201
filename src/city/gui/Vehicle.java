@@ -149,6 +149,10 @@ public class Vehicle extends Rectangle2D.Double {
 		g2.fill( this );
 		g2.draw(this);
 
+
+//		System.out.println(this.getCurrentLane() + "  " + x +"," + y);
+
+
 		if(getCurrentLane().equals("1_0")) {
 			if(typeOfVehicle.equals("Bus")) {
 				currentCell.hasCar = false;
@@ -614,14 +618,14 @@ public class Vehicle extends Rectangle2D.Double {
 				Lane intersection = getLaneInformation("9_2");
 				if(intersection.redLight) {
 					canMove = false;
-					System.out.println("REDLIGHT");
+//					System.out.println("REDLIGHT");
 				}
 			}
 			else if(getCurrentLane().equals("7_1")) {
 				Lane intersection = getLaneInformation("7_1");
 				if(intersection.redLight) {
 					canMove = false;
-					System.out.println("REDLIGHT");
+//					System.out.println("REDLIGHT");
 				}
 			}
 

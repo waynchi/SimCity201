@@ -23,6 +23,10 @@ public class CarPassengerRole extends Role implements CarPassenger{
 		
 	}
 	
+	public void setDestination(String destination)
+	{
+		this.destination = destination; 
+	}
 	/* (non-Javadoc)
 	 * @see transportation.CarPassenger#msgIsActive()
 	 */
@@ -81,7 +85,8 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	
 	private void LeaveCar(){
 	myCar.msgImLeaving(this);
-	myGui.DoLeaveCar(this);
+//	myGui.DoLeaveCar(this);
+	myPerson.msgDone("CarRole");
 	}
 	
 	
