@@ -14,6 +14,7 @@ import bank.test.Mock;
 
 public class MockCashier extends Mock implements Cashier {
 
+	public int accountID;
 	
 	public MockCashier(String name) {
 		super(name);
@@ -54,8 +55,7 @@ public class MockCashier extends Mock implements Cashier {
 
 	@Override
 	public void msgReadyToHelp(Teller teller) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class MockCashier extends Mock implements Cashier {
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("received account balance " + funds));
 		
 	}
 
