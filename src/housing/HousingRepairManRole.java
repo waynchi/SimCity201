@@ -35,11 +35,16 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void repairItems(MyHouse mh) {
 		List<Item> brokenItems = mh.h.getBrokenItems();
 		for (Item i : brokenItems) {
-			gui.DoRepairItem(mh.h.gui.getPosition(i.name));
-			try {
-				activity.acquire();
-			} catch (InterruptedException e) {}
-			i.repair();
+			if (i instanceof House) {
+				i.repair();
+			}
+			else {
+				gui.DoRepairItem(mh.h.gui.getPosition(i.name));
+				try {
+					activity.acquire();
+				} catch (InterruptedException e) {}
+				i.repair();
+			}
 		}
 		mh.r.repairDone();
 		mh.s = HouseState.None;

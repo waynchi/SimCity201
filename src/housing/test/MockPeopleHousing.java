@@ -4,29 +4,21 @@ import java.util.List;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 import people.PeopleAgent.AgentEvent;
 import people.PeopleAgent.AgentState;
 import people.PeopleAgent.HungerState;
+import restaurant.test.mock.LoggedEvent;
 import market.test.EventLog;
 import market.test.Mock;
 
-public class MockPeopleHousing extends Mock implements People {
+public class MockPeopleHousing extends PeopleAgent implements People {
 	
 	EventLog log = new EventLog();
-	public HungerState hunger = HungerState.NotHungry;
-	public AgentState state = AgentState.Sleeping;
-	public AgentEvent event = AgentEvent.GoingToSleep;
-	
-	public enum AgentState 
-	{Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank}
-	public enum AgentEvent 
-	{GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, GoingToDepositMoney,
-		GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
-	public enum HungerState {NotHungry, Hungry, Eating};
 
 	public MockPeopleHousing(String name) {
-		super(name);
+		super(name, 100000, true);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -131,8 +123,7 @@ public class MockPeopleHousing extends Mock implements People {
 
 	@Override
 	public void msgDone(String role) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent(role));
 	}
 
 	@Override
@@ -190,14 +181,14 @@ public class MockPeopleHousing extends Mock implements People {
 	}
 	
 	public void setAgentState(AgentState s) {
-		this.state = s;
+		state = s;
 	}
 	
 	public void setAgentState(AgentEvent e) {
-		this.event = e;
+		event = e;
 	}
 	
 	public void setHungerState(HungerState h) {
-		this.hunger = h;
+		hunger = h;
 	}
 }
