@@ -19,8 +19,10 @@ public class Lane {
 	Color laneColor;
 	Color sideColor;
 	ArrayList<Vehicle> vehicles;
+	String name;
 	
-	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc ) {
+	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc, String name ) {
+		this.name = name;
 		redLight = false;
 		width = w;
 		height = h;

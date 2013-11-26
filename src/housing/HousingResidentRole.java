@@ -15,8 +15,8 @@ public class HousingResidentRole extends Role implements Resident {
 
 	protected House house;
 	private RepairMan repairMan;
-	private RepairStage repairStage;
-	protected State myState;
+	public RepairStage repairStage;
+	public State myState;
 	public Location location = Location.Home;
 	private boolean leisure = false;
 	private boolean needToLeave = false;
@@ -149,6 +149,8 @@ public class HousingResidentRole extends Role implements Resident {
 				activity.acquire();
 			} catch (InterruptedException e) {}
 		}
+		isActive = false;
+		System.out.println("Left");
 		myState = State.Idle;
 		myPerson.msgDone("ResidentRole");
 	}
@@ -195,16 +197,6 @@ public class HousingResidentRole extends Role implements Resident {
 		stateChanged();
 	}
 	
-	public void leftHouse() {
-		myState = State.Idle;
-		activity.release();
-		isActive = false;
-		if (myPerson != null) {
-			myPerson.msgDone("Resident");
-		}
-		stateChanged();
-	}
-	
 	@Override
 	public void msgIsActive() {
 		myState = State.Entering;
@@ -232,13 +224,13 @@ public class HousingResidentRole extends Role implements Resident {
 			leisure = false;
 			return true;
 		}
+		if (needToLeave == true) {
+			leaveHome();
+			return true;
+		}
 		if (((PeopleAgent)myPerson).getAgentEvent().equals("GoingToSleep") && myState == State.Idle) {
 			sleep();
 			leisure = false;
-			return true;
-		}
-		if (needToLeave == true) {
-			leaveHome();
 			return true;
 		}
 		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Eating")) {
@@ -348,16 +340,24 @@ public class HousingResidentRole extends Role implements Resident {
 	public void testModeOff() {
 		testMode = false;
 	}
+	
+	public boolean leisure() {
+		return leisure;
+	}
+	
+	public boolean needToLeave() {
+		return needToLeave;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
-	enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
+	public enum RepairStage {None, NeedsRepair, HelpRequested, RepairManIsHere};
 
-	protected enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
+	public enum State {Idle, Sleeping, Cooking, FoodCooked, Eating, DoingMorningStuff, Entering};
 	
-	enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
+	public enum Activity {RelaxOnSofa, Read, WatchTV, PlayVideoGames, PlayFussball};
 	
 	public enum Location {Home, NotHome};
 }

@@ -27,7 +27,7 @@ public class CityControls extends JPanel implements ActionListener {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
-		tabbedPane.addTab("Tab1", makePanel("People"));
+		tabbedPane.addTab("Controls", makePanel("People"));
 		tabbedPane.addTab("TraceLog", makePanel("Other"));
 
 		tabbedPane.setPreferredSize(new Dimension(500, 268));
@@ -96,12 +96,18 @@ public class CityControls extends JPanel implements ActionListener {
 		JToggleButton messagesButton;
 		JToggleButton errorButton;
 		JToggleButton bankButton;		
+		JToggleButton restarauntButton;
+		JToggleButton homeButton;
+		JToggleButton marketButton;
 		
 		public ControlPanel(final TracePanel tracePanel) {
 			this.tp = tracePanel;
 			messagesButton = new JToggleButton("Show Level: MESSAGE");
 			errorButton = new JToggleButton("Show Level: ERROR");
 			bankButton = new JToggleButton("Show Tag: BANK");
+			restarauntButton = new JToggleButton("Show Tag: RESTAURANT");
+			homeButton = new JToggleButton("Show Tag: HOME");
+			marketButton = new JToggleButton("Show Tag: MARKET");
 			
 			
 			messagesButton.addActionListener(new ActionListener() {
@@ -146,10 +152,56 @@ public class CityControls extends JPanel implements ActionListener {
 			        }
 				}
 			});
+			marketButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JToggleButton tBtn = (JToggleButton)e.getSource();
+					if (tBtn.isSelected()) {
+						tBtn.setText("Hide Tag: MARKET");
+						tracePanel.showAlertsWithTag(AlertTag.MARKET);
+			        }
+					else {
+						tBtn.setText("Show Tag: MARKET");
+						tracePanel.hideAlertsWithTag(AlertTag.MARKET);
+			        }
+				}
+			});
+			homeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JToggleButton tBtn = (JToggleButton)e.getSource();
+					if (tBtn.isSelected()) {
+						tBtn.setText("Hide Tag: HOME");
+						tracePanel.showAlertsWithTag(AlertTag.HOME);
+			        }
+					else {
+						tBtn.setText("Show Tag: HOME");
+						tracePanel.hideAlertsWithTag(AlertTag.HOME);
+			        }
+				}
+			});
+			restarauntButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JToggleButton tBtn = (JToggleButton)e.getSource();
+					if (tBtn.isSelected()) {
+						tBtn.setText("Hide Tag: RESTAURANT");
+						tracePanel.showAlertsWithTag(AlertTag.RESTAURANT);
+			        }
+					else {
+						tBtn.setText("Show Tag: RESTAURANT");
+						tracePanel.hideAlertsWithTag(AlertTag.RESTAURANT);
+			        }
+				}
+			});
+			
 			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			this.add(messagesButton);
 			this.add(errorButton);
 			this.add(bankButton);
+			this.add(homeButton);
+			this.add(marketButton);
+			this.add(restarauntButton);
 			//this.setMinimumSize(new Dimension(50, 600));
 		}
 	}

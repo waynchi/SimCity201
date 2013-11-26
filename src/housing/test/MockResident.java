@@ -36,6 +36,15 @@ public class MockResident implements Resident {
 	}
 	
 	//-----------------------------------------------------------//
+	
+	// Scheduler
+	
+	@Override
+	public boolean pickAndExecuteAnAction() {
+		return false;
+	}
+	
+	//-----------------------------------------------------------//
 
 	// Utilities
 	
@@ -55,8 +64,9 @@ public class MockResident implements Resident {
 	@Override
 	public void activityDone() {
 	}
-
+	
 	@Override
-	public void leftHouse() {
+	public boolean leisure() {
+		return false;
 	}
 }

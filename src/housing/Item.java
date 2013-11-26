@@ -20,12 +20,14 @@ public class Item {
 	public void breakIt() {
 		h.occupant.somethingBroke();
 		isBroken = true;
-		gui.breakIt();
+		if (gui != null)
+			gui.breakIt();
 	}
 
 	public void repair() {
 		isBroken = false;
-		gui.repair();
+		if (gui != null)
+			gui.repair();
 	}
 
 	public boolean isBroken() {
