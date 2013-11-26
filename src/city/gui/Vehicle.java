@@ -101,13 +101,24 @@ public class Vehicle extends Rectangle2D.Double {
 		
 	}
 	
+	public Lane getLaneInformation(String name) {
+		Lane laneReturn = null;
+		for(ArrayList<Lane> lane : this.allLanes) {
+			for(Lane cell : lane) {
+				if(cell.name.equals(name)) {
+					laneReturn = cell;
+				}
+			}
+		}
+		return laneReturn;
+	}
+	
 	public void draw(Graphics2D g2) {
 		time++;
 		g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
 		
-		System.out.println(x + " " + xDestination + " " + y + " " + yDestination + " " + getCurrentLane());
 		if(x == xDestination && y == yDestination) {
 			cityPanel.removeVehicle(this);
 		}
@@ -270,7 +281,7 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		if(getCurrentLane().equals("3_16")) {
 			//Intersection
-			if(xDestination > 740) {
+			if(xDestination > 745) {
 				this.direction="right";
 				laneSegment = allLanes.get(4);
 				currentCell = laneSegment.get(0);
@@ -287,6 +298,8 @@ public class Vehicle extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 		
 		}
+		System.out.println(getCurrentLane());
+
 		if(getCurrentLane().equals("2_13")) {
 			//Intersection
 			//Option #1	
@@ -308,21 +321,21 @@ public class Vehicle extends Rectangle2D.Double {
 				currentCell = laneSegment.get(3);
 			}
 			
+			
 		}
 
-		if(this.direction.equals("right") || this.direction.equals("up")) {
-			setRect(x + currentCell.xVelocity, y - currentCell.yVelocity, getWidth(), getHeight());
-		} 
-		else if(this.direction.equals("left") || this.direction.equals("down")) {
-			setRect(x - currentCell.xVelocity, y + currentCell.yVelocity, getWidth(), getHeight());
-		}
 
+		boolean canMove = true;
 		if(time % 20 == 0) {
-				
-			if(!redLight) {
+			if(getCurrentLane().equals("2_12")) {
+				Lane intersection = getLaneInformation("2_13");
+				if(intersection.redLight) {
+					//canMove = false;
+				}
+			}
+			if(canMove) {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}
-			
 		}
 		
 		

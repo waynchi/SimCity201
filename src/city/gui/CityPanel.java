@@ -19,6 +19,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	sidewalkStrip16,sidewalkStrip17,sidewalkStrip18,sidewalkStrip19,sidewalkStrip20,sidewalkStrip21,sidewalkStrip22,sidewalkStrip23,sidewalkStrip24,
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
 	ArrayList<ArrayList> listofSidewalkStrips;
+	ArrayList<Lane> intersections;
 	CityGui city;
 	int count = 0;
 	static final int hozX = 350;
@@ -154,6 +155,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		sidewalkStrip30 = new ArrayList<Sidewalk>();
 		listofSidewalkStrips.add(sidewalkStrip30);
 		
+		intersections = new ArrayList<Lane>();
+		
+		
 		
 		
 		
@@ -184,6 +188,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			l = new Lane( hozX - 210 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "2_" + k);
 			lanes.add( l );
 			road2.add(l);
+			if(k == 13) {
+				intersections.add(l); //First intersection
+			}
 		}
 		
 		for(int k = 0; k < hozWidth/10; k++)
@@ -580,11 +587,13 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
+		
+		
 		//First Section, Top Row
 		
 		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60, "Restaurant 2" );
 		buildings.add(restaurant2);
-		Building restaurant7 = new Building( hozX + 230, hozY + 230, 20, 20, 570, 100, "Restaurant 7" );
+		Building restaurant7 = new Building( hozX + 230, hozY + 310, 20, 20, 570, 100, "Restaurant 7" );
 		buildings.add(restaurant7);
 		Building restaurant1 = new Building( hozX + 230, hozY + 140, 20, 20, 570, 200, "Restaurant 1" );
 		buildings.add(restaurant1);
@@ -599,9 +608,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		buildings.add(market);
 		
 	
-		Building restaurant4 = new Building( hozX + 580, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
+		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
 		buildings.add(restaurant4);		
-		Building restaurant5 = new Building( hozX + 580, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
+		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
 
@@ -609,12 +618,23 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		addMouseListener( this );
 		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		vehicle.setDestination(540, 42);
+		//vehicle.setDestination(580, 42);
+		//vehicle.setDestination(800, 42);
+		//vehicle.setDestination(580, 152);
+		//vehicle.setDestination(580,322);
+		vehicle.setDestination(752,120); //not working
+		//vehicle.setDestination(752, 180);
 		vehicles.add(vehicle);
 
 	}
 	
 	public void paintComponent( Graphics g ) {
+		count++;
+		if(count % 50 == 0) {
+			for(Lane intersection : intersections) {
+				intersection.redLight();
+			}
+		}
 		Graphics2D g2 = (Graphics2D)g;
 		
         g2.setColor(getBackground());
