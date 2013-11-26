@@ -4,6 +4,9 @@ import javax.swing.*;
 import transportation.BusAgent;
 import transportation.BusGui;
 import transportation.BusStop;
+import transportation.CarAgent;
+import transportation.CarGui;
+import transportation.CarPassengerRole;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -624,10 +627,12 @@ public class CityPanel extends JPanel implements MouseListener {
 		//Add grid of homes on left
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*80+ 70, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10, "Home " + i );
+				Building home = new Building( i*80+ 70, j*40 + 10, 20, 20, i*60 + 122, j*40 + 30, "Home " + ((i+1)*(j+1)) );
+				System.out.println("Home " + (i+1)*(j+1) + ": " + (i*60+122) + "," + (j*40+30));
 				buildings.add( home );
 			}
 		}
+		//122 
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
@@ -649,7 +654,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 		Building restaurant3 = new Building( hozX + 460, hozY + 30, 20, 20, 770, 60, "Restaurant 3" );
 		buildings.add(restaurant3);
-		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 770, 100, "Bank" );
+		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
 		buildings.add(bank);
 		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
 		buildings.add(restaurant6);
@@ -673,6 +678,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		busAgent.startThread();
 		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
 		vehicles.add(bg);
+		
 //		
 		addMouseListener( this );
 
