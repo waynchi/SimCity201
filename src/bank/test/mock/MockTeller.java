@@ -35,7 +35,7 @@ public class MockTeller extends Mock implements Teller {
 	}
 	
 	public void msgWithdraw(int accountID, double moneyNeeded){
-		
+		log.add(new LoggedEvent("Received msgWithdraw for: " + moneyNeeded));
 	}
 	
 	public void msgDeposit(int accountID, double moneyGiven){
@@ -51,6 +51,12 @@ public class MockTeller extends Mock implements Teller {
 	public void msgDoneAndLeaving(){
 		
 		log.add(new LoggedEvent("received msgDoneAndLeaving from customer"));
+		
+	}
+
+	@Override
+	public void msgWithdraw(double moneyNeeded) {
+		log.add(new LoggedEvent("Received msgWithdraw for: " + moneyNeeded));
 		
 	}
 
