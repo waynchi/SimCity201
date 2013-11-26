@@ -194,6 +194,7 @@ public class CityControls extends JPanel implements ActionListener {
 			        }
 				}
 			});
+			
 			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			this.add(messagesButton);
 			this.add(errorButton);
