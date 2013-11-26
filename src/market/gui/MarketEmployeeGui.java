@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import market.gui.MarketEmployeeGui;
-import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 
 public class MarketEmployeeGui implements Gui{
