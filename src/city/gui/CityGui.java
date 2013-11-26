@@ -142,7 +142,7 @@ public class CityGui extends JFrame implements ActionListener {
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
 					houseAnimationPanel.addGui(house.gui);
-					//residentRole.testModeOn();
+					residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
@@ -346,7 +346,7 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
-		int x = 2;
+		int x = 1;
 		time++;
 		if(time % x == 0)
 		{

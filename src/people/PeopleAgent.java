@@ -42,7 +42,7 @@ public class PeopleAgent extends Agent implements People{
 	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
 	public enum AgentEvent 
 	{Waiting, GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
-		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived}
+		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public HungerState hunger = HungerState.NotHungry;
@@ -222,6 +222,35 @@ public class PeopleAgent extends Agent implements People{
 			hunger = HungerState.NotHungry;
 			Hunger = 2400;
 		}
+		if(role.equals("RestaurantCashierRole") || role.equals("RestaurantHostRole") || role.equals("RestaurantWaiterRole") || role.equals("RestaurantCookRole"))
+		{
+			//Gui Stuff TODO
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("Resident"))
+				{	
+					if(r.role.isActive == false)
+					{
+					r.role.msgIsActive();
+					}
+				}
+			}
+		}
+		if(role.equals("MarketEmployeeRole") || role.equals("TellerRole") || role.equals("MarketCashierRole"))
+		{
+			for(MyRole r : roles)
+			{
+				//Gui STuff TODO
+				if(r.description.equals("Resident"))
+				{	
+					if(r.role.isActive == false)
+					{
+					r.role.msgIsActive();
+					}
+					//Stop
+				}
+			}
+		}
 		}
 		else
 		{
@@ -361,12 +390,14 @@ public class PeopleAgent extends Agent implements People{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
 						stateChanged();
+						return;
 					}
 					else
 					{
 						event = AgentEvent.GoingHome;
 						print("Going Home To Eat");
 						stateChanged();
+						return;
 					}
 				}
 				else
@@ -375,8 +406,10 @@ public class PeopleAgent extends Agent implements People{
 					print("Going Home To Eat");
 					stateChanged();
 					
+					return;
+					
 				}
-				return;
+				
 			}
 		}
 		if(state == AgentState.IdleAtHome)
@@ -402,8 +435,9 @@ public class PeopleAgent extends Agent implements People{
 				}
 				else
 				{
-					event = AgentEvent.GoingHome;
+					event = AgentEvent.EatingAtHome;
 					print("Going Home To Eat");
+					System.out.println("test");
 					stateChanged();
 					return;
 				}
@@ -474,9 +508,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-//		print("My Current State is: " + state.toString());
-//		print("My Current Event is: " + event.toString());
-//		print("My Current Hunger is : " + hunger.toString());
+			print("My Current State is: " + state.toString());
+			print("My Current Event is: " + event.toString());
+			print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -543,7 +577,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			Person = true;
 		}
-		if(state == AgentState.IdleAtHome && event == AgentEvent.GoingHome)
+		if(state == AgentState.IdleAtHome && event == AgentEvent.EatingAtHome)
 		{
 			hunger = HungerState.Eating;
 			state = AgentState.EatingAtHome;
@@ -742,14 +776,6 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("Resident"))
-			{	
-				if(r.role.isActive == false)
-				{
-				r.role.msgIsActive();
-				}
-				//Stop
-			}
 			if(r.description.equals(jobs.get(0).job))
 			{
 				System.out.println("I am leaving work");
