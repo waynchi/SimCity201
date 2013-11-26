@@ -39,14 +39,18 @@ public class MockTeller extends Mock implements Teller {
 	}
 	
 	public void msgDeposit(int accountID, double moneyGiven){
-		
+		log.add(new LoggedEvent("Received msgDeposit for: " + moneyGiven));
 	}
 	
 	public void msgDeposit(double moneyGiven){
 		
+		log.add(new LoggedEvent("Received msgDeposit for: " + moneyGiven));
+		
 	}
 	
 	public void msgDoneAndLeaving(){
+		
+		log.add(new LoggedEvent("received msgDoneAndLeaving from customer"));
 		
 	}
 
