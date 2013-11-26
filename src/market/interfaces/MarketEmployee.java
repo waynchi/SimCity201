@@ -22,6 +22,10 @@ public interface MarketEmployee {
 	public abstract void msgAtCabinet();
 
 	public abstract void msgAtCounter();
+	
+	public abstract String getName();
+
+	public abstract void msgAtExit();
 
 
 }

@@ -45,7 +45,6 @@ public class House extends Item{
 			FUSSBALL_TABLE = 1;
 			SHOE_RACK = 1;
 		}
-		gui = new HouseGui(this);
 	}
 
 	public boolean isLocked() {
@@ -63,6 +62,7 @@ public class House extends Item{
 	public void setOccupant(Resident occ) {
 		this.occupant = occ;
 		gui.add(((HousingResidentRole)occ).gui);
+		((HousingResidentRole)occ).gui.hGui = this.gui;
 	}
 
 	public void addItem(Item i) {
