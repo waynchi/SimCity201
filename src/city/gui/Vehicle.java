@@ -598,6 +598,7 @@ public class Vehicle extends Rectangle2D.Double {
 					canMove = false;
 				}
 			}
+
 			else if(getCurrentLane().equals("17_8")) {
 				Lane intersection = getLaneInformation("17_8");
 				if(intersection.redLight) {
@@ -624,6 +625,7 @@ public class Vehicle extends Rectangle2D.Double {
 					System.out.println("REDLIGHT");
 				}
 			}
+
 			if(canMove) {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}

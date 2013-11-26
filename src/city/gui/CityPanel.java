@@ -578,14 +578,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		for(int k = 0 ; k < (120)/10;k++)
 		{
-		s = new Sidewalk( hozX - 210, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0.5, 0, false, Color.gray, Color.black, "28_" + k ); 
+		s = new Sidewalk( hozX - 210, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "28_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip27.add(s);
 		}
 		
 		for(int k = 0 ; k < (130)/10;k++)
 		{
-		s = new Sidewalk( hozX - 210, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0.5, 0, false, Color.gray, Color.black, "29_" + k ); 
+		s = new Sidewalk( hozX - 210, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "29_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip28.add(s);
 		}
@@ -735,6 +735,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		}
 		for(int i=0;i<people.size();i++) {
 			PersonGui p = people.get(i);
+			p.setDestination(1002,80 );
 			p.draw(g2);
 		}
 		
