@@ -31,6 +31,7 @@ public class BankCustomerTest extends TestCase
 		teller = new MockTeller("mockcustomer");
 		person = new MockPeopleBank("teller");
 		customer.setPerson(person);
+		person.teller = teller;
 	}	
 	//This scenario tests one market order that the cashier has to pay.
 	public void testFirstDepositScenario()
@@ -54,8 +55,14 @@ public class BankCustomerTest extends TestCase
 		
 		assertEquals("BankCustomer state should be inline, it isn't",customer.state, CustomerState.inline);
 
-		assertEquals("MockMarket should have an empty event log before the Cashier's scheduler is called. Instead, the MockWaiter's event log reads: "
-						+ market.log.toString(), 0, market.log.size());
+		assertEquals("MockTeller should have an empty event log before the Customer's scheduler is called. Instead, the MockTeller's event log reads: "
+						+ teller.log.toString(), 0, teller.log.size());
+		
+		assertTrue("Customer's scheduler should have returned true (needs to call teller to let him know he is at the bank), but didn't.", 
+				customer.pickAndExecuteAnAction());
+		
+		assertTrue("Teller should have logged \"Received msgHere\" but didn't. His log reads instead: "
+                + teller.log.getLastLoggedEvent().toString(), teller.log.containsString("Received msgHereIsMoney from cashier. Total = 120.8"));
 		
 		assertEquals("Cashier should have 1 market bill in it. It doesn't.", cashier.mBills.size(), 1);
 		
