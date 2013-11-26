@@ -103,8 +103,6 @@ public class CityControls extends JPanel implements ActionListener {
 		
 		public ControlPanel(final TracePanel tracePanel) {
 			this.tp = tracePanel;
-			enableMessagesButton = new JButton("Show Level: MESSAGE");
-			disableMessagesButton = new JButton("Hide Level: MESSAGE");
 			messagesButton = new JToggleButton("Toggle Level: MESSAGE");
 			enableErrorButton = new JButton("Show Level: ERROR");
 			disableErrorButton = new JButton("Hide Level: ERROR");
@@ -112,22 +110,16 @@ public class CityControls extends JPanel implements ActionListener {
 			disableBankCustTagButton = new JButton("Hide Tag: BANK_CUSTOMER");
 			
 			
-			enableMessagesButton.addActionListener(new ActionListener() {
+			messagesButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//============================ TUTORIAL ==========================================
-					//This is how you make messages with a certain Level (normal MESSAGE here) show up in the trace panel.
-					tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);
-					//================================================================================
-				}
-			});
-			disableMessagesButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					//============================ TUTORIAL ==========================================
-					//This is how you make messages with a certain Level not show up in the trace panel.
-					tracePanel.hideAlertsWithLevel(AlertLevel.MESSAGE);
-					//================================================================================
+					JToggleButton tBtn = (JToggleButton)e.getSource();
+					if (tBtn.isSelected()) {
+						tracePanel.showAlertsWithLevel(AlertLevel.MESSAGE);
+			        }
+					else {
+						tracePanel.hideAlertsWithLevel(AlertLevel.MESSAGE);
+			        }
 				}
 			});
 			enableErrorButton.addActionListener(new ActionListener() {
@@ -169,8 +161,7 @@ public class CityControls extends JPanel implements ActionListener {
 				}
 			});
 			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-			this.add(enableMessagesButton);
-			this.add(disableMessagesButton);
+			this.add(messagesButton);
 			this.add(enableErrorButton);
 			this.add(disableErrorButton);
 			this.add(enableBankCustTagButton);
