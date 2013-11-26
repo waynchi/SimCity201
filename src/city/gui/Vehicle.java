@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import transportation.BusStop;
+
 
 public class Vehicle extends Rectangle2D.Double {
 	public int xDestination;
@@ -24,9 +26,11 @@ public class Vehicle extends Rectangle2D.Double {
 	String direction;
 	Color vehicleColor;
 	int time;
+	public String typeOfVehicle;
 	
-	public Vehicle( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel ) {
+	public Vehicle( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
+		this.typeOfVehicle = type;
 		this.laneSegment = laneSegment;
 		this.currentCell = currentCell;
 		rectangle = new Rectangle2D.Double( 100, 100, 20, 20 );
@@ -108,12 +112,16 @@ public class Vehicle extends Rectangle2D.Double {
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
-		g2.setColor( Color.blue );
+		if(typeOfVehicle.equals("Bus"))
+			g2.setColor(Color.yellow);
+		else
+			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		
+		System.out.println(x+","+y);
 		if(x == xDestination && y == yDestination) {
-			cityPanel.removeVehicle(this);
+			if(typeOfVehicle.equals("Car"))
+				cityPanel.removeVehicle(this);
 			this.reachedDestination();
 			return;
 		}
@@ -353,12 +361,26 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	public void driveHere(String place) {
 		// TODO Auto-generated method stub
+		if(typeOfVehicle.equals("Car"))
+		{
 		for(Building b : cityPanel.buildings)
 		{
 			if(b.name.equals(place))
 			{
 				this.setDestination(b.xLocation, b.yLocation);
 				return;
+			}
+		}
+		}
+		else if(typeOfVehicle.equals("Bus"))
+		{
+			for(BusStop bs : cityPanel.busStops)
+			{
+				if(bs.name.equals(place))
+				{
+					this.setDestination(bs.xLocation, bs.yLocation);
+					return;
+				}
 			}
 		}
 		
