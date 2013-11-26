@@ -356,7 +356,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(!hasCar)
 					{
-						if(rand.nextInt(100) <= 50)
+						if(rand.nextInt(100) <= 10)
 						{
 							buy = BuyState.GoingToBuy;
 						}
@@ -496,7 +496,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(!hasCar)
 			{
-				if(rand.nextInt(100) <= 0)
+				if(rand.nextInt(100) <= 10)
 				{
 					buy = BuyState.GoingToBuy;
 				}
@@ -539,9 +539,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -740,6 +740,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				personGui.setDestination(840, 42);
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -787,6 +788,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				personGui.setDestination(142, 42); //TODO this is guess
 				print("Do Not Have Car");
 			}
 			
@@ -854,6 +856,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				personGui.setDestination(580, 322);
 				print("Do Not Have Car");
 			}
 		//personGui.GoToMarket(); TODO
@@ -937,6 +940,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				personGui.setDestination(580, 152);
 				print("Do Not Have Car");
 			}
 		try {
@@ -1009,6 +1013,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1048,6 +1053,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1086,6 +1092,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1124,6 +1131,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1163,6 +1171,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
+							personGui.setDestination(580, 152);
 							print("Do Not Have Car");
 						}
 					//TOOD personGui.goToBank();
@@ -1177,6 +1186,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			//personGui.setDestination(580, 322);
 			//roles.TellerRole.msgIsActive();
 		}
 		if(jobs.get(i).job.equals("MarketCashier"))
@@ -1188,6 +1198,22 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Market");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination(580, 322);
+							print("Do Not Have Car");
+						}
 					//TODO personGui.GoToMarket();
 					try {
 						moving.acquire();
@@ -1211,6 +1237,22 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Market");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination(580, 322);
+							print("Do Not Have Car");
+						}
 					//TODO personGui.GoToMarket();
 					try {
 						moving.acquire();
