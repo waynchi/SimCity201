@@ -77,6 +77,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r3).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r3).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -102,6 +103,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r3).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r3).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -122,6 +124,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r4).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r4).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -150,6 +153,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r4).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r4).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -177,6 +181,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r5).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r5).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -205,6 +210,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r4).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r4).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -232,6 +238,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r1).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r1).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -260,6 +267,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r1).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r1).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -286,6 +294,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r4).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r4).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -314,6 +323,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r1).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r1).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -340,6 +350,7 @@ public class RepairManTest {
 		m.pickAndExecuteAnAction();
 		
 		assertEquals(2, ((MockResident)r2).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r2).log.getLastLoggedEvent().getMessage());
 		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
 		assertNull(m.getCurrentHouse());
 		assertNotNull(m.getCurrentLocationHouse());
@@ -348,6 +359,16 @@ public class RepairManTest {
 		assertEquals(HouseType.Villa, m.getCurrentLocationHouse().h.type);
 		assertEquals(2, m.getCurrentLocationHouse().h.number);
 		assertNull(m.getCurrentHouse());
+	}
+	
+	@Test
+	public void test8() {
+		setUp();
+		m.addHouse(hv1, r1);
+		m.addHouse(hv2, r2);
+		m.addHouse(ha1, r3);
+		m.addHouse(ha2, r4);
+		m.addHouse(ha3, r5);
 	}
 	
 	public void setUp() {
