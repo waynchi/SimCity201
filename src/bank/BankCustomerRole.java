@@ -44,7 +44,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public CustomerState state;
 	private CustomerAction action;
 	
-	private double withdraw = 100;
+	private double withdraw = 30000;
 	private double deposit = 100;
 	private BankGui bgui;
 	
@@ -202,8 +202,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			}
 		}
 		if (accountID == -1) {
-			print("Cannot withdraw money without an account");
-			state = CustomerState.done;
+			teller.msgWithdraw(withdraw);
+			state = CustomerState.finished;
 		}
 		else {
 			teller.msgWithdraw(accountID, withdraw);
