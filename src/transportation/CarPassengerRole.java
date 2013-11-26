@@ -45,7 +45,8 @@ public class CarPassengerRole extends Role implements CarPassenger{
  	System.out.println("Received message that Car arrived to destination: " + place);
 	if(destination.equals(place)){
 		myCar.msgImLeaving(this);
-		myGui.DoLeaveCar(this);
+		//myGui.DoLeaveCar(this);
+		myPerson.msgDone("CarPassenger");
 	}
 	}
 	
