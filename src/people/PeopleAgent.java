@@ -679,7 +679,7 @@ public class PeopleAgent extends Agent implements People{
 				//GUI WALK
 				if(!testmode)
 				{
-				personGui.GoToRestaurantOne();
+				//personGui.GoToRestaurantOne();
 				try {
 					moving.acquire();
 					} catch (InterruptedException e) {
@@ -711,7 +711,7 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
-		personGui.GoToHouse();
+		//personGui.GoToHouse(); TODO
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
@@ -742,7 +742,7 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
-		personGui.GoToMarket();
+		//personGui.GoToMarket(); TODO
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
@@ -794,7 +794,7 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{
-		personGui.goToBank();
+		//TODO personGui.goToBank();
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
@@ -857,7 +857,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToRestaurantOne();
+						// TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -881,7 +881,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToRestaurantOne();
+					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -904,7 +904,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToRestaurantOne();
+					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -927,7 +927,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToRestaurantOne();
+					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -951,7 +951,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.goToBank();
+					//TOOD personGui.goToBank();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -974,7 +974,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToMarket();
+					//TODO personGui.GoToMarket();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -997,7 +997,7 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
-					personGui.GoToMarket();
+					//TODO personGui.GoToMarket();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
