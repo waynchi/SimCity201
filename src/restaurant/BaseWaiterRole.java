@@ -294,7 +294,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 				}
 			}
 			
-			if (leaveWork) {
+			if (leaveWork && customers.size() == 0) {
 				done();
 			}
 			

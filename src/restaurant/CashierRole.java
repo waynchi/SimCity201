@@ -182,6 +182,8 @@ public class CashierRole extends Role implements Cashier {
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
 		bankEvent = bankActivityEvent.READY_TO_HELP;
+		System.out.println("got msgreadytohelp from teller");
+
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -404,11 +406,15 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void depositExcessMoney() {
+		double amount = working_capital - min_working_capital;
+		System.out.println("deposit monely " + amount + " to bank");
 		teller.msgDeposit(myPerson.Restaurants.get(0).bankAccountID, working_capital - min_working_capital);;
 
 	}
 
 	private void withdrawMoney() {
+		double amount = getTotalSalary() + min_working_capital - working_capital;
+		System.out.println("withdraw monely " + amount + " to bank");
 		teller.msgWithdraw(myPerson.Restaurants.get(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
 	}
 
