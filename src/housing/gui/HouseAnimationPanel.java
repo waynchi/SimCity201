@@ -2,6 +2,7 @@ package housing.gui;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,9 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public HouseAnimationPanel() {
 		super();
 		this.setSize(500, 570);
+		this.setPreferredSize(new Dimension(500,570));
+		this.setMaximumSize(new Dimension(500,570));
+		this.setMinimumSize(new Dimension(500,570));
 	}
 	
 	@Override

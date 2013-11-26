@@ -62,6 +62,7 @@ public class House extends Item{
 	public void setOccupant(Resident occ) {
 		this.occupant = occ;
 		gui.add(((HousingResidentRole)occ).gui);
+		((HousingResidentRole)occ).gui.hGui = this.gui;
 	}
 
 	public void addItem(Item i) {
