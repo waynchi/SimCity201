@@ -184,6 +184,7 @@ public class TellerRole extends Role implements Teller {
 			}
 			if (LeavePost && waitingCustomers.size() == 0 && currentCustomer == null) {
 				Leave();
+				return true;
 			}
 		}
 
