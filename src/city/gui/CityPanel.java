@@ -682,26 +682,26 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 	public void paintComponent( Graphics g ) {
 		count++;
-		if(count == 100) {
+		if(count == 1) {
 			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this, "Car");
-			vehicle.setDestination(580, 42);
+			vehicle.setDestination(580,42);
 			vehicles.add(vehicle);
 		}
-		if(count == 105) {
+		if(count == 1) {
 			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this, "Car");
-			vehicle.setDestination(982, 42);
+			vehicle.setDestination(580, 42);
 			vehicles.add(vehicle);
 		}
 		if(count % 50 == 0) {
 			for(Lane intersection : intersections) {
 				//System.out.println("RED LIGHT");
-				intersection.redLight();
+				//intersection.redLight();
 			}
 		}
 		if(count % 500 == 0) {
 			for(Lane intersection : intersections) {
 				//System.out.println("GREEN LIGHT");
-				intersection.greenLight();
+				//intersection.greenLight();
 			}
 		}
 		Graphics2D g2 = (Graphics2D)g;

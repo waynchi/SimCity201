@@ -54,7 +54,19 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
-		Lane nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+		Lane nextCell;
+		if(this.direction.equals("right")) {
+			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+		}
+		else if(this.direction.equals("left")) {
+			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+		}
+		else if(this.direction.equals("up")) {
+			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) - 1);
+		}
+		else {
+			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+		}
 		System.out.println(nextCell.hasCar);
 		if(!nextCell.hasCar) {
 			if(currentCell.yVelocity > 0) {
@@ -144,10 +156,12 @@ public class Vehicle extends Rectangle2D.Double {
 		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
 
 		if(x == xDestination && y == yDestination) {
-			currentCell.hasCar = false;
 
-			if(typeOfVehicle.equals("Car"))
+			if(typeOfVehicle.equals("Car")) {
 				cityPanel.removeVehicle(this);
+				currentCell.hasCar = false;
+
+			}
 			this.reachedDestination();
 			return;
 		}
@@ -433,7 +447,7 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
-		if(time % 20 == 0) {
+		if(time % 40 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
 				if(intersection.redLight) {
