@@ -266,23 +266,29 @@ public class PeopleAgent extends Agent implements People{
 						if(rand.nextInt(100) <= 0)
 						{
 							buy = BuyState.GoingToBuy;
-						if(Money >= 30000)
-						{
-							event = AgentEvent.GoingToBuyCar;
-							log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-							return;
-						}
-						else
-						{
-							event = AgentEvent.GoingToRetrieveMoney;
-							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-							stateChanged();
-							return;
-						}
 						}
 						else
 						{
 							buy = BuyState.NotBuying;
+						}
+						if(buy == BuyState.GoingToBuy)
+						{
+							if(Money >= 30000)
+							{
+								event = AgentEvent.GoingToBuyCar;
+								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+								buy = BuyState.NotBuying;
+								return;
+							}
+							else
+							{
+								event = AgentEvent.GoingToRetrieveMoney;
+								log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+								stateChanged();
+								buy = BuyState.NotBuying;
+								return;
+							}
+							
 						}
 					}
 					else
@@ -327,32 +333,63 @@ public class PeopleAgent extends Agent implements People{
 		lastTime = job.end;
 		}
 		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
-		if(state == AgentState.Idle || state == AgentState.IdleAtHome)
+		if(state == AgentState.Idle)
 		{
 			if(hunger == HungerState.Hungry)
 			{
 				if(Time <= 1900)
 				{
-				if(rand.nextInt(1) < 1)
-				{
-					event = AgentEvent.GoingToRestaurant;
-					print("Going To Restaurant To Eat");
-					stateChanged();
+					if(rand.nextInt(1) < 1)
+					{
+						event = AgentEvent.GoingToRestaurant;
+						print("Going To Restaurant To Eat");
+						stateChanged();
+					}
+					else
+					{
+						event = AgentEvent.GoingHome;
+						print("Going Home To Eat");
+						stateChanged();
+					}
 				}
 				else
 				{
 					event = AgentEvent.GoingHome;
 					print("Going Home To Eat");
 					stateChanged();
-				}
-				}
-				else
-				{
-					event = AgentEvent.GoingHome;
-					stateChanged();
-					print("Going Home To Eat");
+					
 				}
 				return;
+			}
+		}
+		if(state == AgentState.IdleAtHome)
+		{
+			if(hunger == HungerState.Hungry)
+			{
+				if(Time <= 1900)
+				{
+					if(rand.nextInt(1) < 1)
+					{
+						event = AgentEvent.GoingToRestaurant;
+						print("Going To Restaurant To Eat");
+						stateChanged();
+						return;
+					}
+					else
+					{
+						event = AgentEvent.GoingHome;
+						print("Going Home To Eat");
+						stateChanged();
+						return;
+					}
+				}
+				else
+				{
+					event = AgentEvent.GoingHome;
+					print("Going Home To Eat");
+					stateChanged();
+					return;
+				}
 			}
 		}
 		if(Time >= lastTime && state == AgentState.Idle && Time <= 2100 && buy == BuyState.NextDay)
@@ -362,22 +399,26 @@ public class PeopleAgent extends Agent implements People{
 				if(rand.nextInt(100) <= 0)
 				{
 					buy = BuyState.GoingToBuy;
-				if(!(Time >= 2100) && Money >= 30000)
-				{
-					event = AgentEvent.GoingToBuyCar;
-					stateChanged();
-					return;
 				}
-				else if(!(Time>= 2100 && Money <= 30000))
+				else
 				{
+					buy = BuyState.NotBuying;
+				}
+				if(buy == BuyState.GoingToBuy)
+				{
+					if(!(Time >= 2100) && Money >= 30000)
+					{
+						event = AgentEvent.GoingToBuyCar;
+						stateChanged();
+						return;
+					}
+					else if(!(Time>= 2100 && Money <= 30000))
+					{
 						event = AgentEvent.GoingToRetrieveMoney;
 						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
 						stateChanged();
 						return;
-				}
-				}
-				else
-				{
+					}
 					buy = BuyState.NotBuying;
 				}
 			}				
@@ -402,6 +443,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(Time >= 2330 && state != AgentState.Sleeping)
 		{
+			state = AgentState.IdleAtHome;
 			event = AgentEvent.GoingToSleep;
 			buy = BuyState.NextDay;
 			log.add(new LoggedEvent("Sleeping In Message"));
@@ -413,9 +455,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-//		print("My Current State is: " + state.toString());
-//		print("My Current Event is: " + event.toString());
-//		print("My Current Hunger is : " + hunger.toString());
+		print("My Current State is: " + state.toString());
+		print("My Current Event is: " + event.toString());
+		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -458,13 +500,13 @@ public class PeopleAgent extends Agent implements People{
 			LeaveWork();
 			Person = true;
 		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToRestaurant)
+		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToRestaurant)
 		{
 			state = AgentState.EatingAtRestaurant;
 			GoToRestaurant();
 			Person = true;
 		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingHome)
+		if((state == AgentState.Idle && event == AgentEvent.GoingHome))
 		{
 			if(hunger == HungerState.Hungry)
 			{
@@ -474,11 +516,18 @@ public class PeopleAgent extends Agent implements People{
 			else
 			{
 			state = AgentState.IdleAtHome;
+			hunger = HungerState.NotHungry;
 			}
 			if(location != AgentLocation.Home)
 			{
 			GoToHouse();
 			}
+			Person = true;
+		}
+		if(state == AgentState.IdleAtHome && event == AgentEvent.GoingHome)
+		{
+			hunger = HungerState.Eating;
+			state = AgentState.EatingAtHome;
 			Person = true;
 		}
 		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
