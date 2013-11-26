@@ -84,6 +84,7 @@ public class TellerRole extends Role implements Teller {
 	
 	public void msgIsInActive(){
 		print("Received msgIsInactive");
+		myPerson.Money += 100;
 		LeavePost = true;
 		gui.isAtDesk = false;
 		stateChanged();
