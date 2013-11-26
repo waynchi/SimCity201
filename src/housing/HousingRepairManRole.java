@@ -185,7 +185,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			enterHouse(currentHouse);
 			return true;
 		}
-		if ((currentHouse == null || currentHouse.s != HouseState.Reached) && (location != Location.OutsideFixing || location != Location.OutsideReturning) && needToLeave == true) {
+		if ((currentHouse == null || currentHouse.s != HouseState.Reached) && (location != Location.OutsideFixing && location != Location.OutsideReturning) && needToLeave == true) {
 			leaveJob();
 			return true;
 		}
@@ -289,6 +289,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	}
 	
 	public void testModeOn() {
+		isActive = true;
 		testMode = true;
 	}
 	

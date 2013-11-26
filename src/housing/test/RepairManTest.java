@@ -369,6 +369,96 @@ public class RepairManTest {
 		m.addHouse(ha1, r3);
 		m.addHouse(ha2, r4);
 		m.addHouse(ha3, r5);
+		
+		m.location = Location.Shop;
+		m.needHelp(hv1, 20);
+		m.pickAndExecuteAnAction();
+		p.event = AgentEvent.RepairManArrived;
+		m.pickAndExecuteAnAction();
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(2, ((MockResident)r1).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r1).log.getLastLoggedEvent().getMessage());
+		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
+		assertNull(m.getCurrentHouse());
+		assertNotNull(m.getCurrentLocationHouse());
+		assertEquals(HouseState.None, m.getCurrentLocationHouse().s);
+		assertEquals(Location.Resident, m.location);
+		assertEquals(HouseType.Villa, m.getCurrentLocationHouse().h.type);
+		assertEquals(1, m.getCurrentLocationHouse().h.number);
+		assertNull(m.getCurrentHouse());
+		
+		m.pickAndExecuteAnAction();
+		
+		assertNull(m.getCurrentHouse());
+		assertEquals(Location.OutsideReturning, m.location);
+		
+		p.event = AgentEvent.RepairManArrivedShop;
+		
+		m.pickAndExecuteAnAction();
+		assertEquals(Location.Shop, m.location);
+	}
+	
+	@Test
+	public void test9() {
+		setUp();
+		m.addHouse(hv1, r1);
+		m.addHouse(hv2, r2);
+		m.addHouse(ha1, r3);
+		m.addHouse(ha2, r4);
+		m.addHouse(ha3, r5);
+		
+		m.location = Location.Shop;
+		m.needHelp(ha1, 20);
+		
+		assertTrue(m.houseNeedsRepair(ha1));
+		assertNull(m.getCurrentHouse());
+		assertNull(m.getCurrentLocationHouse());
+		
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(Location.OutsideFixing, m.location);
+		assertNotNull(m.getCurrentHouse());
+		assertNull(m.getCurrentLocationHouse());
+		assertEquals(HouseType.Apartment, m.getCurrentHouse().h.type);
+		
+		m.msgIsInActive();
+		
+		assertTrue(m.isActive);
+		assertTrue(m.needToLeave);
+		
+		m.pickAndExecuteAnAction();
+		
+		assertTrue(m.isActive);
+		assertTrue(m.needToLeave);
+		
+		p.event = AgentEvent.RepairManArrived;
+		
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(Location.Resident, m.location);
+		assertEquals(HouseState.Reached, m.getCurrentHouse().s);
+		assertEquals(1, ((MockResident)r3).log.size());
+		assertTrue(m.isActive);
+		assertTrue(m.needToLeave);
+		
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(2, ((MockResident)r3).log.size());
+		assertEquals("Repair has been done.", ((MockResident)r3).log.getLastLoggedEvent().getMessage());
+		assertEquals(0, m.getCurrentLocationHouse().h.getBrokenItems().size());
+		assertNull(m.getCurrentHouse());
+		assertNotNull(m.getCurrentLocationHouse());
+		assertEquals(HouseState.None, m.getCurrentLocationHouse().s);
+		assertEquals(Location.Resident, m.location);
+		assertTrue(m.isActive);
+		assertTrue(m.needToLeave);
+		
+		m.pickAndExecuteAnAction();
+		
+		assertFalse(m.isActive);
+		assertFalse(m.needToLeave);
+		assertEquals(Location.Nowhere, m.location);
 	}
 	
 	public void setUp() {
@@ -414,6 +504,11 @@ public class RepairManTest {
 		r4.setRepairMan(m);
 		r5.setRepairMan(m);
 		
+		hv1.testModeOn();
+		hv2.testModeOn();
+		ha1.testModeOn();
+		ha2.testModeOn();
+		ha3.testModeOn();
 		hv1.setOccupant(r1);
 		hv2.setOccupant(r2);
 		ha1.setOccupant(r3);

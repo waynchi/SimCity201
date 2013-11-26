@@ -24,6 +24,9 @@ public class HouseGui implements HGui{
 
 	@Override
 	public void updatePosition() {
+		for (HGui gui : guis) {
+			gui.updatePosition();
+		}
 	}
 
 	@Override
