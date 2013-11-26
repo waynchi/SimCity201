@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import city.Bank;
@@ -1059,6 +1060,12 @@ public class PeopleAgent extends Agent implements People{
 			role = r;
 			description = d;
 		}
+	}
+
+	@Override
+	public Teller getTeller() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
