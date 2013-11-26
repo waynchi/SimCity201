@@ -2,9 +2,9 @@ package bank.test.mock;
 
 import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
-import restaurant.test.mock.Mock;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
+import bank.test.Mock;
 
 /**
  * teller

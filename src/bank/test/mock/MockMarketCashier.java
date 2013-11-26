@@ -2,12 +2,14 @@ package bank.test.mock;
 
 import java.util.Map;
 
-import bank.interfaces.Teller;
-import people.Role;
-import restaurant.interfaces.Cashier;
-import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
+import bank.interfaces.Teller;
+import bank.test.LoggedEvent;
+import bank.test.Mock;
+import people.Role;
+import restaurant.interfaces.Cashier;
+
 
 public class MockMarketCashier extends Mock implements MarketCashier{
 
@@ -18,29 +20,25 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgHereIsACheck(MarketCustomer customer,
-			Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));		
+			Map<String, Integer> items) {	
 		
 	}
 
 	@Override
 	public void msgHereIsACheck(Cashier restaurantCashier,
-			Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for restaurant cashier"));		
+			Map<String, Integer> items) {		
 		
 	}
 
 	@Override
-	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
-		log.add(new LoggedEvent("received msgHereIsACheck from customer"));		
+	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {	
 		
 	}
 	
 
 	@Override
 	public void msgHereIsPayment(Double amount,
-			Map<String, Integer> itemsOrdered, Cashier cashier) {
-		log.add(new LoggedEvent("received msgHereIsPayment from cashier"));		
+			Map<String, Integer> itemsOrdered, Cashier cashier) {	
 		
 	}
 
@@ -64,7 +62,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgReadyToHelp(Teller teller) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));	
 		
 	}
 

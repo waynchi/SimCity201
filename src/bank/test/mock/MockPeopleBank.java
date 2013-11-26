@@ -1,6 +1,9 @@
 package bank.test.mock;
 
 import java.util.List;
+
+import bank.test.EventLog;
+import bank.test.LoggedEvent;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.People;
@@ -9,9 +12,7 @@ import people.Role;
 import people.PeopleAgent.AgentEvent;
 import people.PeopleAgent.AgentState;
 import people.PeopleAgent.HungerState;
-import restaurant.test.mock.LoggedEvent;
-import market.test.EventLog;
-import market.test.Mock;
+
 
 public class MockPeopleBank extends PeopleAgent implements People {
 	
