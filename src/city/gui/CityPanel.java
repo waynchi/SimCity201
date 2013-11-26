@@ -1,10 +1,18 @@
 package city.gui;
 import javax.swing.*;
 
-import java.awt.*;
+import transportation.BusAgent;
+import transportation.BusGui;
+import transportation.BusStop;
+
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.ArrayList;
+import java.util.*;
+
 
 public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
@@ -12,6 +20,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Sidewalk> sidewalks;
 	ArrayList<Vehicle> vehicles;
 	ArrayList<PersonGui> people;
+	public List<BusStop> busStops;
 	ArrayList<Lane> road1,road2,road3,road4,road5,road6,road7,road8,road9,road10,road11,road12,road13,road14,road15,road16,road17,road18,road19,road20,road21,road22;
 	ArrayList<ArrayList<Lane>> allRoads;
 	ArrayList<Sidewalk> sidewalkStrip1,sidewalkStrip2,sidewalkStrip3,sidewalkStrip4,sidewalkStrip5,sidewalkStrip6,
@@ -43,6 +52,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		sidewalks = new ArrayList<Sidewalk>();
 		vehicles = new ArrayList<Vehicle>();
 		people = new ArrayList<PersonGui>();
+		busStops = new ArrayList<BusStop>();
 		this.city = city;
 		
 		road1 = new ArrayList<Lane>();
@@ -645,10 +655,27 @@ public class CityPanel extends JPanel implements MouseListener {
 		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
-
-
-		
+		BusAgent busAgent = new BusAgent();
+		busStops.add(new BusStop(220,180,30,30,220,152, "BusStop1"));
+		busStops.add(new BusStop(380,180,30,30,380,152, "BusStop2"));
+		BusGui bg = new BusGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		busAgent.setGui(bg);
+		busAgent.startThread();
+		bg.msgGoToNextStop(busAgent, busStops.get(1));
+		vehicles.add(bg);
+//		
 		addMouseListener( this );
+
+
+//		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		vehicle.setDestination(752, 180);
+//		//vehicle.setDestination(580, 42);
+//		//vehicle.setDestination(800, 42);
+//		//vehicle.setDestination(580, 152);
+//		//vehicle.setDestination(580,322);
+//		//vehicle.setDestination(752,120); //not working
+//		vehicle.setDestination(772, 180);
+//		vehicles.add(vehicle);
 
 
 	}
@@ -694,6 +721,11 @@ public class CityPanel extends JPanel implements MouseListener {
 		for ( int i=0; i<lanes.size(); i++ ) {
 			Lane l = lanes.get(i);
 			l.draw( g2 );
+		}
+		for(int i = 0; i <busStops.size(); i++){
+			BusStop bs = busStops.get(i);
+			g2.setColor(Color.YELLOW);
+			g2.fill(bs);
 		}
 		for(int i=0;i<vehicles.size();i++) {
 			Vehicle v = vehicles.get(i);
