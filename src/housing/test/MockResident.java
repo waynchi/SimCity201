@@ -25,10 +25,12 @@ public class MockResident implements Resident {
 
 	@Override
 	public void ImHere() {
+		log.add(new LoggedEvent("RepairMan is here."));
 	}
 
 	@Override
 	public void repairDone() {
+		log.add(new LoggedEvent("Repair has been done."));
 	}
 
 	@Override
