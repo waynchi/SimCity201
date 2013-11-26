@@ -118,7 +118,7 @@ public class Vehicle extends Rectangle2D.Double {
 			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
-		System.out.println(x+","+y);
+		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
 		if(x == xDestination && y == yDestination) {
 			if(typeOfVehicle.equals("Car"))
 				cityPanel.removeVehicle(this);
@@ -378,6 +378,7 @@ public class Vehicle extends Rectangle2D.Double {
 			{
 				if(bs.name.equals(place))
 				{
+					System.out.println("FOUND");
 					this.setDestination(bs.xLocation, bs.yLocation);
 					return;
 				}
