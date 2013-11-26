@@ -139,6 +139,7 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
+
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
@@ -160,10 +161,10 @@ public class Vehicle extends Rectangle2D.Double {
 				if(yDestination < y) {
 					this.direction="up";
 					laneSegment = allLanes.get(18);
-					currentCell = laneSegment.get(5);
+					currentCell = laneSegment.get(6);
 				} else {
 					this.direction="down";
-					laneSegment = allLanes.get(20);
+					laneSegment = allLanes.get(21);
 					currentCell = laneSegment.get(0);
 				}
 			}
@@ -557,7 +558,7 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
-		if(time % 30 == 0) {
+		if(time % 5 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
 				if(intersection.redLight) {

@@ -122,8 +122,7 @@ public class CityGui extends JFrame implements ActionListener {
 						 person = new PeopleAgent(name, 1000.0, true );
 					}//TODO
 					person.setCityGui(this);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel);					
-					//personGui.setDestination(130, 200);
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);
