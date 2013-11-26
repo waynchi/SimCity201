@@ -414,6 +414,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 110 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "7_" + k );
 		lanes.add(l);
 		road7.add(l);
+		if(k == 1) {
+			intersections.add(l);
+		}
 		}
 		for(int k = 0; k <(hozWidth+90)/20;k++)
 		{
@@ -438,6 +441,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 420 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "9_" + k );
 		lanes.add(l);
 		road9.add(l);
+		if(k == 2) {
+			intersections.add(l);
+		}
 		}
 		
 		for(int k=0; k < hozWidth/20;k++)
@@ -466,6 +472,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 110 + 20*k, hozY + 280, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "12_" + k );
 		lanes.add(l);
 		road12.add(l);
+		if(k == 13){
+			intersections.add(l);
+		}
 		}
 
 		for(int k = 0 ; k < (hozWidth + 40)/10;k++)
@@ -498,6 +507,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			l = new Lane( crossX + 110, crossY + 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "14_" + k );
 			lanes.add(l);
 			road14.add(l);
+			if(k == 6){
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0 ; k < (crossHeight+50)/20;k++)
@@ -532,6 +544,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( crossX + 650, crossY - 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "17_" + k );
 		lanes.add(l);
 		road17.add(l);
+		if(k == 8){
+			intersections.add(l);
+		}
 		}
 		
 		for(int k = 0; k < (crossHeight+110)/20;k++)
@@ -649,19 +664,22 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		BusAgent busAgent = new BusAgent();
 		busStops.add(new BusStop(220,180,30,30,220,152, "BusStop1"));
-		busStops.add(new BusStop(380,180,30,30,380,152, "BusStop2"));
+		busStops.add(new BusStop(680,350,30,30,680,322, "BusStop2"));
+		busStops.add(new BusStop(880,90,30,30,870,132, "BusStop3"));
+		busStops.add(new BusStop(650,90,30,30,660,132, "BusStop4"));
+		
 		BusGui bg = new BusGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
 		busAgent.setGui(bg);
 		busAgent.startThread();
-		bg.msgGoToNextStop(busAgent, busStops.get(1));
+		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
 		vehicles.add(bg);
 //		
 		addMouseListener( this );
 
 
 		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
-		vehicle.setDestination(982,200);
-		vehicles.add(vehicle);
+		vehicle.setDestination(20,20);
+		//vehicles.add(vehicle);
 //		//vehicle.setDestination(580, 42);
 //		//vehicle.setDestination(800, 42);
 //		//vehicle.setDestination(580, 152);
@@ -675,14 +693,14 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 	public void paintComponent( Graphics g ) {
 		count++;
-		if(count % 30 == 0) {
+		if(count % 20 == 0) {
 			for(Lane intersection : intersections) {
 				//System.out.println(intersection.name);
 				//System.out.println("RED LIGHT");
 				intersection.redLight();
 			}
 		}
-		if(count % 500 == 0) {
+		if(count % 200 == 0) {
 			for(Lane intersection : intersections) {
 				//System.out.println("GREEN LIGHT");
 				intersection.greenLight();

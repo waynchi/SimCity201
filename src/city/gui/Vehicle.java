@@ -148,6 +148,7 @@ public class Vehicle extends Rectangle2D.Double {
 			g2.setColor( Color.blue );
 		g2.fill( this );
 		g2.draw(this);
+		System.out.println(this.getCurrentLane() + "  " + x +"," + y);
 
 		if(getCurrentLane().equals("1_0")) {
 			if(typeOfVehicle.equals("Bus")) {
@@ -262,7 +263,7 @@ public class Vehicle extends Rectangle2D.Double {
 		else if(getCurrentLane().equals("12_15")) {
 			currentCell.hasCar = false;
 
-			if(xDestination == 772) {
+			if(xDestination == 772 ) {
 				this.direction="up";
 				laneSegment = allLanes.get(15);
 				currentCell = laneSegment.get(12);
@@ -301,7 +302,7 @@ public class Vehicle extends Rectangle2D.Double {
 			//Option #2
 			this.direction="up";
 			laneSegment = allLanes.get(16);
-			currentCell = laneSegment.get(8);
+			currentCell = laneSegment.get(6);
 
 		}
 		
@@ -418,6 +419,20 @@ public class Vehicle extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 		
 		}
+		else if(getCurrentLane().equals("16_6")) {
+			currentCell.hasCar = false;
+			if(xDestination < x){
+				this.direction = "left";
+				laneSegment = allLanes.get(6);
+				currentCell = laneSegment.get(laneSegment.size() - 1);
+			}
+			else if(xDestination > x){
+				this.direction = "right";
+				laneSegment = allLanes.get(9);
+				currentCell = laneSegment.get(0);
+			}
+			
+		}
 		else if(getCurrentLane().equals("2_13")) {
 			currentCell.hasCar = false;
 
@@ -447,18 +462,72 @@ public class Vehicle extends Rectangle2D.Double {
 			
 			
 		}
+		else if(getCurrentLane().equals("17_7")) {
+			currentCell.hasCar = false;
+			//Intersection
+			
+			//Option #1
+			if(yDestination >= 132){
+				this.direction="left";
+				laneSegment = allLanes.get(8);
+				currentCell = laneSegment.get(7);
+			}
+			else{
+				this.direction="up";
+				laneSegment = allLanes.get(16);
+				currentCell = laneSegment.get(6);
+			}
+		}
+		else if(getCurrentLane().equals("9_1")) {
+			currentCell.hasCar = false;
+			//Intersection
+			
+			//Option #1
+			if(xDestination < x ){
+				this.direction="left";
+				laneSegment = allLanes.get(6);
+				currentCell = laneSegment.get(laneSegment.size() - 1);
+			}//Option#2
+			else if(yDestination > y){
+				this.direction="down";
+				laneSegment = allLanes.get(15);
+				currentCell = laneSegment.get(10);
+				
+			}//Option#2
+			else if(yDestination < y){
+				this.direction="up";
+				laneSegment = allLanes.get(15);
+				currentCell = laneSegment.get(6);
+				
+			}
+		}
+		else if(getCurrentLane().equals("7_0")) {
+			currentCell.hasCar = false;
+			//Intersection
+			
+			//Option #1
+			if(xDestination < x ){
+				this.direction="left";
+				laneSegment = allLanes.get(0);
+				currentCell = laneSegment.get(laneSegment.size() - 1);
+			}
+			else if(yDestination < y){
+				this.direction ="up";
+				laneSegment = allLanes.get(13);
+				currentCell = laneSegment.get(1);
+			}
+			else{
+				this.direction = "down";
+				laneSegment = allLanes.get(12);
+				currentCell = laneSegment.get(6);
+			}
+		}
 
 
 		boolean canMove = true;
-		if(time % 10 == 0) {
+		if(time % 5 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
-				if(intersection.redLight) {
-					canMove = false;
-				}
-			}
-			else if(getCurrentLane().equals("14_1")) {
-				Lane intersection = getLaneInformation("14_1");
 				if(intersection.redLight) {
 					canMove = false;
 				}
@@ -527,6 +596,32 @@ public class Vehicle extends Rectangle2D.Double {
 				Lane intersection = getLaneInformation("15_4");
 				if(intersection.redLight) {
 					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("17_8")) {
+				Lane intersection = getLaneInformation("17_8");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("12_13")) {
+				Lane intersection = getLaneInformation("12_13");
+				if(intersection.redLight) {
+					canMove = false;
+				}
+			}
+			else if(getCurrentLane().equals("9_2")) {
+				Lane intersection = getLaneInformation("9_2");
+				if(intersection.redLight) {
+					canMove = false;
+					System.out.println("REDLIGHT");
+				}
+			}
+			else if(getCurrentLane().equals("7_1")) {
+				Lane intersection = getLaneInformation("7_1");
+				if(intersection.redLight) {
+					canMove = false;
+					System.out.println("REDLIGHT");
 				}
 			}
 			if(canMove) {
