@@ -192,10 +192,12 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+		synchronized(marketBills){
 		for (MarketBill mb : marketBills) {
 			if (mb.itemsOrdered == marketOrder) {
 				mb.itemsReceived = true;
 			}
+		}
 		}
 		getPersonAgent().CallstateChanged();
 
@@ -239,6 +241,7 @@ public class CashierRole extends Role implements Cashier {
 	 */
 	public boolean pickAndExecuteAnAction() {
 
+
 		if (turnActive) {
 			clockIn();
 			return true;
@@ -261,15 +264,15 @@ public class CashierRole extends Role implements Cashier {
 				}
 			}
 		}
-
-		synchronized (marketBills) {
+		
 		if (!marketBills.isEmpty()) {
-			for (MarketBill mb : marketBills) {
-				if (mb.itemsReceived = true)
-					payMarket(mb);
+			synchronized (marketBills) {
+			for (int i = 0; i < marketBills.size(); i++) {
+				if (marketBills.get(i).itemsReceived = true)
+					payMarket(marketBills.get(i));
+				}
 			}
-			return true;
-		}
+		return true;
 		}
 
 		/*if (loanRequested && loanGranted) {

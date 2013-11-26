@@ -149,6 +149,7 @@ public class CityGui extends JFrame implements ActionListener {
 					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
 					person.startThread();
+					//setTest();
 					person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
