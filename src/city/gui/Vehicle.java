@@ -333,7 +333,6 @@ public class Vehicle extends Rectangle2D.Double {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}
 		}
-		
 	}
 	public void redLight() {
 		redLight = true;
