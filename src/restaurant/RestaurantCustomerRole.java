@@ -128,6 +128,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	// handles waiter follow me message and eventually sits down at the correct table
 	public void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m) {
+		print("got message from waiter " + waiter.getName());
 		this.setWaiter(waiter);
 		tableNum = tableNumber;
 		menu = m;
@@ -137,30 +138,37 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
+		print("atTable released");
+
 		event = CustomerEvent.SEATED;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
+		print("atCashier released");
 
 		getPersonAgent().CallstateChanged();
 	}
 	
 	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
+		print("made decision");
 		event = CustomerEvent.MADE_DECISION;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgWhatWouldYouLike() {
+		print("asked to order");
 		event = CustomerEvent.ASKED_TO_ORDER;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	//from waiter agent
 	public void msgReorder(List<FoodOnMenu> newMenu) {
+		print("asked to reorder"
+				+ "");
 		event = CustomerEvent.ASKED_TO_REORDER;
 		menu = newMenu;
 		getPersonAgent().CallstateChanged();
@@ -168,11 +176,15 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	//from waiter agent
 	public void msgHereIsYourFood() {
+		print("got my food");
+
 		event = CustomerEvent.FOOD_SERVED;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsCheck (Double d, Cashier c) {
+		print("got my check");
+
 		event = CustomerEvent.GOT_CHECK;
 		cashier = c;
 		//due = d;
@@ -180,6 +192,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 	
 	public void msgHereIsYourChange (Double change) {
+		print("got my change");
+
 		getPersonAgent().setMoney(change);
 		
 		event = CustomerEvent.DONE_PAYING;
@@ -338,6 +352,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 
 	private void makeDecision() {	
+		print("making decision");
+
 		Double minimumPrice = 100.00;
 		for (FoodOnMenu temp : menu) {
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
@@ -382,6 +398,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	private void makeOrder() {
 		// can only order one item at a time. Prices are on the menu
+		print("ordering");
+
 		Double maximumPrice = 0.00;
 		
 		// Customer has only enough money to order the cheapest item if moneyOnMe is greater than 5.99 and less
@@ -444,6 +462,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	// customer must pay for his meal
 	private void payCheck() {
+		print("going to pay check");
+
 		customerGui.DoGoToCashier();
 		try {
 			atCashier.acquire();
@@ -457,6 +477,8 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 	
 	private void leaveTable() {
+		print("leaving table");
+
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
 		try {
