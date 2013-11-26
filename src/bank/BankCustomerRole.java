@@ -31,8 +31,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// agent correspondents
 	private Teller teller;
 	
-	private double wallet;
-	private int accountID = -1; //Initialize with an impossible value that will be checked later
+	public int accountID = -1; //Initialize with an impossible value that will be checked later
 	
 	public enum CustomerState
 	{none, waiting, ready, needAccount, finished, done, inline};
@@ -42,7 +41,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	private Semaphore atTeller = new Semaphore(0,true);
 	
-	private CustomerState state;
+	public CustomerState state;
 	private CustomerAction action;
 	
 	private double withdraw = 100;
@@ -128,7 +127,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 		if (isActive) {
 			if (state == CustomerState.inline) {

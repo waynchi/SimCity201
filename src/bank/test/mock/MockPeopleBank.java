@@ -17,6 +17,8 @@ import people.PeopleAgent.HungerState;
 public class MockPeopleBank extends PeopleAgent implements People {
 	
 	EventLog log = new EventLog();
+	
+	public double money = 1000;
 
 	public MockPeopleBank(String name) {
 		super(name, 100000, true);
@@ -25,14 +27,12 @@ public class MockPeopleBank extends PeopleAgent implements People {
 
 	@Override
 	public double getMoney() {
-		// TODO Auto-generated method stub
-		return 0;
+		return money;
 	}
 
 	@Override
 	public void setMoney(double Money) {
-		// TODO Auto-generated method stub
-		
+		this.money = Money;
 	}
 
 	@Override
