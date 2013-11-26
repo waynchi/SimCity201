@@ -4,6 +4,7 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import people.People;
 import transportation.BusStop;
 
 
@@ -23,8 +24,9 @@ public class PersonGui extends Rectangle2D.Double {
 	Color vehicleColor;
 	int time;
 	public String typeOfVehicle;
+	People person;
 	
-	public PersonGui( int x, int y, int width, int height, ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell, ArrayList<ArrayList<Sidewalk>> allsidewalkSegments, CityPanel cityPanel) {
+	public PersonGui( int x, int y, int width, int height, ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell, ArrayList<ArrayList<Sidewalk>> allsidewalkSegments, CityPanel cityPanel, People person) {
 		super( x, y, width, height );
 		this.sidewalkSegment = sidewalkSegment;
 		this.currentCell = currentCell;
@@ -34,6 +36,7 @@ public class PersonGui extends Rectangle2D.Double {
 		redLight = false;
 		this.cityPanel = cityPanel;
 		this.direction = "right";
+		this.person = person;
 
 
 	}
@@ -140,7 +143,7 @@ public class PersonGui extends Rectangle2D.Double {
 		
 		if(x == xDestination && y == (yDestination + 20)) {
 			cityPanel.removePerson(this);
-			this.reachedDestination();
+			
 		}
 		
 		if(getCurrentLane().equals("1_20")) {
