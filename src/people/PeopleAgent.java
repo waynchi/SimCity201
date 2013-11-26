@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import transportation.CarPassengerRole;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -189,69 +190,73 @@ public class PeopleAgent extends Agent implements People{
 	public void msgDone(String role)
 	{
 		print("Recieved msgDone from "+ role);
-		if(role != "ResidentRole")
+		if(role == "CarRole")
 		{
-		log.add(new LoggedEvent("Recieved msgDone"));
-		state = AgentState.Idle;
-		event = AgentEvent.Idle;
-		if(role.equals("RestaurantCustomerRole"))
-		{
-			hunger = HungerState.NotHungry;
-			Hunger = 2400;
+			moving.release();
 		}
-		if(role.equals("BankCustomerRole"))
+		else if(role != "ResidentRole")
 		{
-			
-		}
-		if(role.equals("MarketCustomerRole"))
-		{
-			hasCar = true;
-		}
-		if(role.equals("RepairManFixing"))
-		{
-			state = AgentState.Working;
-			event = AgentEvent.RepairManMoving;
-			stateChanged();
-		}
-		if(role.equals("RepairManFixed"))
-		{
-			state = AgentState.Working;
-			event = AgentEvent.RepairManMovingShop;
-		}
-		if(role.equals("DoneEating"))
-		{
-			hunger = HungerState.NotHungry;
-			Hunger = 2400;
-		}
-		if(role.equals("RestaurantCashierRole") || role.equals("RestaurantHostRole") || role.equals("RestaurantWaiterRole") || role.equals("RestaurantCookRole"))
-		{
-			//Gui Stuff TODO
-			for(MyRole r: roles)
+			log.add(new LoggedEvent("Recieved msgDone"));
+			state = AgentState.Idle;
+			event = AgentEvent.Idle;
+			if(role.equals("RestaurantCustomerRole"))
 			{
-				if(r.description.equals("Resident"))
-				{	
-					if(r.role.isActive == false)
-					{
-					r.role.msgIsActive();
+				hunger = HungerState.NotHungry;
+				Hunger = 2400;
+			}
+			if(role.equals("BankCustomerRole"))
+			{
+				
+			}
+			if(role.equals("MarketCustomerRole"))
+			{
+				hasCar = true;
+			}
+			if(role.equals("RepairManFixing"))
+			{
+				state = AgentState.Working;
+				event = AgentEvent.RepairManMoving;
+				stateChanged();
+			}
+			if(role.equals("RepairManFixed"))
+			{
+				state = AgentState.Working;
+				event = AgentEvent.RepairManMovingShop;
+			}
+			if(role.equals("DoneEating"))
+			{
+				hunger = HungerState.NotHungry;
+				Hunger = 2400;
+			}
+			if(role.equals("RestaurantCashierRole") || role.equals("RestaurantHostRole") || role.equals("RestaurantWaiterRole") || role.equals("RestaurantCookRole"))
+			{
+				//Gui Stuff TODO
+				for(MyRole r: roles)
+				{
+					if(r.description.equals("Resident"))
+					{	
+						if(r.role.isActive == false)
+						{
+						r.role.msgIsActive();
+						}
 					}
 				}
 			}
-		}
-		if(role.equals("MarketEmployeeRole") || role.equals("TellerRole") || role.equals("MarketCashierRole"))
-		{
-			for(MyRole r : roles)
+			if(role.equals("MarketEmployeeRole") || role.equals("TellerRole") || role.equals("MarketCashierRole"))
 			{
-				//Gui STuff TODO
-				if(r.description.equals("Resident"))
-				{	
-					if(r.role.isActive == false)
-					{
-					r.role.msgIsActive();
+				for(MyRole r : roles)
+				{
+					//Gui STuff TODO
+					if(r.description.equals("Resident"))
+					{	
+						if(r.role.isActive == false)
+						{
+						r.role.msgIsActive();
+						}
+						//Stop
 					}
-					//Stop
 				}
 			}
-		}
 		}
 		else
 		{
@@ -844,15 +849,30 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToBankTwo()
 	{
 		location = AgentLocation.Road;
-		if(!testmode)
-		{
+		//if(!testmode)
+		//{
 		//TODO personGui.goToBank();
+			if(hasCar)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description == "CarPassenger")
+					{
+						((CarPassengerRole)r.role).setDestination("Bank");
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else
+			{
+				print("Do Not Have Car");
+			}
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		}
+		//}
 		location = AgentLocation.Bank;
 		
 		for(MyRole r: roles)
@@ -904,6 +924,21 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							print("Do Not Have Car");
+						}
 						// TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
@@ -928,6 +963,21 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							print("Do Not Have Car");
+						}
 					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
@@ -951,6 +1001,21 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							print("Do Not Have Car");
+						}
 					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
@@ -974,6 +1039,21 @@ public class PeopleAgent extends Agent implements People{
 					location = AgentLocation.Road;
 					if(!testmode)
 					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							print("Do Not Have Car");
+						}
 					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
@@ -996,15 +1076,30 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("Teller"))
 				{		
 					location = AgentLocation.Road;
-					if(!testmode)
-					{
+					//if(!testmode)
+					//{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Bank");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							print("Do Not Have Car");
+						}
 					//TOOD personGui.goToBank();
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					}
+					//}
 					location = AgentLocation.Bank;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();

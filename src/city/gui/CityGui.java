@@ -110,7 +110,7 @@ public class CityGui extends JFrame implements ActionListener {
 				int start = Integer.parseInt(configIteration.next());
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
-					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
+					PeopleAgent person = new PeopleAgent(name, 1000.0, true); //TODO
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel);					
 					//personGui.setDestination(130, 200);
@@ -125,10 +125,12 @@ public class CityGui extends JFrame implements ActionListener {
 					marketCustomerRole.setPerson(person);
 					
 					CarAgent carAgent = new CarAgent();
+					carAgent.startThread();
 					CarPassengerRole carPassengerRole = new CarPassengerRole();
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
 					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+					cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
 					

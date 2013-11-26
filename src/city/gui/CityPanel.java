@@ -677,9 +677,6 @@ public class CityPanel extends JPanel implements MouseListener {
 		addMouseListener( this );
 
 
-		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
-		vehicle.setDestination(20,20);
-		//vehicles.add(vehicle);
 //		//vehicle.setDestination(580, 42);
 //		//vehicle.setDestination(800, 42);
 //		//vehicle.setDestination(580, 152);
@@ -693,19 +690,140 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 	public void paintComponent( Graphics g ) {
 		count++;
-		if(count % 20 == 0) {
+		if(count == 100) {
+
+			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
+			vehicle.setDestination(1,1);
+			vehicles.add(vehicle);
+			
+		}
+		if(count == 250) {
+			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
+			vehicle.setDestination(1,1);
+			vehicles.add(vehicle);
+		}
+		if(count % 100 == 0) {
 			for(Lane intersection : intersections) {
-				//System.out.println(intersection.name);
-				//System.out.println("RED LIGHT");
-				intersection.redLight();
+				//FIRST INTERSECTION (MIDDLE)
+				if(intersection.name.equals("13_1")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("14_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("2_12")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("7_1")) {
+					intersection.greenLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("8_13")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("9_2")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("16_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("15_4")) {
+					intersection.greenLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("10_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("17_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("18_4")) {
+					intersection.greenLight();
+				}
+				
+				//TOP INTERSECTION
+				if(intersection.name.equals("3_15")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("6_2")) {
+					intersection.greenLight();
+				}
+				
+				//BOTTOM INTERSECTION
+				if(intersection.name.equals("12_14")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_11")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("11_17")) {
+					intersection.redLight();
+				}
 			}
 		}
 		if(count % 200 == 0) {
 			for(Lane intersection : intersections) {
-				//System.out.println("GREEN LIGHT");
-				intersection.greenLight();
+				if(intersection.name.equals("13_1")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("14_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("2_12")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("7_1")) {
+					intersection.redLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("8_13")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("9_2")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("16_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_4")) {
+					intersection.redLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("10_8")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("17_8")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("18_4")) {
+					intersection.redLight();
+				}
+				
+				//TOP INTERSECTION
+				if(intersection.name.equals("3_15")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("6_2")) {
+					intersection.redLight();
+				}
+				
+				//BOTTOM INTERSECTION
+				if(intersection.name.equals("12_14")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("15_11")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("11_17")) {
+					intersection.greenLight();
+				}
 			}
 		}
+		
 		Graphics2D g2 = (Graphics2D)g;
 		
         g2.setColor(getBackground());

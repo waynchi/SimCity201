@@ -131,7 +131,11 @@ public class PersonGui extends Rectangle2D.Double {
 		g2.fill( this );
 		g2.draw(this);
 
-		System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+
+		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+
+//		System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+
 		//System.out.println(getCurrentLane());
 		
 		if(x == xDestination && y == (yDestination + 20)) {
