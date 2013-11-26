@@ -44,7 +44,6 @@ public class CookGui implements Gui {
 
 	@Override
 	public void updatePosition() {
-		System.out.println("xdestin is " + xDestination + "ydestin is " + yDestination);
         if (xPos < xDestination)
             xPos++;
         else if (xPos > xDestination)
