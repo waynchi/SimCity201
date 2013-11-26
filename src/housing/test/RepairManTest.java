@@ -6,11 +6,13 @@ import housing.Apartments;
 import housing.House;
 import housing.HouseType;
 import housing.HousingRepairManRole;
+import housing.HousingRepairManRole.HouseState;
 import housing.HousingRepairManRole.Location;
 import housing.Item;
 import housing.interfaces.Resident;
 import org.junit.Test;
 import people.PeopleAgent;
+import people.PeopleAgent.AgentEvent;
 import people.Role;
 
 public class RepairManTest {
@@ -43,6 +45,21 @@ public class RepairManTest {
 		m.needHelp(ha1, 20);
 		
 		assertTrue(m.houseNeedsRepair(ha1));
+		assertNull(m.getCurrentHouse());
+		assertNull(m.getCurrentLocationHouse());
+		
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(Location.OutsideFixing, m.location);
+		assertNotNull(m.getCurrentHouse());
+		assertNull(m.getCurrentLocationHouse());
+		
+		p.event = AgentEvent.RepairManArrived;
+		
+		m.pickAndExecuteAnAction();
+		
+		assertEquals(Location.Resident, m.location);
+		assertEquals(HouseState.Reached, m.getCurrentHouse().s);
 	}
 	
 	public void setUp() {
