@@ -62,7 +62,7 @@ public class TellerGui implements Gui{
 			yDestination = 90;
 		}
 		
-		if (xPos == 312 && yPos == 90 && leave) {
+		if (xPos == 520 && yPos == 90 && leave) {
 			agent.msgGone();
 		}
 	}
