@@ -130,6 +130,7 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
+		System.out.println(getCurrentLane());
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
@@ -149,6 +150,38 @@ public class PersonGui extends Rectangle2D.Double {
 			cityPanel.removePerson(this);
 			person.msgDone("PersonGui");
 			
+		}
+		if(getCurrentLane().equals("30_0")) { //At home
+
+			called = false;
+			cityPanel.removePerson(this);
+			person.msgDone("PersonGui");
+			
+		}
+		if(getCurrentLane().equals("8_0")) {
+
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(23);
+			currentCell = sidewalkSegment.get(25);
+			
+		}
+		if(getCurrentLane().equals("23_0")) {
+
+			this.direction="left";
+			sidewalkSegment = allSidewalks.get(2);
+			currentCell = sidewalkSegment.get(5);
+			
+		}
+		if(getCurrentLane().equals("21_0")) {
+			if(yDestination > y) {
+				this.direction = "right";
+				sidewalkSegment = allSidewalks.get(6);
+				currentCell = sidewalkSegment.get(0);
+			} else {
+				this.direction="left";
+				sidewalkSegment = allSidewalks.get(22);
+				currentCell = sidewalkSegment.get(24);
+			}
 		}
 		
 		if(getCurrentLane().equals("1_20")) {
@@ -283,9 +316,16 @@ public class PersonGui extends Rectangle2D.Double {
 			currentCell = sidewalkSegment.get(0);
 		}
 		if(getCurrentLane().equals("14_5")) {
-			this.direction="right";
-			sidewalkSegment = allSidewalks.get(12);
-			currentCell = sidewalkSegment.get(8);
+			if(this.xDestination > x) {
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(12);
+				currentCell = sidewalkSegment.get(8);
+			}
+			else {
+				this.direction="left";
+				sidewalkSegment = allSidewalks.get(7);
+				currentCell = sidewalkSegment.get(8);
+			}
 		}
 		if(getCurrentLane().equals("2_0")) {
 			if(xDestination > 140) {
