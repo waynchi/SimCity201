@@ -2,6 +2,7 @@ package bank.test;
 
 import bank.BankCustomerRole;
 import bank.BankCustomerRole.CustomerState;
+import bank.gui.BankGui;
 import bank.test.mock.MockPeopleBank;
 import bank.test.mock.MockTeller;
 import junit.framework.*;
@@ -20,6 +21,7 @@ public class BankCustomerTest extends TestCase
 	MockPeopleBank person;
 	MockTeller teller;
 	BankCustomerRole customer;
+	BankGui bgui;
 		
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -27,10 +29,13 @@ public class BankCustomerTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		customer = new BankCustomerRole(null);		
+		bgui = new BankGui();
+		customer = new BankCustomerRole(bgui);		
 		teller = new MockTeller("mockcustomer");
 		person = new MockPeopleBank("teller");
 		customer.setPerson(person);
+		person.teller = teller;
+		customer.isTest = true;
 	}	
 	//This scenario tests one market order that the cashier has to pay.
 	public void testFirstDepositScenario()
@@ -54,24 +59,19 @@ public class BankCustomerTest extends TestCase
 		
 		assertEquals("BankCustomer state should be inline, it isn't",customer.state, CustomerState.inline);
 
-		assertEquals("MockMarket should have an empty event log before the Cashier's scheduler is called. Instead, the MockWaiter's event log reads: "
-						+ market.log.toString(), 0, market.log.size());
+		assertEquals("MockTeller should have an empty event log before the Customer's scheduler is called. Instead, the MockTeller's event log reads: "
+						+ teller.log.toString(), 0, teller.log.size());
 		
-		assertEquals("Cashier should have 1 market bill in it. It doesn't.", cashier.mBills.size(), 1);
+		assertTrue("Customer's scheduler should have returned true (needs to call teller to let him know he is at the bank), but didn't.", 
+				customer.pickAndExecuteAnAction());
 		
-		assertEquals("The bill should contain the amount given in the message", cashier.mBills.get(0).amount, 120.8);
+		assertTrue("Teller should have logged \"Received msgHere\" but didn't. His log reads instead: "
+                + teller.log.getLastLoggedEvent().toString(), teller.log.containsString("received msgHere from customer"));
 		
-		assertTrue("Cashier's scheduler should have returned true (needs to react to the new market bill), but didn't.", 
-					cashier.pickAndExecuteAnAction());
+		assertEquals("BankCustomer state should be inline, it isn't",customer.state, CustomerState.none);
 		
-		assertEquals("Cashier's wallet should have $1000 - 120.80. It doesn't.",cashier.wallet, 879.2);
-	
-		assertTrue("Market should have logged \"Received msgHereIsMoney\" but didn't. His log reads instead: "
-                + market.log.getLastLoggedEvent().toString(), market.log.containsString("Received msgHereIsMoney from cashier. Total = 120.8"));
+		assertFalse("BankCustomer's scheduler should have returned false (no actions to do), but didn't.", 
+				customer.pickAndExecuteAnAction());
 		
-		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.mBills.size(), 0);
-		
-		assertFalse("Cashier's scheduler should have returned false (no actions left to do), but didn't.", 
-				cashier.pickAndExecuteAnAction());
 	}
 }

@@ -4,6 +4,7 @@ import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
+import bank.test.LoggedEvent;
 import bank.test.Mock;
 
 /**
@@ -26,7 +27,7 @@ public class MockTeller extends Mock implements Teller {
 	}
 	
 	public void msgHere(BankCustomer cust, String name){
-		
+		log.add(new LoggedEvent("received msgHere from customer"));
 	}
 	
 	public void msgCreateAccount(String name, double initialFund){

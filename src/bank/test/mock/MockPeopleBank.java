@@ -2,6 +2,7 @@ package bank.test.mock;
 
 import java.util.List;
 
+import bank.interfaces.Teller;
 import bank.test.EventLog;
 import bank.test.LoggedEvent;
 import city.gui.CityGui;
@@ -19,6 +20,7 @@ public class MockPeopleBank extends PeopleAgent implements People {
 	EventLog log = new EventLog();
 	
 	public double money = 1000;
+	public Teller teller;
 
 	public MockPeopleBank(String name) {
 		super(name, 100000, true);
@@ -33,6 +35,14 @@ public class MockPeopleBank extends PeopleAgent implements People {
 	@Override
 	public void setMoney(double Money) {
 		this.money = Money;
+	}
+	
+	public Role getTeller(int i) {
+		return (Role) this.teller;
+	}
+	
+	public Teller getTeller() {
+		return this.teller;
 	}
 
 	@Override

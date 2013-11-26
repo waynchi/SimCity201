@@ -109,7 +109,7 @@ public class CityGui extends JFrame implements ActionListener {
 				if (isInteger(amount)) {
 					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
 					person.setCityGui(this);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person,cityPanel.buildings.get(0));
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);

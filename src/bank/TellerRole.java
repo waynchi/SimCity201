@@ -37,13 +37,15 @@ public class TellerRole extends Role implements Teller {
 	
 	Boolean LeavePost = false;
 	
+	Boolean isTest = false;
+	
 	private BankGui bgui;
 	
 	private TellerGui gui;
 
 	public TellerRole(BankGui b) {
 		super();
-		this.bgui = b;
+		if (!isTest) this.bgui = b;
 	}
 	
 	public void addAccount(Market m) {
@@ -77,8 +79,10 @@ public class TellerRole extends Role implements Teller {
 	public void msgIsActive(){
 		print("Received msgIsActive");
 		isActive = true;
-		if (gui == null) gui = bgui.addPerson(this);
-		else gui.isAtDesk = true;
+		if (!isTest) {
+			if (gui == null) gui = bgui.addPerson(this);
+			else gui.isAtDesk = true;
+		}
 		stateChanged();
 	}
 	
@@ -86,7 +90,7 @@ public class TellerRole extends Role implements Teller {
 		print("Received msgIsInactive");
 		myPerson.setMoney(myPerson.getMoney()+100);
 		LeavePost = true;
-		gui.isAtDesk = false;
+		if (!isTest) gui.isAtDesk = false;
 		stateChanged();
 	}
 	
@@ -248,7 +252,7 @@ public class TellerRole extends Role implements Teller {
 		currentCustomer = null;
 	}
 	private void Leave() {
-		gui.DoExitRestaurant();
+		if (!isTest) gui.DoExitRestaurant();
 		isActive = false;
 		LeavePost = false;
 		myPerson.msgDone("TellerRole");

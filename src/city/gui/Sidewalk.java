@@ -18,8 +18,10 @@ public class Sidewalk {
 	Color laneColor;
 	Color sideColor;
 	ArrayList<PersonGui> people;
+	public String name;
+	public boolean redLight;
 	
-	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc ) {
+	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc, String name ) {
 		width = w;
 		height = h;
 		xVelocity = xv;
@@ -29,6 +31,7 @@ public class Sidewalk {
 		isHorizontal = ish;
 		laneColor = lc;
 		sideColor = sc;
+		this.name = name;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );
@@ -54,6 +57,13 @@ public class Sidewalk {
 			g2.setColor( sideColor );
 			g2.draw( sides.get(i) );
 		}
+	}
+	public void redLight() {
+		redLight = true;
+	}
+	
+	public void greenLight() {
+		redLight = false;
 	}
 	
 
