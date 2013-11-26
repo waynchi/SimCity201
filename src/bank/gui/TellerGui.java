@@ -1,9 +1,12 @@
 package bank.gui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import bank.BankCustomerRole;
@@ -26,7 +29,7 @@ public class TellerGui implements Gui{
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
-	private ImageIcon host = new ImageIcon("res/bank/hostsprite.png");
+	private BufferedImage host = null;
 	
 	static final int CUST_SIZE = 20;
 
@@ -38,6 +41,9 @@ public class TellerGui implements Gui{
 		isAtDesk = true;
 		xDestination = 312;
 		yDestination = 90;
+        try {
+            host = ImageIO.read(getClass().getResource("res/bank/tellersprite.png"));
+        } catch (IOException e) {}
 		setPresent(true);
 		
 	}
@@ -60,7 +66,7 @@ public class TellerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(host.getImage(), xPos, yPos, 20, 30, null);
+		g.drawImage(host,xPos,yPos,null);
 		//g.setColor(Color.GREEN);
 		//g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
 	}
