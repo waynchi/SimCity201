@@ -53,7 +53,8 @@ myBusPassengers.remove(toRemove);
  */
 @Override
 public void msgAnimationFinishedArrivedAtStop(BusStop S){
-System.out.println("Recieved message that bus arrived to new stop");
+	if(!myBusPassengers.isEmpty())
+System.out.println("Recieved message that bus arrived to new stop: " + S.name);
 currentStop = S;
 busState = BusState.newStop;
 stateChanged();
@@ -70,16 +71,23 @@ stateChanged();
 }
 
 
-
+@Override
 public boolean pickAndExecuteAnAction() {
+	
 for (Passenger passenger : myBusPassengers)
 {
     if (busState == BusState.newStop && passenger.st == PassState.waiting)
     {
-            passenger.st = PassState.waitingAndNotified;
+    		passenger.st = PassState.waitingAndNotified;
             NotifyPassengerAboutCurrentStop(passenger);
             return true;
     }
+}
+if(myBusPassengers.isEmpty() && busState == BusState.newStop)
+{
+	busState = BusState.waitingForNewPassengers;
+	WaitForNewPassengers();
+	return true;
 }
 
 
@@ -115,6 +123,10 @@ if(areAllBusPassengersNotified()) //function that loops through passengers, chec
 
 public void GoToNextStop(){
 busGui.msgGoToNextStop(this,currentStop);
+for(Passenger bs : myBusPassengers)
+{
+	bs.st = PassState.waiting;
+}
 }
 
 private Passenger findPassenger(BusPassenger target) {

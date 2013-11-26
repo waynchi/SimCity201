@@ -15,7 +15,7 @@ public class ResidentGui implements HGui{
 	private int yDestination;
 	private int xPos;
 	private int yPos;
-	private State state = State.Idle;
+	private State state = State.Sleeping;
 	private Location location = Location.Home;
 	private Timer timer = new Timer();
 	private Timer cellPhoneTimer = new Timer();
@@ -39,6 +39,10 @@ public class ResidentGui implements HGui{
 	
 	public ResidentGui(Resident r) {
 		this.r = r;
+		xPos = 40;
+		yPos = 155;
+		xDestination = 40;
+		yDestination = 155;
 	}
 
 	@Override
@@ -48,16 +52,16 @@ public class ResidentGui implements HGui{
 		if (state != State.PlayingVideoGames && state != State.Idle)
 			videoGames = false;
 		
-		if (xPos < xDestination)
-			xPos++;
-		else if (yPos < yDestination)
-			yPos++;
-		else if (xPos > xDestination)
-			xPos--;
-		else if (yPos > yDestination)
-			yPos--;
+		if (xPos < xDestination && Math.abs(xPos - xDestination) >= 2)
+			xPos += 2;
+		else if (yPos < yDestination && Math.abs(yPos - yDestination) >= 2)
+			yPos += 2;
+		else if (xPos > xDestination && Math.abs(xPos - xDestination) >= 2)
+			xPos -= 2;
+		else if (yPos > yDestination && Math.abs(yPos - yDestination) >= 2)
+			yPos -= 2;
 		
-		if (xPos == xDestination && yPos == yDestination) {
+		if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
 			if (state == State.FetchingFromShelves) {
 				state = State.Preping;
 				Random generator = new Random();
@@ -154,7 +158,7 @@ public class ResidentGui implements HGui{
 			g.fillOval(xPos, yPos, 15, 15);
 			if (readingBook == true) {
 				g.setColor(Color.green);
-				g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+				g.fill3DRect(xPos + 2, yPos - 14, 10, 5, true);
 			}
 			if (videoGames == true) {
 				g.setColor(Color.darkGray);

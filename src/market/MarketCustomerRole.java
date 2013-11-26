@@ -27,7 +27,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	MarketGui marketGui = null;
 	MarketCustomerGui customerGui = null;
 	
-	MarketEmployee employee;//should know it from PeopleAgent
+	private MarketEmployee employee = null;//should know it from PeopleAgent
 	MarketCashier cashier;
 	marketCustomerState state;
 	marketCustomerEvent event;
@@ -41,8 +41,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private	Map<String, Integer> itemsNeeded = new HashMap<String, Integer>();
 	private	Map<String, Integer> itemsReceived = new HashMap<String, Integer>();
 	private	double totalDue;
-
-	Boolean isActive = false;
 
 	//constructor
 	public MarketCustomerRole(MarketGui gui){
@@ -58,7 +56,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
-		employee = (MarketEmployee) myPerson.getMarketEmployee();
+		employee = (MarketEmployeeRole) getPersonAgent().getMarketEmployee(0);
 		getPersonAgent().CallstateChanged();
 	}//tested
 	
@@ -107,7 +105,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}//tested
 
 	public void msgHereIsChange(double totalChange) {
-		myPerson.Money += totalChange;
+		double money = getPersonAgent().getMoney();
+		money += totalChange;
+		getPersonAgent().setMoney(money);
 		event = marketCustomerEvent.RECEIVED_CHANGE;
 		getPersonAgent().CallstateChanged();
 	}
@@ -154,8 +154,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	private void orderItem() {
 		log.add(new LoggedEvent("in action order item"));
 		if (!inTest){
-			customerGui.DoLineUp();
-		customerGui.DoGoToMarketEmployee();
+			//customerGui.DoLineUp();
+			customerGui.DoGoToMarketEmployee();
 		try {
 			atCounter.acquire();
 		} catch (InterruptedException e) {
@@ -180,7 +180,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		}
 		}
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
-		myPerson.Money = 0.0;
+		getPersonAgent().setMoney(0.0);
 		state = marketCustomerState.PAID;	
 	}
 

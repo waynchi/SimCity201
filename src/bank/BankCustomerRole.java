@@ -31,8 +31,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// agent correspondents
 	private Teller teller;
 	
-	private double wallet;
-	private int accountID = -1; //Initialize with an impossible value that will be checked later
+	public int accountID = -1; //Initialize with an impossible value that will be checked later
 	
 	public enum CustomerState
 	{none, waiting, ready, needAccount, finished, done, inline};
@@ -42,12 +41,14 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	private Semaphore atTeller = new Semaphore(0,true);
 	
-	private CustomerState state;
+	public CustomerState state;
 	private CustomerAction action;
 	
-	private double withdraw = 100;
+	private double withdraw = 30000;
 	private double deposit = 100;
 	private BankGui bgui;
+	
+	public Boolean isTest = false;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -58,7 +59,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public BankCustomerRole(BankGui b){
 		super();
 		this.bgui = b;
-		b.addPerson(this);
+		if (!isTest) {
+			b.addPerson(this);
+		}
 	}
 
 	public String getCustomerName() {
@@ -76,7 +79,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
-		bgui.gotoLine(gui);
+		if (!isTest) bgui.gotoLine(gui);
 		isActive = true;
 		state = CustomerState.inline;
 		stateChanged();
@@ -99,20 +102,20 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgAccountAndLoan(int accountID, double balance, double money) {
 		this.accountID = accountID;
 		print("Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
 		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		print("Withdraw successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
@@ -128,18 +131,20 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
+		
 		if (isActive) {
 			if (state == CustomerState.inline) {
 				CallTeller();
+				return true;
 			}
 			if (state == CustomerState.ready) {
-				if (myPerson.event == AgentEvent.GoingToDepositMoney) {
+				if (myPerson.getAgentEvent().equals("GoingToDepositMoney")) {
 					DepositMoney();
 					return true;
 				}
-				if (myPerson.event == AgentEvent.GoingToRetrieveMoney) {
+				if (myPerson.getAgentEvent().equals("GoingToRetrieveMoney")) {
 					WithdrawMoney();
 					return true;
 				}
@@ -156,55 +161,59 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Actions
 	
 	private void CallTeller() {
-		myPerson.Banks.get(0).t.msgHere(this, name);
+		if (!isTest) ((Teller) myPerson.getTeller(0)).msgHere(this, name);
+		if (isTest) myPerson.getTeller().msgHere(this, name);
 		state = CustomerState.none;
 	}
 
 	private void DepositMoney(){
-		atTeller.drainPermits();
-		bgui.popCustomer();
-		gui.DoGoToTeller();
-		try {
-			atTeller.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (!isTest) {
+			atTeller.drainPermits();
+			bgui.popCustomer();
+			gui.DoGoToTeller();
+			try {
+				atTeller.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (accountID == -1) {
-			myPerson.Money -= 100;
+			myPerson.setMoney(myPerson.getMoney()-100);
 			teller.msgDeposit(deposit);
 			state = CustomerState.finished;
 		}
 		else {
-			myPerson.Money -= 100;
+			myPerson.setMoney(myPerson.getMoney()-100);
 			teller.msgDeposit(accountID, deposit);
 			state = CustomerState.finished;
 		}
 	}
 
 	private void WithdrawMoney(){
-		atTeller.drainPermits();
-		bgui.popCustomer();
-		gui.DoGoToTeller();
-		try {
-			atTeller.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (!isTest) {
+			atTeller.drainPermits();
+			bgui.popCustomer();
+			gui.DoGoToTeller();
+			try {
+				atTeller.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (accountID == -1) {
-			print("Cannot withdraw money without an account");
-			state = CustomerState.done;
+			teller.msgWithdraw(withdraw);
+			state = CustomerState.finished;
 		}
 		else {
 			teller.msgWithdraw(accountID, withdraw);
-			withdraw = 0;
 			state = CustomerState.finished;
 		}
 	}
 
 	private void LeaveBank(){
-		gui.DoLeaveBank();
+		if (!isTest) gui.DoLeaveBank();
 		teller.msgDoneAndLeaving();
 		myPerson.msgDone("BankCustomerRole");
 		isActive = false;

@@ -22,6 +22,7 @@ public class House extends Item{
 	public int FUSSBALL_TABLE;
 	public int SHOE_RACK;
 	public Apartments a = null;
+	public boolean testMode = false;
 
 	public House(String name, int houseNum, HouseType type) {
 		super(name, null);
@@ -61,6 +62,10 @@ public class House extends Item{
 
 	public void setOccupant(Resident occ) {
 		this.occupant = occ;
+		if (testMode == false) {
+			gui.add(((HousingResidentRole)occ).gui);
+			((HousingResidentRole)occ).gui.hGui = this.gui;
+		}
 	}
 
 	public void addItem(Item i) {
@@ -96,6 +101,14 @@ public class House extends Item{
 		return null;
 	}
 	
+	public void testModeOn() {
+		testMode = true;
+	}
+	
+	public void testModeOff() {
+		testMode = false;
+	}
+	
 	public void setApartments(Apartments a) {
 		if (this.type == HouseType.Apartment)
 			this.a = a;
@@ -107,6 +120,8 @@ public class House extends Item{
 			if (i.isBroken())
 				result.add(i);
 		}
+		if (this.isBroken())
+			result.add(this);
 		return result;
 	}
 	

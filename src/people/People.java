@@ -1,43 +1,51 @@
-package people;
+ package people;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import people.PeopleAgent.Job;
-import people.PeopleAgent.MyRole;
-import restaurant.test.mock.LoggedEvent;
+import bank.interfaces.Teller;
+import city.Bank;
+import city.Market;
+import city.Restaurant;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 
 public interface People {
 	
-	public double getMoney();
+	public abstract double getMoney();
 	
-	public void setMoney(double Money);
+	public abstract void setMoney(double Money);
 	
-	public List<Role> getRoles();
+	public abstract List<Role> getRoles();
 	
-	public String getAgentState();
+	public abstract String getAgentState();
 	
-	public String getAgentEvent();
+	public abstract String getAgentEvent();
 	
-	public String getHunger();
+	public abstract String getHunger();
 	
-	public Role getHost(int i);
+	public abstract Role getHost(int i);
 	
-	public Role getTeller();
+	public Teller getTeller();
 	
-	public Role getMarketEmployee();
+	public abstract Role getTeller(int i);
 	
-	public String getMaitreDName();
+	public abstract Role getMarketEmployee(int i);
 	
-	public String getName();
+	public abstract Restaurant getRestaurant(int i);
 	
-	public void setPersonGui(PersonGui gui);
+	public abstract Market getMarket(int i);
 	
-	public void setCityGui(CityGui gui);
+	public abstract Bank getBank(int i);
 	
-	public void Arrived();
+	public abstract String getMaitreDName();
+	
+	public abstract String getName();
+	
+	public abstract void setPersonGui(PersonGui gui);
+	
+	public abstract void setCityGui(CityGui gui);
+	
+	public abstract void Arrived();
 
 	public abstract void addRole(Role r, String description);
 

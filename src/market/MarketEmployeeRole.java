@@ -62,12 +62,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
-
-	private boolean isActive = false;
 	private boolean leaveWork = false;
 	
 	Semaphore atCabinet = new Semaphore(0,true);
 	Semaphore atCounter = new Semaphore(0,true);
+	Semaphore atExit = new Semaphore(0,true);
 
 	// constructor
 	public MarketEmployeeRole(MarketGui gui){
@@ -111,6 +110,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().CallstateChanged();
 	}
 
+	public void msgAtExit() {
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
 		orders.add(new Order(customer, chosenItems));
@@ -205,9 +209,15 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	private void done() {
+		employeeGui.doExit();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		isActive = false;
 		leaveWork = false;
-		// gui walk to the exit
 		employeeGui.setPresent(false);
 		getPersonAgent().msgDone("MarketEmployeeRole");
 	}

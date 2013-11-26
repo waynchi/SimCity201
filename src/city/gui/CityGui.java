@@ -4,6 +4,7 @@ import housing.HouseType;
 import housing.HousingRepairManRole;
 import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
+import housing.gui.HouseGui;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -11,17 +12,23 @@ import javax.swing.Timer;
 import bank.BankCustomerRole;
 import bank.TellerRole;
 import bank.gui.BankGui;
+import market.MarketCashierRole;
+import market.MarketCustomerRole;
 import market.MarketEmployeeRole;
 import market.gui.MarketGui;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
+import city.gui.trace.AlertTag;
 import people.PeopleAgent;
 import restaurant.*;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
+import transportation.CarAgent;
+import transportation.CarGui;
+import transportation.CarPassengerRole;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,19 +48,36 @@ public class CityGui extends JFrame implements ActionListener {
 	CityControls cityControls;
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
-	RestaurantGui restaurantGui = new RestaurantGui();
+	RestaurantGui restaurantGui1 = new RestaurantGui();
+
+
+
+
+
 	MarketGui marketGui = new MarketGui();
-	HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	//HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole = new HostRole();
+	HostRole RestaurantHostRole1 = new HostRole();
+
+
+
+
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
-	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
+	Restaurant restaurant = new Restaurant(RestaurantHostRole1, new Dimension(100, 100), "Restaurant 1");
+
+
+
+
+	
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole(bankGui); 
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
+	Random rand = new Random();
 
+	private int count = 0;
 
 	public int time;
 
@@ -64,17 +88,34 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMaximumSize(new Dimension(1024, 500));
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
-		Timer timer = new Timer(10, this);
+		Timer timer = new Timer(5, this);
+		
+		//Set trace tags
+		RestaurantHostRole1.setTag(AlertTag.RESTAURANT1);
+
+
+
+		repairManRole.setTag(AlertTag.HOME);
+		BankTellerRole.setTag(AlertTag.BANK);
+		MarketEmployeeRole.setTag(AlertTag.MARKET);
+		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
-		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
-		restPanel.setHost(RestaurantHostRole);
-		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole(marketGui);
+		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGui1);
+		restPanel1.setHost(RestaurantHostRole1);
+		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel1.theMonitor;
 
-		FileReader input;
+		FileReader input = null;
 		try {
-			input = new FileReader("src/config.txt");
+			System.out.println(System.getProperty("file.separator"));
+			if(System.getProperty("file.separator").equals("/"))
+			{
+				input = new FileReader( "src//config.txt");
+			}
+			else if(System.getProperty("file.separator").equals("\\"))
+			{
+				input = new FileReader( "src\\config.txt");
+			}
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -88,64 +129,118 @@ public class CityGui extends JFrame implements ActionListener {
 				int start = Integer.parseInt(configIteration.next());
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
-					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
+					PeopleAgent person;
+					if(rand.nextInt(5) < 2)
+					{
+						 person = new PeopleAgent(name, 1000.0, false); //TODO
+					}
+					else
+					{
+						 person = new PeopleAgent(name, 1000.0, true );
+					}//TODO
 					person.setCityGui(this);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person,cityPanel.buildings.get(0));
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);
 					person.Markets.add(market);
-					cityPanel.people.add(personGui);
-					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
+					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui1);
+					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
+					person.addRole(marketCustomerRole, "MarketCustomer");
+					marketCustomerRole.setPerson(person);
+					
+					CarAgent carAgent = new CarAgent();
+					carAgent.startThread();
+					CarPassengerRole carPassengerRole = new CarPassengerRole();
+					person.addRole(carPassengerRole, "CarPassenger");
+					carPassengerRole.setPerson(person);
+					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+					cityPanel.vehicles.add(carGui);
+					carAgent.setGui(carGui);
+					carPassengerRole.setCar(carAgent);
+					
+					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
+					
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
+					
+					
+					
+					bankCustomerRole.setTag(AlertTag.RESTAURANT1);
+					cityPanel.people.add(personGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
+					HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+					houseAnimationPanels.add(houseAnimationPanel);
 					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
-					residentRole.testModeOn();
+					house.setItems();
+					HouseGui hGui = new HouseGui(house);
+					house.setGui(hGui);
+					house.setOccupant(residentRole);
+					residentRole.setTag(AlertTag.HOME);
+					houseAnimationPanel.addGui(house.gui);
+					//residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
 					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
+					
+					person.HomeNum = count;
+					count++;
 					person.startThread();
-					person.setTest();
+					//setTest();
+					//person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
-						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui1);
+						
+						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
+						
 						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						//RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
+						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui1);
+						
+						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
+						
 						person.addJob("RestaurantCook", start, end);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
+						person.hasCar = false;
 					}
 					if (job.equals("RestaurantHost")) {
 						person.addJob("RestaurantHost", start, end);
-						person.addRole(RestaurantHostRole, "RestaurantHost");
-						RestaurantHostRole.setPerson(person);
+						person.addRole(RestaurantHostRole1, "RestaurantHost");
+						RestaurantHostRole1.setPerson(person);
+						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole();
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui1);
+						
+						RestaurantCashierRole.setTag(AlertTag.RESTAURANT1);
+						
 						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);
+						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCustomer"))
 					{
-						
+						person.hasCar = false;
 					}
 					if (job.equals("Teller")) {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
-						BankTellerRole.setPerson(person);			
+						BankTellerRole.setPerson(person);	
+						person.hasCar = true;
 					}
 					if(job.equals("Nobody")) {
 						person.addJob("MarketEmployee", start, end);
@@ -161,6 +256,30 @@ public class CityGui extends JFrame implements ActionListener {
 						repairManRole.setPerson(person);
 						person.setMoney(1000000);
 						person.hasCar = true;
+					}
+					if(job.equals("MarketEmployee"))
+					{
+						person.addJob("MarketEmployee", start,end);
+						person.addRole(MarketEmployeeRole, "MarketEmployee");
+						MarketEmployeeRole.setPerson(person);
+						person.setMoney(10000);
+					}
+					if(job.equals("MarketCashier"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+					}
+					if(job.equals("MarketCustomer"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(40000);
+						person.hasCar = false;
 					}
 					people.add(person);
 				}
@@ -185,7 +304,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		cityControls = new CityControls();
+		cityControls = new CityControls(cityPanel);
 		cityControls.setPreferredSize(new Dimension(500, 268));
 		cityControls.setMaximumSize(new Dimension(500, 268));
 		cityControls.setMinimumSize(new Dimension(500, 268));
@@ -210,16 +329,23 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		JScrollPane marketContainer = new JScrollPane(marketGui);
 		marketContainer.setOpaque(true);
-		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
+		JScrollPane restaurantContainer = new JScrollPane(restaurantGui1);
 		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
-		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
-		houseContainer.setOpaque(true);
-        buildingPanels.add(restaurantContainer, "" + 0);
-        buildingPanels.add(bankContainer, "" + 1);
-        buildingPanels.add(houseContainer, "" + 2);
-        buildingPanels.add(marketContainer,"" + 3);
+		
+        buildingPanels.add(restaurantContainer, "" + 15);
+        buildingPanels.add(bankContainer, "" + 14);
+        
+        buildingPanels.add(marketContainer,"" + 13);
+        
+        
+        for(int j = 0; j < houseAnimationPanels.size(); j++)
+        {
+        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+    		houseContainer.setOpaque(true);
+    		buildingPanels.add(houseContainer, "" + j);
+        }
 
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
@@ -251,6 +377,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void displayBuildingPanel(BuildingPanel bp) {
 		cardLayout.show(buildingPanels, bp.getName());
+		System.out.println(bp.getName());
 	}
 
 	public static void main(String[] args) {
@@ -271,7 +398,14 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
-		int x = 3;
+		marketGui.updatePosition();
+		restaurantGui1.updatePosition();
+		for(int i = 0; i < houseAnimationPanels.size(); i++)
+		{
+			houseAnimationPanels.get(i).updatePosition();
+		}
+		
+		int x = 10;
 		time++;
 		if(time % x == 0)
 		{
@@ -283,6 +417,7 @@ public class CityGui extends JFrame implements ActionListener {
 				p.msgTimeIs(time/x);
 			}
 		}
+
 		if(time == 2400*x) {
 			time=0;
 		}
@@ -290,3 +425,4 @@ public class CityGui extends JFrame implements ActionListener {
 
 	}
 }
+

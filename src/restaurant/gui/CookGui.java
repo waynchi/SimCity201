@@ -3,11 +3,7 @@ package restaurant.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Semaphore;
-
 import restaurant.CookRole;
 
 
@@ -16,19 +12,24 @@ public class CookGui implements Gui {
 	private CookRole role = null;
 	Boolean isCooking;
 	boolean goingBack = false;
+	boolean leavingWork = false;
 	String foodBeingCooked = null;
 	RestaurantGui gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination = 70, xPos = 70;
-    private int yDestination = 270, yPos = 270;
+    private int xDestination = 70, 
+    		xPos = 0;
+    private int yDestination = 270,
+    		yPos = 0;
     
     private int cookX = 70;
     private int cookY = 270;
     
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
+    
+    private int xExit = 0, yExit = 0;
     
     boolean isPresent;
 	
@@ -66,6 +67,11 @@ public class CookGui implements Gui {
         	goingBack = false;
         	role.msgAtGrill();
         }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == xExit) && (yDestination == yExit) && leavingWork) {
+        	goingBack = false;
+        	role.msgAtExit();
+        }
         }
 
 	@Override
@@ -73,7 +79,7 @@ public class CookGui implements Gui {
         g.setColor(Color.blue);
 		g.fillRect(xPos, yPos, 20, 20);
         g.setColor(Color.BLACK);
-        g.drawString("Cook", 65, 300);
+        g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
         	g.drawString(foodBeingCooked, 50, 265);
         }
@@ -115,11 +121,19 @@ public class CookGui implements Gui {
 		isPresent = b;
 	}
 
-	public void DoGoBack() {
+	public void DoGoToCookingPlace() {
 		goingBack = true;
 		xDestination = cookX;
 		yDestination = cookY;
 		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void DoLeaveWork() {
+		leavingWork = true;
+		xDestination = xExit;
+		yDestination = yExit;
 		
 	}
 }

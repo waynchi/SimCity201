@@ -165,10 +165,12 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar" ));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				p.Arrived();
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
+				System.out.println("BLANK of DOOM " + p.log.getLastLoggedEvent().toString());
+				System.out.println(p.getAgentState() + "test test");
+				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().equals("Going To Buy Car. Event is now: GoingToBuyCar")||p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//				//p.Arrived();
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
@@ -188,26 +190,66 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				System.out.println(p + " " + p.log.getLastLoggedEvent().toString());
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				p.msgDone("MarketCustomerRole");
+				p.msgTimeIs(1801);
+				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 			}
 		}
 		
 		//Sleeping Time!
 		for(PeopleAgent p : MarketPeople)
 		{
-			System.out.println(p + p.state.toString());
-			p.msgDone("Test");
-			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+			System.out.println(p.name + p.state.toString());
+			if(p == marketCustomer)
+			{
+				p.msgDone("DoneEating");
+			}
+			else
+			{
+				p.msgDone("MarketRole");
+			}
 			p.msgTimeIs(2330);
-			System.out.println(p + p.state.toString());
-			System.out.println(p + p.event.toString());
-			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
-			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+			if(p == marketCustomer)
+			{
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+			}
+			else
+			{
+				System.out.println(p.log.getLastLoggedEvent().toString());
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+//
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				p.msgDone("DoneEating");
+//				p.msgTimeIs(2330);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+				
+			}
+			
+			
+//			System.out.println(p + p.state.toString());
+//			p.msgDone("Test");
+//			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+////			p.msgDone("DoneEating");
+//			p.msgTimeIs(2200);
+//			System.out.println(p + p.state.toString());
+//			System.out.println(p + p.event.toString());
+//			System.out.println(p.log.getLastLoggedEvent().toString());
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			System.out.println(p.log.getLastLoggedEvent().toString());
+//			p.msgDone("DoneEating");
+//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//			System.out.println(p + p.state.toString());
+//			System.out.println(p + p.event.toString());
+//			p.msgTimeIs(2330);
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}	
-		
 	}
 	
 	public void testBankScenario()
@@ -256,10 +298,10 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				System.out.println(p.log.getLastLoggedEvent().toString());
+				//System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				System.out.println(p.log.getLastLoggedEvent().toString());
+				//System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
@@ -288,20 +330,22 @@ public class PeopleTest extends TestCase
 		//Sleeping Time!
 		for(PeopleAgent p : BankPeople)
 		{
-			System.out.println(p + p.state.toString());
+			//System.out.println(p + p.state.toString());
 			p.msgDone("Test");
 			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
 			if(!p.location.toString().equals("Home"))
 			{
 			p.msgTimeIs(2200);
-			System.out.println(p.event.toString());
-			System.out.println(p.state.toString());
+			//System.out.println(p.event.toString());
+			//System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
+			System.out.println(p.state.toString());
 			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
 			}
+			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);
-			System.out.println(p + p.state.toString());
-			System.out.println(p + p.event.toString());
+		//	System.out.println(p + p.state.toString());
+			//System.out.println(p + p.event.toString());
 			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
 			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
@@ -410,7 +454,7 @@ public class PeopleTest extends TestCase
 				p.msgTimeIs(1800);
 				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				System.out.println(p.log.getLastLoggedEvent().toString());
+				//System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
 			else
@@ -444,14 +488,16 @@ public class PeopleTest extends TestCase
 			if(!p.location.toString().equals("Home"))
 			{
 			p.msgTimeIs(2200);
-			System.out.println(p.event.toString());
-			System.out.println(p.state.toString());
+			//System.out.println(p.event.toString());
+			//System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			System.out.println(p.log.getLastLoggedEvent().toString());
+			//System.out.println(p.log.getLastLoggedEvent().toString());
 			System.out.println(p.state.toString());
 			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
 			}
+			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);
+			
 			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
 			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));

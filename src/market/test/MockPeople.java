@@ -2,6 +2,10 @@ package market.test;
 
 import java.util.List;
 
+import bank.interfaces.Teller;
+import city.Bank;
+import city.Market;
+import city.Restaurant;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.People;
@@ -56,17 +60,6 @@ public class MockPeople extends Mock implements People{
 		return null;
 	}
 
-	@Override
-	public Role getTeller() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Role getMarketEmployee() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String getMaitreDName() {
@@ -174,6 +167,42 @@ public class MockPeople extends Mock implements People{
 	public int msgWhatIsTime() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Role getTeller(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Role getMarketEmployee(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Restaurant getRestaurant(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Market getMarket(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Bank getBank(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Teller getTeller() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

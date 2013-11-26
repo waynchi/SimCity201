@@ -29,4 +29,6 @@ public interface Host {
 
 	public abstract void setCook(Cook cookRole);
 
+	public abstract int getCustomerSize();
+
 }

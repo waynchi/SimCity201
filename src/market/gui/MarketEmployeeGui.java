@@ -6,15 +6,19 @@ import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import market.gui.MarketEmployeeGui;
-import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 
 public class MarketEmployeeGui implements Gui{
 	private Map<String,Dimension> itemMap = new HashMap<String, Dimension>();
 	MarketEmployee employee;
-	boolean goBackToCounter = false;
+	boolean goToCounter = false;
 	boolean isPresent = false;
+	boolean leaving = false;
+    private ImageIcon market_employee = new ImageIcon("res/market/marketEmployee.jpeg");
+
 	
 	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
@@ -26,10 +30,13 @@ public class MarketEmployeeGui implements Gui{
 	}
 	//170,150,30,30
 	int xPos= 170, xDestination = 170;
-	int yPos=150, yDestination = 150;
+	int yPos= 0, yDestination = 150;
 	
 	int xCounter = 170;
 	int yCounter = 150;
+	
+	int xExit = 170;
+	int yExit = 0;
 	
 	boolean atCabinet = false;
 	
@@ -50,17 +57,21 @@ public class MarketEmployeeGui implements Gui{
 			employee.msgAtCabinet();
 			atCabinet = false;
 		}
-		if (xPos == xDestination && yPos == yDestination && goBackToCounter) {
+		if (xPos == xDestination && yPos == yDestination && goToCounter) {
 			employee.msgAtCounter();
-			goBackToCounter = false;
+			goToCounter = false;
+		}
+		if (xPos == xExit && yPos == yExit && leaving) {
+			employee.msgAtExit();
+			leaving = false;
 		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.BLUE);
-		g.fillRect(xPos, yPos, 30, 30);
+        g.drawImage(market_employee.getImage(), xPos, yPos, 10, 10, null);
+
 	}
 
 	@Override
@@ -80,10 +91,18 @@ public class MarketEmployeeGui implements Gui{
 		// TODO Auto-generated method stub
 		xDestination = xCounter;
 		yDestination = yCounter;
-		goBackToCounter = true;
+		goToCounter = true;
 	}
 
 	public void setPresent(boolean p) {
 		isPresent = p;
+	}
+
+	public void doExit() {
+		// TODO Auto-generated method stub
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
+		
 	}
 }

@@ -162,6 +162,7 @@ public class HousingResidentRole extends Role implements Resident {
 				activity.acquire();
 			} catch (InterruptedException e) {}
 		}
+		print("Entering home.");
 		myState = State.Idle;
 	}
 
@@ -194,7 +195,6 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void activityDone() {
 		activity.release();
-		stateChanged();
 	}
 	
 	@Override

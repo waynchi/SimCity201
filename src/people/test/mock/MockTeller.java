@@ -55,4 +55,10 @@ public class MockTeller extends Role implements Teller{
 		
 	}
 
+	@Override
+	public void msgWithdraw(double moneyNeeded) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

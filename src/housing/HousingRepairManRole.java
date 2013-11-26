@@ -1,6 +1,5 @@
 package housing;
 
-import housing.HousingResidentRole.State;
 import housing.gui.RepairManGui;
 import housing.interfaces.RepairMan;
 import housing.interfaces.Resident;
@@ -16,12 +15,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 
 	private List<MyHouse> houses = new ArrayList<MyHouse>();
 	private MyHouse currentHouse = null;
-	public Location location = Location.Shop;
+	public Location location = Location.Nowhere;
 	public RepairManGui gui;
 	public Semaphore activity = new Semaphore(0, true);
 	public MyHouse currentLocationHouse;
-	public boolean isActive;
 	public boolean needToLeave = false;
+	public boolean testMode = false;
 
 	public HousingRepairManRole() {
 		super();
@@ -39,10 +38,12 @@ public class HousingRepairManRole extends Role implements RepairMan {
 				i.repair();
 			}
 			else {
-				gui.DoRepairItem(mh.h.gui.getPosition(i.name));
-				try {
-					activity.acquire();
-				} catch (InterruptedException e) {}
+				if (testMode == false) {
+					gui.DoRepairItem(mh.h.gui.getPosition(i.name));
+					try {
+						activity.acquire();
+					} catch (InterruptedException e) {}
+				}
 				i.repair();
 			}
 		}
@@ -50,70 +51,73 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		mh.s = HouseState.None;
 		currentLocationHouse = currentHouse;
 		currentHouse = null;
-		gui.DoLeaveHouse();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveHouse();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 	}
 	
 	public void leaveShop(MyHouse mh) {
-		gui.DoLeaveShop(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveShop(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void goToApartmentInSameComplexFromApartment(MyHouse mh) {
-		gui.DoGoToApartmentInSameComplexFromApartment(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoGoToApartmentInSameComplexFromApartment(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		mh.r.ImHere();
+		mh.s = HouseState.Reached;
 	}
 	
 	public void returnToShop() {
-		gui.DoReturnToShop();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoReturnToShop();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideReturning;
 		myPerson.msgDone("RepairManFixed");
 	}
 	
 	public void leaveApartmentComplexToFixFromApartment(MyHouse mh) {
-		gui.DoLeaveApartmentComplexToFixFromApartment(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveApartmentComplexToFixFromApartment(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
-//	public void goToHouseInDifferentPlaceToFixFromVilla(MyHouse mh) {
-//		gui.DoGoToHouseInDifferentPlaceToFixFromVilla(mh.h.gui);
-//		location = Location.OutsideFixing;
-//		myPerson.msgDone("RepairManFixing");
-//	}
-//	
-//	public void goToVillaFromVilla(MyHouse mh) {
-//		gui.DoGoToVillaFromVilla(mh.h.gui);
-//		location = Location.OutsideFixing;
-//		myPerson.msgDone("RepairManFixing");
-//	}
-	
 	public void goToHouseFromVilla(MyHouse mh) {
-		gui.DoGoToHouseFromVilla(mh.h.gui);
+		if (testMode == false) {
+			gui.DoGoToHouseFromVilla(mh.h.gui);
+		}
 		location = Location.OutsideFixing;
 		myPerson.msgDone("RepairManFixing");
 	}
 	
 	public void enterHouse(MyHouse mh) {
-		gui.DoEnterHouse(mh.h.gui);
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoEnterHouse(mh.h.gui);
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.Resident;
 		mh.s = HouseState.Reached;
 		mh.r.ImHere();
@@ -121,14 +125,18 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	
 	public void enterShop() {
 		location = Location.Shop;
-		gui.DoEnterShop();
+		if (testMode == false) {
+			gui.DoEnterShop();
+		}
 	}
 	
 	public void leaveJob() {
-		gui.DoLeaveJob();
-		try {
-			activity.acquire();
-		} catch (InterruptedException e) {}
+		if (testMode == false) {
+			gui.DoLeaveJob();
+			try {
+				activity.acquire();
+			} catch (InterruptedException e) {}
+		}
 		location = Location.Nowhere;
 		isActive = false;
 		needToLeave = false;
@@ -142,7 +150,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void needHelp(House h, double money) {
 		MyHouse mh = find(h);
 		mh.s = HouseState.NeedsRepair;
-		myPerson.Money += money;
+		((PeopleAgent)myPerson).Money += money;
 		stateChanged();
 	}
 	
@@ -158,10 +166,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void msgIsInActive() {
 		needToLeave = true;
 		stateChanged();
-	}
-	
-	public void doneLeaving() {
-		activity.release();
 	}
 
 	//-----------------------------------------------------------//
@@ -181,7 +185,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			enterHouse(currentHouse);
 			return true;
 		}
-		if ((currentHouse == null || currentHouse.s != HouseState.Reached) && (location != Location.OutsideFixing || location != Location.OutsideReturning) && needToLeave == true) {
+		if ((currentHouse == null || currentHouse.s != HouseState.Reached) && (location != Location.OutsideFixing && location != Location.OutsideReturning) && needToLeave == true) {
 			leaveJob();
 			return true;
 		}
@@ -215,14 +219,6 @@ public class HousingRepairManRole extends Role implements RepairMan {
 					}
 				}
 				else {
-//					if (currentHouse.h.type == HouseType.Apartment) {
-//						goToHouseInDifferentPlaceToFixFromVilla(currentHouse);
-//						return true;
-//					}
-//					else {
-//						goToVillaFromVilla(currentHouse);
-//						return true;
-//					}
 					goToHouseFromVilla(currentHouse);
 					return true;
 				}
@@ -261,6 +257,15 @@ public class HousingRepairManRole extends Role implements RepairMan {
 		houses.add(new MyHouse(h, r));
 	}
 	
+	public void addHouse(House h) {
+		houses.add(new MyHouse(h, null));
+	}
+	
+	public void addResidentToHouse(House h, Resident r) {
+		MyHouse mh = find(h);
+		mh.r = r;
+	}
+	
 	public People getAgent() {
 		return myPerson;
 	}
@@ -282,15 +287,39 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void setPerson(PeopleAgent p) {
 		myPerson = p;
 	}
+	
+	public void testModeOn() {
+		isActive = true;
+		testMode = true;
+	}
+	
+	public void testModeOff() {
+		testMode = false;
+	}
+	
+	public boolean houseNeedsRepair(House h) {
+		MyHouse mh = find(h);
+		if (mh.s == HouseState.NeedsRepair)
+			return true;
+		return false;
+	}
+	
+	public MyHouse getCurrentHouse() {
+		return currentHouse;
+	}
+	
+	public MyHouse getCurrentLocationHouse() {
+		return currentLocationHouse;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
-	private class MyHouse {
-		House h;
-		Resident r;
-		HouseState s;
+	public class MyHouse {
+		public House h;
+		public Resident r;
+		public HouseState s;
 
 		public MyHouse(House h, Resident r) {
 			this.h = h;

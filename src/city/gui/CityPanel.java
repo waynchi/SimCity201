@@ -1,10 +1,20 @@
 package city.gui;
 import javax.swing.*;
 
-import java.awt.*;
+import transportation.BusAgent;
+import transportation.BusGui;
+import transportation.BusStop;
+import transportation.CarAgent;
+import transportation.CarGui;
+import transportation.CarPassengerRole;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.util.ArrayList;
+import java.util.*;
+
 
 public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
@@ -12,13 +22,15 @@ public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Sidewalk> sidewalks;
 	ArrayList<Vehicle> vehicles;
 	ArrayList<PersonGui> people;
+	public List<BusStop> busStops;
 	ArrayList<Lane> road1,road2,road3,road4,road5,road6,road7,road8,road9,road10,road11,road12,road13,road14,road15,road16,road17,road18,road19,road20,road21,road22;
 	ArrayList<ArrayList<Lane>> allRoads;
 	ArrayList<Sidewalk> sidewalkStrip1,sidewalkStrip2,sidewalkStrip3,sidewalkStrip4,sidewalkStrip5,sidewalkStrip6,
 	sidewalkStrip7,sidewalkStrip8,sidewalkStrip9,sidewalkStrip10,sidewalkStrip11,sidewalkStrip12,sidewalkStrip13,sidewalkStrip14,sidewalkStrip15,
 	sidewalkStrip16,sidewalkStrip17,sidewalkStrip18,sidewalkStrip19,sidewalkStrip20,sidewalkStrip21,sidewalkStrip22,sidewalkStrip23,sidewalkStrip24,
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
-	ArrayList<ArrayList> listofSidewalkStrips;
+	ArrayList<ArrayList<Sidewalk>> allSidewalks;
+	ArrayList<Lane> intersections;
 	CityGui city;
 	int count = 0;
 	static final int hozX = 350;
@@ -32,6 +44,8 @@ public class CityPanel extends JPanel implements MouseListener {
 	static final int sidewalkHeight = 10;
 	static final int laneWidth = 20;
 	
+	public ImageIcon background = new ImageIcon("res/background.png");
+	
 	
 	
 
@@ -42,6 +56,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		sidewalks = new ArrayList<Sidewalk>();
 		vehicles = new ArrayList<Vehicle>();
 		people = new ArrayList<PersonGui>();
+		busStops = new ArrayList<BusStop>();
 		this.city = city;
 		
 		road1 = new ArrayList<Lane>();
@@ -91,68 +106,71 @@ public class CityPanel extends JPanel implements MouseListener {
 		allRoads.add(road21);
 		allRoads.add(road22);
 
-		listofSidewalkStrips = new ArrayList<ArrayList>();
+		allSidewalks = new ArrayList<ArrayList<Sidewalk>>();
 		
 		sidewalkStrip1 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip1);
+		allSidewalks.add(sidewalkStrip1);
 		sidewalkStrip2 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip2);
+		allSidewalks.add(sidewalkStrip2);
 		sidewalkStrip3 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip3);
+		allSidewalks.add(sidewalkStrip3);
 		sidewalkStrip4 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip4);
+		allSidewalks.add(sidewalkStrip4);
 		sidewalkStrip5 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip5);
+		allSidewalks.add(sidewalkStrip5);
 		sidewalkStrip6 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip6);
+		allSidewalks.add(sidewalkStrip6);
 		sidewalkStrip7 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip7);
+		allSidewalks.add(sidewalkStrip7);
 		sidewalkStrip8 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip8);
+		allSidewalks.add(sidewalkStrip8);
 		sidewalkStrip9 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip9);
+		allSidewalks.add(sidewalkStrip9);
 		sidewalkStrip10 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip10);
+		allSidewalks.add(sidewalkStrip10);
 		sidewalkStrip11 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip11);
+		allSidewalks.add(sidewalkStrip11);
 		sidewalkStrip12 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip12);
+		allSidewalks.add(sidewalkStrip12);
 		sidewalkStrip13 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip13);
+		allSidewalks.add(sidewalkStrip13);
 		sidewalkStrip14 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip14);
+		allSidewalks.add(sidewalkStrip14);
 		sidewalkStrip15 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip15);
+		allSidewalks.add(sidewalkStrip15);
 		sidewalkStrip16 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip16);
+		allSidewalks.add(sidewalkStrip16);
 		sidewalkStrip17 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip17);
+		allSidewalks.add(sidewalkStrip17);
 		sidewalkStrip18 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip18);
+		allSidewalks.add(sidewalkStrip18);
 		sidewalkStrip19 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip19);
+		allSidewalks.add(sidewalkStrip19);
 		sidewalkStrip20 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip20);
+		allSidewalks.add(sidewalkStrip20);
 		sidewalkStrip21 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip21);
+		allSidewalks.add(sidewalkStrip21);
 		sidewalkStrip22 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip22);
+		allSidewalks.add(sidewalkStrip22);
 		sidewalkStrip23 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip23);
+		allSidewalks.add(sidewalkStrip23);
 		sidewalkStrip24 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip24);
+		allSidewalks.add(sidewalkStrip24);
 		sidewalkStrip25 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip25);
+		allSidewalks.add(sidewalkStrip25);
 		sidewalkStrip26 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip26);
+		allSidewalks.add(sidewalkStrip26);
 		sidewalkStrip27 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip27);
+		allSidewalks.add(sidewalkStrip27);
 		sidewalkStrip28 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip28);
+		allSidewalks.add(sidewalkStrip28);
 		sidewalkStrip29 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip29);
+		allSidewalks.add(sidewalkStrip29);
 		sidewalkStrip30 = new ArrayList<Sidewalk>();
-		listofSidewalkStrips.add(sidewalkStrip30);
+		allSidewalks.add(sidewalkStrip30);		
+		
+		intersections = new ArrayList<Lane>();
+		
 		
 		
 		
@@ -166,7 +184,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		Sidewalk s;
 		for(int k = 0; k < hozWidth/10 ; k++)
 		{
-		s = new Sidewalk( hozX - 210 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "1_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip1.add(s);
 		}
@@ -184,56 +202,61 @@ public class CityPanel extends JPanel implements MouseListener {
 			l = new Lane( hozX - 210 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "2_" + k);
 			lanes.add( l );
 			road2.add(l);
+			if(k == 13) {
+				intersections.add(l); //First intersection
+			}
 		}
 		
 		for(int k = 0; k < hozWidth/10; k++)
 		{
-		s = new Sidewalk( hozX - 210 + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
-		sidewalks.add(s);
-		sidewalkStrip2.add(s);
+			s = new Sidewalk( hozX - 210 + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "2_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip2.add(s);
 		}
 		
 		for(int k = 0 ; k < (hozWidth - 150)/10;k++)
 		{
-		s = new Sidewalk( hozX + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
-		sidewalks.add(s);
-		sidewalkStrip3.add(s);
+			s = new Sidewalk( hozX + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "3_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip3.add(s);
 		}
 		
 		for(int k = 0; k < (hozWidth-140)/10; k ++)
 		{
-		s = new Sidewalk( hozX + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
-		sidewalks.add(s);
-		sidewalkStrip4.add(s);
+			s = new Sidewalk( hozX + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "4_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip4.add(s);
 		}
 		
 		//Beginning of main city
 		
 		//Top of city
-		for(int k = 0 ; k < (hozWidth + 120)/10 ; k ++)
-		{
-		s = new Sidewalk( hozX + 70 + 10*k, hozY - 30 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
-		sidewalks.add(s);
-		sidewalkStrip5.add(s);
+		for(int k = 0 ; k < (hozWidth + 120)/10 ; k ++) {
+			s = new Sidewalk( hozX + 70 + 10*k, hozY - 30 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "5_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip5.add(s);
 		}
 		
-		for(int k = 0 ; k<(hozWidth +140 )/20  ; k++)
-		{
-		l = new Lane( hozX + 70 + 20*k, hozY, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "3_" + k );
-		lanes.add( l );
-		road3.add(l);
+		for(int k = 0 ; k<(hozWidth +140 )/20  ; k++) {
+			l = new Lane( hozX + 70 + 20*k, hozY, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "3_" + k );
+			lanes.add( l );
+			road3.add(l);
+			if(k == 15) {
+				intersections.add(l);
+			}
+			
 		}
 		
-		for(int k = 0 ; k<(hozWidth + 150)/20 ; k++)
-		{
-		l = new Lane( hozX + 70 + 20*k, hozY - 20, laneWidth , hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "4_" + k );
-		lanes.add( l );
-		road4.add(l);
+		for(int k = 0 ; k<(hozWidth + 150)/20 ; k++) {
+			l = new Lane( hozX + 70 + 20*k, hozY - 20, laneWidth , hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "4_" + k );
+			lanes.add( l );
+			road4.add(l);
+		
 		}
 
 		for(int k = 0 ; k < (hozWidth+50)/10 ; k ++)
 		{
-		s = new Sidewalk( hozX + 400 + 10*k, hozY - 30 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 400 + 10*k, hozY - 30 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "6_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip6.add(s);
 		}
@@ -245,23 +268,26 @@ public class CityPanel extends JPanel implements MouseListener {
 		road5.add(l);
 		}
 		
-		for(int k = 0; k <(hozWidth - 10)/20;k++)
+		for(int k = 0; k <(hozWidth + 20)/20;k++)
 		{
-		l = new Lane( hozX + 420 + 20*k, hozY-20, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "6_" + k );
-		lanes.add( l );
-		road6.add(l);
+			l = new Lane( hozX + 420 + 20*k, hozY-20, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "6_" + k );
+			lanes.add( l );
+			road6.add(l);
+			if(k == 2) {
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0; k < (hozWidth - 40)/10; k ++)
 		{
-		s = new Sidewalk( hozX + 440 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 440 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "7_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip7.add(s);
 		}
 		
 		for(int k = 0 ; k <(hozWidth-40)/10 ; k ++)
 		{
-		s = new Sidewalk( hozX + 440 + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 440 + 10*k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "8_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip8.add(s);
 		}
@@ -270,28 +296,28 @@ public class CityPanel extends JPanel implements MouseListener {
 		//TOP AND BOTTOM OF HORIZONTAL ROADS
 		for(int k = 0; k < (hozWidth-40)/10  ; k++)
 		{
-		s = new Sidewalk( hozX + 440 + 10*k, hozY + 250 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 440 + 10*k, hozY + 250 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "9_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip9.add(s);
 		}
 		
 		for(int k = 0 ; k <(hozWidth+70)/10; k ++)
 		{
-		s = new Sidewalk( hozX + 120 + 10*k, hozY + 250 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 120 + 10*k, hozY + 250 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "10_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip10.add(s);
 		}
 		
 		for(int k = 0; k < (hozWidth+70)/10 ; k ++)
 		{
-		s = new Sidewalk( hozX + 110 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 110 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "11_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip11.add(s);
 		}
 		
 		for(int k = 0; k < (hozWidth-50)/10; k++)
 		{
-		s = new Sidewalk( hozX + 450 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 450 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "12_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip12.add(s);
 		}
@@ -301,7 +327,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		//FAR RIGHT VERTICAL
 		for(int k = 0 ; k < (hozWidth + 120)/10;k++)
 		{
-		s = new Sidewalk( hozX + 650, hozY - 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 650, hozY - 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "13_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip13.add(s);
 		}
@@ -309,28 +335,28 @@ public class CityPanel extends JPanel implements MouseListener {
 		//SMALL INNER BLOCKS - TOP
 		for(int k = 0 ; k < (60)/10;k++)
 		{
-		s = new Sidewalk( hozX + 600, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 600, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "14_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip14.add(s);
 		}
 		
 		for(int k = 0 ; k < (60)/10;k++)
 		{
-		s = new Sidewalk( hozX + 440, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 440, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "15_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip15.add(s);
 		}
 		
 		for(int k = 0 ; k < (60)/10;k++)
 		{
-		s = new Sidewalk( hozX + 390, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 390, hozY + 20 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "16_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip16.add(s);
 		}
 		
 		for(int k = 0 ; k < (240)/10;k++)
 		{
-		s = new Sidewalk( hozX + 110, hozY + 20 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 110, hozY + 20 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "17_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip17.add(s);
 		}
@@ -339,14 +365,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		//FAR LEFT VERTICAL
 		for(int k = 0 ; k < (110)/10;k++)
 		{
-		s = new Sidewalk( hozX + 60, hozY - 30 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 60, hozY - 30 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "18_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip18.add(s);
 		}
 		
 		for(int k = 0 ; k < (180)/10;k++)
 		{
-		s = new Sidewalk( hozX + 60, hozY + 130 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 60, hozY + 130 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "19_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip19.add(s);
 		}
@@ -355,21 +381,21 @@ public class CityPanel extends JPanel implements MouseListener {
 		//SMALL INNER BLOCKS - BOTTOM
 		for(int k = 0 ; k < (110)/10;k++)
 		{
-		s = new Sidewalk( hozX + 600, hozY + 140 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 600, hozY + 140 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "20_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip20.add(s);
 		}
 		
 		for(int k = 0 ; k < (110)/10;k++)
 		{
-		s = new Sidewalk( hozX + 440, hozY + 140 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 440, hozY + 140 + 10*k , sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "21_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip21.add(s);
 		}
 		
 		for(int k = 0 ; k < (110)/10;k++)
 		{
-		s = new Sidewalk( hozX + 390, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 390, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "22_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip22.add(s);
 		}
@@ -382,7 +408,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		//Middle
 		for(int k = 0 ; k < (hozWidth + 70)/10;k++)
 		{
-		s = new Sidewalk( hozX + 120 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 120 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "23_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip23.add(s);
 		}
@@ -393,17 +419,23 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 110 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "7_" + k );
 		lanes.add(l);
 		road7.add(l);
+		if(k == 1) {
+			intersections.add(l);
+		}
 		}
 		for(int k = 0; k <(hozWidth+90)/20;k++)
 		{
-		l = new Lane( hozX + 110 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "8_" + k );
-		lanes.add(l);
-		road8.add(l);
+			l = new Lane( hozX + 110 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "8_" + k );
+			lanes.add(l);
+			road8.add(l);
+			if(k == 13) {
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0 ; k < (hozWidth + 70)/10;k++)
 		{
-		s = new Sidewalk( hozX + 120 + 10 *k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 120 + 10 *k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "24_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip24.add(s);
 		}
@@ -414,21 +446,30 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 420 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "9_" + k );
 		lanes.add(l);
 		road9.add(l);
+		if(k == 2) {
+			intersections.add(l);
+		}
 		}
 		
 		for(int k=0; k < hozWidth/20;k++)
 		{
-		l = new Lane( hozX + 420 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "10_" + k );
-		lanes.add(l);
-		road10.add(l);
+			l = new Lane( hozX + 420 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "10_" + k );
+			lanes.add(l);
+			road10.add(l);
+			if(k == 8) {
+				intersections.add(l);
+			}
 		}
 		//Bottom
 		
 		for(int k = 0; k<(hozWidth+300)/20;k++)
 		{
-		l = new Lane( hozX + 110 + 20*k, hozY + 260, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "11_" + k );
-		lanes.add(l);
-		road11.add(l);
+			l = new Lane( hozX + 110 + 20*k, hozY + 260, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "11_" + k );
+			lanes.add(l);
+			road11.add(l);
+			if(k == 17) {
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0; k < (hozWidth+300)/20;k++)
@@ -436,56 +477,70 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( hozX + 110 + 20*k, hozY + 280, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "12_" + k );
 		lanes.add(l);
 		road12.add(l);
+		if(k == 13){
+			intersections.add(l);
+		}
 		}
 
-		s = new Sidewalk( hozX + 410, hozY + 300 , hozWidth + 40, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
-		
-//		l = new Lane( hozX + 420, hozY + 260, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
-//		lanes.add(l);
-//		l = new Lane( hozX + 420, hozY + 280, hozWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black );
-//		lanes.add(l);
-//		
 		for(int k = 0 ; k < (hozWidth + 40)/10;k++)
 		{
-		s = new Sidewalk( hozX + 410 + 10*k,  hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 410 + 10*k,  hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "26_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip25.add(s);
 		}
 		
 		for(int k = 0 ; k < (hozWidth + 130)/10;k++)
 		{
-		s = new Sidewalk( hozX + 70 + 10*k, hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX + 70 + 10*k, hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "27_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip26.add(s);
 		}
 		
 		
 		//Vertical Cross Lanes
-		for(int k = 0 ; k < (crossHeight + 70) / 20  ; k++)
+		for(int k = 0 ; k < (crossHeight + 90) / 20  ; k++)
 		{
-		l = new Lane( crossX + 90, crossY + 20 + 20*k, laneWidth, laneWidth , 0, 1, false, Color.DARK_GRAY, Color.black, "13_" + k );
-		lanes.add(l);
-		road13.add(l);
+			l = new Lane( crossX + 90, crossY  + 20*k, laneWidth, laneWidth , 0, 1, false, Color.DARK_GRAY, Color.black, "13_" + k );
+			lanes.add(l);
+			road13.add(l);
+			if(k == 1) {
+				intersections.add(l);
+			}
 		}
 		for(int k = 0 ; k < (crossHeight+70)/20;k++)
 		{
-		l = new Lane( crossX + 110, crossY + 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "14_" + k );
-		lanes.add(l);
-		road14.add(l);
+			l = new Lane( crossX + 110, crossY + 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "14_" + k );
+			lanes.add(l);
+			road14.add(l);
+			if(k == 6){
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0 ; k < (crossHeight+50)/20;k++)
 		{
-		l = new Lane( crossX + 420, crossY + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "15_" + k );
-		lanes.add(l);
-		road15.add(l);
+			l = new Lane( crossX + 420, crossY + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "15_" + k );
+			lanes.add(l);
+			road15.add(l);
+			if(k == 11) {
+				intersections.add(l);
+			}
+			if(k == 4) {
+				intersections.add(l);
+			}
 		}
 		
 		for(int k = 0; k < (crossHeight+50)/20;k++)
 		{
-		l = new Lane( crossX + 440, crossY + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "16_" + k );
-		lanes.add(l);
-		road16.add(l);
+			l = new Lane( crossX + 440, crossY + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "16_" + k );
+			lanes.add(l);
+			road16.add(l);
+			if(k == 7) {
+				intersections.add(l);
+			}
+			if(k == 1) {
+				intersections.add(l);
+			}
 		}
 		
 		
@@ -494,13 +549,19 @@ public class CityPanel extends JPanel implements MouseListener {
 		l = new Lane( crossX + 650, crossY - 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "17_" + k );
 		lanes.add(l);
 		road17.add(l);
+		if(k == 8){
+			intersections.add(l);
+		}
 		}
 		
 		for(int k = 0; k < (crossHeight+110)/20;k++)
 		{
-		l = new Lane( crossX + 630, crossY - 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "18_" + k );
-		lanes.add(l);
-		road18.add(l);
+			l = new Lane( crossX + 630, crossY - 20 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "18_" + k );
+			lanes.add(l);
+			road18.add(l);
+			if(k == 4) {
+				intersections.add(l);
+			}
 		}
 		
 		
@@ -522,14 +583,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		for(int k = 0 ; k < (120)/10;k++)
 		{
-		s = new Sidewalk( hozX - 210, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0.5, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "28_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip27.add(s);
 		}
 		
 		for(int k = 0 ; k < (130)/10;k++)
 		{
-		s = new Sidewalk( hozX - 210, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0.5, 0, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 210, hozY + 140 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "29_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip28.add(s);
 		}
@@ -537,14 +598,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		//Left sidewalks
 		for(int k = 0 ; k < (120)/10;k++)
 		{
-		s = new Sidewalk( hozX - 260, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 260, hozY - 40 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "30_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip29.add(s);
 		}
 		
 		for(int k = 0 ; k < (190)/10;k++)
 		{
-		s = new Sidewalk( hozX - 260, hozY + 80 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black ); 
+		s = new Sidewalk( hozX - 260, hozY + 80 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "31_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip30.add(s);
 		}
@@ -568,53 +629,242 @@ public class CityPanel extends JPanel implements MouseListener {
 		//Add grid of homes on left
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*80+ 70, j*40 + 10, 20, 20, i*60 + 90, j*40 + 10, "Home " + i );
+				Building home;
+				if(i == 0)
+				{
+					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
+					System.out.println("Home " + (i+1)*(j+1) + ": " + (122 - 30*i) + "," + (j*40+10));
+				}
+				else
+				{
+					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
+					System.out.println("Home " + (j+4) + ": " + (122 - 20*i) + "," + (j*40+10));
+				}
+				//System.out.println("Home " + (i+1)*(j+1) + ": " + (i*60+122) + "," + (j*40+10));
 				buildings.add( home );
 			}
 		}
+		//122 
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*80+ 70, j*40 + 200, 20, 20, i*60 + 90, j*40 + 18, "Home " + i );
-				buildings.add( home );
+				Building home;
+				if(i == 0)
+				{
+					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
+					System.out.println("Home " + (6+(i+1)*(j+1)) + ": " + (122 - 30*i) + "," + (j*40+10));
+				}
+				else
+				{
+					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
+					System.out.println("Home " + (6+(j+4)) + ": " + (122 - 20*i) + "," + (j*40+10));
+				}
+				buildings.add(home);
 			}
 		}
+		
+		
 		
 		//First Section, Top Row
 		
 		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60, "Restaurant 2" );
 		buildings.add(restaurant2);
-		Building restaurant7 = new Building( hozX + 230, hozY + 230, 20, 20, 570, 100, "Restaurant 7" );
-		buildings.add(restaurant7);
+		Building market = new Building( hozX + 230, hozY + 310, 20, 20, 580, 322, "Market" );
+		buildings.add(market);
 		Building restaurant1 = new Building( hozX + 230, hozY + 140, 20, 20, 570, 200, "Restaurant 1" );
 		buildings.add(restaurant1);
 	
-		Building restaurant3 = new Building( hozX + 460, hozY + 30, 20, 20, 770, 60, "Restaurant 3" );
+		Building restaurant3 = new Building( hozX + 460, hozY + 30, 20, 20, 810, 42, "Restaurant 3" );
 		buildings.add(restaurant3);
-		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 770, 100, "Bank" );
+		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
 		buildings.add(bank);
 		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
 		buildings.add(restaurant6);
-		Building market = new Building( hozX + 370, hozY + 160, 20, 20, 770, 200, "Market" );
-		buildings.add(market);
+		Building restaurant7 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 7" );
+		buildings.add(restaurant7);
 		
 	
-		Building restaurant4 = new Building( hozX + 580, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
+		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
 		buildings.add(restaurant4);		
-		Building restaurant5 = new Building( hozX + 580, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
+		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
-
-
+		BusAgent busAgent = new BusAgent();
+		busStops.add(new BusStop(220,180,30,30,220,152, "BusStop1"));
+		busStops.add(new BusStop(680,350,30,30,680,322, "BusStop2"));
+		busStops.add(new BusStop(880,90,30,30,870,132, "BusStop3"));
+		busStops.add(new BusStop(650,90,30,30,660,132, "BusStop4"));
 		
+		BusGui bg = new BusGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		busAgent.setGui(bg);
+		busAgent.startThread();
+		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
+		vehicles.add(bg);
+		
+//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		CarAgent carAgent = new CarAgent();
+//		carAgent.setGui(cg);
+//		carAgent.startThread();
+//		cg.msgGoToThisPlace(carAgent, "Bank");
+//		vehicles.add(cg);
+//		
 		addMouseListener( this );
-		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		vehicle.setDestination(540, 42);
-		vehicles.add(vehicle);
+
+
+//		//vehicle.setDestination(580, 42);
+//		//vehicle.setDestination(800, 42);
+//		//vehicle.setDestination(580, 152);
+//		//vehicle.setDestination(580,322);
+//		//vehicle.setDestination(752,120); //not working
+//		vehicle.setDestination(772, 180);
+//		vehicles.add(vehicle);
+
 
 	}
 	
 	public void paintComponent( Graphics g ) {
+		count++;
+//		if(count == 100) {
+//
+//			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
+//			vehicle.setDestination(1,1);
+//			vehicles.add(vehicle);
+//			
+//		}
+//		if(count == 250) {
+//			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
+//			vehicle.setDestination(1,1);
+//			vehicles.add(vehicle);
+//		}
+//		
+//		if(count == 300) {
+//			Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this,"Car");
+//			vehicle.setDestination(962,100);
+//			vehicles.add(vehicle);
+//		}
+		
+		if(count % 100 == 0) {
+			for(Lane intersection : intersections) {
+				//FIRST INTERSECTION (MIDDLE)
+				if(intersection.name.equals("13_1")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("14_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("2_12")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("7_1")) {
+					intersection.greenLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("8_13")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("9_2")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("16_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("15_4")) {
+					intersection.greenLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("10_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("17_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("18_4")) {
+					intersection.greenLight();
+				}
+				
+				//TOP INTERSECTION
+				if(intersection.name.equals("3_15")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("6_2")) {
+					intersection.greenLight();
+				}
+				
+				//BOTTOM INTERSECTION
+				if(intersection.name.equals("12_14")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_11")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("11_17")) {
+					intersection.redLight();
+				}
+			}
+		}
+		if(count % 200 == 0) {
+			for(Lane intersection : intersections) {
+				if(intersection.name.equals("13_1")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("14_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("2_12")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("7_1")) {
+					intersection.redLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("8_13")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("9_2")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("16_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_4")) {
+					intersection.redLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("10_8")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("17_8")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("18_4")) {
+					intersection.redLight();
+				}
+				
+				//TOP INTERSECTION
+				if(intersection.name.equals("3_15")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("6_2")) {
+					intersection.redLight();
+				}
+				
+				//BOTTOM INTERSECTION
+				if(intersection.name.equals("12_14")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("15_11")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("11_17")) {
+					intersection.greenLight();
+				}
+			}
+		}
+		
 		Graphics2D g2 = (Graphics2D)g;
 		
         g2.setColor(getBackground());
@@ -633,6 +883,14 @@ public class CityPanel extends JPanel implements MouseListener {
 			Lane l = lanes.get(i);
 			l.draw( g2 );
 		}
+		for(int i = 0; i <busStops.size(); i++){
+			BusStop bs = busStops.get(i);
+			g2.setColor(Color.YELLOW);
+			g2.fill(bs);
+		}
+		
+		g.drawImage(background.getImage(), 0, 0, null);
+		
 		for(int i=0;i<vehicles.size();i++) {
 			Vehicle v = vehicles.get(i);
 			v.draw(g2);
@@ -645,10 +903,10 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 	
 	public void removeVehicle(Vehicle v) {
-		vehicles.remove(v);
+		v.setDestination(0, 0);
 	}
 	public void removePerson(PersonGui p) {
-		people.remove(p);
+		p.setDestination(0, 0);
 	}
 	public ArrayList<Building> getBuildings() {
 		return buildings;

@@ -90,4 +90,10 @@ public class MockCustomer extends Role implements Customer{
 		return null;
 	}
 
+	@Override
+	public void msgAtExit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

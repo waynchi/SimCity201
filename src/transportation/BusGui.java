@@ -1,18 +1,55 @@
 package transportation;
 import java.util.*;
 
+import city.gui.CityPanel;
+import city.gui.Lane;
+import city.gui.Vehicle;
+
 import transportation.interfaces.Bus;
 
-public class BusGui {
+public class BusGui extends Vehicle{
 
 	/**
 	 * @param args
 	 */
-	List<BusStop> busStops = new ArrayList<BusStop>();
+	List<BusStop> busStops;
+	Bus busAgent;
+	BusStop nextStop;
+	public enum State {idle,arrived,driving};
+	State busState;
+	
+	public BusGui(int i, int j, int k, int l, ArrayList<Lane> road2, Lane lane, ArrayList<ArrayList<Lane>> allRoads, CityPanel cityPanel){
+		super(5, 5, 10, 10, road2, road2.get(0), allRoads, cityPanel,"Bus");
+		busStops = cityPanel.busStops;
+		busState = State.idle;
+	}
 	
 	public void msgGoToNextStop(Bus busAgent,BusStop currentStop)
 	{
-		//busAgent.msgAnimationFinishedArrivedAtStop(null);
+		this.busAgent = busAgent;
+		for(int k = 0 ; k < busStops.size() ; k ++)
+		{
+			if(busStops.get(k) == currentStop)
+			{
+				if((k+1) != busStops.size())
+					this.nextStop = busStops.get(k+1);
+				else
+					this.nextStop = busStops.get(0);
+				break;
+			}
+		}
+		busState = State.driving;
+		super.driveHere(nextStop.name);
+	}
+	
+	@Override
+	public void reachedDestination()
+	{
+		if(busState == State.driving)
+		{
+		busState = State.arrived;
+		busAgent.msgAnimationFinishedArrivedAtStop(nextStop);
+		}
 	}
 
 }

@@ -31,19 +31,23 @@ public class TellerRole extends Role implements Teller {
 	public enum CustomerState
 	{none, waiting, beingHelped, deposit, newAccount, newAccountLoan, withdraw, loan, done};
 	
-	private myBankCustomer currentCustomer = null;
+	public myBankCustomer currentCustomer = null;
 	
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	
 	Boolean LeavePost = false;
 	
+	public Boolean isTest = false;
+	
 	private BankGui bgui;
 	
 	private TellerGui gui;
+	
+	private Semaphore atExit = new Semaphore(0,true);
 
 	public TellerRole(BankGui b) {
 		super();
-		this.bgui = b;
+		if (!isTest) this.bgui = b;
 	}
 	
 	public void addAccount(Market m) {
@@ -74,19 +78,26 @@ public class TellerRole extends Role implements Teller {
 
 	// Messages
 	
+	public void msgGone(){
+		atExit.release();
+		gui.leave = false;
+	}
+	
 	public void msgIsActive(){
 		print("Received msgIsActive");
 		isActive = true;
-		if (gui == null) gui = bgui.addPerson(this);
-		else gui.isAtDesk = true;
+		if (!isTest) {
+			if (gui == null) gui = bgui.addPerson(this);
+			else gui.isAtDesk = true;
+		}
 		stateChanged();
 	}
 	
 	public void msgIsInActive(){
 		print("Received msgIsInactive");
-		myPerson.Money += 100;
+		myPerson.setMoney(myPerson.getMoney()+100);
 		LeavePost = true;
-		gui.isAtDesk = false;
+		if (!isTest) gui.isAtDesk = false;
 		stateChanged();
 	}
 	
@@ -147,9 +158,9 @@ public class TellerRole extends Role implements Teller {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if (isActive) {
-			if (waitingCustomers.size() != 0 || currentCustomer != null) {
+			if (waitingCustomers.size() != 0) {
 				if (currentCustomer == null) {
 					currentCustomer = waitingCustomers.get(0);
 					callCustomer(currentCustomer);
@@ -180,6 +191,7 @@ public class TellerRole extends Role implements Teller {
 			}
 			if (LeavePost && waitingCustomers.size() == 0 && currentCustomer == null) {
 				Leave();
+				return true;
 			}
 		}
 
@@ -193,6 +205,7 @@ public class TellerRole extends Role implements Teller {
 
 	private void callCustomer(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
+		print("" +waitingCustomers.size());
 		if (customer.type.equals("customer")) customer.customer.msgReadyToHelp(this);
 		if (customer.type.equals("mcashier")) customer.mcashier.msgReadyToHelp(this);
 		if (customer.type.equals("cashier")) customer.cashier.msgReadyToHelp(this);
@@ -248,17 +261,26 @@ public class TellerRole extends Role implements Teller {
 		currentCustomer = null;
 	}
 	private void Leave() {
-		gui.DoExitRestaurant();
 		isActive = false;
 		LeavePost = false;
+		if (!isTest) {
+			gui.leave = true;
+			gui.DoExitRestaurant();
+			try {
+				atExit.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		myPerson.msgDone("TellerRole");
 	}
 	
 	//Utilities
 
-	private class Account {
+	public class Account {
 		int id;
-		double funds;
+		public double funds;
 		String customerName;
 		
 		Account(String name, int id) {
@@ -271,11 +293,11 @@ public class TellerRole extends Role implements Teller {
 		gui = g;
 	}
 	
-	private class myBankCustomer {
+	public class myBankCustomer {
 		BankCustomer customer;
 		Cashier cashier;
 		MarketCashier mcashier;
-		private CustomerState state = CustomerState.none;
+		public CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
 		double depositAmount = 0;
