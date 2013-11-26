@@ -37,6 +37,7 @@ public class CarAgent extends Agent implements Car{
 	public void msgTakeMeHere(CarPassenger c, String place) {
 	System.out.println("Car recieved message to go to: " + place);
 	myCarPassengers.add(new Passenger(c,place));
+	stateChanged();
 	}
 
 	/* (non-Javadoc)

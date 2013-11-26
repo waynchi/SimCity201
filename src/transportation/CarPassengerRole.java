@@ -29,10 +29,8 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	@Override
 	public void msgIsActive(){
 	System.out.println("CarPassenger is now active");
-	myState = State.readyToLeave;
-	event = Event.carIsReady;
-	//destination = myPerson.state.toString();
-	stateChanged();
+	myCar.msgTakeMeHere(this,destination);
+//	//destination = myPerson.state.toString();
 	}
 
 	/* (non-Javadoc)
@@ -42,16 +40,15 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	public void msgArrivedToDestination(String place){
  	System.out.println("Received message that Car arrived to destination: " + place);
 	if(destination.equals(place)){
-	event = Event.carArrivedToDestination;
-	stateChanged();
+		myCar.msgImLeaving(this);
+		myGui.DoLeaveCar(this);
 	}
 	}
 	
 	@Override
 	public void msgAnimationFinishedDoLeaveCar() {
 		// TODO Auto-generated method stub
-		System.out.println("Recieved message that gui finished leaving car, sending done message to myPerson");
-		myPerson.msgDone("CarPassenger");
+		
 	}
 
 	/* (non-Javadoc)
@@ -59,30 +56,9 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	 */
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
-	if(myState == State.readyToLeave && event == Event.carIsReady){
-	myState = State.goingToDestination;
-	GoToDestination();
-	return true;
+		return isActive;
 	}
 
-	if(myState == State.goingToDestination && event == Event.carArrivedToDestination){
-	myState = State.leaving;
-	LeaveCar();
-	return true;
-	}
-	
-	return false;
-	}
-
-	private void GoToDestination(){
-	myCar.msgTakeMeHere(this,destination);
-	}
-	
-	private void LeaveCar(){
-	myCar.msgImLeaving(this);
-	myGui.DoLeaveCar(this);
-	}
 	
 	
 
