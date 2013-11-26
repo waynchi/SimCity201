@@ -37,6 +37,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	private Semaphore atWaitingCustomer = new Semaphore(0,true);
 	private Semaphore atCashier = new Semaphore(0,true);
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
+	protected Semaphore atExit = new Semaphore(0,true);
+	
 	protected int currentCustomerNum;
 	
 	private boolean turnActive = false;
@@ -115,6 +117,12 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		getPersonAgent().CallstateChanged();
 
 	}
+	
+	public void msgAtExit() {
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
+
 	
 	public void msgAtCook() {
 		atCook.release();
@@ -318,11 +326,11 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	private void clockIn() {
 		
-		// how to make sure the cook and cashier are already created?
-		System.out.println("CLOCKING IN");
-		waiterGui.setPresent(true);
 		host = myPerson.Restaurants.get(0).h;
 		host.addWaiter(this);
+		waiterGui.setHomePosition(host.getWaiters().size());
+		waiterGui.setPresent(true);
+		waiterGui.DoGoRest();
 		cook = host.getCook();
 		cashier = host.getCashier();
 		turnActive = false;
@@ -410,6 +418,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		print ("Here's your food. Enjoy!");
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
+		cashier = host.getCashier();
 		cashier.msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
