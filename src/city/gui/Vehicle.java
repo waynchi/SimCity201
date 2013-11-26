@@ -105,6 +105,8 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
+		if(xDestination > 0 && yDestination > 0)
+		{
 		time++;
 		g2.setColor( Color.blue );
 		g2.fill( this );
@@ -112,6 +114,8 @@ public class Vehicle extends Rectangle2D.Double {
 		
 		if(x == xDestination && y == yDestination) {
 			cityPanel.removeVehicle(this);
+			this.reachedDestination();
+			return;
 		}
 		if(getCurrentLane().equals("13_2")) {
 			this.direction="left";
@@ -333,6 +337,7 @@ public class Vehicle extends Rectangle2D.Double {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}
 		}
+		}
 	}
 	public void redLight() {
 		redLight = true;
@@ -340,5 +345,22 @@ public class Vehicle extends Rectangle2D.Double {
 	
 	public void greenLight() {
 		redLight = false;
+	}
+	
+	public void reachedDestination() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void driveHere(String place) {
+		// TODO Auto-generated method stub
+		for(Building b : cityPanel.buildings)
+		{
+			if(b.name.equals(place))
+			{
+				this.setDestination(b.xLocation, b.yLocation);
+				return;
+			}
+		}
+		
 	}
 }
