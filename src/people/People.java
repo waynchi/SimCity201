@@ -6,6 +6,9 @@ import java.util.List;
 import people.PeopleAgent.Job;
 import people.PeopleAgent.MyRole;
 import restaurant.test.mock.LoggedEvent;
+import city.Bank;
+import city.Market;
+import city.Restaurant;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 
@@ -25,9 +28,15 @@ public interface People {
 	
 	public Role getHost(int i);
 	
-	public Role getTeller();
+	public Role getTeller(int i);
 	
-	public Role getMarketEmployee();
+	public Role getMarketEmployee(int i);
+	
+	public Restaurant getRestaurant(int i);
+	
+	public Market getMarket(int i);
+	
+	public Bank getBank(int i);
 	
 	public String getMaitreDName();
 	

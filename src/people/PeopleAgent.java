@@ -107,6 +107,21 @@ public class PeopleAgent extends Agent implements People{
 		return Banks.get(i).t;
 	}
 	
+	public Bank getBank(int i)
+	{
+		return Banks.get(i);
+	}
+	
+	public Market getMarket(int i)
+	{
+		return Markets.get(i);
+	}
+	
+	public Restaurant getRestaurant(int i)
+	{
+		return Restaurants.get(i);
+	}
+	
 	public Role getMarketEmployee(int i)
 	{
 		return Markets.get(i).mer;
