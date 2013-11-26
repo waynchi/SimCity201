@@ -155,7 +155,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRole.setPerson(person);
 					}
 					if (job.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole();
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui);
 						
 						RestaurantCashierRole.setTag(AlertTag.RESTAURANT);
 						

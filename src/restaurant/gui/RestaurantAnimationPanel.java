@@ -54,7 +54,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.yellow);
         g2.fillRect(50, 250, 60, 20);//cooking
-        g2.fillRect(250, 250, 20, 20);//cashier
+        //g2.fillRect(250, 250, 20, 20);//cashier
         
         // grilling
     	g2.setColor(Color.lightGray);
@@ -69,7 +69,9 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);
         g2.drawString("Cooking", 0, 265);
         g2.drawString("Plating",0,225);
-        g2.drawString("Cashier", 250, 280);
+        
+        //
+        //g2.drawString("Cashier", 250, 280);
         
         
         for(Gui gui : guis) {
@@ -96,4 +98,10 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
+
+	public void addGui(RestaurantCashierGui cashierGui) {
+		guis.add(cashierGui);
+		// TODO Auto-generated method stub
+		
+	}
 }
