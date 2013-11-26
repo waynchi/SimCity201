@@ -1,11 +1,7 @@
-package people;
+ package people;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import people.PeopleAgent.Job;
-import people.PeopleAgent.MyRole;
-import restaurant.test.mock.LoggedEvent;
 import city.Bank;
 import city.Market;
 import city.Restaurant;

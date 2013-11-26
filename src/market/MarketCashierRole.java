@@ -17,7 +17,6 @@ import market.interfaces.MarketEmployee;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	// data
-	private boolean isActive = false;
 	public boolean turnActive = false;
 	public boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
