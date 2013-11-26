@@ -134,7 +134,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgAtPosition() {
-		atExit.release();
+		atPosition.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -334,6 +334,8 @@ public class CashierRole extends Role implements Cashier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("fhio");
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
