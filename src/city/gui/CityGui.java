@@ -16,6 +16,7 @@ import market.gui.MarketGui;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
+import city.gui.trace.AlertTag;
 import people.PeopleAgent;
 import restaurant.*;
 import restaurant.gui.RestaurantGui;
@@ -65,12 +66,18 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
 		Timer timer = new Timer(10, this);
+		
+		//Set trace tags
+		RestaurantHostRole.setTag(AlertTag.RESTAURANT);
+		repairManRole.setTag(AlertTag.HOME);
+		BankTellerRole.setTag(AlertTag.BANK);
+		MarketEmployeeRole.setTag(AlertTag.MARKET);
+		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
 		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
-		MarketEmployeeRole RestaurantMarketRole = new MarketEmployeeRole(marketGui);
 
 		FileReader input;
 		try {
@@ -97,13 +104,22 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Markets.add(market);
 					cityPanel.people.add(personGui);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
+					
+					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT);
+					
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
+					
+					bankCustomerRole.setTag(AlertTag.RESTAURANT);
+					
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
+					
+					residentRole.setTag(AlertTag.HOME);
+					
 					residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
@@ -115,6 +131,9 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
+						
+						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT);
+						
 						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						//RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", start, end);
@@ -123,6 +142,9 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui);
+						
+						RestaurantCookRole.setTag(AlertTag.RESTAURANT);
+						
 						person.addJob("RestaurantCook", start, end);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
 						RestaurantCookRole.setPerson(person);
@@ -134,6 +156,9 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole();
+						
+						RestaurantCashierRole.setTag(AlertTag.RESTAURANT);
+						
 						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
 						RestaurantCashierRole.setPerson(person);

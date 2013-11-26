@@ -198,7 +198,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 		else {
 			teller.msgWithdraw(accountID, withdraw);
-			withdraw = 0;
 			state = CustomerState.finished;
 		}
 	}
