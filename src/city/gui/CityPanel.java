@@ -636,7 +636,7 @@ public class CityPanel extends JPanel implements MouseListener {
 				intersection.redLight();
 			}
 		}
-		if(count % 100 == 0) {
+		if(count % 1000 == 0) {
 			for(Lane intersection : intersections) {
 				intersection.greenLight();
 			}
