@@ -31,7 +31,7 @@ public class TellerRole extends Role implements Teller {
 	public enum CustomerState
 	{none, waiting, beingHelped, deposit, newAccount, newAccountLoan, withdraw, loan, done};
 	
-	private myBankCustomer currentCustomer = null;
+	public myBankCustomer currentCustomer = null;
 	
 	public Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	
@@ -151,7 +151,7 @@ public class TellerRole extends Role implements Teller {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if (isActive) {
 			if (waitingCustomers.size() != 0) {
 				if (currentCustomer == null) {
@@ -261,9 +261,9 @@ public class TellerRole extends Role implements Teller {
 	
 	//Utilities
 
-	private class Account {
+	public class Account {
 		int id;
-		double funds;
+		public double funds;
 		String customerName;
 		
 		Account(String name, int id) {
@@ -276,11 +276,11 @@ public class TellerRole extends Role implements Teller {
 		gui = g;
 	}
 	
-	private class myBankCustomer {
+	public class myBankCustomer {
 		BankCustomer customer;
 		Cashier cashier;
 		MarketCashier mcashier;
-		private CustomerState state = CustomerState.none;
+		public CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
 		double depositAmount = 0;

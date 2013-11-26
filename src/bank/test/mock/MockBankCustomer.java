@@ -2,12 +2,15 @@ package bank.test.mock;
 
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
+import bank.test.LoggedEvent;
 import bank.test.Mock;
 
 /**
  * Bank customer.
  */
 public class MockBankCustomer extends Mock implements BankCustomer {
+	
+	public double money = 1000;
 
 	public MockBankCustomer(String name) {
 		super(name);
@@ -27,11 +30,11 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	}
 	
 	public void msgReadyToHelp(Teller t){ 
-		
+		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
 	}
 	
 	public void msgAccountBalance(int accountID, double balance) {
-		
+		log.add(new LoggedEvent("received account and balance " + accountID + " " + balance));
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
