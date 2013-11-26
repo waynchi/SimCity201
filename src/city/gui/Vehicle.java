@@ -431,7 +431,6 @@ public class Vehicle extends Rectangle2D.Double {
 		else if(getCurrentLane().equals("3_16")) {
 			currentCell.hasCar = false;
 
-			//Intersection
 			if(xDestination > 752) {
 				this.direction="right";
 				laneSegment = allLanes.get(4);
