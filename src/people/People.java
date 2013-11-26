@@ -14,39 +14,39 @@ import city.gui.PersonGui;
 
 public interface People {
 	
-	public double getMoney();
+	public abstract double getMoney();
 	
-	public void setMoney(double Money);
+	public abstract void setMoney(double Money);
 	
-	public List<Role> getRoles();
+	public abstract List<Role> getRoles();
 	
-	public String getAgentState();
+	public abstract String getAgentState();
 	
-	public String getAgentEvent();
+	public abstract String getAgentEvent();
 	
-	public String getHunger();
+	public abstract String getHunger();
 	
-	public Role getHost(int i);
+	public abstract Role getHost(int i);
 	
-	public Role getTeller(int i);
+	public abstract Role getTeller(int i);
 	
-	public Role getMarketEmployee(int i);
+	public abstract Role getMarketEmployee(int i);
 	
-	public Restaurant getRestaurant(int i);
+	public abstract Restaurant getRestaurant(int i);
 	
-	public Market getMarket(int i);
+	public abstract Market getMarket(int i);
 	
-	public Bank getBank(int i);
+	public abstract Bank getBank(int i);
 	
-	public String getMaitreDName();
+	public abstract String getMaitreDName();
 	
-	public String getName();
+	public abstract String getName();
 	
-	public void setPersonGui(PersonGui gui);
+	public abstract void setPersonGui(PersonGui gui);
 	
-	public void setCityGui(CityGui gui);
+	public abstract void setCityGui(CityGui gui);
 	
-	public void Arrived();
+	public abstract void Arrived();
 
 	public abstract void addRole(Role r, String description);
 
