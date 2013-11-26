@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import bank.BankCustomerRole;
 import bank.TellerRole;
 
@@ -24,6 +26,7 @@ public class TellerGui implements Gui{
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
+	private ImageIcon host = new ImageIcon("res/bank/hostsprite.png");
 	
 	static final int CUST_SIZE = 20;
 
@@ -57,8 +60,9 @@ public class TellerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-			g.setColor(Color.GREEN);
-			g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
+		g.drawImage(host.getImage(), xPos, yPos, 20, 30, null);
+		//g.setColor(Color.GREEN);
+		//g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
 	}
 
 	public boolean isPresent() {
