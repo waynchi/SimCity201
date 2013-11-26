@@ -2,6 +2,7 @@
 
 import java.util.List;
 
+import bank.interfaces.Teller;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -23,6 +24,8 @@ public interface People {
 	public abstract String getHunger();
 	
 	public abstract Role getHost(int i);
+	
+	public Teller getTeller();
 	
 	public abstract Role getTeller(int i);
 	

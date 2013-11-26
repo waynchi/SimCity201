@@ -48,7 +48,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private double deposit = 100;
 	private BankGui bgui;
 	
-	Boolean isTest = false;
+	public Boolean isTest = false;
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -59,7 +59,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public BankCustomerRole(BankGui b){
 		super();
 		this.bgui = b;
-		if (!isTest) b.addPerson(this);
+		if (!isTest) {
+			b.addPerson(this);
+		}
 	}
 
 	public String getCustomerName() {
@@ -134,6 +136,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		if (isActive) {
 			if (state == CustomerState.inline) {
 				CallTeller();
+				return true;
 			}
 			if (state == CustomerState.ready) {
 				if (myPerson.getAgentEvent().equals("GoingToDepositMoney")) {
@@ -157,7 +160,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Actions
 	
 	private void CallTeller() {
-		((Teller) myPerson.getTeller(0)).msgHere(this, name);
+		if (!isTest) ((Teller) myPerson.getTeller(0)).msgHere(this, name);
+		if (isTest) myPerson.getTeller().msgHere(this, name);
 		state = CustomerState.none;
 	}
 

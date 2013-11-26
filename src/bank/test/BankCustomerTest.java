@@ -2,6 +2,7 @@ package bank.test;
 
 import bank.BankCustomerRole;
 import bank.BankCustomerRole.CustomerState;
+import bank.gui.BankGui;
 import bank.test.mock.MockPeopleBank;
 import bank.test.mock.MockTeller;
 import junit.framework.*;
@@ -20,6 +21,7 @@ public class BankCustomerTest extends TestCase
 	MockPeopleBank person;
 	MockTeller teller;
 	BankCustomerRole customer;
+	BankGui bgui;
 		
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -27,11 +29,13 @@ public class BankCustomerTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		customer = new BankCustomerRole(null);		
+		bgui = new BankGui();
+		customer = new BankCustomerRole(bgui);		
 		teller = new MockTeller("mockcustomer");
 		person = new MockPeopleBank("teller");
 		customer.setPerson(person);
 		person.teller = teller;
+		customer.isTest = true;
 	}	
 	//This scenario tests one market order that the cashier has to pay.
 	public void testFirstDepositScenario()

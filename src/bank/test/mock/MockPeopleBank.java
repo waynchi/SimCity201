@@ -40,6 +40,10 @@ public class MockPeopleBank extends PeopleAgent implements People {
 	public Role getTeller(int i) {
 		return (Role) this.teller;
 	}
+	
+	public Teller getTeller() {
+		return this.teller;
+	}
 
 	@Override
 	public List<Role> getRoles() {
