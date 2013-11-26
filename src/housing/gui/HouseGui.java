@@ -7,8 +7,14 @@ import housing.Item;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class HouseGui implements HGui{
 	public House h;
@@ -31,6 +37,14 @@ public class HouseGui implements HGui{
 
 	@Override
 	public void draw(Graphics2D g) {
+//		Image i = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
+//		try {
+//			i = ImageIO.read(new File("res/housingItemImages/floor.jpg"));
+//		} catch (IOException e) {
+//			System.out.println("Nope.");
+//		}
+//		g.drawImage(i, 0, 0, null);
+		
 		if (h.isBroken == true)
 			g.setColor(Color.RED);
 		else
@@ -47,9 +61,18 @@ public class HouseGui implements HGui{
 		if (h.type == HouseType.Villa)
 			g.fillRect(15, 195, 220, 15);
 		
-		for (ItemGui gui : items) {
-			gui.draw(g);
+//		for (ItemGui gui : items) {
+//			gui.draw(g);
+//		}
+		
+		Image i1 = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
+		try {
+			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
+		} catch (IOException e) {
+			System.out.println("Nope.");
 		}
+		g.drawImage(i1, 0, 0, null);
+		
 		for (HGui gui : guis) {
 			if (gui.isPresent()) {
 				gui.draw(g);
