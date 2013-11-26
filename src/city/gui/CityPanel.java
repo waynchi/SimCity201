@@ -580,11 +580,13 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
+		
+		
 		//First Section, Top Row
 		
 		Building restaurant2 = new Building( hozX + 230, hozY + 30, 20, 20, 570, 60, "Restaurant 2" );
 		buildings.add(restaurant2);
-		Building restaurant7 = new Building( hozX + 230, hozY + 230, 20, 20, 570, 100, "Restaurant 7" );
+		Building restaurant7 = new Building( hozX + 230, hozY + 310, 20, 20, 570, 100, "Restaurant 7" );
 		buildings.add(restaurant7);
 		Building restaurant1 = new Building( hozX + 230, hozY + 140, 20, 20, 570, 200, "Restaurant 1" );
 		buildings.add(restaurant1);
@@ -599,9 +601,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		buildings.add(market);
 		
 	
-		Building restaurant4 = new Building( hozX + 580, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
+		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
 		buildings.add(restaurant4);		
-		Building restaurant5 = new Building( hozX + 580, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
+		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
 
@@ -609,7 +611,12 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		addMouseListener( this );
 		Vehicle vehicle = new Vehicle(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		vehicle.setDestination(540, 42);
+		//vehicle.setDestination(580, 42);
+		//vehicle.setDestination(800, 42);
+		//vehicle.setDestination(580, 152);
+		//vehicle.setDestination(580,322);
+		vehicle.setDestination(752,120); //not working
+		//vehicle.setDestination(752, 180);
 		vehicles.add(vehicle);
 
 	}
