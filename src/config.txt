@@ -1,5 +1,0 @@
-1,RestaurantNormalWaiter,John,1100,1900
-1,RestaurantCook,James,1100,1900
-1,RestaurantHost,Billy,1000,1930
-1,RestaurantCashier,Todd,1100,1900
-1,RestaurantCustomer,customer,5000,50000
