@@ -100,45 +100,53 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	//}
 	
 	public void msgIsActive() {
+		print("got msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgIsInActive () {
+		print("got msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtTable() {//from animation
+		print("got msgAtTable from gui, atTable released");
 		atTable.release();// = true;
 		getPersonAgent().CallstateChanged();
 
 	}
 	
 	public void msgAtExit() {
+		print("got msgAtExit gui, atExit released");
 		atExit.release();
 		getPersonAgent().CallstateChanged();
 	}
 
 	
 	public void msgAtCook() {
+		print("got msgAtCook from gui, atCook released");
 		atCook.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
+		print("got msgAtCashier from gui, atCashier released");
 		atCashier.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtWaitingCustomer() {
+		print("got msgAtWaitingCustomer from gui, atWaiting released");
 		atWaitingCustomer.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 
 	public void msgAtRevolvingStand() {
+		print("got msgAtRevolvingStand from gui, atRevolvingStand released");
 		atRevolvingStand.release();
 		myPerson.CallstateChanged();
 		
@@ -168,6 +176,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void SitAtTable(Customer customer, int table) {
+		print("got SitAtTable from host, about to go to waiting area to pick up customer " + customer.getName());
 		currentCustomerNum++;
 		customers.add(new MyCustomer(customer, table, "waiting"));
 		getPersonAgent().CallstateChanged();
@@ -175,6 +184,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 
 	public void msgIAmReadyToOrder(Customer cust) {
+		print("got msgIAMReadyToOrder from customer " + cust.getName());
+
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.readyToOrder;
@@ -184,6 +195,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 
 	public void msgHereIsMyOrder (Customer cust, String choice) {
+		print("got msgHereIsMyOrder from customer " + cust.getName());
+
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.ordered;
@@ -195,6 +208,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgOrderIsReady (String order, int t) {
+		print("got msgOrderIsReady for table " + t);
+
 		for (MyCustomer customer : customers) {
 			if (customer.tableNumber == t){
 				customer.state = customerState.foodIsReady;
@@ -214,6 +229,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgHereIsCheck (Customer customer2, Double d) {
+		print("got msgHereIsCheck from cashier for customer " + customer2.getName());
 		for (MyCustomer customer : customers) {
 			if (customer.c == customer2){
 				customer.due = d;
@@ -224,6 +240,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgDoneEatingAndLeaving (Customer cust){
+		print("got msgDoneEatingAndLeaving from customer " + cust.getName());
+
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.doneLeaving;
@@ -358,8 +376,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 
 	public void goTakeOrder (MyCustomer customer) {
-		waiterGui.DoApproachCustomer(customer.c);
 		print ("Approaching " + customer.c + " to take order.");
+		waiterGui.DoApproachCustomer(customer.c);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
@@ -399,6 +417,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void serveFoodToCustomer(MyCustomer customer){
+		print ("Going to get food for customer " + customer.c.getName());
+
 		atCook.drainPermits();
 		waiterGui.DoGoToCook();
 		try {
@@ -423,6 +443,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void giveCheckToCustomer(MyCustomer customer) {
+		print("going to cashier to pick up check for customer " + customer.c.getName());
 		
 		waiterGui.DoGoToCashier();
 		try {
@@ -431,7 +452,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		print("goint to customer " + customer.c.getName());
+
 		waiterGui.DoApproachCustomer(customer.c);
 		try {
 			atTable.drainPermits();

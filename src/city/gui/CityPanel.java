@@ -44,6 +44,8 @@ public class CityPanel extends JPanel implements MouseListener {
 	static final int sidewalkHeight = 10;
 	static final int laneWidth = 20;
 	
+	public ImageIcon background = new ImageIcon("res/background.png");
+	
 	
 	
 
@@ -860,6 +862,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.setColor(Color.YELLOW);
 			g2.fill(bs);
 		}
+		
+		g.drawImage(background.getImage(), 0, 0, null);
+		
 		for(int i=0;i<vehicles.size();i++) {
 			Vehicle v = vehicles.get(i);
 			v.draw(g2);
