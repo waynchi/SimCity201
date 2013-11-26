@@ -111,5 +111,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
                 gui.updatePosition();
             }
         }
+		repaint();
 	}
 }
