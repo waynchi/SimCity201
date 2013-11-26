@@ -66,15 +66,6 @@ public class Vehicle extends Rectangle2D.Double {
 		}
 		this.setOrientation();
 
-//		if(this.direction.equals("up")) {
-//			setRect( x+xv, y-yv, getWidth(), getHeight() );
-//			this.xPos = x+xv;
-//			this.yPos = y-yv;	
-//		} else {
-//			setRect( x+xv, y+yv, getWidth(), getHeight() );
-//			this.xPos = x+xv;
-//			this.yPos = y+yv;
-//		}
 
 	}
 	public void setDestination(int xd, int yd) {
@@ -122,7 +113,6 @@ public class Vehicle extends Rectangle2D.Double {
 		if(x == xDestination && y == yDestination) {
 			cityPanel.removeVehicle(this);
 		}
-		//if(getCurrentLane().equals);
 		if(getCurrentLane().equals("13_2")) {
 			this.direction="left";
 			laneSegment = allLanes.get(0);
@@ -343,95 +333,6 @@ public class Vehicle extends Rectangle2D.Double {
 				this.move(currentCell.xVelocity,currentCell.yVelocity);
 			}
 		}
-
-		
-		
-		
-		
-//		
-//		
-//		//Crosswalks, X Coordinates:
-//		//122 & 330  & 550 & 750 & 950
-//		//Intersections
-//		//0 = first; 9 = second; 10 = third; 11=fourth
-//		
-//		if(yPos <= 120 && xPos == 122) {
-//			this.direction = "down";
-//		}
-//		
-//		//Residential Intersection
-//		if(yPos == 150 && xPos == 122) {
-//			this.lane = lanes.get(1);
-//			this.setOrientation();
-//		}
-//		
-//		if(xPos >= 430 && xPos <= 432) {
-//			//Up or down?
-////			if(yDestination <= 100) {
-////				this.direction = "up";
-////			} else {
-////				this.direction = "down";
-////			}
-////			
-//			if(Math.abs(xDestination - xPos) == 140) { //Switch lanes
-//				if(yDestination == 60) {
-//					this.direction = "up";
-//					this.lane = lanes.get(16);
-//					this.setOrientation();
-//				} else {
-//					this.direction = "down";
-//					this.lane = lanes.get(15);
-//					this.setOrientation();
-//				}
-//				
-//			}
-//			if(yPos == yDestination) {
-//				cityPanel.removeVehicle(this);
-//				
-//			}
-//			
-//		}
-//		if(xPos >= 750 && xPos <= 752) {
-//			
-//			if(yDestination <= 100) {
-//				this.direction = "up";
-//			} else {
-//				this.direction = "down";
-//			}
-//
-//			
-//			//770 3rd row buildings
-//			if(Math.abs(xDestination - xPos) == 20) {
-//				this.lane = lanes.get(9);
-//				this.setOrientation();
-//			}
-//			
-//			if(yPos == yDestination) {
-//				cityPanel.removeVehicle(this);
-//				
-//			}
-//		}
-//		
-//		if(xPos >= 970 && xPos <= 982) {
-//			
-//			if(yDestination <= 100) {
-//				this.direction = "up";
-//			} else {
-//				this.direction = "down";
-//			}
-//
-//			//990 4th row buildings
-//			if(Math.abs(xDestination - xPos) == 20) {
-//				this.lane = lanes.get(10);
-//				this.setOrientation();
-//			}
-//			
-//			if(yPos == yDestination) {
-//				cityPanel.removeVehicle(this);
-//				
-//			}
-//		}
-		
 		
 	}
 	public void redLight() {
