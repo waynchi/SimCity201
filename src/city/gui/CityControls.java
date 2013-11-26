@@ -63,10 +63,11 @@ public class CityControls extends JPanel implements ActionListener {
 			
 			tracePanel.hideAlertsWithLevel(AlertLevel.DEBUG);
 			
-			tracePanel.showAlertsWithTag(AlertTag.PERSON);
-			tracePanel.showAlertsWithTag(AlertTag.BANK_CUSTOMER);
+			tracePanel.showAlertsWithTag(AlertTag.BANK);
+			tracePanel.showAlertsWithTag(AlertTag.HOME);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT);
+			tracePanel.showAlertsWithTag(AlertTag.MARKET);
 			
-			tracePanel.hideAlertsWithTag(AlertTag.BUS_STOP);
 
 			AlertLog.getInstance().addAlertListener(tracePanel);
 			this.controlPanel = new ControlPanel(tracePanel);
@@ -102,12 +103,19 @@ public class CityControls extends JPanel implements ActionListener {
 		
 		public ControlPanel(final TracePanel tracePanel) {
 			this.tp = tracePanel;
-			messagesButton = new JToggleButton("Show Level: MESSAGE");
-			errorButton = new JToggleButton("Show Level: ERROR");
-			bankButton = new JToggleButton("Show Tag: BANK");
-			restarauntButton = new JToggleButton("Show Tag: RESTAURANT");
-			homeButton = new JToggleButton("Show Tag: HOME");
-			marketButton = new JToggleButton("Show Tag: MARKET");
+			messagesButton = new JToggleButton("Hide Level: MESSAGE");
+			errorButton = new JToggleButton("Hide Level: ERROR");
+			bankButton = new JToggleButton("Hide Tag: BANK");
+			restarauntButton = new JToggleButton("Hide Tag: RESTAURANT");
+			homeButton = new JToggleButton("Hide Tag: HOME");
+			marketButton = new JToggleButton("Hide Tag: MARKET");
+			
+			messagesButton.setSelected(true);
+			errorButton.setSelected(true);
+			bankButton.setSelected(true);
+			restarauntButton.setSelected(true);
+			homeButton.setSelected(true);
+			marketButton.setSelected(true);
 			
 			
 			messagesButton.addActionListener(new ActionListener() {
