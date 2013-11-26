@@ -67,7 +67,6 @@ public class Vehicle extends Rectangle2D.Double {
 		else {
 			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
 		}
-		System.out.println(nextCell.hasCar);
 		if(!nextCell.hasCar) {
 			if(currentCell.yVelocity > 0) {
 				if(this.direction.equals("up")) {
@@ -154,7 +153,14 @@ public class Vehicle extends Rectangle2D.Double {
 		g2.draw(this);
 
 		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
-
+		if(getCurrentLane().equals("1_0")) {
+			if(typeOfVehicle.equals("Bus")) {
+				this.direction="right";
+				laneSegment = allLanes.get(1);
+				currentCell = laneSegment.get(0);
+				
+			}
+		}
 		if(x == xDestination && y == yDestination) {
 
 			if(typeOfVehicle.equals("Car")) {
