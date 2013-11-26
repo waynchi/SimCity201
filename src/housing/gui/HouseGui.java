@@ -22,10 +22,16 @@ public class HouseGui implements HGui{
 	List<HGui> guis = new ArrayList<HGui>();
 	public Dimension entranceCoordinatesInternal = new Dimension(455, 345);
 	public Dimension entranceCoordinatesExternal = new Dimension();
+	public Image i1 = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
 
 	public HouseGui(House h) {
 		this.h = h;
 		setItems();
+		try {
+			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
 	}
 
 	@Override
@@ -65,12 +71,12 @@ public class HouseGui implements HGui{
 //			gui.draw(g);
 //		}
 		
-		Image i1 = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
-		try {
-			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
-		} catch (IOException e) {
-			System.out.println("Image not found.");
-		}
+//		Image i1 = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
+//		try {
+//			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
+//		} catch (IOException e) {
+//			System.out.println("Image not found.");
+//		}
 		g.drawImage(i1, 0, 0, null);
 		
 		for (HGui gui : guis) {
