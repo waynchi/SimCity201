@@ -29,7 +29,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	//destination = myPerson.state.toString();
 	
 	currentBusStop.msgWaitingHere(this);
-	myState = State.waitingAtBusStop;
+	//myState = State.waitingAtBusStop;
 	}
 
 	/* (non-Javadoc)
@@ -39,8 +39,10 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	public void msgBusArrived(Bus b){
 	System.out.println("Bus passenger recieved message that bus arrived");
 	myBus = b;
-	event = Event.busArrived;
-	stateChanged();
+	//event = Event.busArrived;
+	//stateChanged();
+	myBus.msgImBoarding(this);
+	currentBusStop.msgLeavingBusStop(this);
 	}
 	
 	
@@ -53,8 +55,11 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	System.out.println("Bus passenger recieved message that bus arrived at new bus stop");
 	if (bs == destination)
 	{
-		event = Event.busArrivedAtDestination;
-	    stateChanged();        
+//		event = Event.busArrivedAtDestination;
+//	    stateChanged();    
+		myBus.msgImLeaving(this);
+		//myGui.DoLeaveBus(this);
+		myPerson.msgDone("BusPassenger");
 	}
 	}
 	

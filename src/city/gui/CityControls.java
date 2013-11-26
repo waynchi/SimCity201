@@ -18,8 +18,10 @@ public class CityControls extends JPanel implements ActionListener {
 	private JTextField textField_1;
 	TracePanel tracePanel;
 	ControlPanel controlPanel;
+	CityPanel cityPanel;
 	
-	public CityControls() {
+	public CityControls(CityPanel cityPanel) {
+		this.cityPanel = cityPanel;
 		
 		this.setVisible(true);
 
@@ -46,6 +48,11 @@ public class CityControls extends JPanel implements ActionListener {
 			
 			JButton btnAddPerson = new JButton("Add Person");
 			panel.add(btnAddPerson);
+			
+			JButton btnDemonstrateCollision = new JButton("Add Vehicles to Demonstrate Collision");
+			btnDemonstrateCollision.addActionListener(this);
+			panel.add(btnDemonstrateCollision);
+			
 			
 			panel.setBackground( Color.ORANGE );
 			panel.setPreferredSize( new Dimension(500, 268) );
@@ -87,6 +94,11 @@ public class CityControls extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("TEST");
+		Vehicle vehicle = new Vehicle(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel,"Car");
+		vehicle.setDestination(1,1);
+		cityPanel.vehicles.add(vehicle);
+		
 		// TODO Auto-generated method stub
 		
 	}

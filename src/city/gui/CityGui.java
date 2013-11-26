@@ -62,6 +62,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 
+	private int count = 0;
 
 	public int time;
 
@@ -72,7 +73,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMaximumSize(new Dimension(1024, 500));
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
-		Timer timer = new Timer(1, this);
+		Timer timer = new Timer(5, this);
 		
 		//Set trace tags
 		RestaurantHostRole.setTag(AlertTag.RESTAURANT);
@@ -110,7 +111,7 @@ public class CityGui extends JFrame implements ActionListener {
 				int start = Integer.parseInt(configIteration.next());
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
-					PeopleAgent person = new PeopleAgent(name, 1000.0, true); //TODO
+					PeopleAgent person = new PeopleAgent(name, 1000.0, false); //TODO
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel);					
 					//personGui.setDestination(130, 200);
@@ -162,6 +163,9 @@ public class CityGui extends JFrame implements ActionListener {
 					residentRole.setRepairMan(repairManRole);
 					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
+					
+					person.HomeNum = count;
+					count++;
 					person.startThread();
 					//setTest();
 					person.setTest();
@@ -270,7 +274,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		cityControls = new CityControls();
+		cityControls = new CityControls(cityPanel);
 		cityControls.setPreferredSize(new Dimension(500, 268));
 		cityControls.setMaximumSize(new Dimension(500, 268));
 		cityControls.setMinimumSize(new Dimension(500, 268));
@@ -368,7 +372,7 @@ public class CityGui extends JFrame implements ActionListener {
 			houseAnimationPanels.get(i).updatePosition();
 		}
 		
-		int x = 10;
+		int x = 5;
 		time++;
 		if(time % x == 0)
 		{
