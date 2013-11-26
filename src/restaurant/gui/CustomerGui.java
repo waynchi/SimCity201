@@ -23,12 +23,14 @@ public class CustomerGui implements Gui{
 	RestaurantGui gui;
 
 	private int xPos, yPos;
+	private int xExit = 0, yExit = 0;
 	private int xDestination, yDestination;//??
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, WaitingForFood, Eating};
 	private Command command=Command.noCommand;
 	private String choice = new String("");
 	
 	private Boolean MsgGoToSeatFromAgent = false;
+	private boolean leaving = false;
     private BufferedImage img = null;
 
 	
@@ -36,10 +38,9 @@ public class CustomerGui implements Gui{
 	// set the initial position of customer
 	public CustomerGui(Customer c){ //HostAgent m) {
 		customer = c;
-		xPos = -40;
-		yPos = -40;
+		xPos = yPos = 0;
 		xDestination = 20;
-		yDestination = 10;
+		yDestination = 20;
 		try {
             img = ImageIO.read(getClass().getResource("customer.png"));
         } catch (IOException e) {}
@@ -61,8 +62,8 @@ public class CustomerGui implements Gui{
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.GoToSeat) customer.msgAtTable();
 			else if (xDestination == 250 && yDestination == 230) customer.msgAtCashier();
-			else if (command==Command.LeaveRestaurant) {
-				customer.msgAnimationFinishedLeaveRestaurant();
+			else if (leaving) {
+				customer.msgAtExit();
 				isHungry = false;
 				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
@@ -125,8 +126,8 @@ public class CustomerGui implements Gui{
 	}
 
 	public void DoExitRestaurant() {
-		xDestination = -40;
-		yDestination = -40;
-		command = Command.LeaveRestaurant;
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
 	}
 }

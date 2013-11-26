@@ -35,11 +35,12 @@ public interface Customer {
 	public abstract void msgHereIsYourChange (Double change);
 
 	//from animation
-	public abstract void msgAnimationFinishedLeaveRestaurant();
 
 	public abstract String getChoice();
 
 	public abstract CustomerGui getGui();
 
 	public abstract String getName();
+
+	public abstract void msgAtExit();
 }
