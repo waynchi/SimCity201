@@ -1,0 +1,70 @@
+class Renter extends Resident{
+	// A mechanism to generate rent reminders through a separate thread.
+	// It uses the timer to do that at regular intervals. It also
+	// calls rentReminder().
+	
+	// Data
+
+	Owner owner;
+	double money;
+	List<Double> penalties = new ArrayList<Double>();
+	double rent;
+	boolean rentDue;
+	int timesRentDue;
+	Timer rentTimer;
+
+	//-----------------------------------------------------------//
+
+	// Actions
+
+	payRent() {
+		owner.hereIsRent(house, rent);
+		timesRentDue -= 1;
+		if (timesRentDue == 0)
+			rentDue = false;
+		money -= rent;
+	}
+
+	payPenalty(Integer p) {
+		double amount = p;
+		owner.hereIsPenalty(house, amount);
+		money -= amount;
+		penalties.remove(p);
+	}
+
+	//-----------------------------------------------------------//
+
+	// Messages
+
+	payPenalty(double penalty) {
+		this.penalty += penalty;
+		penalties.add(new Double(penalty));
+	}
+
+	rentReminder() {
+		timesRentDue++;
+		rentDue = true;
+	}
+
+	//-----------------------------------------------------------//
+
+	// Scheduler
+
+	if rentDue = true && money >= rent
+		payRent();
+	if there exists p in penalties st. p <= money
+		payPenalty(p);
+	return super.pickAndExecuteAnAction();
+
+	//-----------------------------------------------------------//
+
+	// Utilities
+
+	findPayablePenalty() {
+		for (Double i : penalties) {
+			if (i <= money)
+				return i;
+		}
+		return null;
+	}
+}

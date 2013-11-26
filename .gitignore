@@ -1,0 +1,10 @@
+*.class
+*.package
+*.project
+*.classpath
+.DS_STORE
+# Package Files #
+*.jar
+*.war
+*.ear
+/bin
