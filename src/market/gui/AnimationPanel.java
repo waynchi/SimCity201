@@ -17,6 +17,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
     private List<Gui> guis = new ArrayList<Gui>();
     public List<MarketCustomerGui> marketCustomerGui = new ArrayList<MarketCustomerGui>();
+    private ImageIcon market_background = new ImageIcon("res/market/market_background.jpeg");
+    
 
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -38,6 +40,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        g2.drawImage(market_background.getImage(), 0, 0, 500, 400, null);
+
 
         //Here is the main entrance
         g2.setColor(Color.LIGHT_GRAY);

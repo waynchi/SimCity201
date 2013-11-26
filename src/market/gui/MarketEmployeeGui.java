@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import market.gui.MarketEmployeeGui;
 import market.interfaces.MarketEmployee;
 
@@ -15,6 +17,8 @@ public class MarketEmployeeGui implements Gui{
 	boolean goToCounter = false;
 	boolean isPresent = false;
 	boolean leaving = false;
+    private ImageIcon market_employee = new ImageIcon("res/market/marketEmployee.jpeg");
+
 	
 	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
@@ -25,13 +29,13 @@ public class MarketEmployeeGui implements Gui{
 		itemMap.put("Car", new Dimension(150,250));
 	}
 	//170,150,30,30
-	int xPos= 0, xDestination = 170;
+	int xPos= 170, xDestination = 170;
 	int yPos= 0, yDestination = 150;
 	
 	int xCounter = 170;
 	int yCounter = 150;
 	
-	int xExit = 0;
+	int xExit = 170;
 	int yExit = 0;
 	
 	boolean atCabinet = false;
@@ -66,8 +70,8 @@ public class MarketEmployeeGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.BLUE);
-		g.fillRect(xPos, yPos, 30, 30);
+        g.drawImage(market_employee.getImage(), xPos, yPos, 10, 10, null);
+
 	}
 
 	@Override
