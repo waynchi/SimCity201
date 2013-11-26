@@ -525,7 +525,7 @@ public class Vehicle extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
-		if(time % 5 == 0) {
+		if(time % 30 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Lane intersection = getLaneInformation("2_13");
 				if(intersection.redLight) {
