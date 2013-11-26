@@ -14,6 +14,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import city.gui.trace.AlertLog;
+import city.gui.trace.AlertTag;
 import people.PeopleAgent.AgentEvent;
 import people.Role;
 
@@ -74,6 +76,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgIsActive() {
 		print("Recveived msgIsActive");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Received msgIsActive from person agent");
 		bgui.gotoLine(gui);
 		isActive = true;
 		state = CustomerState.inline;
@@ -82,6 +85,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgReadyToHelp(Teller t) {
 		print("Received msgReadyToHelp from teller");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Received msgReadyToHelp from teller");
 		this.teller = t;
 		state = CustomerState.ready;
 		stateChanged();
@@ -90,6 +94,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgAccountBalance(int accountID, double balance) {
 		this.accountID = accountID;
 		print("Account created. Account has a balance of: " + balance);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Account created. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
 	}
@@ -97,6 +102,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgAccountAndLoan(int accountID, double balance, double money) {
 		this.accountID = accountID;
 		print("Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
 		myPerson.Money += money;
 		state = CustomerState.done;
 		stateChanged();
@@ -104,6 +110,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	public void msgGiveLoan(double balance, double money) {
 		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Account has a balance of: " + balance + ". Must pay teller next time for loan");
 		myPerson.Money += money;
 		state = CustomerState.done;
 		stateChanged();
@@ -112,12 +119,14 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgWithdrawSuccessful(double balance, double money) {
 		myPerson.Money += money;
 		print("Withdraw successful. Account has a balance of: " + balance);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Withdraw successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgDepositSuccessful(double balance) {
 		print("Deposit successful. Account has a balance of: " + balance);
+		AlertLog.getInstance().logMessage(AlertTag.BANK_CUSTOMER, name, "Deposit successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
 	}
