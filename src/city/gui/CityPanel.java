@@ -19,6 +19,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	sidewalkStrip16,sidewalkStrip17,sidewalkStrip18,sidewalkStrip19,sidewalkStrip20,sidewalkStrip21,sidewalkStrip22,sidewalkStrip23,sidewalkStrip24,
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
 	ArrayList<ArrayList> listofSidewalkStrips;
+	ArrayList<Lane> intersections;
 	CityGui city;
 	int count = 0;
 	static final int hozX = 350;
@@ -154,6 +155,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		sidewalkStrip30 = new ArrayList<Sidewalk>();
 		listofSidewalkStrips.add(sidewalkStrip30);
 		
+		intersections = new ArrayList<Lane>();
+		
+		
 		
 		
 		
@@ -184,6 +188,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			l = new Lane( hozX - 210 + 20*k, hozY + 110, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "2_" + k);
 			lanes.add( l );
 			road2.add(l);
+			if(k == 13) {
+				intersections.add(l); //First intersection
+			}
 		}
 		
 		for(int k = 0; k < hozWidth/10; k++)
@@ -615,6 +622,12 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 	
 	public void paintComponent( Graphics g ) {
+		count++;
+		if(count % 50 == 0) {
+			for(Lane intersection : intersections) {
+				intersection.redLight();
+			}
+		}
 		Graphics2D g2 = (Graphics2D)g;
 		
         g2.setColor(getBackground());
