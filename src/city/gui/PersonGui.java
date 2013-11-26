@@ -131,8 +131,8 @@ public class PersonGui extends Rectangle2D.Double {
 		g2.fill( this );
 		g2.draw(this);
 
-		//System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
-		System.out.println(getCurrentLane());
+		System.out.println(x+","+y + " destination: " + xDestination + "," + yDestination);
+		//System.out.println(getCurrentLane());
 		
 		if(x == xDestination && y == (yDestination + 20)) {
 			cityPanel.removePerson(this);
@@ -170,7 +170,7 @@ public class PersonGui extends Rectangle2D.Double {
 			currentCell = sidewalkSegment.get(1);
 		}
 		if(getCurrentLane().equals("11_27")) {
-			if(xDestination > 752) {
+			if(xDestination > x) {
 				this.direction="right";
 				sidewalkSegment = allSidewalks.get(11);
 				currentCell = sidewalkSegment.get(0);
@@ -207,7 +207,7 @@ public class PersonGui extends Rectangle2D.Double {
 			currentCell = sidewalkSegment.get(0);
 		}
 		if(getCurrentLane().equals("26_4")) {
-			if(xDestination > 772) {
+			if(xDestination > x) {
 				this.direction="right";
 				sidewalkSegment = allSidewalks.get(24);
 				currentCell = sidewalkSegment.get(5);
@@ -244,13 +244,12 @@ public class PersonGui extends Rectangle2D.Double {
 			currentCell = sidewalkSegment.get(5);
 		}
 		if(getCurrentLane().equals("23_27")) {
-			System.out.println(xDestination);
-			if(xDestination > 772) {
+			if(xDestination > x) {
 				this.direction="right";
 				sidewalkSegment = allSidewalks.get(6);
 				currentCell = sidewalkSegment.get(0);
 			}
-			if(xDestination == 772) {
+			else {
 				this.direction="down";
 				sidewalkSegment = allSidewalks.get(20);
 				currentCell = sidewalkSegment.get(0);
@@ -277,9 +276,38 @@ public class PersonGui extends Rectangle2D.Double {
 			currentCell = sidewalkSegment.get(8);
 		}
 		if(getCurrentLane().equals("2_0")) {
-			this.direction="right";
-			sidewalkSegment = allSidewalks.get(12);
-			currentCell = sidewalkSegment.get(8);
+			if(xDestination > 140) {
+				//Cross
+				if(yDestination < y) {
+					//Go up
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(28);
+					currentCell = sidewalkSegment.get(10);
+					
+				} else {
+					//Go down
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(29);
+					currentCell = sidewalkSegment.get(0);
+				}
+			} else {
+				if(yDestination < y) {
+					//Go up
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(26);
+					currentCell = sidewalkSegment.get(10);
+
+					
+				} else {
+					//Go down
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(27);
+					currentCell = sidewalkSegment.get(0);
+				}
+			}
+			
+			
+			
 		}
 		
 		
@@ -287,7 +315,7 @@ public class PersonGui extends Rectangle2D.Double {
 
 
 		boolean canMove = true;
-		if(time % 10 == 0) {
+		if(time % 5 == 0) {
 			if(getCurrentLane().equals("2_12")) {
 				Sidewalk intersection = getSidewalkInformation("2_13");
 				if(intersection.redLight) {
