@@ -26,7 +26,7 @@ public class CarGui extends Vehicle{
 	}
 	@Override
 	public void reachedDestination(){
-		//carAgent.msgAnimationFinishedArrivedAtDestination(destination);
+		carAgent.msgAnimationFinishedArrivedAtDestination(destination);
 	}
 
 }
