@@ -82,7 +82,7 @@ public class RepairManGui implements HGui{
 				}
 				location = Location.Outside;
 				state = State.Idle;
-				((HousingRepairManRole)r).doneLeaving();
+				((HousingRepairManRole)r).activityDone();
 			}
 		}
 	}
@@ -202,7 +202,7 @@ public class RepairManGui implements HGui{
 	public void DoLeaveJob() {
 		state = State.LeavingJob;
 		if (location == Location.Outside) {
-			((HousingRepairManRole)r).doneLeaving();
+			((HousingRepairManRole)r).activityDone();
 		}
 		else if (location == Location.ApartmentComplex) {
 			goToLocation(ref.h.a.gui.entranceCoordinates);
