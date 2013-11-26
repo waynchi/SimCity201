@@ -113,6 +113,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
+		print("received an order from customer");
 		orders.add(new Order(customer, chosenItems));
 		getPersonAgent().CallstateChanged();
 
