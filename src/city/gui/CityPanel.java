@@ -627,8 +627,18 @@ public class CityPanel extends JPanel implements MouseListener {
 		//Add grid of homes on left
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*80+ 70, j*40 + 10, 20, 20, i*60 + 122, j*40 + 30, "Home " + ((i+1)*(j+1)) );
-				System.out.println("Home " + (i+1)*(j+1) + ": " + (i*60+122) + "," + (j*40+30));
+				Building home;
+				if(i == 0)
+				{
+					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
+					System.out.println("Home " + (i+1)*(j+1) + ": " + (122 - 30*i) + "," + (j*40+10));
+				}
+				else
+				{
+					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
+					System.out.println("Home " + (j+4) + ": " + (122 - 20*i) + "," + (j*40+10));
+				}
+				//System.out.println("Home " + (i+1)*(j+1) + ": " + (i*60+122) + "," + (j*40+10));
 				buildings.add( home );
 			}
 		}
@@ -636,8 +646,18 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		for ( int i=0; i<=1; i++ ) {
 			for ( int j=0; j<3; j++ ) {
-				Building home = new Building( i*80+ 70, j*40 + 200, 20, 20, i*60 + 90, j*40 + 18, "Home " + i );
-				buildings.add( home );
+				Building home;
+				if(i == 0)
+				{
+					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
+					System.out.println("Home " + (6+(i+1)*(j+1)) + ": " + (122 - 30*i) + "," + (j*40+10));
+				}
+				else
+				{
+					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
+					System.out.println("Home " + (6+(j+4)) + ": " + (122 - 20*i) + "," + (j*40+10));
+				}
+				buildings.add(home);
 			}
 		}
 		
@@ -677,8 +697,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		busAgent.setGui(bg);
 		busAgent.startThread();
 		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
-		vehicles.add(bg);
+		//vehicles.add(bg);
 		
+		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		CarAgent carAgent = new CarAgent();
+		carAgent.setGui(cg);
+		carAgent.startThread();
+		cg.msgGoToThisPlace(carAgent, "Home 8");
+		vehicles.add(cg);
 //		
 		addMouseListener( this );
 
