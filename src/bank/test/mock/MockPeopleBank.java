@@ -17,7 +17,7 @@ import people.PeopleAgent.HungerState;
 
 public class MockPeopleBank extends PeopleAgent implements People {
 	
-	EventLog log = new EventLog();
+	public EventLog log = new EventLog();
 	
 	public double money = 1000;
 	public Teller teller;
