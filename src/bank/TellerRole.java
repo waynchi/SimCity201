@@ -42,6 +42,8 @@ public class TellerRole extends Role implements Teller {
 	private BankGui bgui;
 	
 	private TellerGui gui;
+	
+	private Semaphore atExit = new Semaphore(0,true);
 
 	public TellerRole(BankGui b) {
 		super();
@@ -75,6 +77,11 @@ public class TellerRole extends Role implements Teller {
 	}
 
 	// Messages
+	
+	public void msgGone(){
+		atExit.release();
+		gui.leave = false;
+	}
 	
 	public void msgIsActive(){
 		print("Received msgIsActive");
@@ -253,9 +260,18 @@ public class TellerRole extends Role implements Teller {
 		currentCustomer = null;
 	}
 	private void Leave() {
-		if (!isTest) gui.DoExitRestaurant();
 		isActive = false;
 		LeavePost = false;
+		if (!isTest) {
+			gui.leave = true;
+			gui.DoExitRestaurant();
+			try {
+				atExit.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		myPerson.msgDone("TellerRole");
 	}
 	

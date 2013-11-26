@@ -30,6 +30,7 @@ public class TellerGui implements Gui{
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 	private ImageIcon host = new ImageIcon("res/bank/tellersprite.png");
+	public Boolean leave = false;
 	
 	static final int CUST_SIZE = 20;
 
@@ -59,6 +60,10 @@ public class TellerGui implements Gui{
 		if (isAtDesk) {
 			xDestination = 312;
 			yDestination = 90;
+		}
+		
+		if (xPos == 312 && yPos == 90 && leave) {
+			agent.msgGone();
 		}
 	}
 
