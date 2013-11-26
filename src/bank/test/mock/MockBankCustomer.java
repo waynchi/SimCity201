@@ -43,7 +43,7 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
-		
+		log.add(new LoggedEvent("received successful withdraw of: " + money + " balance is: " + balance));
 	}
 	
 	public void msgDepositSuccessful(double balance) {
