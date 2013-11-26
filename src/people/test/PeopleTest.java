@@ -165,9 +165,10 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
+				System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				p.Arrived();
+				//p.Arrived();
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
@@ -188,7 +189,7 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 			}
 		}
 		
@@ -335,8 +336,8 @@ public class PeopleTest extends TestCase
 			//System.out.println(p.event.toString());
 			//System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			//System.out.println(p.state.toString());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("EatingAtHome"));
+			System.out.println(p.state.toString());
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
 			}
 			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);

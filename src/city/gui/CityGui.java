@@ -192,7 +192,7 @@ public class CityGui extends JFrame implements ActionListener {
 					count++;
 					person.startThread();
 					//setTest();
-					person.setTest();
+					//person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui1);

@@ -31,7 +31,6 @@ public class Apartments {
 			h.setApartments(this);
 			HouseGui g = new HouseGui(h);
 			h.setGui(g);
-			// Further implementation to add HouseGuis.
 		}
 	}
 }
