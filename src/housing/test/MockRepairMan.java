@@ -50,10 +50,11 @@ public class MockRepairMan extends Role implements RepairMan {
 
 	@Override
 	public People getPersonAgent() {
-		return null;
+		return myPerson;
 	}
 
 	@Override
-	public void setPerson(PeopleAgent p) {	
+	public void setPerson(PeopleAgent p) {
+		this.myPerson = p;
 	}
 }
