@@ -38,6 +38,7 @@ public class CookRole extends Role implements Cook{
 	private Timer schedulerTimer = new Timer();
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
+	protected Semaphore atExit= new Semaphore (0,true);
 
 	
 	private CookGui cookGui = null;
@@ -104,6 +105,11 @@ public class CookRole extends Role implements Cook{
 		atRevolvingStand.release();
 		myPerson.CallstateChanged();
 		
+	}
+	
+	public void msgAtExit() {
+		atExit.release();;
+		getPersonAgent().CallstateChanged();
 	}
 	
 
@@ -303,7 +309,7 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cookGui.DoGoBack();
+		cookGui.DoGoToCookingPlace();
 			try {
 				atGrill.acquire();
 			} catch (InterruptedException e) {
@@ -349,6 +355,13 @@ public class CookRole extends Role implements Cook{
 
 	private void clockIn() {
 		cookGui.setPresent(true);
+		cookGui.DoGoToCookingPlace();
+		try {
+			atGrill.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		host = myPerson.Restaurants.get(0).h;
 		host.setCook(this);
 		marketEmployee = myPerson.Markets.get(0).mer;
@@ -359,6 +372,13 @@ public class CookRole extends Role implements Cook{
 	public void done() {
 		// gui do go to the exit
 		cookGui.setPresent(false);
+		cookGui.DoLeaveWork();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		leaveWork = false;
 		getPersonAgent().msgDone("RestaurantCookRole");
 	}

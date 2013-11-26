@@ -33,9 +33,16 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 	
 	public void done () {
 		// gui has to walk to exit
-		isActive = false;
 		leaveWork = false;
+		waiterGui.DoExit();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		waiterGui.setPresent(false);
+		isActive = false;
 		getPersonAgent().msgDone("RestaurantSpecialWaiterRole");
 	}
 }

@@ -29,6 +29,13 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	
 	public void done () {
 		// gui needs to walk to exit
+		waiterGui.DoExit();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		waiterGui.setPresent(false);
 		isActive = false;
 		leaveWork = false;

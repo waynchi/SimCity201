@@ -16,19 +16,24 @@ public class CookGui implements Gui {
 	private CookRole role = null;
 	Boolean isCooking;
 	boolean goingBack = false;
+	boolean leavingWork = false;
 	String foodBeingCooked = null;
 	RestaurantGui gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination = 70, xPos = 70;
-    private int yDestination = 270, yPos = 270;
+    private int xDestination = 70, 
+    		xPos = 350;
+    private int yDestination = 270,
+    		yPos = 100;
     
     private int cookX = 70;
     private int cookY = 270;
     
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
+    
+    private int xExit = 350, yExit = 100;
     
     boolean isPresent;
 	
@@ -65,6 +70,11 @@ public class CookGui implements Gui {
         		&& (xDestination == cookX) && (yDestination == cookY) && goingBack) {
         	goingBack = false;
         	role.msgAtGrill();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == xExit) && (yDestination == yExit) && leavingWork) {
+        	goingBack = false;
+        	role.msgAtExit();
         }
         }
 
@@ -115,11 +125,19 @@ public class CookGui implements Gui {
 		isPresent = b;
 	}
 
-	public void DoGoBack() {
+	public void DoGoToCookingPlace() {
 		goingBack = true;
 		xDestination = cookX;
 		yDestination = cookY;
 		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void DoLeaveWork() {
+		leavingWork = true;
+		xDestination = xExit;
+		yDestination = yExit;
 		
 	}
 }
