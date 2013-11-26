@@ -48,15 +48,29 @@ public class CityGui extends JFrame implements ActionListener {
 	CityControls cityControls;
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
-	RestaurantGui restaurantGui = new RestaurantGui();
+	RestaurantGui restaurantGui1 = new RestaurantGui();
+
+
+
+
+
 	MarketGui marketGui = new MarketGui();
 	//HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole = new HostRole();
+	HostRole RestaurantHostRole1 = new HostRole();
+
+
+
+
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
-	Restaurant restaurant = new Restaurant(RestaurantHostRole, new Dimension(100, 100), "Restaurant 1");
+	Restaurant restaurant = new Restaurant(RestaurantHostRole1, new Dimension(100, 100), "Restaurant 1");
+
+
+
+
+	
 	Market market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 	TellerRole BankTellerRole = new TellerRole(bankGui); 
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
@@ -76,16 +90,19 @@ public class CityGui extends JFrame implements ActionListener {
 		Timer timer = new Timer(5, this);
 		
 		//Set trace tags
-		RestaurantHostRole.setTag(AlertTag.RESTAURANT);
+		RestaurantHostRole1.setTag(AlertTag.RESTAURANT1);
+
+
+
 		repairManRole.setTag(AlertTag.HOME);
 		BankTellerRole.setTag(AlertTag.BANK);
 		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
-		RestaurantPanel restPanel = new RestaurantPanel(restaurantGui);
-		restPanel.setHost(RestaurantHostRole);
-		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
+		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGui1);
+		restPanel1.setHost(RestaurantHostRole1);
+		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel1.theMonitor;
 
 		FileReader input = null;
 		try {
@@ -119,7 +136,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Banks.add(bank);
 					person.Markets.add(market);
 					cityPanel.people.add(personGui);
-					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui);
+					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui1);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
 					person.addRole(marketCustomerRole, "MarketCustomer");
 					marketCustomerRole.setPerson(person);
@@ -134,7 +151,7 @@ public class CityGui extends JFrame implements ActionListener {
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
 					
-					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT);
+					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
 					
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
@@ -142,7 +159,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					
 					
-					bankCustomerRole.setTag(AlertTag.RESTAURANT);
+					bankCustomerRole.setTag(AlertTag.RESTAURANT1);
 					
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
@@ -170,9 +187,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
-						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui1);
 						
-						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT);
+						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
 						
 						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
 						//RestaurantNormalWaiterRole.setGui(g);
@@ -181,9 +198,9 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 					}
 					if (job.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui1);
 						
-						RestaurantCookRole.setTag(AlertTag.RESTAURANT);
+						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
 						
 						person.addJob("RestaurantCook", start, end);
 						person.addRole(RestaurantCookRole, "RestaurantCook");
@@ -191,13 +208,13 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantHost")) {
 						person.addJob("RestaurantHost", start, end);
-						person.addRole(RestaurantHostRole, "RestaurantHost");
-						RestaurantHostRole.setPerson(person);
+						person.addRole(RestaurantHostRole1, "RestaurantHost");
+						RestaurantHostRole1.setPerson(person);
 					}
 					if (job.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui);
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui1);
 						
-						RestaurantCashierRole.setTag(AlertTag.RESTAURANT);
+						RestaurantCashierRole.setTag(AlertTag.RESTAURANT1);
 						
 						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRole,"RestaurantCashier");
@@ -299,7 +316,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		JScrollPane marketContainer = new JScrollPane(marketGui);
 		marketContainer.setOpaque(true);
-		JScrollPane restaurantContainer = new JScrollPane(restaurantGui);
+		JScrollPane restaurantContainer = new JScrollPane(restaurantGui1);
 		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
@@ -366,7 +383,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
 		marketGui.updatePosition();
-		restaurantGui.updatePosition();
+		restaurantGui1.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();

@@ -143,6 +143,7 @@ public class PersonGui extends Rectangle2D.Double {
 		
 		if(x == xDestination && y == (yDestination + 20)) {
 			cityPanel.removePerson(this);
+			person.msgDone("PersonGui");
 			
 		}
 		

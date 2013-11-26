@@ -72,7 +72,7 @@ public class CityControls extends JPanel implements ActionListener {
 			
 			tracePanel.showAlertsWithTag(AlertTag.BANK);
 			tracePanel.showAlertsWithTag(AlertTag.HOME);
-			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT1);
 			tracePanel.showAlertsWithTag(AlertTag.MARKET);
 			
 
@@ -206,11 +206,11 @@ public class CityControls extends JPanel implements ActionListener {
 					JToggleButton tBtn = (JToggleButton)e.getSource();
 					if (tBtn.isSelected()) {
 						tBtn.setText("Hide Tag: RESTAURANT");
-						tracePanel.showAlertsWithTag(AlertTag.RESTAURANT);
+						tracePanel.showAlertsWithTag(AlertTag.RESTAURANT1);
 			        }
 					else {
 						tBtn.setText("Show Tag: RESTAURANT");
-						tracePanel.hideAlertsWithTag(AlertTag.RESTAURANT);
+						tracePanel.hideAlertsWithTag(AlertTag.RESTAURANT1);
 			        }
 				}
 			});
