@@ -17,10 +17,10 @@ import agent.Agent;
 public class PeopleAgent extends Agent implements People{
 
 	public List<MyRole> roles = Collections.synchronizedList(new ArrayList<MyRole>());
-	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
-	public List<Market> Markets = new ArrayList<Market>();
-	public List<Bank> Banks = new ArrayList<Bank>();
-	public List<Job> jobs = new ArrayList<Job>();
+	public List<Restaurant> Restaurants = Collections.synchronizedList(new ArrayList<Restaurant>());
+	public List<Market> Markets = Collections.synchronizedList(new ArrayList<Market>());
+	public List<Bank> Banks = Collections.synchronizedList(new ArrayList<Bank>());
+	public List<Job> jobs = Collections.synchronizedList(new ArrayList<Job>());
 	public Double Money;
 	public Double Balance;
 	private int Hunger = 1200;
