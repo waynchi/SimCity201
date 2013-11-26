@@ -1,17 +1,11 @@
 package restaurant.gui;
 
-import restaurant.HostRole;
-import restaurant.RestaurantCustomerRole;
 import restaurant.interfaces.Customer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
 
 public class CustomerGui implements Gui{
 

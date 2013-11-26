@@ -1,15 +1,5 @@
 package restaurant;
 
-import agent.Agent;
-import restaurant.BaseWaiterRole;
-import restaurant.gui.HostGui;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Waiter;
-
-import java.awt.Dimension;
-import java.util.*;
-import java.util.concurrent.Semaphore;
-
 import people.Role;
 
 /**

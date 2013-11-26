@@ -1,6 +1,5 @@
 package restaurant;
 
-import restaurant.gui.CookGui;
 import restaurant.gui.RestaurantCashierGui;
 import restaurant.gui.RestaurantGui;
 import restaurant.interfaces.Cashier;
@@ -220,6 +219,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgWithdrawSuccessful(double funds, double amount){
+		print("got mssWithDrawSuccessful from bank");
+		print("state is " + bankState.toString());
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= funds;
@@ -228,6 +229,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgDepositSuccessful(double funds){
+		print("got mssDepositSuccessful from bank");
+		print("state is " + bankState.toString());
 		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
 		working_capital -= (funds - bank_balance);
 		bank_balance = funds;
@@ -272,7 +275,18 @@ public class CashierRole extends Role implements Cashier {
 					payMarket(marketBills.get(i));
 				}
 			}
+		}
+
+
+		
+		if (!marketBills.isEmpty()) {
+			synchronized (marketBills) {
+			for (MarketBill mb : marketBills) {
+				if (mb.itemsReceived = true)
+					payMarket(mb);
+			}
 		return true;
+		}
 		}
 
 		/*if (loanRequested && loanGranted) {
@@ -314,8 +328,9 @@ public class CashierRole extends Role implements Cashier {
 			prepareToClose();
 			return true;
 		}
-
+		
 		return false;
+		
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
@@ -434,6 +449,7 @@ public class CashierRole extends Role implements Cashier {
 
 	private void closeRestaurant() {
 		log.add(new LoggedEvent("In action closeRestaurant"));
+		teller.msgDoneAndLeaving();
 		deposit = withdraw = false;
 		isActive = false;
 		cashierGui.DoLeaveWork();
@@ -456,14 +472,15 @@ public class CashierRole extends Role implements Cashier {
 	private void depositExcessMoney() {
 		double amount = working_capital - min_working_capital;
 		System.out.println("deposit monely " + amount + " to bank");
-		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, working_capital - min_working_capital);;
-
+		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, working_capital - min_working_capital);
+		bankState = bankActivityState.ASKED_DEPOSIT;
 	}
 
 	private void withdrawMoney() {
 		double amount = getTotalSalary() + min_working_capital - working_capital;
 		System.out.println("withdraw monely " + amount + " to bank");
 		teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
+		bankState = bankActivityState.ASKED_WITHDRAW;
 	}
 
 
