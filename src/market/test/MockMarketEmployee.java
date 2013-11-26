@@ -62,4 +62,10 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 		
 	}
 
+	@Override
+	public void msgAtExit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

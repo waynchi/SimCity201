@@ -2,6 +2,7 @@ package market.test;
 
 import java.util.List;
 
+import bank.interfaces.Teller;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -194,6 +195,12 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public Bank getBank(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Teller getTeller() {
 		// TODO Auto-generated method stub
 		return null;
 	}
