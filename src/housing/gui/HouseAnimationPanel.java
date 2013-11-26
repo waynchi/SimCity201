@@ -31,6 +31,9 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		for (HGui gui : guis) {
+			gui.updatePosition();
+		}
+		for (HGui gui : guis) {
 			if (gui.isPresent())
 				gui.draw(g);
 		}
