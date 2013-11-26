@@ -835,7 +835,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(r.description.equals(jobs.get(0).job))
 			{
-				System.out.println("I am leaving work");
+				print("I am leaving work");
 				r.role.msgIsInActive();	
 			}
 		}

@@ -168,7 +168,7 @@ public class CityGui extends JFrame implements ActionListener {
 					count++;
 					person.startThread();
 					//setTest();
-					person.setTest();
+					//person.setTest();
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui);
@@ -211,7 +211,8 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("Teller")) {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
-						BankTellerRole.setPerson(person);			
+						BankTellerRole.setPerson(person);	
+						person.hasCar = true;
 					}
 					if(job.equals("Nobody")) {
 						person.addJob("MarketEmployee", start, end);
