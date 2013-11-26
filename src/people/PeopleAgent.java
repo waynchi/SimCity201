@@ -1,5 +1,6 @@
 package people;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
@@ -15,7 +16,7 @@ import agent.Agent;
 
 public class PeopleAgent extends Agent implements People{
 
-	public List<MyRole> roles = new ArrayList<MyRole>();
+	public List<MyRole> roles = Collections.synchronizedList(new ArrayList<MyRole>());
 	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 	public List<Market> Markets = new ArrayList<Market>();
 	public List<Bank> Banks = new ArrayList<Bank>();
@@ -171,6 +172,7 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
+		print("Recieved msgDone from "+ role);
 		if(role != "ResidentRole")
 		{
 		log.add(new LoggedEvent("Recieved msgDone"));
@@ -398,7 +400,14 @@ public class PeopleAgent extends Agent implements People{
 			stateChanged();
 			return;
 		}
-		
+		if(Time >= 2330 && state != AgentState.Sleeping)
+		{
+			event = AgentEvent.GoingToSleep;
+			buy = BuyState.NextDay;
+			log.add(new LoggedEvent("Sleeping In Message"));
+			stateChanged();
+			return;
+		}
 	}
 
 	//scheduler
@@ -408,12 +417,14 @@ public class PeopleAgent extends Agent implements People{
 //		print("My Current Event is: " + event.toString());
 //		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
+		synchronized(roles){
 		for(MyRole m : roles)
 		{
 			if(m.role.isActive)
 			{
 				Roles = m.role.pickAndExecuteAnAction();
 			}
+		}
 		}
 		if(state == AgentState.Working && event == AgentEvent.RepairManMoving)
 		{

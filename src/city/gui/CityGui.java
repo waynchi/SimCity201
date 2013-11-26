@@ -271,18 +271,19 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
+		int x = 3;
 		time++;
-		if(time % 1 == 0)
+		if(time % x == 0)
 		{
 			if(time%60 == 0)
 			{
-				System.out.println(time/1);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
-				p.msgTimeIs(time/1);
+				p.msgTimeIs(time/x);
 			}
 		}
-		if(time == 2400*1) {
+		if(time == 2400*x) {
 			time=0;
 		}
 		repaint();
