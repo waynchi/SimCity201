@@ -37,7 +37,7 @@ public class TellerRole extends Role implements Teller {
 	
 	Boolean LeavePost = false;
 	
-	Boolean isTest = false;
+	public Boolean isTest = false;
 	
 	private BankGui bgui;
 	
@@ -153,7 +153,7 @@ public class TellerRole extends Role implements Teller {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		if (isActive) {
-			if (waitingCustomers.size() != 0 || currentCustomer != null) {
+			if (waitingCustomers.size() != 0) {
 				if (currentCustomer == null) {
 					currentCustomer = waitingCustomers.get(0);
 					callCustomer(currentCustomer);
