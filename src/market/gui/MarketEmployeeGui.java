@@ -13,8 +13,9 @@ import market.interfaces.MarketEmployee;
 public class MarketEmployeeGui implements Gui{
 	private Map<String,Dimension> itemMap = new HashMap<String, Dimension>();
 	MarketEmployee employee;
-	boolean goBackToCounter = false;
+	boolean goToCounter = false;
 	boolean isPresent = false;
+	boolean leaving = false;
 	
 	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
@@ -25,11 +26,14 @@ public class MarketEmployeeGui implements Gui{
 		itemMap.put("Car", new Dimension(150,250));
 	}
 	//170,150,30,30
-	int xPos= 170, xDestination = 170;
-	int yPos=150, yDestination = 150;
+	int xPos= 0, xDestination = 170;
+	int yPos= 0, yDestination = 150;
 	
 	int xCounter = 170;
 	int yCounter = 150;
+	
+	int xExit = 0;
+	int yExit = 0;
 	
 	boolean atCabinet = false;
 	
@@ -50,9 +54,13 @@ public class MarketEmployeeGui implements Gui{
 			employee.msgAtCabinet();
 			atCabinet = false;
 		}
-		if (xPos == xDestination && yPos == yDestination && goBackToCounter) {
+		if (xPos == xDestination && yPos == yDestination && goToCounter) {
 			employee.msgAtCounter();
-			goBackToCounter = false;
+			goToCounter = false;
+		}
+		if (xPos == xExit && yPos == yExit && leaving) {
+			employee.msgAtExit();
+			leaving = false;
 		}
 	}
 
@@ -80,10 +88,18 @@ public class MarketEmployeeGui implements Gui{
 		// TODO Auto-generated method stub
 		xDestination = xCounter;
 		yDestination = yCounter;
-		goBackToCounter = true;
+		goToCounter = true;
 	}
 
 	public void setPresent(boolean p) {
 		isPresent = p;
+	}
+
+	public void doExit() {
+		// TODO Auto-generated method stub
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
+		
 	}
 }

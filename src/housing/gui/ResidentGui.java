@@ -39,6 +39,8 @@ public class ResidentGui implements HGui{
 	
 	public ResidentGui(Resident r) {
 		this.r = r;
+		xPos = 360;
+		yPos = 310;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import housing.HouseType;
 import housing.HousingRepairManRole;
 import housing.HousingResidentRole;
 import housing.gui.HouseAnimationPanel;
+import housing.gui.HouseGui;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -46,7 +47,8 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui = new RestaurantGui();
 	MarketGui marketGui = new MarketGui();
-	HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	//HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole = new HostRole();
@@ -81,9 +83,17 @@ public class CityGui extends JFrame implements ActionListener {
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
 
-		FileReader input;
+		FileReader input = null;
 		try {
-			input = new FileReader("src/config.txt");
+			System.out.println(System.getProperty("file.separator"));
+			if(System.getProperty("file.separator").equals("/"))
+			{
+				input = new FileReader( "src//config.txt");
+			}
+			else if(System.getProperty("file.separator").equals("\\"))
+			{
+				input = new FileReader( "src\\config.txt");
+			}
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -99,7 +109,7 @@ public class CityGui extends JFrame implements ActionListener {
 				if (isInteger(amount)) {
 					PeopleAgent person = new PeopleAgent(name, 1000.0, false);
 					person.setCityGui(this);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalks.get(29),cityPanel.sidewalks,cityPanel,person,cityPanel.buildings.get(0));
+					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);
@@ -122,12 +132,17 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
+					HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
+					houseAnimationPanels.add(houseAnimationPanel);
 					House house = new House("House", 1, HouseType.Villa);
 					HousingResidentRole residentRole = new HousingResidentRole();
-					
+					house.setItems();
+					HouseGui hGui = new HouseGui(house);
+					house.setGui(hGui);
+					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
-					
-					residentRole.testModeOn();
+					houseAnimationPanel.addGui(house.gui);
+					//residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
@@ -269,12 +284,17 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
-		JScrollPane houseContainer = new JScrollPane(houseAnimationPanel);
-		houseContainer.setOpaque(true);
-        buildingPanels.add(restaurantContainer, "" + 0);
-        buildingPanels.add(bankContainer, "" + 1);
-        buildingPanels.add(houseContainer, "" + 2);
-        buildingPanels.add(marketContainer,"" + 3);
+		
+        buildingPanels.add(restaurantContainer, "" + 15);
+        buildingPanels.add(bankContainer, "" + 14);
+        
+        buildingPanels.add(marketContainer,"" + 13);
+        for(int j = 0; j < houseAnimationPanels.size(); j++)
+        {
+        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+    		houseContainer.setOpaque(true);
+    		buildingPanels.add(houseContainer, "" + j);
+        }
 
 
 		//getContentPane().add(BorderLayout.WEST, cityControls);
@@ -332,7 +352,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%60 == 0)
 			{
-				//System.out.println(time/x);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);

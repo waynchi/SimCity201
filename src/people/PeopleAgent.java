@@ -17,10 +17,10 @@ import agent.Agent;
 public class PeopleAgent extends Agent implements People{
 
 	public List<MyRole> roles = Collections.synchronizedList(new ArrayList<MyRole>());
-	public List<Restaurant> Restaurants = new ArrayList<Restaurant>();
-	public List<Market> Markets = new ArrayList<Market>();
-	public List<Bank> Banks = new ArrayList<Bank>();
-	public List<Job> jobs = new ArrayList<Job>();
+	public List<Restaurant> Restaurants = Collections.synchronizedList(new ArrayList<Restaurant>());
+	public List<Market> Markets = Collections.synchronizedList(new ArrayList<Market>());
+	public List<Bank> Banks = Collections.synchronizedList(new ArrayList<Bank>());
+	public List<Job> jobs = Collections.synchronizedList(new ArrayList<Job>());
 	public Double Money;
 	public Double Balance;
 	private int Hunger = 1200;
@@ -102,14 +102,29 @@ public class PeopleAgent extends Agent implements People{
 		return Restaurants.get(i).h;
 	}
 	
-	public Role getTeller()
+	public Role getTeller(int i)
 	{
-		return null;
+		return Banks.get(i).t;
 	}
 	
-	public Role getMarketEmployee()
+	public Bank getBank(int i)
 	{
-		return null;
+		return Banks.get(i);
+	}
+	
+	public Market getMarket(int i)
+	{
+		return Markets.get(i);
+	}
+	
+	public Restaurant getRestaurant(int i)
+	{
+		return Restaurants.get(i);
+	}
+	
+	public Role getMarketEmployee(int i)
+	{
+		return Markets.get(i).mer;
 	}
 	
 	public String getMaitreDName() {
@@ -279,6 +294,7 @@ public class PeopleAgent extends Agent implements People{
 								print("I am going to buy a car");
 								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
 								buy = BuyState.NotBuying;
+								stateChanged();
 								return;
 							}
 //							else
@@ -458,9 +474,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -900,24 +916,23 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.RepairRole.msgIsActive();
 		}
-		if(jobs.get(i).job.equals("Vendor"))
-		{
-			for(MyRole r: roles)
-			{
-				if(r.description.equals("Vendor"))
-				{			
-					print("I am now a " + r.description);
-					r.role.msgIsActive();
-				}
-			}
-			//roles.VendorRole.msgIsActive();
-		}
 		if(jobs.get(i).job.equals("Teller"))
 		{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Teller"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.goToBank();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Bank;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
@@ -929,7 +944,18 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketCashier"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}
@@ -941,7 +967,18 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketEmployee"))
-				{			
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+					personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
 				}

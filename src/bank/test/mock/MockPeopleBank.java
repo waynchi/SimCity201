@@ -1,32 +1,38 @@
-package market.test;
+package bank.test.mock;
 
 import java.util.List;
 
-import city.Bank;
-import city.Market;
-import city.Restaurant;
+import bank.test.EventLog;
+import bank.test.LoggedEvent;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
+import people.PeopleAgent.AgentEvent;
+import people.PeopleAgent.AgentState;
+import people.PeopleAgent.HungerState;
 
-public class MockPeople extends Mock implements People{
 
-	public MockPeople(String name) {
-		super(name);
+public class MockPeopleBank extends PeopleAgent implements People {
+	
+	EventLog log = new EventLog();
+	
+	public double money = 1000;
+
+	public MockPeopleBank(String name) {
+		super(name, 100000, true);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double getMoney() {
-		// TODO Auto-generated method stub
-		return 0;
+		return money;
 	}
 
 	@Override
 	public void setMoney(double Money) {
-		// TODO Auto-generated method stub
-		
+		this.money = Money;
 	}
 
 	@Override
@@ -37,20 +43,17 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public String getAgentState() {
-		// TODO Auto-generated method stub
-		return null;
+		return state.toString();
 	}
 
 	@Override
 	public String getAgentEvent() {
-		// TODO Auto-generated method stub
-		return null;
+		return event.toString();
 	}
 
 	@Override
 	public String getHunger() {
-		// TODO Auto-generated method stub
-		return null;
+		return hunger.toString();
 	}
 
 	@Override
@@ -110,8 +113,7 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public void msgDone(String role) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent(role));
 	}
 
 	@Override
@@ -167,35 +169,16 @@ public class MockPeople extends Mock implements People{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public Role getTeller(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void setAgentState(AgentState s) {
+		state = s;
 	}
-
-	@Override
-	public Role getMarketEmployee(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void setAgentState(AgentEvent e) {
+		event = e;
 	}
-
-	@Override
-	public Restaurant getRestaurant(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void setHungerState(HungerState h) {
+		hunger = h;
 	}
-
-	@Override
-	public Market getMarket(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Bank getBank(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

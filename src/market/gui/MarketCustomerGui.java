@@ -12,10 +12,10 @@ public class MarketCustomerGui implements Gui{
 	AnimationPanel animationPanel = null;
 	
 	private int xPos = 470, yPos = 150;
-	private int xDestination = 470, yDestination = 150;
+	private int xDestination = 240, yDestination = 150;
 	private int xCounter = 240, yCounter = 150;
 	private int xRegister = 380, yRegister = 70;
-	private int xExit = 470, yExit = 70;
+	private int xExit = 470, yExit = 150;
 	
 	public MarketCustomerGui(MarketCustomer mc){
 		marketCustomer = mc;

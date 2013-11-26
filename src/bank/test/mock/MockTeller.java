@@ -1,24 +1,53 @@
 package bank.test.mock;
 
+import market.interfaces.MarketCashier;
+import restaurant.interfaces.Cashier;
 import bank.interfaces.BankCustomer;
+import bank.interfaces.Teller;
+import bank.test.Mock;
 
 /**
  * teller
  */
 
-public interface MockTeller {
+public class MockTeller extends Mock implements Teller {
 
-	public abstract void msgHere(BankCustomer cust);
+	public MockTeller(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
+
+	public void msgNeedHelp(Cashier cashier, String name) {
+		
+	}
 	
-	public abstract void msgCreateAccount(String name, double initialFund);
+	public void msgNeedHelp(MarketCashier mcashier, String name){
+		
+	}
 	
-	public abstract void msgWithdraw(int accountID, double moneyNeeded);
+	public void msgHere(BankCustomer cust, String name){
+		
+	}
 	
-	public abstract void msgDeposit(int accountID, double moneyGiven);
+	public void msgCreateAccount(String name, double initialFund){
+		
+	}
 	
-	public abstract void msgDeposit(double moneyGiven);
+	public void msgWithdraw(int accountID, double moneyNeeded){
+		
+	}
 	
-	public abstract void msgDoneAndLeaving();
+	public void msgDeposit(int accountID, double moneyGiven){
+		
+	}
+	
+	public void msgDeposit(double moneyGiven){
+		
+	}
+	
+	public void msgDoneAndLeaving(){
+		
+	}
 
 }
 
