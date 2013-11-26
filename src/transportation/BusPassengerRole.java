@@ -59,6 +59,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 //	    stateChanged();    
 		myBus.msgImLeaving(this);
 		//myGui.DoLeaveBus(this);
+		if(myPerson != null)
 		myPerson.msgDone("BusPassenger");
 	}
 	}
