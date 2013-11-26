@@ -12,7 +12,7 @@ public class MarketGui extends JPanel implements ActionListener {
 	AnimationPanel animationPanel = new AnimationPanel();
 
     public MarketGui() {
-        int WINDOWX = 550;
+        int WINDOWX = 500;
         int WINDOWY = 400;
         
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);

@@ -3,6 +3,8 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+
 import market.interfaces.MarketCustomer;
 
 public class MarketCustomerGui implements Gui{
@@ -16,6 +18,8 @@ public class MarketCustomerGui implements Gui{
 	private int xCounter = 240, yCounter = 150;
 	private int xRegister = 380, yRegister = 70;
 	private int xExit = 470, yExit = 150;
+    private ImageIcon market_customer = new ImageIcon("res/market/marketCustomer.jpeg");
+
 	
 	public MarketCustomerGui(MarketCustomer mc){
 		marketCustomer = mc;
@@ -50,8 +54,8 @@ public class MarketCustomerGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.BLUE);
-		g.fillRect(xPos, yPos, 30, 30);
+        g.drawImage(market_customer.getImage(), xPos, yPos, 10, 10, null);
+
 	}
 
 	@Override
