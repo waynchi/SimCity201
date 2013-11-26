@@ -104,4 +104,12 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void updatePosition() {
+		for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+	}
 }

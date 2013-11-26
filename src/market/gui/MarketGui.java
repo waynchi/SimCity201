@@ -35,4 +35,9 @@ public class MarketGui extends JPanel implements ActionListener {
 	public AnimationPanel getAnimationPanel() {
 		return animationPanel;
 	}
+	
+	 public void updatePosition() {
+	    	animationPanel.updatePosition();
+	}
+	    
 }
