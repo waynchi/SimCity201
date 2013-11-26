@@ -73,7 +73,6 @@ public class CookRole extends Role implements Cook{
 	 * @param name name of the cook
 	 */
 	public CookRole(CookWaiterMonitor monitor, RestaurantGui gui) {
-		super();
 		this.restGui = gui;
 		cookGui = new CookGui(this);
 		restGui.getAnimationPanel().addGui(cookGui);
