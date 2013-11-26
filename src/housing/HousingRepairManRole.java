@@ -149,7 +149,7 @@ public class HousingRepairManRole extends Role implements RepairMan {
 	public void needHelp(House h, double money) {
 		MyHouse mh = find(h);
 		mh.s = HouseState.NeedsRepair;
-		myPerson.Money += money;
+		((PeopleAgent)myPerson).Money += money;
 		stateChanged();
 	}
 	
@@ -301,15 +301,23 @@ public class HousingRepairManRole extends Role implements RepairMan {
 			return true;
 		return false;
 	}
+	
+	public MyHouse getCurrentHouse() {
+		return currentHouse;
+	}
+	
+	public MyHouse getCurrentLocationHouse() {
+		return currentLocationHouse;
+	}
 
 	//-----------------------------------------------------------//
 
 	// Helper Data Structures
 
-	private class MyHouse {
-		House h;
-		Resident r;
-		HouseState s;
+	public class MyHouse {
+		public House h;
+		public Resident r;
+		public HouseState s;
 
 		public MyHouse(House h, Resident r) {
 			this.h = h;
