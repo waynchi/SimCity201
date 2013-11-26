@@ -80,7 +80,7 @@ public class PeopleTest extends TestCase
 		
 		BankPeople = new ArrayList<PeopleAgent>();
 		teller = new PeopleAgent("teller", 100, false);
-		bankCustomer = new PeopleAgent("restaurantCustomer", 100, false);
+		bankCustomer = new PeopleAgent("restaurantCustomer", 1000000, true);
 		BankPeople.add(teller);
 		BankPeople.add(bankCustomer);
 		for(PeopleAgent p: BankPeople)
@@ -184,7 +184,7 @@ public class PeopleTest extends TestCase
 			{
 				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
 			else
 			{
@@ -197,6 +197,7 @@ public class PeopleTest extends TestCase
 		for(PeopleAgent p : MarketPeople)
 		{
 			System.out.println(p + p.state.toString());
+			p.msgDone("Test");
 			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
 			p.msgTimeIs(2330);
 			System.out.println(p + p.state.toString());
@@ -255,8 +256,10 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Retrieving Money. Event is now: GoingToRetrieveMoney" ));
+				System.out.println(p.log.getLastLoggedEvent().toString());
+				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
 			}
 				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
@@ -270,7 +273,7 @@ public class PeopleTest extends TestCase
 			{
 				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
 			else
 			{
@@ -286,6 +289,7 @@ public class PeopleTest extends TestCase
 		for(PeopleAgent p : BankPeople)
 		{
 			System.out.println(p + p.state.toString());
+			p.msgDone("Test");
 			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
 			if(!p.location.toString().equals("Home"))
 			{
@@ -293,7 +297,7 @@ public class PeopleTest extends TestCase
 			System.out.println(p.event.toString());
 			System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
 			}
 			p.msgTimeIs(2330);
 			System.out.println(p + p.state.toString());
@@ -399,14 +403,15 @@ public class PeopleTest extends TestCase
 				p.msgTimeIs(1900);
 				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
 			else if(p!= restaurantCustomer)
 			{
 				p.msgTimeIs(1800);
 				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Idle"));
+				System.out.println(p.log.getLastLoggedEvent().toString());
+				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
 			else
 			{
@@ -431,6 +436,10 @@ public class PeopleTest extends TestCase
 			{
 				p.msgDone("RestaurantCustomerRole");
 			}
+			else
+			{
+				p.msgDone("Test");
+			}
 			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
 			if(!p.location.toString().equals("Home"))
 			{
@@ -438,7 +447,9 @@ public class PeopleTest extends TestCase
 			System.out.println(p.event.toString());
 			System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
+			System.out.println(p.log.getLastLoggedEvent().toString());
+			System.out.println(p.state.toString());
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
 			}
 			p.msgTimeIs(2330);
 			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
