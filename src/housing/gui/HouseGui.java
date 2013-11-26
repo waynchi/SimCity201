@@ -42,40 +42,6 @@ public class HouseGui implements HGui{
 
 	@Override
 	public void draw(Graphics2D g) {
-//		Image i = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
-//		try {
-//			i = ImageIO.read(new File("res/housingItemImages/floor.jpg"));
-//		} catch (IOException e) {
-//			System.out.println("Nope.");
-//		}
-//		g.drawImage(i, 0, 0, null);
-		
-//		if (h.isBroken == true)
-//			g.setColor(Color.RED);
-//		else
-//			g.setColor(Color.ORANGE);
-//		g.fillRect(0, 0, 15, 500);
-//		g.fillRect(0, 0, 500, 15);
-//		g.fillRect(0, 485, 500, 15);
-//		g.fillRect(450, 0, 15, 330);
-//		g.fillRect(450, 370, 15, 130);
-//		
-//		g.fillRect(280, 15, 15, 145);
-//		g.fillRect(280, 195, 170, 15);
-		
-//		if (h.type == HouseType.Villa)
-//			g.fillRect(15, 195, 220, 15);
-		
-//		for (ItemGui gui : items) {
-//			gui.draw(g);
-//		}
-		
-//		Image i1 = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
-//		try {
-//			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
-//		} catch (IOException e) {
-//			System.out.println("Image not found.");
-//		}
 		g.drawImage(i1, 0, 0, null);
 		
 		for (HGui gui : guis) {
