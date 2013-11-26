@@ -850,8 +850,8 @@ public class PeopleAgent extends Agent implements People{
 	public void GoToBankTwo()
 	{
 		location = AgentLocation.Road;
-		if(!testmode)
-		{
+//		if(!testmode)
+//		{
 		//TODO personGui.goToBank();
 			if(hasCar)
 			{
@@ -873,7 +873,7 @@ public class PeopleAgent extends Agent implements People{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		}
+//		}
 		location = AgentLocation.Bank;
 		
 		for(MyRole r: roles)
@@ -1077,8 +1077,8 @@ public class PeopleAgent extends Agent implements People{
 				if(r.description.equals("Teller"))
 				{		
 					location = AgentLocation.Road;
-					if(!testmode)
-					{
+//					if(!testmode)
+//					{
 						if(hasCar)
 						{
 							for(MyRole ro: roles)
@@ -1100,7 +1100,7 @@ public class PeopleAgent extends Agent implements People{
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					}
+//					}
 					location = AgentLocation.Bank;
 					print("I am now a " + r.description);
 					r.role.msgIsActive();
