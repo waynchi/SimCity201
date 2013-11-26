@@ -69,7 +69,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMaximumSize(new Dimension(1024, 500));
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
-		Timer timer = new Timer(10, this);
+		Timer timer = new Timer(1, this);
 		
 		//Set trace tags
 		RestaurantHostRole.setTag(AlertTag.RESTAURANT);
@@ -346,7 +346,7 @@ public class CityGui extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
-		int x = 1;
+		int x = 5;
 		time++;
 		if(time % x == 0)
 		{
