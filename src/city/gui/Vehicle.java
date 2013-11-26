@@ -139,7 +139,6 @@ public class Vehicle extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
-		System.out.println(getCurrentLane());
 		if(xDestination > 0 && yDestination > 0)
 		{
 		time++;
