@@ -699,14 +699,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		busAgent.setGui(bg);
 		busAgent.startThread();
 		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
-		//vehicles.add(bg);
+		vehicles.add(bg);
 		
-		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		CarAgent carAgent = new CarAgent();
-		carAgent.setGui(cg);
-		carAgent.startThread();
-		cg.msgGoToThisPlace(carAgent, "Home 8");
-		vehicles.add(cg);
+//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		CarAgent carAgent = new CarAgent();
+//		carAgent.setGui(cg);
+//		carAgent.startThread();
+//		cg.msgGoToThisPlace(carAgent, "Home 8");
+//		vehicles.add(cg);
 //		
 		addMouseListener( this );
 
