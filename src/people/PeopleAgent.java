@@ -527,9 +527,9 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
 		synchronized(roles){
 		for(MyRole m : roles)
@@ -630,8 +630,6 @@ public class PeopleAgent extends Agent implements People{
 			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
 			Person = true;
 		}
-
-		print("Fuck this shit");
 		return (Roles || Person);
 	}
 

@@ -71,6 +71,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
                 gui.updatePosition();
             }
         }
+        repaint();
+        
     }
 
 }

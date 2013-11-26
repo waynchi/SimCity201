@@ -70,9 +70,9 @@ public class RestaurantGui extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	  public void updatePosition() {
+	 public void updatePosition() {
 	    	animationPanel.updatePosition();
-	    }
+	}
 	    
+	
 }

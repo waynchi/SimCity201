@@ -68,6 +68,7 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
+		goingToWorkPlace = true;
 		
 	}
 
