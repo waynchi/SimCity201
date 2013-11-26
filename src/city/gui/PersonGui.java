@@ -276,6 +276,11 @@ public class PersonGui extends Rectangle2D.Double {
 			sidewalkSegment = allSidewalks.get(12);
 			currentCell = sidewalkSegment.get(8);
 		}
+		if(getCurrentLane().equals("2_0")) {
+			this.direction="right";
+			sidewalkSegment = allSidewalks.get(12);
+			currentCell = sidewalkSegment.get(8);
+		}
 		
 		
 	
