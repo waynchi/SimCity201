@@ -43,5 +43,4 @@ public class RepairShopAnimationPanel extends JPanel implements ActionListener {
 			guis.add(gui);
 		}
 	}
-
 }
