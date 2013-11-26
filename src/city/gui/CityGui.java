@@ -130,14 +130,14 @@ public class CityGui extends JFrame implements ActionListener {
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
 					PeopleAgent person;
-//					if(rand.nextInt(5) < 2)
-//					{
+					if(rand.nextInt(5) < 2)
+					{
 						 person = new PeopleAgent(name, 1000.0, false); //TODO
-//					}
-//					else
-//					{
-//						 person = new PeopleAgent(name, 1000.0, true );
-//					}//TODO
+					}
+					else
+					{
+						 person = new PeopleAgent(name, 1000.0, true );
+					}//TODO
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
@@ -221,7 +221,6 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(RestaurantHostRole1, "RestaurantHost");
 						RestaurantHostRole1.setPerson(person);
 						person.hasCar = false;
-						//person.hasCar = true;
 					}
 					if (job.equals("RestaurantCashier")) {
 						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui1);
@@ -406,7 +405,7 @@ public class CityGui extends JFrame implements ActionListener {
 			houseAnimationPanels.get(i).updatePosition();
 		}
 		
-		int x = 5;
+		int x = 10;
 		time++;
 		if(time % x == 0)
 		{
