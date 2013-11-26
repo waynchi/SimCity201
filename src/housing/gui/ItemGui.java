@@ -1,5 +1,6 @@
 package housing.gui;
 
+import housing.House;
 import housing.Item;
 
 import java.awt.Color;
@@ -60,6 +61,7 @@ public class ItemGui implements HGui{
 		this.width = width;
 		this.height = height;
 		this.imagePath = imagePath;
+		shape = Shape.Rectangle;
 	}
 
 	@Override
@@ -86,7 +88,7 @@ public class ItemGui implements HGui{
 			g.fillOval(x, y, d, d);
 		else if (shape == Shape.RoundRectangle)
 			g.fillRoundRect(x, y, width, height, wArc, hArc);
-		if (isBroken()) {
+		if (isBroken() && !(i instanceof House)) {
 			g.setColor(Color.WHITE);
 			if (shape == Shape.Rectangle || shape == Shape.RoundRectangle) {
 				g.drawLine(x, y, x + width, y + height);
