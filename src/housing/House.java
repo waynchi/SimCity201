@@ -45,7 +45,6 @@ public class House extends Item{
 			FUSSBALL_TABLE = 1;
 			SHOE_RACK = 1;
 		}
-		gui = new HouseGui(this);
 	}
 
 	public boolean isLocked() {
