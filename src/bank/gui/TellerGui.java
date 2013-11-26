@@ -29,7 +29,7 @@ public class TellerGui implements Gui{
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
-	private BufferedImage host = null;
+	private ImageIcon host = new ImageIcon("res/bank/tellersprite.png");
 	
 	static final int CUST_SIZE = 20;
 
@@ -41,9 +41,6 @@ public class TellerGui implements Gui{
 		isAtDesk = true;
 		xDestination = 312;
 		yDestination = 90;
-        try {
-            host = ImageIO.read(getClass().getResource("res/bank/tellersprite.png"));
-        } catch (IOException e) {}
 		setPresent(true);
 		
 	}
@@ -66,7 +63,7 @@ public class TellerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(host,xPos,yPos,null);
+		g.drawImage(host.getImage(),xPos,yPos,null);
 		//g.setColor(Color.GREEN);
 		//g.fillRect(xPos, yPos, CUST_SIZE, CUST_SIZE);
 	}
