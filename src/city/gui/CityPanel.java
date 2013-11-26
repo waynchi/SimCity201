@@ -867,7 +867,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 	
 	public void removeVehicle(Vehicle v) {
-		vehicles.remove(v);
+		v.setDestination(0, 0);
 	}
 	public void removePerson(PersonGui p) {
 		people.remove(p);

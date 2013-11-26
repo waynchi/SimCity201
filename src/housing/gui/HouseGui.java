@@ -69,7 +69,7 @@ public class HouseGui implements HGui{
 		try {
 			i1 = ImageIO.read(new File("res/housingItemImages/houseGui.png"));
 		} catch (IOException e) {
-			System.out.println("Nope.");
+			System.out.println("Image not found.");
 		}
 		g.drawImage(i1, 0, 0, null);
 		
