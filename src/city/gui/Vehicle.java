@@ -442,7 +442,7 @@ public class Vehicle extends Rectangle2D.Double {
 			//Option #3
 				this.direction="down";
 				laneSegment = allLanes.get(12);
-				currentCell = laneSegment.get(3);
+				currentCell = laneSegment.get(6);
 			}
 			
 			

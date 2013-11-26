@@ -352,7 +352,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%60 == 0)
 			{
-				System.out.println(time/x);
+				//System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);
