@@ -99,20 +99,20 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgAccountAndLoan(int accountID, double balance, double money) {
 		this.accountID = accountID;
 		print("Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgGiveLoan(double balance, double money) {
 		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		state = CustomerState.done;
 		stateChanged();
 	}
 	
 	public void msgWithdrawSuccessful(double balance, double money) {
-		myPerson.Money += money;
+		myPerson.setMoney(myPerson.getMoney()+money);
 		print("Withdraw successful. Account has a balance of: " + balance);
 		state = CustomerState.done;
 		stateChanged();
@@ -135,11 +135,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 				CallTeller();
 			}
 			if (state == CustomerState.ready) {
-				if (myPerson.event == AgentEvent.GoingToDepositMoney) {
+				if (myPerson.getAgentEvent().equals("GoingToDepositMoney")) {
 					DepositMoney();
 					return true;
 				}
-				if (myPerson.event == AgentEvent.GoingToRetrieveMoney) {
+				if (myPerson.getAgentEvent().equals("GoingToRetrieveMoney")) {
 					WithdrawMoney();
 					return true;
 				}
