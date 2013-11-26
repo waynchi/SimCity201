@@ -36,7 +36,7 @@ public class PeopleAgent extends Agent implements People{
 	
 	public EventLog log = new EventLog();
 
-	
+	public enum BuyState{GoingToBuy, NotBuying, NextDay}
 	public enum AgentState 
 	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
 	public enum AgentEvent 
@@ -48,6 +48,7 @@ public class PeopleAgent extends Agent implements People{
 	public AgentState state = AgentState.Sleeping;
 	public AgentEvent event = AgentEvent.GoingToSleep;
 	public AgentLocation location = AgentLocation.Home;
+	public BuyState buy = BuyState.NextDay;
 	
 	
 	public void setTest()
@@ -354,13 +355,13 @@ public class PeopleAgent extends Agent implements People{
 					stateChanged();
 					return;
 				}
-				else if(!(Time>= 2100 && Money <= 30000))
-				{
-						event = AgentEvent.GoingToRetrieveMoney;
-						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-						stateChanged();
-						return;
-				}
+//				else if(!(Time>= 2100 && Money <= 30000))
+//				{
+//						event = AgentEvent.GoingToRetrieveMoney;
+//						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//						stateChanged();
+//						return;
+//				}
 			}				
 			else
 			{
@@ -646,9 +647,9 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(r.description.equals("Resident"))
 			{	
-				if(r.role.isActive == true)
+				if(r.role.isActive == false)
 				{
-				r.role.msgIsInActive();
+				r.role.msgIsActive();
 				}
 				//Stop
 			}
