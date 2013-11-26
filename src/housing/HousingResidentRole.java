@@ -96,6 +96,7 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void doMorningStuff() {
 		myState = State.DoingMorningStuff;
+		System.out.println("DOING MORNING STUFF");
 		if (testMode == false) {
 			gui.DoPoop();
 			try {
@@ -236,6 +237,7 @@ public class HousingResidentRole extends Role implements Resident {
 			return true;
 		}
 		if (((PeopleAgent)myPerson).getAgentState().equals("EatingAtHome") && myState == State.Idle  && ((PeopleAgent)myPerson).getHunger().equals("Eating")) {
+			System.out.println("I AM GOING TO COOK");
 			cookAtHome();
 			leisure = false;
 			return true;
