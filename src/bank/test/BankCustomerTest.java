@@ -1,5 +1,8 @@
 package bank.test;
 
+import bank.BankCustomerRole;
+import bank.test.mock.MockPeopleBank;
+import bank.test.mock.MockTeller;
 import junit.framework.*;
 
 /**
@@ -12,27 +15,20 @@ import junit.framework.*;
  */
 public class BankCustomerTest extends TestCase
 {
-	//these are instantiated for each test separately via the setUp() method.
-	CashierAgent cashier;
-	MockCustomer customer;
-	MockMarket market;
-	MockMarket market2;
-	MockWaiter waiter;
-	MockCustomer customer2;
-	
-	
+
+	MockPeopleBank person;
+	MockTeller teller;
+	BankCustomerRole customer;
+		
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
 	 * for your agent and mocks, etc.
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new CashierAgent("cashier");		
-		customer = new MockCustomer("mockcustomer");
-		customer2 = new MockCustomer("customer2");
-		market = new MockMarket("market", cashier);
-		market2 = new MockMarket("market2", cashier);
-		waiter = new MockWaiter("waiter");
+		customer = new BankCustomerRole(null);		
+		teller = new MockTeller("mockcustomer");
+		person = new MockPeopleBank("teller");
 	}	
 	//This scenario tests one market order that the cashier has to pay.
 	public void testOneNormalMarketScenario()

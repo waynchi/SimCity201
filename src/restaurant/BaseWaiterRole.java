@@ -103,8 +103,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
-		System.out.println("MSG RECIEVED");
-
 	}
 	
 	public void msgIsInActive () {
@@ -326,9 +324,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	private void clockIn() {
 		
-		host = myPerson.Restaurants.get(0).h;
+		host = (Host) getPersonAgent().getHost(0);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().size());
+		print ("waiter size is: " + host.getWaiters().size());
 		waiterGui.setPresent(true);
 		waiterGui.DoGoRest();
 		cook = host.getCook();

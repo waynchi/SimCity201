@@ -156,7 +156,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	// Actions
 	
 	private void CallTeller() {
-		myPerson.Banks.get(0).t.msgHere(this, name);
+		((Teller) myPerson.getTeller(0)).msgHere(this, name);
 		state = CustomerState.none;
 	}
 
@@ -171,12 +171,12 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			e.printStackTrace();
 		}
 		if (accountID == -1) {
-			myPerson.Money -= 100;
+			myPerson.setMoney(myPerson.getMoney()-100);
 			teller.msgDeposit(deposit);
 			state = CustomerState.finished;
 		}
 		else {
-			myPerson.Money -= 100;
+			myPerson.setMoney(myPerson.getMoney()-100);
 			teller.msgDeposit(accountID, deposit);
 			state = CustomerState.finished;
 		}

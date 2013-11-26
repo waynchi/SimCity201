@@ -4,6 +4,7 @@ import java.util.Map;
 
 import people.People;
 import restaurant.test.mock.LoggedEvent;
+import market.gui.AnimationPanel;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 
@@ -75,6 +76,12 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 	public void msgAtRegister() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public AnimationPanel getAnimationPanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -81,9 +81,17 @@ public class CityGui extends JFrame implements ActionListener {
 		restPanel.setHost(RestaurantHostRole);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel.theMonitor;
 
-		FileReader input;
+		FileReader input = null;
 		try {
-			input = new FileReader("src/config.txt");
+			System.out.println(System.getProperty("file.separator"));
+			if(System.getProperty("file.separator").equals("/"))
+			{
+				input = new FileReader( "src//config.txt");
+			}
+			else if(System.getProperty("file.separator").equals("\\"))
+			{
+				input = new FileReader( "src\\config.txt");
+			}
 			BufferedReader bufRead = new BufferedReader(input);
 			String line = null;
 			while ((line = bufRead.readLine()) != null) {
@@ -332,7 +340,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%60 == 0)
 			{
-				//System.out.println(time/x);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);

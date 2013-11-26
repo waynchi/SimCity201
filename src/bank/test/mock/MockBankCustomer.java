@@ -1,23 +1,48 @@
 package bank.test.mock;
 
+import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
+import bank.test.Mock;
 
 /**
  * Bank customer.
  */
-public interface MockBankCustomer {
+public class MockBankCustomer extends Mock implements BankCustomer {
 
-	public abstract void needMoney(double money);
+	public MockBankCustomer(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
 	
-	public abstract void depositMoney(double money);
+	public void msgAccountAndLoan(int accountID, double balance, double money) {
+		
+	}
+
+	public void needMoney(double money) {
+		
+	}
 	
-	public abstract void msgReadyToHelp(Teller t);
+	public void depositMoney(double money) {
+		
+	}
 	
-	public abstract void msgAccountBalance(int accountID, double balance);
+	public void msgReadyToHelp(Teller t){ 
+		
+	}
 	
-	public abstract void msgGiveLoan(double balance, double money);
+	public void msgAccountBalance(int accountID, double balance) {
+		
+	}
 	
-	public abstract void msgWithdrawSuccessful(double balance, double money);
+	public void msgGiveLoan(double balance, double money) {
+		
+	}
 	
-	public abstract void msgDepositSuccessful(double balance);
+	public void msgWithdrawSuccessful(double balance, double money) {
+		
+	}
+	
+	public void msgDepositSuccessful(double balance) {
+		
+	}
 }
