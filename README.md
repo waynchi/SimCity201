@@ -19,6 +19,7 @@ Partially/unimplemented parts:
 + A resident can run over objects.
 + This implementation allows only one resident per house.
 + Not modified my restaurant for V1, hence not integrated it in V1.
++ Bus vehicles work, they stop at bus stops and send messages asking for passengers and continue to go to the rest of bus stops, but person agent currently never goes to bus stops, therefore bus's are always empty
 
 Parts not integrated in the project:
 + The repair man exists, but doesn't actually do his job, to reduce complexity of PeopleAgent's scheduler for v1. The repair man's functionality, however, has been fully tested, and it works properly.
