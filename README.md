@@ -3,30 +3,71 @@ team30
 
 SimCity201 Project Repository for CS 201 students
 
-Vikrant Singhal - My contribution:
+# Overall Project Completion
 
-Entire Housing Scenario:
-+ Creation and implementation of 4 roles: HousingResidentRole, HousingRepairManRole, HousingRenterRole and HousingOwnerRole.
-+ GUIs and interfaces for each of the above roles.
-+ Objects in the background, which include, Item, House (which can be of two types: Villa and Apartment), Apartments (the apartment complex), and GUIs for each one of them.
-+ Unit tests for all the roles mentioned in 1.
-+ Manual construction of house layout.
-+ Over 4200 lines of code (excluding repeating or empty part of interfaces and mock agents).
+Unlike many other groups, our project is a fully autonomous SimCity, which we are incredibly proud of. 
+Not only that, but we have implemented a method involving arraylists and stoplights to completely avoid collisions with vehicles within the city (This can be tested with a button in our Gui)
+Currently, our SimCity will run through each day over and over again autonomously deciding what to do.
++ Here are a list of some, but not all, of the most notable actions that a person can do throughout the day.
+1. Choice between going to restaurant or eating at home
+2. Idling at home (And doing various actions such as playing fussball, reading, watching T.V. etc.) 
+3. Waking up and Doing Morning Actions as well as going to sleep.
+4. Buying a car if they do not have a car and have money.
+5. Withdrawing, depositing, or requesting a loan from the bank.
+6. Going to work places either on feet or on car (if they have it).
 
-Partially/unimplemented parts:
-+ The RepairShop has been created, and is supposed to be used by the RepairMan, which it does. But details of repair shop (for example: layout of the shop) yet to be covered.
-+ The resident(HousingResidentRole) does not purchase things to cook from the market.
-+ A resident can run over objects.
-+ This implementation allows only one resident per house.
-+ Not modified my restaurant for V1, hence not integrated it in V1.
++ So far, all of these actions will work and show up within either the main gui or the individual guis.
 
-Parts not integrated in the project:
-+ The repair man exists, but doesn't actually do his job, to reduce complexity of PeopleAgent's scheduler for v1. The repair man's functionality, however, has been fully tested, and it works properly.
-+ Renter and owner interactions, although fully tested and implemented, haven't been put inside V1 for the sake of simplicity.
-+ Apartment complex(Apartments) has been implemented, and the GUIs of roles have been fully adapted and tested for the concept. But for the sake of simplicity, it has been left out.
++ Here are a list of some of the features that are working, but not implemented fully for V1
+1. People Riding the Bus (working but not implemented)
+2. RepairMan for Housing (working but not implemented)
+3. Special Waiter (working but not implemented)
+4. Apartment Complex (Working but not implemented).
+5. Renter and Owner Interaction (Working but not implemented)
 
-Improvements for v2:
-+ Implementing A* algorithm to prevent residents from colliding with objects or going through walls.
-+ Resident's need for markets, to be created.
-+ Integration of the parts that had been already implemented (for example: the concept of apartment complex(Apartments), the job of repair man(HousingRepairManRole)), but excluded from v1.
-+ My own restaurant has to be modified and integrated in V2.
++ Here are a list of some, but not all, of the new features we will add for V2
+1. Robbers robbing the bank
+2. More houses, More Restaurants, and More Buildings
+3. A* within the individual buildings
+4. Buying food from the market to cook at home.
+5. Adding People directly into the City (we only have it partially ready)
+
+# How To Use Our SimCity
+
+Our SimCity runs autonomously. As a result, there is no configuration Panel.
+
+
+
+## Contribution and Distribution
+
++ Vikrant Singhal
+..*Housing Logic
+..*Housing Gui
++ Eric Strode
+..*Bank Logic
+..*Bank Gui
+..*Main Gui Layout
+..*Trace Log
++ Yinyi Chen
+..*Restaurant Logic
+..*Restaurant Gui
+..*Market Logic
+..*Market Gui
++ Peppy Sisay
+..*Transportation Logic (Vehicles and Bus)
+..*Transportation Gui
+..*SimCity Gui and Layout
++ Zack Tanner
+..*Transportation Logic (Vehicles)
+..*Transportation Gui
+..*City Configuration
+..*Person Gui
++ Wayne Chi
+..*People Logic
+..*People Gui
+..*City Configuration
+
++ I (Wayne Chi, the Team Leader) believe that, although there were differences in skill level, everyone gave 200%  to this project (The extra hundred percent being derived from our sleep) and did an approximately equal amount of work.
++ Not only that, but the roles and contributions we have are loosely defined as we all helped each other out throughout the project, with most people fixing and editing code from all throughout the project.
+
+
