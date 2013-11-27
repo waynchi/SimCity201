@@ -356,7 +356,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(!hasCar)
 					{
-						if(rand.nextInt(100) <= 10)
+						if(rand.nextInt(100) <= 100)
 						{
 							buy = BuyState.GoingToBuy;
 						}
@@ -496,7 +496,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(!hasCar)
 			{
-				if(rand.nextInt(100) <= 10)
+				if(rand.nextInt(100) <= 100)
 				{
 					buy = BuyState.GoingToBuy;
 				}
