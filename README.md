@@ -44,7 +44,15 @@ If there are any other suggetions, please post on our issue tracker!
 
 Our SimCity runs autonomously. As a result, there is no configuration Panel.
 However, there is a config.txt located in the src folder (src/config.txt) that allows for creations of people. 
-Every single person will have certain roles (such as 
+Every single person will have certain roles (such as Resident, Restaurant Customer, Bank Customer, etc.) However, the configuration file allows for special descriptions that either add a job to the person, or force them to act in a certain manner.
+Here is the format of the config file:
++ 1,Description/Job,Name,JobStartTime,JobEndTime
++ 1,RestaurantCook,James,1000,1900
+
++Special notes
+ 1. Some random functions of the people agent have been taken away in order to ensure that it will always occur (since we do not have a configuration panel yet). For example, the market chance is 100% if the person has enough money, rather than only 10% as it will be.
+ 2. The Config File is NOT gauranteed to work. The config file that will be pushed will show all of our features fully, but certain things may break the program. For example, taking away vital characters (such as the host or the cook) will naturally cause the program to freeze and fail. Another example is the restaurant; because we only have one restaurant and the timer is so fast, if too many people crowd towards the restaurant, it will fail (because there might be 10 people waiting in line while the restaurant host,cook, and cashier need to go home because their job has ended, forcing them to stay at the restaurant and ruin their sleep cycle).
+ 3. Please enjoy our SimCity :) 
 
 
 
