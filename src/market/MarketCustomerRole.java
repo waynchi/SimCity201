@@ -52,11 +52,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	// messages
 	public void msgIsActive () {
+		print ("got msgIsActive, going to buy car");
 		isActive = true;
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
+		if (!inTest){
 		employee = (MarketEmployeeRole) getPersonAgent().getMarketEmployee(0);
+		}
 		getPersonAgent().CallstateChanged();
 	}//tested
 	
@@ -84,6 +87,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 
 	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
+		print ("received my item ");
 		itemsReceived = _itemsReceived;
 		event = marketCustomerEvent.RECEIVED_ORDER;
 		// need to tell People what we've got
@@ -97,6 +101,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 
 	public void msgHereIsWhatIsDue(double _totalDue, MarketCashier c) {
+		print ("got bill for my order and total amount is " + _totalDue);
 		totalDue = _totalDue;
 		cashier = c;
 		event = marketCustomerEvent.RECEIVED_CHECK;
@@ -105,6 +110,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}//tested
 
 	public void msgHereIsChange(double totalChange) {
+		print ("received change from cashier and amount is " + totalChange);
 		double money = getPersonAgent().getMoney();
 		money += totalChange;
 		getPersonAgent().setMoney(money);
@@ -163,6 +169,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			e.printStackTrace();
 		}
 		}
+		
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
@@ -178,6 +185,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		print ("here is payment " + getPersonAgent().getMoney());
 		}
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);

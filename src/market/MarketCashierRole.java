@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
 import people.Role;
@@ -21,7 +22,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
 	public EventLog log = new EventLog();
+	public boolean inTest = false;
 
+	private Semaphore atExit = new Semaphore(0,true);
+	private Semaphore atPosition = new Semaphore(0,true);
 	
 	Map<String, Double> priceList = new HashMap<String, Double>();
 	public double marketMoney = 10000.0;
@@ -75,22 +79,37 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}//tested
+	
+	
+	public void msgAtExit() {
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtPosition() {
+		atPosition.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
 
 	// for regular Market Customer
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
+		if (!inTest)	print ("got a check from employee for customer " + customer.getPerson().getName());
 		checks.add(new Check(customer, items));
 		getPersonAgent().CallstateChanged();
 	}//tested
 
 	// for restaurant Cashier
-	public void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items) {
-		checks.add(new Check(restaurantCashier, items));
+	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
+		print ("got a check from employee for restaurant cashier " + restCashier.getName() + " and restaurant ordered ");
+		checks.add(new Check(restCashier, items));
 		getPersonAgent().CallstateChanged();
 
 	}
 
 	// from regular market customer
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
+		if (!inTest) print ("marketCustomer " + customer.getPerson().getName() + " is paying " + totalPaid);
 		for (Check c : checks) {
 			if (c.customer == customer) {
 				c.state = checkState.PAID;
@@ -105,6 +124,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from restaurant cashier
 	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
+		print ("restaurant cashier " + cashier.getName() + " is paying " + amount + " for order ");
 		for (Check c : checks) {
 			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
@@ -185,9 +205,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
+		print ("clock in");
 		log.add(new LoggedEvent("in action clockIn"));
+		if (!inTest){
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		marketEmployee.setCashier(this);
+		}
 		turnActive = false;
 	}
 	
@@ -201,9 +224,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			check.restaurantCashier.msgHereIsWhatIsDue(this, check.totalDue, check.items);
+			print ("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and amount is " + check.totalDue);
+			check.restaurantCashier.msgHereIsWhatIsDue(marketEmployee, check.totalDue, check.items);
 		}
 		else { // check is for market customer
+			if (!inTest) print ("sending check to customer " + check.customer.getPerson().getName() + " and total due is " + check.totalDue);
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
 		check.state = checkState.SENT;
@@ -216,10 +241,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		marketMoney -= change;
 		if (check.restaurantCashier != null) {
 			check.restaurantCashier.msgHereIsChange (change);
+			print ("giving change to restaurant cashier " + " and the amount is " + change);
 		}
 		
 		else { // check is for regular customer
 			check.customer.msgHereIsChange(change);
+			print ("giving change to customer " + " and the amount is " + change);
 		}
 		checks.remove(check);
 	}

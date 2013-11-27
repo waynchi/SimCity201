@@ -27,5 +27,7 @@ public interface MarketEmployee {
 
 	public abstract void msgAtExit();
 
+	public abstract MarketCashier getCashier();
+
 
 }

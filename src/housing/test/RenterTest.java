@@ -2,6 +2,8 @@ package housing.test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import people.PeopleAgent;
 import housing.House;
 import housing.HouseType;
 import housing.HousingRenterRole;
@@ -13,6 +15,7 @@ public class RenterTest {
 	House h;
 	Renter r;
 	Owner o;
+	PeopleAgent p;
 	
 	@Test
 	public void testNormative1() {
@@ -265,14 +268,18 @@ public class RenterTest {
 		h = new House("Residence", 1, HouseType.Villa);
 		r = new HousingRenterRole(200.0);
 		o = new MockOwner();
+		p = new MockPeopleHousing("Name");
 		
-		h.setOccupant((Resident)r);
-		h.setItemsWithoutGui();
+		h.testModeOn();
 		
 		r.setOwner(o);
 		((Resident)r).setHouse(h);
+		((HousingRenterRole)r).setPerson(p);
 		((HousingRenterRole)r).testModeOn();
 		
+		h.setOccupant((Resident)r);
+		h.setItemsWithoutGui();
+
 		o.addHouse(h, r);
 	}
 }

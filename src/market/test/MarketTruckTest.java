@@ -2,7 +2,7 @@ package market.test;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import test.Cashier_Bank_Test;
+import test.NewCashierTest;
 
 public class MarketTruckTest extends TestCase{
 	public static void main(String args[]) {
@@ -10,7 +10,7 @@ public class MarketTruckTest extends TestCase{
 	}
 
 	public static TestSuite suite ( ) {
-		return new TestSuite(Cashier_Bank_Test.class);
+		return new TestSuite(NewCashierTest.class);
 	}
 
 	public void setUp() throws Exception{

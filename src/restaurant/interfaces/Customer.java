@@ -43,4 +43,6 @@ public interface Customer {
 	public abstract String getName();
 
 	public abstract void msgAtExit();
+
+	public abstract String getState();
 }

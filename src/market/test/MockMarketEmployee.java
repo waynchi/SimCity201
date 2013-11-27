@@ -68,4 +68,10 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 		
 	}
 
+	@Override
+	public MarketCashier getCashier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

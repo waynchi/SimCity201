@@ -12,6 +12,8 @@ import restaurant.interfaces.Cashier;
 
 
 public class MockMarketCashier extends Mock implements MarketCashier{
+	
+	public int accountID;
 
 	public MockMarketCashier(String name) {
 		super(name);
@@ -62,8 +64,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgReadyToHelp(Teller teller) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));	
-		
+		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
-		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("received account balance " + funds));
 		
 	}
 

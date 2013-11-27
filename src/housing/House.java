@@ -13,7 +13,6 @@ public class House extends Item{
 	public int number;
 	public Resident occupant;
 	public HouseGui gui;
-	public boolean isLocked = false;
 	public boolean isBroken = false;
 	public HouseType type;
 	public int CHAIRS_NUMBER;
@@ -29,7 +28,6 @@ public class House extends Item{
 		number = houseNum;
 		items = new ArrayList<Item>();
 		occupant = null;
-		isLocked = false;
 		this.type = type;
 		
 		if (type == HouseType.Apartment) {
@@ -46,18 +44,6 @@ public class House extends Item{
 			FUSSBALL_TABLE = 1;
 			SHOE_RACK = 1;
 		}
-	}
-
-	public boolean isLocked() {
-		return isLocked;
-	}
-
-	public void lock() {
-		isLocked = true;
-	}
-
-	public void unlock() {
-		isLocked = false;
 	}
 
 	public void setOccupant(Resident occ) {

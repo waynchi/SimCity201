@@ -81,4 +81,10 @@ public class MockHost extends Role implements Host {
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		@Override
+		public int getCustomerSize() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 }

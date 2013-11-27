@@ -8,12 +8,6 @@ import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
 public class MockRenter extends MockResident implements Renter {
-	
-	// Data
-	
-	EventLog log = new EventLog();
-	
-	//-----------------------------------------------------------//
 
 	// Messages
 	

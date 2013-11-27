@@ -1,25 +1,25 @@
-package restaurant.gui;
+package market.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import restaurant.CashierRole;
+import market.MarketCashierRole;
 
-public class RestaurantCashierGui implements Gui{
+public class MarketCashierGui implements Gui{
 	boolean isPresent;
-	CashierRole cashier;
-	RestaurantGui gui;
+	MarketCashierRole cashier;
+	MarketGui gui;
 	
-	int xDestination = 250, yDestination = 250;
-	int xPos = 0, yPos = 0;
-	int xExit = 0, yExit = 0;
+	int xDestination = 200, yDestination = 120;
+	int xPos = 170, yPos = 0;
+	int xExit = 170, yExit = 0;
 	boolean goingToWorkPlace= false;
 	boolean leaving = false;
 	
 	
-	public RestaurantCashierGui(CashierRole cashierRole) {
+	public MarketCashierGui(MarketCashierRole cashier) {
 		// TODO Auto-generated constructor stub
-		cashier = cashierRole;
+		this.cashier = cashier;
 	}
 
 	@Override
@@ -40,8 +40,6 @@ public class RestaurantCashierGui implements Gui{
 	        }
 	        if (xPos == xExit && yPos == yExit && leaving){
 	        	cashier.msgAtExit();
-	        	xDestination = 250;
-	        	yDestination = 250;
 	        	leaving = false;
 	        }
 	}
@@ -51,8 +49,8 @@ public class RestaurantCashierGui implements Gui{
 		// TODO Auto-generated method stub
 		g.setColor(Color.yellow);
 		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.white);
-        g.drawString("Cashier", xPos, yPos+20);
+        g.setColor(Color.BLACK);
+        g.drawString("Cahsier", xPos, yPos+20);
         
 	}
 
@@ -70,8 +68,6 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
-		xDestination = 250;
-		yDestination = 250;
 		goingToWorkPlace = true;
 		
 	}
@@ -81,14 +77,6 @@ public class RestaurantCashierGui implements Gui{
 		xDestination = xExit;
 		yDestination = yExit;
 		leaving = true;
-	}
-	
-	public void setX(int x) {
-		xDestination = x;
-	}
-	
-	public void setY(int y) {
-		yDestination = y;
 	}
 
 }

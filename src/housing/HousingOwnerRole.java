@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import people.People;
+import people.PeopleAgent;
 
 public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Data
 
 	private List<MyHouse> myHouses = new ArrayList<MyHouse>();
 	private List<RentOrder> rents = new ArrayList<RentOrder>();
-	private double money;
 	private double PEN_INCREMENT = 50.0;
 	private boolean testMode = false;
 
@@ -55,7 +55,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 
 	public void hereIsRent(House h, double money) {
 		MyHouse m = find(h);
-		this.money += money;
+		((PeopleAgent)myPerson).Money += money;
 		for (RentOrder ro : rents) {
 			if (ro.mh == m && ro.s == RentOrderState.Due) {
 				rents.remove(ro);
@@ -78,7 +78,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 
 	public void hereIsPenalty(House h, double money) {
 		MyHouse mh = find(h);
-		this.money += money;
+		((PeopleAgent)myPerson).Money += money;
 		mh.penalty -= money;
 	}
 
@@ -106,7 +106,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (super.myState != State.Sleeping) {
+		if (super.myState != State.Sleeping || testMode == true) {
 			RentOrder ro =  null;
 
 			ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
@@ -139,7 +139,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		return null;
 	}
 
-	private RentOrder findRentOrderByState(RentOrderState s1) {
+	public RentOrder findRentOrderByState(RentOrderState s1) {
 		for (RentOrder ro : rents) {
 			if (ro.s == s1)
 				return ro;
@@ -242,5 +242,5 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		}
 	}
 
-	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
+	public enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
 }

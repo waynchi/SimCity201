@@ -28,7 +28,7 @@ waitingPassengers.add(bpr);
 
 public void msgBusArrived(Bus b){
 	try{
-	System.out.println("BusStop recieved message that bus has arrived");
+	//System.out.println("BusStop recieved message that bus has arrived");
 	currentBus = b;
 	boardingPassengers = waitingPassengers;
 	if(boardingPassengers.isEmpty())

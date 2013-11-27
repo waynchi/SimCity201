@@ -283,7 +283,7 @@ public class TellerRole extends Role implements Teller {
 		public double funds;
 		String customerName;
 		
-		Account(String name, int id) {
+		public Account(String name, int id) {
 			this.id = id;
 			this.customerName = name;
 		}
