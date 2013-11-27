@@ -23,6 +23,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
+    private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
+
 
     public RestaurantAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);

@@ -280,13 +280,14 @@ public class CashierRole extends Role implements Cashier {
 		if (!marketBills.isEmpty()) {
 			synchronized (marketBills) {
 			for (int i = 0; i < marketBills.size(); i++) {
-				if (marketBills.get(i).itemsReceived = true)
+				if (marketBills.get(i).itemsReceived)
 					payMarket(marketBills.get(i));
+				return true;
 				}
 			}
 		}
 
-
+/*
 		
 		if (!marketBills.isEmpty()) {
 			synchronized (marketBills) {
@@ -296,7 +297,7 @@ public class CashierRole extends Role implements Cashier {
 			}
 		return true;
 		}
-		}
+		}*/
 
 		/*if (loanRequested && loanGranted) {
 			payWorkers();

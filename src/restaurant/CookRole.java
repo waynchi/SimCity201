@@ -135,6 +135,7 @@ public class CookRole extends Role implements Cook{
 		print ("received order from market");
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
+			print (entry.getKey() + foods.get(entry.getKey()).amount);
 		}
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items) {
@@ -435,7 +436,7 @@ public class CookRole extends Role implements Cook{
 
 		public Food (String t) {
 			type = t;
-			low = 4;
+			low = 3;
 			capacity = 5;
 			isOrdered = false;
 			if (type.equals("Steak")) {

@@ -179,7 +179,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		// if order is from restaurant
 		if (order.cook != null) {
 			print ("sending truck to restaurant cook " + order.cook.getPerson().getName());
-			getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			print("order delivered to restaurant");
+			order.cook.msgHereIsYourOrder(order.items);	
 			print ("sending bill to restaurant cashier " + order.restaurantCashier.getName());
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
