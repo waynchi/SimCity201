@@ -31,10 +31,20 @@ Currently, our SimCity will run through each day over and over again autonomousl
 3. A* within the individual buildings
 4. Buying food from the market to cook at home.
 5. Adding People directly into the City (we only have it partially ready)
+6. Collision detection for pedestrians (We have it halfway setup)
+7. Better graphical animation and images
+
+We are not limited to the above, but these are some of the things that we will be sure to do first. We will of course finish all of V2 requirements in the end. 
+
+For Further info on the city gui please access: [City Gui](https://github.com/usc-csci201-fall2013/team30/wiki/City-GUI)
+
+If there are any other suggetions, please post on our issue tracker!
 
 # How To Use Our SimCity
 
 Our SimCity runs autonomously. As a result, there is no configuration Panel.
+However, there is a config.txt located in the src folder (src/config.txt) that allows for creations of people. 
+Every single person will have certain roles (such as 
 
 
 
