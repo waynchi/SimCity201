@@ -272,10 +272,11 @@ public class PeopleAgent extends Agent implements People{
 //				//event == AgentEvent.GoingToWorkTwo;
 //				GoToWorkTwo();
 //			}
-//			if(event == AgentEvent.GoingToBuyCar)
-//			{
-//				GoBuyCarTwo();
-//			}
+			if(event == AgentEvent.GoingToBuyCar)
+			{
+				GoBuyCarTwo();
+			}
+			
 //			if(event == AgentEvent.GoingToRestaurant)
 //			{
 //				GoToRestaurantTwo();
@@ -340,7 +341,7 @@ public class PeopleAgent extends Agent implements People{
 			state = AgentState.IdleAtHome;
 			event = AgentEvent.GoingToSleep;
 			buy = BuyState.NextDay;
-			print("Sleeping because of a bug");
+			//print("Sleeping because of a bug");
 			log.add(new LoggedEvent("Sleeping In Message"));
 			Hunger = 1215;
 			stateChanged();
@@ -836,10 +837,10 @@ public class PeopleAgent extends Agent implements People{
 //		{
 //			GoBuyCarTwo();
 //		}
-//	}
-//	
-//	public void GoBuyCarTwo()
-//	{
+	}
+	
+	public void GoBuyCarTwo()
+	{
 		location = AgentLocation.Road;
 		if(!testmode)
 		{

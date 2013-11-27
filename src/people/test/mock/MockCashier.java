@@ -4,6 +4,7 @@ import java.util.Map;
 
 import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
+import market.interfaces.MarketEmployee;
 import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -38,18 +39,6 @@ public class MockCashier extends Role implements Cashier {
 		
 	}
 
-	@Override
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price,
-			Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void msgReadyToHelp(Teller teller) {
@@ -71,6 +60,19 @@ public class MockCashier extends Role implements Cashier {
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price,
+			Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGotMarketOrder(Role role, Map<String, Integer> marketOrder) {
 		// TODO Auto-generated method stub
 		
 	}
