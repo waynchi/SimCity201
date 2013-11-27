@@ -27,6 +27,8 @@ import people.Role;
 public class CashierRole extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
+	public boolean inTest = false;
+	
 	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
 
 	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
@@ -119,10 +121,12 @@ public class CashierRole extends Role implements Cashier {
 
 
 	public CashierRole(RestaurantGui gui) {
+		if (!inTest) {
 		cashierGui = new RestaurantCashierGui(this);
 		restGui = gui;
 		restGui.getAnimationPanel().addGui(cashierGui);
 		cashierGui.setPresent(false);
+		}
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
@@ -383,6 +387,7 @@ public class CashierRole extends Role implements Cashier {
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		host.setCashier(this);
+		if (!inTest){
 		cashierGui.setX(250);
 		cashierGui.setY(250);
 		cashierGui.setPresent(true);
@@ -393,8 +398,7 @@ public class CashierRole extends Role implements Cashier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println("fhio");
+		}
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
@@ -499,6 +503,7 @@ public class CashierRole extends Role implements Cashier {
 		teller.msgDoneAndLeaving();
 		deposit = withdraw = false;
 		isActive = false;
+		if (!inTest){
 		cashierGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -510,6 +515,7 @@ public class CashierRole extends Role implements Cashier {
 		cashierGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff
+		}
 	}
 
 	private double getTotalSalary() {
