@@ -70,32 +70,32 @@ the city handles pathing and collision detection.
 
 ## Contribution and Distribution
 
-+ Vikrant Singhal
-  *Housing Logic
-  *Housing Gui
-+ Eric Strode
-  *Bank Logic
-  *Bank Gui
-  *Main Gui Layout
-  *Trace Log
-+ Yinyi Chen
-  *Restaurant Logic
-  *Restaurant Gui
-  *Market Logic
-  *Market Gui
-+ Peppy Sisay
-  *Transportation Logic (Vehicles and Bus)
-  *Transportation Gui
-  *SimCity Gui and Layout
-+ Zack Tanner
-  *Transportation Logic (Vehicles)
-  *Transportation Gui
-  *City Configuration
-  *Person Gui
-+ Wayne Chi
-  *People Logic
-  *People Gui
-  *City Configuration
+* Vikrant Singhal
+  * Housing Logic
+  * Housing Gui
+* Eric Strode
+  * Bank Logic
+  * Bank Gui
+  * Main Gui Layout
+  * Trace Log
+* Yinyi Chen
+  * Restaurant Logic
+  * Restaurant Gui
+  * Market Logic
+  * Market Gui
+* Peppy Sisay
+  * Transportation Logic (Vehicles and Bus)
+  * Transportation Gui
+  * SimCity Gui and Layout
+* Zack Tanner
+  * Transportation Logic (Vehicles)
+  * Transportation Gui
+  * City Configuration
+  * Person Gui
+* Wayne Chi
+  * People Logic
+  * People Gui
+  * City Configuration
 
 + I (Wayne Chi, the Team Leader) believe that, although there were differences in skill level, everyone gave 200%  to this project (The extra hundred percent being derived from our sleep) and did an approximately equal amount of work.
 + Not only that, but the roles and contributions we have are loosely defined as we all helped each other out throughout the project, with most people fixing and editing code from all throughout the project.
