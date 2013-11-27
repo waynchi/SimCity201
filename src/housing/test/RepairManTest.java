@@ -1,14 +1,12 @@
 package housing.test;
 
 import static org.junit.Assert.*;
-import java.util.List;
 import housing.Apartments;
 import housing.House;
 import housing.HouseType;
 import housing.HousingRepairManRole;
 import housing.HousingRepairManRole.HouseState;
 import housing.HousingRepairManRole.Location;
-import housing.Item;
 import housing.interfaces.Resident;
 import org.junit.Test;
 import people.PeopleAgent;

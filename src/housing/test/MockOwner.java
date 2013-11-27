@@ -10,12 +10,6 @@ import restaurant.test.mock.LoggedEvent;
 
 public class MockOwner extends MockResident implements Owner {
 	
-	// Data
-	
-	EventLog log = new EventLog();
-	
-	//-----------------------------------------------------------//
-
 	// Messages
 	
 	@Override

@@ -130,14 +130,14 @@ public class CityGui extends JFrame implements ActionListener {
 				int end = Integer.parseInt(configIteration.next());
 				if (isInteger(amount)) {
 					PeopleAgent person;
-					if(rand.nextInt(5) < 2)
-					{
+//					if(rand.nextInt(5) < 2)
+//					{
 						 person = new PeopleAgent(name, 1000.0, false); //TODO
-					}
-					else
-					{
-						 person = new PeopleAgent(name, 1000.0, true );
-					}//TODO
+//					}
+//					else
+//					{
+//						 person = new PeopleAgent(name, 1000.0, true );
+//					}//TODO
 					person.setCityGui(this);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
@@ -263,6 +263,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(MarketEmployeeRole, "MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
 						person.setMoney(10000);
+						person.hasCar = true;
 					}
 					if(job.equals("MarketCashier"))
 					{
@@ -271,6 +272,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
 						person.setMoney(1000);
+						person.hasCar = true;
 					}
 					if(job.equals("MarketCustomer"))
 					{
@@ -409,9 +411,9 @@ public class CityGui extends JFrame implements ActionListener {
 		time++;
 		if(time % x == 0)
 		{
-			if(time%60 == 0)
+			if(time%(x*10) == 0)
 			{
-				System.out.println(time/x);
+				System.out.println(time/(x));
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);

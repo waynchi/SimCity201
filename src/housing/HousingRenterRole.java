@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import people.People;
+import people.PeopleAgent;
 
 public class HousingRenterRole extends HousingResidentRole implements Renter{
 	// Data
 
 	private Owner owner;
-	private double money;
 	private double rent;
 	private boolean rentDue;
 	private int timesRentDue;
@@ -38,7 +38,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 		timesRentDue -= 1;
 		if (timesRentDue == 0)
 			rentDue = false;
-		money -= rent;
+		((PeopleAgent)myPerson).Money -= rent;
 		if (testMode == false) {
 			gui.DoUseCellPhone();
 			try {
@@ -50,7 +50,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 	public void payPenalty(Double p) {
 		double amount = p;
 		owner.hereIsPenalty(house, amount);
-		money -= amount;
+		((PeopleAgent)myPerson).Money -= amount;
 		penalties.remove(p);
 		if (testMode == false) {
 			gui.DoUseCellPhone();
@@ -80,8 +80,8 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (myState != State.Sleeping) {
-			if (rentDue == true && money >= rent) {
+		if (myState != State.Sleeping || testMode == true) {
+			if (rentDue == true && ((PeopleAgent)myPerson).Money >= rent) {
 				payRent();
 				return true;
 			}
@@ -102,7 +102,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 
 	private Double findPayablePenalty() {
 		for (Double i : penalties) {
-			if (i <= money)
+			if (i <= ((PeopleAgent)myPerson).Money)
 				return i;
 		}
 		return null;
@@ -121,11 +121,11 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 	}
 	
 	public void setMoney(double m) {
-		this.money = m;
+		((PeopleAgent)myPerson).Money = m;
 	}
 	
 	public double getMoney() {
-		return money;
+		return ((PeopleAgent)myPerson).Money;
 	}
 	
 	public int getTimesRentDue() {

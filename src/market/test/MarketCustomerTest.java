@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
 import restaurant.test.mock.LoggedEvent;
 import restaurant.test.mock.MockCashier;
 import restaurant.test.mock.MockCook;
-import test.Cashier_Bank_Test;
+import test.NewCashierTest;
 
 public class MarketCustomerTest extends TestCase{
 	PeopleAgent people;

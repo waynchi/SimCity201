@@ -96,4 +96,10 @@ public class MockCustomer extends Role implements Customer{
 		
 	}
 
+	@Override
+	public String getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

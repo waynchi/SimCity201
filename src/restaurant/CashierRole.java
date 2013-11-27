@@ -8,12 +8,14 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import restaurant.test.mock.MockHost;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
 import market.interfaces.MarketCashier;
+import market.interfaces.MarketEmployee;
 import people.Role;
 
 
@@ -25,6 +27,8 @@ import people.Role;
 public class CashierRole extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
+	public boolean inTest = false;
+	
 	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
 
 	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
@@ -87,16 +91,26 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public class MarketBill {
-		public MarketCashier marketCashier;
+		public MarketEmployee marketEmployee;
 		Double amount;
 		boolean itemsReceived;
+		boolean checkReceived;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (MarketCashier _marketCashier , double a, Map<String, Integer> items) {
-			marketCashier = _marketCashier;
+		public MarketBill (MarketEmployee m , double a, Map<String, Integer> items) {
+			marketEmployee = m;
 			amount = a;
-			itemsReceived = false;
+			//itemsReceived = false;
 			itemsOrdered = items;
+		}
+
+		public MarketBill(Role _marketEmployee, Map<String, Integer> marketOrder) {
+			// TODO Auto-generated constructor stub
+			marketEmployee = (MarketEmployee) _marketEmployee;
+			itemsOrdered = marketOrder;
+			checkReceived = true;
+			itemsReceived = false;
+			
 		}
 
 		//public String toString () {
@@ -107,10 +121,12 @@ public class CashierRole extends Role implements Cashier {
 
 
 	public CashierRole(RestaurantGui gui) {
+		if (!inTest) {
 		cashierGui = new RestaurantCashierGui(this);
 		restGui = gui;
 		restGui.getAnimationPanel().addGui(cashierGui);
 		cashierGui.setPresent(false);
+		}
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
@@ -140,35 +156,51 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
-		print ("received msgIsActive from gui");
+		print ("received msgIsActive");
 		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
-		print ("received msgIsInActive from gui");
+		print ("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price, Map<String, Integer> items) {
-		print("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName());
-		log.add(new LoggedEvent("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName() + " with price " + price));
-		marketBills.add(new MarketBill(marketCashier, price, items));
+	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price, Map<String, Integer> items) {
+		print("Received msgHereIsWhatIsDue from MarketCashier and amount is "
+				+ price);
+		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
+		
+		/*boolean orderFound = false;
+		synchronized(marketBills){
+		for (MarketBill mb : marketBills) {
+			if (mb.itemsOrdered == items) {
+				mb.checkReceived = true;
+				orderFound = true;
+			}
+		}
+		if (!orderFound) {
+			marketBills.add(new MarketBill(marketEmployee, price ,items));
+		}
+		}*/
+		marketBills.add(new MarketBill(marketEmployee, price, items));
+		
+		
 		getPersonAgent().CallstateChanged();
 	}
 
 
 	public void msgHereIsChange(double change) {
-		print ("received msgHereIsChange from market cashier");
+		print ("received change " + change + " from market cashier");
 		working_capital += change;
 		getPersonAgent().CallstateChanged();
 
 	}
 
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
-		print("received msgHereIsBill " + c.getName());
+		print("received a bill from waiter " + w.getName() + " for customer " + c.getName());
 		log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName() + " with Customer " + c.getName() + " and food " + food));
 		synchronized(balance){
 			if (balance.containsKey(c)){
@@ -183,7 +215,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgPayMyCheck (Customer c, Double amount) {
-		print ("received msgPayMyCheck from customer " + c.getName());
+		print ("received payment from customer " + c.getName());
 		log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName() + " and the amount is " + amount));
 		synchronized (checks){
 			for (Check check : checks) {
@@ -198,16 +230,21 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
-		print("received msgGotMarketOrder from cook");
+	public void msgGotMarketOrder(Role marketEmployee, Map<String, Integer> marketOrder) {
+		print("told by cook that market order is delivered, ready to pay");
+		/*boolean orderFound = false;
 		synchronized(marketBills){
 		for (MarketBill mb : marketBills) {
 			if (mb.itemsOrdered == marketOrder) {
 				mb.itemsReceived = true;
+				orderFound = true;
 			}
 		}
+		if (!orderFound) {
+			marketBills.add(new MarketBill(marketEmployee, marketOrder));
 		}
-		getPersonAgent().CallstateChanged();
+		}
+		getPersonAgent().CallstateChanged();*/
 
 	}
 
@@ -229,7 +266,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgWithdrawSuccessful(double funds, double amount){
-		print("received mssWithDrawSuccessful from teller");
+		print("received msgWithDrawSuccessful from teller");
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= funds;
@@ -276,25 +313,20 @@ public class CashierRole extends Role implements Cashier {
 			}
 		}
 		
-		if (!marketBills.isEmpty()) {
-			synchronized (marketBills) {
-			for (int i = 0; i < marketBills.size(); i++) {
-				if (marketBills.get(i).itemsReceived = true)
-					payMarket(marketBills.get(i));
-				}
-			}
-		}
 
-
-		
-		if (!marketBills.isEmpty()) {
+		/*if (!marketBills.isEmpty()) {
 			synchronized (marketBills) {
 			for (MarketBill mb : marketBills) {
-				if (mb.itemsReceived = true)
+				if (mb.itemsReceived && mb.checkReceived)
 					payMarket(mb);
 			}
 		return true;
 		}
+		}*/
+		
+		if (!marketBills.isEmpty()) {
+			payMarket(marketBills.get(0));
+			return true;
 		}
 
 		/*if (loanRequested && loanGranted) {
@@ -351,9 +383,13 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 	private void clockIn() {
 		print("in action clockIn");
+		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		host.setCashier(this);
+		if (!inTest){
+		cashierGui.setX(250);
+		cashierGui.setY(250);
 		cashierGui.setPresent(true);
 		cashierGui.DoGoToWorkingPosition();
 		try {
@@ -362,8 +398,7 @@ public class CashierRole extends Role implements Cashier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println("fhio");
+		}
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
@@ -371,7 +406,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void sendCheckToWaiter (final Check c) {
-		print ("in action sendCheckToWaiter");
+		print ("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
+				". Customer " + c.customer.getName() + " needs to pay " + c.due);
 		log.add(new LoggedEvent("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
 				". Customer " + c.customer.getName() + " needs to pay " + c.due));
 		/*new java.util.Timer().schedule(
@@ -406,14 +442,14 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		print ("in action payMarket");
 		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
-		if (working_capital > bill.amount) {
+		//if (working_capital > bill.amount) {
 			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.marketCashier.msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+			bill.marketEmployee.getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+			print ("paying market " + working_capital);
 			setMyMoney(0);
 
-		}
+		//}
 		/*else {
 			print ("Paying " + bill.market.getName()+" , not able to pay full bill");
 			bill.market.msgPayMarketBill(working_capital,this);
@@ -467,6 +503,7 @@ public class CashierRole extends Role implements Cashier {
 		teller.msgDoneAndLeaving();
 		deposit = withdraw = false;
 		isActive = false;
+		if (!inTest){
 		cashierGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -478,6 +515,7 @@ public class CashierRole extends Role implements Cashier {
 		cashierGui.setPresent(false);
 		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff
+		}
 	}
 
 	private double getTotalSalary() {
@@ -551,8 +589,8 @@ public class CashierRole extends Role implements Cashier {
 		teller = t;
 	}
 
-	public void setHost (HostRole h) {
-		host = h;
+	public void setHost (Host host2) {
+		host = host2;
 	}
 
 	public String getName() {

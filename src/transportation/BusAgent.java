@@ -53,8 +53,8 @@ myBusPassengers.remove(toRemove);
  */
 @Override
 public void msgAnimationFinishedArrivedAtStop(BusStop S){
-	if(!myBusPassengers.isEmpty())
-System.out.println("Recieved message that bus arrived to new stop: " + S.name);
+//	if(!myBusPassengers.isEmpty())
+//System.out.println("Recieved message that bus arrived to new stop: " + S.name);
 currentStop = S;
 busState = BusState.newStop;
 stateChanged();
@@ -65,7 +65,7 @@ stateChanged();
  */
 @Override
 public void msgAllBusStopPassengersNotified(){
-System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
+//System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }

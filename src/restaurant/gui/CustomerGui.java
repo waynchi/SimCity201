@@ -61,7 +61,7 @@ public class CustomerGui implements Gui{
 				isHungry = false;
 				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
-			//command=Command.noCommand;
+			command=Command.noCommand;
 		}
 	}
 
@@ -69,9 +69,9 @@ public class CustomerGui implements Gui{
     	g.drawImage(img,xPos,yPos,null);
 
     	// Display customer's order with text
-		g.setColor(Color.BLACK);
-		if (command == Command.WaitingForFood) g.drawString(choice+"?",xPos+20, yPos+30);
-		if (command == Command.Eating) g.drawString(choice,xPos+20, yPos+30);
+		g.setColor(Color.black);
+		if (customer.getState().equalsIgnoreCase("waiting_for_food")) g.drawString(choice+"?",xPos+20, yPos+30);
+		if (customer.getState().equalsIgnoreCase("eating")) g.drawString(choice,xPos+20, yPos+30);
 	}
 
 	public boolean isPresent() {

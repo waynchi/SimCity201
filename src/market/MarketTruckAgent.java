@@ -55,6 +55,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
+		print ("received an order from employee, deliver to cook " + cook.getPerson().getName());
 		log.add(new LoggedEvent("received message here is an order"));
 		orders.add(new Order (cook, items));
 		stateChanged();
@@ -73,19 +74,21 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
 
 	//actions
-	private void deliverOrder(Order order) {
+	private void deliverOrder(final Order order) {
 		// if order is from restaurant, deliver to restaurant
 		//if (order.cook != null) {
-		if(!inTest){
-			gui.deliver(order.cook.getPerson());
-		}
-		try {
-			orderDelivered.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		order.cook.msgHereIsYourOrder(order.items);
+		//if(!inTest){
+		//	gui.deliver(order.cook.getPerson());
+		//}
+		//new java.util.Timer().schedule(
+		//		new java.util.TimerTask(){
+		//			public void run(){
+						print("order delivered to restaurant");
+						order.cook.msgHereIsYourOrder(order.items);		
+						orders.remove(order);
+		//		},
+		//		2000);
+		
 		//}
 		//else {
 		//	gui.deliver(order.customer.getPerson().getPosition();
@@ -93,7 +96,6 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		//}
 		
 		 // need a getGui for personAgent
-		orders.remove(order);
 	}
 	
 	//utilities
