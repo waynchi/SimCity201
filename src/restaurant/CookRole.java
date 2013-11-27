@@ -245,6 +245,7 @@ public class CookRole extends Role implements Cook{
 
 	public void askCashierToPayForOrder(MarketOrder order) {
 		cashier = host.getCashier();
+		print("telling cashier that market order is delivered");
 		cashier.msgGotMarketOrder(order.marketOrder);
 		marketOrders.remove(order);
 	}
@@ -296,11 +297,16 @@ public class CookRole extends Role implements Cook{
 		}
 		//System.out.println(foods.get("Chicken").isOrdered);
 		marketOrders.add(new MarketOrder(marketOrder));
+		print("ordering food from market ");
+		for (Map.Entry<String, Integer> entry : marketOrder.entrySet()) {
+			print (entry.getValue() + " " + entry.getKey());
+		}
 		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
 	
 	
 	public void getOrderFromRevolvingStand() {
+		print ("going to revolving stand");
 		cookGui.DoGoToRevolvingStand();
 		try {
 			atRevolvingStand.acquire();
@@ -353,6 +359,7 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
+		print("clock in");
 		cookGui.setPresent(true);
 		cookGui.DoGoToCookingPlace();
 		try {
@@ -370,6 +377,7 @@ public class CookRole extends Role implements Cook{
 
 	public void done() {
 		// gui do go to the exit
+		print("leaving work");
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();

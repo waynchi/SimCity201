@@ -117,6 +117,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
+		print ("got an order from market customer " + customer.getPerson().getName());
 		orders.add(new Order(customer, chosenItems));
 		getPersonAgent().CallstateChanged();
 
@@ -124,6 +125,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
+		print ("got an order from cook " + cook.getPerson().getName() + " ordering ");
+		for (Map.Entry<String, Integer> entry : order.entrySet()) {
+			print (entry.getValue() + " " + entry.getKey());
+		}
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
 
@@ -147,6 +152,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
+			print("getting " + entry.getKey());
 			employeeGui.doGetItem(entry.getKey());
 			try {
 				atCabinet.acquire();
@@ -172,7 +178,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if(!inTest)		getOrder(order.items);
 		// if order is from restaurant
 		if (order.cook != null) {
+			print ("sending truck to restaurant cook " + order.cook.getPerson().getName());
 			getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			print ("sending bill to restaurant cashier " + order.restaurantCashier.getName());
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
 
@@ -181,6 +189,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		else {
 			//if (order.customer.getPerson().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
 				//gui.doWalkToCustomer(order.customer);
+			print ("giving items to customer " + order.customer.getPerson().getName());
 				order.customer.msgHereIsYourOrder(order.items);
 			//}
 

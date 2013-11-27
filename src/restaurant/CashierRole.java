@@ -140,20 +140,21 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
-		print ("received msgIsActive from gui");
+		print ("received msgIsActive");
 		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
-		print ("received msgIsInActive from gui");
+		print ("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price, Map<String, Integer> items) {
-		print("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName());
+		print("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName() + " amount is "
+				+ price);
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue from MarketCashier " + marketCashier.getName() + " with price " + price));
 		marketBills.add(new MarketBill(marketCashier, price, items));
 		getPersonAgent().CallstateChanged();
@@ -161,14 +162,14 @@ public class CashierRole extends Role implements Cashier {
 
 
 	public void msgHereIsChange(double change) {
-		print ("received msgHereIsChange from market cashier");
+		print ("received change " + change + " from market cashier");
 		working_capital += change;
 		getPersonAgent().CallstateChanged();
 
 	}
 
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
-		print("received msgHereIsBill " + c.getName());
+		print("received a bill from waiter " + w.getName() + " for customer " + c.getName());
 		log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName() + " with Customer " + c.getName() + " and food " + food));
 		synchronized(balance){
 			if (balance.containsKey(c)){
@@ -183,7 +184,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgPayMyCheck (Customer c, Double amount) {
-		print ("received msgPayMyCheck from customer " + c.getName());
+		print ("received payment from customer " + c.getName());
 		log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName() + " and the amount is " + amount));
 		synchronized (checks){
 			for (Check check : checks) {
@@ -199,7 +200,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
-		print("received msgGotMarketOrder from cook");
+		print("told by cook that market order is delivered, ready to pay");
 		synchronized(marketBills){
 		for (MarketBill mb : marketBills) {
 			if (mb.itemsOrdered == marketOrder) {
@@ -371,7 +372,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void sendCheckToWaiter (final Check c) {
-		print ("in action sendCheckToWaiter");
+		print ("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
+				". Customer " + c.customer.getName() + " needs to pay " + c.due);
 		log.add(new LoggedEvent("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
 				". Customer " + c.customer.getName() + " needs to pay " + c.due));
 		/*new java.util.Timer().schedule(
@@ -406,11 +408,11 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		print ("in action payMarket");
 		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
 		if (working_capital > bill.amount) {
 			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
 			bill.marketCashier.msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+			print ("paying market " + working_capital);
 			setMyMoney(0);
 
 		}
