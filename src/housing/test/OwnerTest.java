@@ -4,10 +4,13 @@ import static org.junit.Assert.*;
 import housing.House;
 import housing.HouseType;
 import housing.HousingOwnerRole;
+import housing.HousingOwnerRole.RentOrderState;
 import housing.interfaces.Owner;
 import housing.interfaces.Renter;
 import housing.interfaces.Resident;
 import org.junit.Test;
+
+import people.PeopleAgent;
 
 public class OwnerTest {
 	Owner o;
@@ -17,6 +20,7 @@ public class OwnerTest {
 	House h1;
 	House h2;
 	House h3;
+	PeopleAgent p;
 	
 	@Test
 	public void testNormative1() {
@@ -59,6 +63,8 @@ public class OwnerTest {
 		o.generate(h1);
 		o.generate(h2);
 		assertEquals(3, o.getTotalRents());
+		
+		assertNotNull(((HousingOwnerRole)o).findRentOrderByState(RentOrderState.Due));
 		
 		o.pickAndExecuteAnAction();
 		
@@ -118,6 +124,7 @@ public class OwnerTest {
 		r2 = null;
 		r3 = null;
 		o = null;
+		p = null;
 		
 		h1 = new House("R1Residence", 1, HouseType.Villa);
 		r1 = new MockRenter();
@@ -126,16 +133,21 @@ public class OwnerTest {
 		h3 = new House("R3Residence", 3, HouseType.Villa);
 		r3 = new MockRenter();
 		o = new HousingOwnerRole();
+		p = new MockPeopleHousing("Name");
 		
 		((HousingOwnerRole)o).testModeOn();
 		
+		h1.testModeOn();
 		h1.setOccupant((Resident)r1);
 		h1.setItemsWithoutGui();
+		h2.testModeOn();
 		h2.setOccupant((Resident)r2);
 		h2.setItemsWithoutGui();
+		h3.testModeOn();
 		h3.setOccupant((Resident)r3);
 		h3.setItemsWithoutGui();
 		
+		((HousingOwnerRole)o).setPerson(p);
 		o.addHouse(h1, r1);
 		o.addHouse(h2, r2);
 		o.addHouse(h3, r3);

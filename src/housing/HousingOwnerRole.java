@@ -106,7 +106,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 	// Scheduler
 
 	public boolean pickAndExecuteAnAction() {
-		if (super.myState != State.Sleeping) {
+		if (super.myState != State.Sleeping || testMode == true) {
 			RentOrder ro =  null;
 
 			ro = findRentOrderByState(RentOrderState.ApplyPenaltyAndRemove);
@@ -139,7 +139,7 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		return null;
 	}
 
-	private RentOrder findRentOrderByState(RentOrderState s1) {
+	public RentOrder findRentOrderByState(RentOrderState s1) {
 		for (RentOrder ro : rents) {
 			if (ro.s == s1)
 				return ro;
@@ -242,5 +242,5 @@ public class HousingOwnerRole extends HousingResidentRole implements Owner {
 		}
 	}
 
-	enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
+	public enum RentOrderState {Due, ApplyPenalty, ApplyPenaltyAndRemove, AppliedPenalty};
 }

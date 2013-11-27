@@ -13,7 +13,7 @@ public class MockResident implements Resident {
 	
 	// Data
 	
-	EventLog log = new EventLog();
+	public EventLog log = new EventLog();
 	
 	//-----------------------------------------------------------//
 	
