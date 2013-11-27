@@ -21,7 +21,7 @@ import restaurant.test.mock.LoggedEvent;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
-	public boolean inTest =false;
+	public boolean inTest = false;
 	
 	MarketCashier cashier;
 	MarketEmployeeGui employeeGui;
@@ -125,7 +125,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
+		if(!inTest){
 		print ("got an order from cook " + cook.getPerson().getName());
+		}
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
 
@@ -174,7 +176,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if(!inTest)		getOrder(order.items);
 		// if order is from restaurant
 		if (order.cook != null) {
+			if(!inTest){
 			print ("sending truck to restaurant cook " + order.cook.getPerson().getName());
+			}
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
 			print("order delivered to restaurant");
 			order.cook.msgHereIsYourOrder(order.items);	
@@ -236,7 +240,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void setCashier(MarketCashier c) {
 		cashier = c;
+		if (!inTest){
 		getPersonAgent().CallstateChanged();
+		}
 	}
 	
 	public MarketCashier getCashier() {
