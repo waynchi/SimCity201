@@ -54,7 +54,9 @@ public class MarketCustomerGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-        g.drawImage(market_customer.getImage(), xPos, yPos, 10, 10, null);
+		g.setColor(Color.blue);
+		g.drawRect(xPos-2, yPos-2, 34, 34);
+        g.drawImage(market_customer.getImage(), xPos, yPos, 30, 30, null);
 
 	}
 

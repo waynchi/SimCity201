@@ -9,7 +9,7 @@ public class WaiterTest extends TestCase{
 	}
 
 	public static TestSuite suite ( ) {
-		return new TestSuite(Cashier_Bank_Test.class);
+		return new TestSuite(NewCashierTest.class);
 	}
 
 	public void setUp() throws Exception{

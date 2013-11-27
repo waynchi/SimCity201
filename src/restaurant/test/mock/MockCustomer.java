@@ -94,4 +94,10 @@ public class MockCustomer extends Mock implements Customer{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

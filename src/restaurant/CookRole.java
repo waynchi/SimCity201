@@ -135,6 +135,7 @@ public class CookRole extends Role implements Cook{
 		print ("received order from market");
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
+			print (entry.getKey() + foods.get(entry.getKey()).amount);
 		}
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items) {
@@ -245,7 +246,8 @@ public class CookRole extends Role implements Cook{
 
 	public void askCashierToPayForOrder(MarketOrder order) {
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(order.marketOrder);
+		print("telling cashier that market order is delivered");
+		cashier.msgGotMarketOrder(getPersonAgent().getMarketEmployee(0),order.marketOrder);
 		marketOrders.remove(order);
 	}
 	
@@ -296,11 +298,16 @@ public class CookRole extends Role implements Cook{
 		}
 		//System.out.println(foods.get("Chicken").isOrdered);
 		marketOrders.add(new MarketOrder(marketOrder));
+		print("ordering food from market ");
+		for (Map.Entry<String, Integer> entry : marketOrder.entrySet()) {
+			print (entry.getValue() + " " + entry.getKey());
+		}
 		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
 	
 	
 	public void getOrderFromRevolvingStand() {
+		print ("going to revolving stand");
 		cookGui.DoGoToRevolvingStand();
 		try {
 			atRevolvingStand.acquire();
@@ -353,6 +360,7 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
+		print("clock in");
 		cookGui.setPresent(true);
 		cookGui.DoGoToCookingPlace();
 		try {
@@ -370,6 +378,7 @@ public class CookRole extends Role implements Cook{
 
 	public void done() {
 		// gui do go to the exit
+		print("leaving work");
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -427,7 +436,7 @@ public class CookRole extends Role implements Cook{
 
 		public Food (String t) {
 			type = t;
-			low = 4;
+			low = 3;
 			capacity = 5;
 			isOrdered = false;
 			if (type.equals("Steak")) {

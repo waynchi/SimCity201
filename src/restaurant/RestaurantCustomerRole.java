@@ -545,6 +545,10 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public String getState() {
+		return state.toString();
+	}
 
 }
 

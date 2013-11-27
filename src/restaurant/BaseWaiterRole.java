@@ -113,40 +113,34 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgAtTable() {//from animation
-		print("got msgAtTable from gui, atTable released");
 		atTable.release();// = true;
 		getPersonAgent().CallstateChanged();
 
 	}
 	
 	public void msgAtExit() {
-		print("got msgAtExit gui, atExit released");
 		atExit.release();
 		getPersonAgent().CallstateChanged();
 	}
 
 	
 	public void msgAtCook() {
-		print("got msgAtCook from gui, atCook released");
 		atCook.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
-		print("got msgAtCashier from gui, atCashier released");
 		atCashier.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtWaitingCustomer() {
-		print("got msgAtWaitingCustomer from gui, atWaiting released");
 		atWaitingCustomer.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
 
 	public void msgAtRevolvingStand() {
-		print("got msgAtRevolvingStand from gui, atRevolvingStand released");
 		atRevolvingStand.release();
 		myPerson.CallstateChanged();
 		
@@ -344,8 +338,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		
 		host = (Host) getPersonAgent().getHost(0);
 		host.addWaiter(this);
-		waiterGui.setHomePosition(host.getWaiters().size());
-		print ("waiter size is: " + host.getWaiters().size());
+		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
 		waiterGui.setPresent(true);
 		waiterGui.DoGoRest();
 		cook = host.getCook();

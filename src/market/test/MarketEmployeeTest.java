@@ -13,7 +13,7 @@ import restaurant.interfaces.Host;
 import restaurant.test.mock.MockCashier;
 import restaurant.test.mock.MockCook;
 import restaurant.test.mock.MockHost;
-import test.Cashier_Bank_Test;
+import test.NewCashierTest;
 
 public class MarketEmployeeTest extends TestCase{
 	PeopleAgent people;
