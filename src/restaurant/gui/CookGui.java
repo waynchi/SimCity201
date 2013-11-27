@@ -78,7 +78,7 @@ public class CookGui implements Gui {
 	public void draw(Graphics2D g) {
         g.setColor(Color.blue);
 		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.white);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
         	g.drawString(foodBeingCooked, 50, 265);

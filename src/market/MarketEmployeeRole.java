@@ -125,10 +125,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
-		print ("got an order from cook " + cook.getPerson().getName() + " ordering ");
-		for (Map.Entry<String, Integer> entry : order.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
+		print ("got an order from cook " + cook.getPerson().getName());
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
 
@@ -152,8 +149,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
-			print("getting " + entry.getKey());
-			employeeGui.doGetItem(entry.getKey());
+ 			employeeGui.doGetItem(entry.getKey());
 			try {
 				atCabinet.acquire();
 			} catch (InterruptedException e) {
@@ -182,7 +178,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
 			print("order delivered to restaurant");
 			order.cook.msgHereIsYourOrder(order.items);	
-			print ("sending bill to restaurant cashier " + order.restaurantCashier.getName());
+			print ("sending bill to market cashier ");
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
 
@@ -243,7 +239,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public MarketCashier getCashier(MarketCashier c) {
+	public MarketCashier getCashier() {
 		return cashier;
 	}
 	

@@ -89,6 +89,12 @@ public class MockHost extends Mock implements Host {
 		return name;
 	}
 
+	@Override
+	public int getCustomerSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
+
 
 }

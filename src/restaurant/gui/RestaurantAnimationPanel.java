@@ -46,6 +46,9 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        g2.drawImage(rest_floor.getImage(), 0, 0, 500, 400, null);
+
 
         //Here is the table
         g2.setColor(Color.ORANGE);
@@ -68,7 +71,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         g2.fillOval(350, 250, 70, 70);
         
         
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.white);
         g2.drawString("Cooking", 0, 265);
         g2.drawString("Plating",0,225);
         

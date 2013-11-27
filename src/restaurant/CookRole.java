@@ -247,7 +247,7 @@ public class CookRole extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		cashier = host.getCashier();
 		print("telling cashier that market order is delivered");
-		cashier.msgGotMarketOrder(order.marketOrder);
+		cashier.msgGotMarketOrder(getPersonAgent().getMarketEmployee(0),order.marketOrder);
 		marketOrders.remove(order);
 	}
 	

@@ -101,9 +101,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
 		print ("got a check from employee for restaurant cashier " + restCashier.getName() + " and restaurant ordered ");
-		for (Map.Entry<String, Integer> entry : items.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
 		checks.add(new Check(restCashier, items));
 		getPersonAgent().CallstateChanged();
 
@@ -127,9 +124,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// from restaurant cashier
 	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
 		print ("restaurant cashier " + cashier.getName() + " is paying " + amount + " for order ");
-		for (Map.Entry<String, Integer> entry : items.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
 		for (Check c : checks) {
 			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
@@ -227,12 +221,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			check.restaurantCashier.msgHereIsWhatIsDue(this, check.totalDue, check.items);
 			print ("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and amount is " + check.totalDue);
+			check.restaurantCashier.msgHereIsWhatIsDue(marketEmployee, check.totalDue, check.items);
 		}
 		else { // check is for market customer
-			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 			print ("sending check to customer " + check.customer.getPerson().getName() + " and total due is " + check.totalDue);
+			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
 		check.state = checkState.SENT;
 	}

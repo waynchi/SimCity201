@@ -49,8 +49,8 @@ public class RestaurantCashierGui implements Gui{
 		// TODO Auto-generated method stub
 		g.setColor(Color.yellow);
 		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.BLACK);
-        g.drawString("Cahsier", xPos, yPos+20);
+        g.setColor(Color.white);
+        g.drawString("Cashier", xPos, yPos+20);
         
 	}
 
