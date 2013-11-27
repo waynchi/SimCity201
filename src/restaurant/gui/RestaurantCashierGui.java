@@ -40,6 +40,8 @@ public class RestaurantCashierGui implements Gui{
 	        }
 	        if (xPos == xExit && yPos == yExit && leaving){
 	        	cashier.msgAtExit();
+	        	xDestination = 250;
+	        	yDestination = 250;
 	        	leaving = false;
 	        }
 	}
@@ -68,6 +70,8 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
+		xDestination = 250;
+		yDestination = 250;
 		goingToWorkPlace = true;
 		
 	}
@@ -77,6 +81,14 @@ public class RestaurantCashierGui implements Gui{
 		xDestination = xExit;
 		yDestination = yExit;
 		leaving = true;
+	}
+	
+	public void setX(int x) {
+		xDestination = x;
+	}
+	
+	public void setY(int y) {
+		yDestination = y;
 	}
 
 }

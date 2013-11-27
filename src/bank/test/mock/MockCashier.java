@@ -2,7 +2,9 @@ package bank.test.mock;
 
 import java.util.Map;
 
+import people.Role;
 import market.interfaces.MarketCashier;
+import market.interfaces.MarketEmployee;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Host;
@@ -41,19 +43,6 @@ public class MockCashier extends Mock implements Cashier {
 	}
 
 	@Override
-	public void msgHereIsWhatIsDue(MarketCashier marketCashier, double price,
-			Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void msgReadyToHelp(Teller teller) {
 		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
 	}
@@ -77,6 +66,19 @@ public class MockCashier extends Mock implements Cashier {
 	}
 
 	public void setHost(Host host) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price,
+			Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGotMarketOrder(Role role, Map<String, Integer> marketOrder) {
 		// TODO Auto-generated method stub
 		
 	}

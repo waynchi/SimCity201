@@ -383,6 +383,8 @@ public class CashierRole extends Role implements Cashier {
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		host.setCashier(this);
+		cashierGui.setX(250);
+		cashierGui.setY(250);
 		cashierGui.setPresent(true);
 		cashierGui.DoGoToWorkingPosition();
 		try {
