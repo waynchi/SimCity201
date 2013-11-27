@@ -1,7 +1,10 @@
 package test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
+import market.interfaces.MarketEmployee;
 import market.test.MockMarketCashier;
 import market.test.MockMarketEmployee;
 import people.PeopleAgent;
@@ -29,6 +32,7 @@ public class NewCashierTest extends TestCase{
 	MockMarketCashier mmc;
 	RestaurantGui gui;
 	MockHost host;
+	Map<String,Integer> items = new HashMap<String,Integer>();
 
 
 	public static void main(String args[]) {
@@ -43,6 +47,7 @@ public class NewCashierTest extends TestCase{
 		super.setUp();          
 		gui = new RestaurantGui();
 		cashier = new CashierRole(gui);
+		cashier.inTest = true;
 		host = new MockHost("host");
 		cashier.setHost(host);
 		teller = new MockTeller("teller");
@@ -53,14 +58,26 @@ public class NewCashierTest extends TestCase{
 		cashier.setPerson(people);
 		cashier.setTeller(teller);
 		mme = new MockMarketEmployee("employee");
+		mme.setCashier(mmc);
 		mmc = new MockMarketCashier("customer");
+		items.put("Steak", 2);
+		items.put("Chicken", 3);
 	}      
 	
 	//scenario: make PeopleAgent a CashierRole, then Cashier will do the opening
-	public void testActive() {
+	public void testMarketBill() {
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
 		assertTrue(cashier.log.containsString("in clock in"));
+		assertTrue(cashier.getMarketBills().size() == 0);
+		cashier.msgHereIsWhatIsDue(mme, 100.0, items);
+		assertTrue(cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
+		assertTrue(cashier.getMarketBills().size() == 1);
+		cashier.pickAndExecuteAnAction();
+		// don't know how to solve this null pointer
+		assertTrue(cashier.log.containsString("In action payMarket, paying 100.0"));
+
+		
 
 	}
 	
