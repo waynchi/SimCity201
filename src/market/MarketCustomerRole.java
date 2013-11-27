@@ -86,9 +86,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
 		print ("received my item ");
-		for (Map.Entry<String, Integer> entry : _itemsReceived.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
 		itemsReceived = _itemsReceived;
 		event = marketCustomerEvent.RECEIVED_ORDER;
 		// need to tell People what we've got
@@ -170,10 +167,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			e.printStackTrace();
 		}
 		}
-		print("hi, can I buy "); 
-		for (Map.Entry<String, Integer> entry : itemsNeeded.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
+		
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
