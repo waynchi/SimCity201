@@ -44,6 +44,7 @@ public class MarketCashierTest extends TestCase{
 		mcook = new MockCook("mcook");
 		mcashier = new MockCashier("mcashier");
 		items.put("Car", 1);
+		cashier.inTest = true;
 	}
 	
 	public void testPeopleMessage (){
@@ -86,9 +87,7 @@ public class MarketCashierTest extends TestCase{
 		
 		
 	}
-	
-	public void testOneEmployeeOneRestaurant(){}
-	
+		
 	
 	
 }

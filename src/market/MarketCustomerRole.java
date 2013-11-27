@@ -57,7 +57,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
 		state = marketCustomerState.IN_MARKET;
+		if (!inTest){
 		employee = (MarketEmployeeRole) getPersonAgent().getMarketEmployee(0);
+		}
 		getPersonAgent().CallstateChanged();
 	}//tested
 	

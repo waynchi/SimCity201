@@ -22,6 +22,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
 	public EventLog log = new EventLog();
+	public boolean inTest = false;
 
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
@@ -93,7 +94,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// for regular Market Customer
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
-		print ("got a check from employee for customer " + customer.getPerson().getName());
+		if (!inTest)	print ("got a check from employee for customer " + customer.getPerson().getName());
 		checks.add(new Check(customer, items));
 		getPersonAgent().CallstateChanged();
 	}//tested
@@ -108,7 +109,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from regular market customer
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
-		print ("marketCustomer " + customer.getPerson().getName() + " is paying " + totalPaid);
+		if (!inTest) print ("marketCustomer " + customer.getPerson().getName() + " is paying " + totalPaid);
 		for (Check c : checks) {
 			if (c.customer == customer) {
 				c.state = checkState.PAID;
@@ -206,8 +207,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void clockIn() {
 		print ("clock in");
 		log.add(new LoggedEvent("in action clockIn"));
+		if (!inTest){
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		marketEmployee.setCashier(this);
+		}
 		turnActive = false;
 	}
 	
@@ -225,7 +228,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			check.restaurantCashier.msgHereIsWhatIsDue(marketEmployee, check.totalDue, check.items);
 		}
 		else { // check is for market customer
-			print ("sending check to customer " + check.customer.getPerson().getName() + " and total due is " + check.totalDue);
+			if (!inTest) print ("sending check to customer " + check.customer.getPerson().getName() + " and total due is " + check.totalDue);
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
 		check.state = checkState.SENT;
