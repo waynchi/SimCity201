@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
 import people.Role;
@@ -22,6 +23,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private MarketEmployee marketEmployee;
 	public EventLog log = new EventLog();
 
+	private Semaphore atExit = new Semaphore(0,true);
+	private Semaphore atPosition = new Semaphore(0,true);
 	
 	Map<String, Double> priceList = new HashMap<String, Double>();
 	public double marketMoney = 10000.0;
@@ -75,6 +78,20 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}//tested
+	
+	
+	public void msgAtExit() {
+		print ("received msgIsAtExit from gui");
+		atExit.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgAtPosition() {
+		print ("received msgAtPosition from gui");
+		atPosition.release();
+		getPersonAgent().CallstateChanged();
+	}
+	
 
 	// for regular Market Customer
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
