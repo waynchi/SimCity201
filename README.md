@@ -3,8 +3,8 @@ team30
 
 SimCity201 Project Repository for CS 201 students
 
-Vikrant Singhal:
-My contribution:
+Vikrant Singhal - My contribution:
+
 Entire Housing Scenario:
 + Creation and implementation of 4 roles: HousingResidentRole, HousingRepairManRole, HousingRenterRole and HousingOwnerRole.
 + GUIs and interfaces for each of the above roles.
