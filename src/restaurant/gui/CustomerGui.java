@@ -61,7 +61,7 @@ public class CustomerGui implements Gui{
 				isHungry = false;
 				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
-			//command=Command.noCommand;
+			command=Command.noCommand;
 		}
 	}
 
