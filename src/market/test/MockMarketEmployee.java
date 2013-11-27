@@ -12,6 +12,7 @@ import market.interfaces.MarketEmployee;
 
 public class MockMarketEmployee extends Mock implements MarketEmployee{
 
+	MarketCashier cashier = null;
 	public MockMarketEmployee(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -30,6 +31,7 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 
 	@Override
 	public void setCashier(MarketCashier marketCashier) {
+		cashier =  marketCashier;
 	}
 
 	@Override
@@ -70,8 +72,8 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 
 	@Override
 	public MarketCashier getCashier() {
+		return cashier;
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
