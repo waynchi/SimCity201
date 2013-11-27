@@ -96,6 +96,7 @@ the city handles pathing and collision detection.
   * People Logic
   * People Gui
   * City Configuration
+  * Organizing and Combining Features
 
 + I (Wayne Chi, the Team Leader) believe that, although there were differences in skill level, everyone gave 200%  to this project (The extra hundred percent being derived from our sleep) and did an approximately equal amount of work.
 + Not only that, but the roles and contributions we have are loosely defined as we all helped each other out throughout the project, with most people fixing and editing code from all throughout the project.
