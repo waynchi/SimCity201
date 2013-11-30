@@ -169,8 +169,6 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price, Map<String, Integer> items) {
-		print("Received msgHereIsWhatIsDue from MarketCashier and amount is "
-				+ price);
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
 		
 		/*boolean orderFound = false;
@@ -386,8 +384,9 @@ public class CashierRole extends Role implements Cashier {
 		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
-		host.setCashier(this);
 		if (!inTest){
+		host.setCashier(this);
+		
 		cashierGui.setX(250);
 		cashierGui.setY(250);
 		cashierGui.setPresent(true);
@@ -442,11 +441,10 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		//log.add(new LoggedEvent("In action payMarket, paying market " + bill.market.getName()));
+		log.add(new LoggedEvent("In action payMarket, paying "+bill.amount));
 		//if (working_capital > bill.amount) {
 			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
 			bill.marketEmployee.getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
-			print ("paying market " + working_capital);
 			setMyMoney(0);
 
 		//}
