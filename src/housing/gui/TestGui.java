@@ -28,7 +28,6 @@ public class TestGui extends JFrame {
 	}
 	
 	public void displayApartment(int num) {
-		System.out.println(num);
 		cl.show(bhp, num + "");
 	}
 	
