@@ -16,10 +16,12 @@ public class TestGui extends JFrame {
 		this.setLayout(new GridLayout());
 		bhp.setLayout(cl);
 //		bhp.add(hp);
-		this.add(h.a.gui.ap);
 		h.a.gui.ap.setTestGui(this);
 		this.add(bhp);
-		this.setSize(1100, 570);
+		this.setSize(525, 570);
+		JScrollPane container = new JScrollPane(h.a.gui.ap);
+		container.setOpaque(true);
+		bhp.add(container, "Apartments");
 		for (int i = 0; i < 25; i++) {
 			JScrollPane houseContainer = new JScrollPane(h.a.houses.get(i).gui.hp);
 			houseContainer.setOpaque(true);
@@ -29,6 +31,10 @@ public class TestGui extends JFrame {
 	
 	public void displayApartment(int num) {
 		cl.show(bhp, num + "");
+	}
+	
+	public void display() {
+		cl.show(bhp, "Apartments");
 	}
 	
 	public static void main(String[] arg) {

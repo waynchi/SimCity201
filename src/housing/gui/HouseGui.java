@@ -38,7 +38,7 @@ public class HouseGui implements HGui{
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
-		hp.addGui(this);
+		hp.addHouseGui(this);
 	}
 
 	@Override
@@ -63,6 +63,13 @@ public class HouseGui implements HGui{
 				gui.draw(g);
 			}
 		}
+		g.setColor(Color.BLUE);
+		g.fillRect(470, 15, 30, 60);
+		g.setColor(Color.BLACK);
+		g.drawString("B", 480, 30);
+		g.drawString("A", 480, 42);
+		g.drawString("C", 480, 54);
+		g.drawString("K", 480, 66);
 	}
 
 	@Override

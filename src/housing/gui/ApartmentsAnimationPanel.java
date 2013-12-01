@@ -96,5 +96,9 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	
 	public void setTestGui(TestGui g) {
 		this.g = g;
+		List<House> houses = ag.a.houses;
+		for (House h : houses) {
+			h.gui.hp.setTestGui(g);
+		}
 	}
 }
