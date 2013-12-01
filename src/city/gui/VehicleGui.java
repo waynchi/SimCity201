@@ -7,7 +7,7 @@ import java.util.HashMap;
 import transportation.BusStop;
 
 
-public class Vehicle extends Rectangle2D.Double {
+public class VehicleGui extends Rectangle2D.Double {
 	public int xDestination;
 	public int yDestination;
 	public double xPos;
@@ -25,7 +25,7 @@ public class Vehicle extends Rectangle2D.Double {
 	int time;
 	public String typeOfVehicle;
 	
-	public Vehicle( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
+	public VehicleGui( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
 		this.typeOfVehicle = type;
 		this.laneSegment = laneSegment;

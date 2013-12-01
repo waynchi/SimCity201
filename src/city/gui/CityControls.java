@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import people.PeopleAgent;
 import city.gui.trace.AlertLevel;
 import city.gui.trace.AlertLog;
 import city.gui.trace.AlertTag;
@@ -49,9 +50,13 @@ public class CityControls extends JPanel implements ActionListener {
 			JButton btnAddPerson = new JButton("Add Person");
 			panel.add(btnAddPerson);
 			
-			JButton btnDemonstrateCollision = new JButton("Add Vehicles to Demonstrate Collision");
-			btnDemonstrateCollision.addActionListener(this);
-			panel.add(btnDemonstrateCollision);
+			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
+			btnDemonstrateCollisionVehicle.addActionListener(this);
+			panel.add(btnDemonstrateCollisionVehicle);
+			
+			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
+			btnDemonstrateCollisionPerson.addActionListener(this);
+			panel.add(btnDemonstrateCollisionPerson);
 			
 			
 			panel.setBackground( Color.ORANGE );
@@ -94,10 +99,18 @@ public class CityControls extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("TEST");
-		Vehicle vehicle = new Vehicle(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel,"Car");
-		vehicle.setDestination(1,1);
-		cityPanel.vehicles.add(vehicle);
+		System.out.println(e.getActionCommand());
+		if(e.getActionCommand().equals("Add Vehicles to Demonstrate Collision")) {
+			VehicleGui vehicle = new VehicleGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel,"Car");
+			vehicle.setDestination(1,1);
+			cityPanel.vehicles.add(vehicle);
+		}
+		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
+			PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+			personGui.setDestination(1, 1);
+			cityPanel.people.add(personGui);
+		}
 		
 		// TODO Auto-generated method stub
 		
