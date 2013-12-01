@@ -23,6 +23,7 @@ public class HouseGui implements HGui{
 	public Dimension entranceCoordinatesExternal = new Dimension();
 	public Image villaImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
 	public Image apartmentImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
+	public HouseAnimationPanel hp = new HouseAnimationPanel();
 
 	public HouseGui(House h) {
 		this.h = h;
@@ -37,6 +38,7 @@ public class HouseGui implements HGui{
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
+		hp.addGui(this);
 	}
 
 	@Override
@@ -50,8 +52,11 @@ public class HouseGui implements HGui{
 	public void draw(Graphics2D g) {
 		if (this.h.type == HouseType.Villa)
 			g.drawImage(villaImage, 0, 0, null);
-		else
+		else {
 			g.drawImage(apartmentImage, 0, 0, null);
+			g.setColor(Color.BLACK);
+			g.drawString(h.number + "", 250, 250);
+		}
 		
 		for (HGui gui : guis) {
 			if (gui.isPresent()) {

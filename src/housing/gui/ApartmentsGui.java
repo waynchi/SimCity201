@@ -11,13 +11,15 @@ import java.util.List;
 
 public class ApartmentsGui implements HGui{
 	public Apartments a;
-	int houseWidth = 76;
-	int houseHeight = 76;
+	public int houseWidth = 76;
+	public int houseHeight = 76;
 	public Dimension entranceCoordinates = new Dimension(250, 530);
 	List<HGui> guis = new ArrayList<HGui>();
+	public ApartmentsAnimationPanel ap;
 
 	public ApartmentsGui(Apartments a) {
 		this.a = a;
+		ap = new ApartmentsAnimationPanel(this);
 	}
 
 	@Override

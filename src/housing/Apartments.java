@@ -16,6 +16,7 @@ public class Apartments {
 		houses = new ArrayList<House>();
 		this.name = name;
 		createApartments();
+		gui = new ApartmentsGui(this);
 	}
 	
 	public void setGui(ApartmentsGui gui) {
