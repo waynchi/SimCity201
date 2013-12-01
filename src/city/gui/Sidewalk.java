@@ -20,6 +20,7 @@ public class Sidewalk {
 	ArrayList<PersonGui> people;
 	public String name;
 	public boolean redLight;
+	boolean hasPerson;
 	
 	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc, String name ) {
 		width = w;
@@ -32,6 +33,7 @@ public class Sidewalk {
 		laneColor = lc;
 		sideColor = sc;
 		this.name = name;
+		hasPerson = false;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );
