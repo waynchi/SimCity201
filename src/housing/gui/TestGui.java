@@ -1,15 +1,15 @@
 package housing.gui;
 
-
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.GridLayout;
-
 import javax.swing.JFrame;
 
 public class TestGui extends JFrame {
 	public HouseAnimationPanel hp = new HouseAnimationPanel();
 	public ApartmentsAnimationPanel ap = new ApartmentsAnimationPanel();
 	HousingPanel h = new HousingPanel(this, hp, ap);
+	CardLayout cl = new CardLayout();
 	
 	public TestGui() {
 		this.setLayout(new GridLayout());

@@ -16,7 +16,7 @@ public class HousingPanel extends JPanel {
 		this.hp = hp;
 		this.ap = ap;
 		
-		House h1 = new House("Residence1", 1, HouseType.Villa);
+		House h1 = new House("Residence1", 1, HouseType.Apartment);
 		h1.setItems();
 		HouseGui gui1 = new HouseGui(h1);
 		h1.setGui(gui1);
