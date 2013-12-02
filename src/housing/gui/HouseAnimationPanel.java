@@ -35,7 +35,6 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 				int xPos = e.getX();
 				int yPos = e.getY();
 				if (xPos >= 470 && xPos <= 500 && yPos >= 15 && yPos <= 75) {
-					System.out.println("Testing.");
 					tg.display();
 				}
 			}
