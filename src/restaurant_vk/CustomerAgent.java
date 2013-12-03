@@ -73,7 +73,7 @@ public class CustomerAgent extends Agent implements Customer{
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
 		this.menu = m;
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		stateChanged();
 	}
 
@@ -177,7 +177,7 @@ public class CustomerAgent extends Agent implements Customer{
 		state = AgentState.DecidingOrder;
 		leaveOption = true;
 		customerGui.setLeaveOption(leaveOption);
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -208,7 +208,7 @@ public class CustomerAgent extends Agent implements Customer{
 			print("Thanks!");
 			print("I have $" + cash + " with me now.");
 		}
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -218,7 +218,7 @@ public class CustomerAgent extends Agent implements Customer{
 	public void tablesAreFull() {
 		leaveOption = true;
 		customerGui.setLeaveOption(leaveOption);
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -320,7 +320,7 @@ public class CustomerAgent extends Agent implements Customer{
 	 */
 	private void goToRestaurant() {
 		Do("Going to restaurant");
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		customerGui.DoGoToRestaurant();
 		try {
 			movingAround.acquire();
@@ -344,7 +344,7 @@ public class CustomerAgent extends Agent implements Customer{
 	 */
 	private void seated() {
 		customerGui.setMenuCopy();
-		customerGui.autoUpdate();
+//		customerGui.autoUpdate();
 		print("I'm sitting.");
 	}
 	

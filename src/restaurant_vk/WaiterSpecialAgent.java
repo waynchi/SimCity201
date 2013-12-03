@@ -1,6 +1,6 @@
 package restaurant_vk;
 
-import restaurant_vk.gui.RestaurantPanel.RevolvingStand;
+import restaurant_vk.gui.RevolvingStand;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 

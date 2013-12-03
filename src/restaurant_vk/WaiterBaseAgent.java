@@ -167,7 +167,7 @@ public class WaiterBaseAgent extends Agent implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOffBreak();
-		gui.autoUpdate();
+//		gui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -182,7 +182,7 @@ public class WaiterBaseAgent extends Agent implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOnBreak();
-		gui.autoUpdate();
+//		gui.autoUpdate();
 		stateChanged();
 	}
 	

@@ -250,10 +250,6 @@ public class WaiterGui implements Gui{
 		return breakEnabled;
 	}
 	
-	public void autoUpdate() {
-		gui.autoUpdate(agent);
-	}
-	
 	public void setBreakChecked() {
 		if (breakCheckBox == false) {
 			breakCheckBox = true;

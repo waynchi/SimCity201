@@ -70,7 +70,7 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+//				gui.setCustomerEnabled(agent);
 			}
 			else if (command == Command.GoToPay) {
 				agent.msgAnimationFinishedGoToPay();
@@ -81,7 +81,7 @@ public class CustomerGui implements Gui{
 				yPos = 300;
 				xDestination = -20;
 				yDestination = 300;
-				gui.setCustomerEnabled(agent);
+//				gui.setCustomerEnabled(agent);
 				agent.msgAnimationFinishedLeaveRestaurant();
 			}
 			command=Command.noCommand;
@@ -189,10 +189,6 @@ public class CustomerGui implements Gui{
 			menuArray[i] = s;
 			i++;
 		}
-	}
-	
-	public void autoUpdate() {
-		gui.autoUpdate(agent);
 	}
 	
 	/*
