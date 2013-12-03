@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import restaurant_vk.gui.CookGui;
 import restaurant_vk.gui.RestaurantPanel.RevolvingStand;
-import restaurant_vk.interfaces.Cook;
+import restaurant.interfaces.Cook;
 import restaurant_vk.interfaces.Market;
 import restaurant_vk.interfaces.Waiter;
 import agent.Agent;
@@ -406,5 +406,11 @@ public class CookAgent extends Agent implements Cook{
 			this.table = table;
 			s = State.Pending;
 		}
+	}
+
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
 	}
 }
