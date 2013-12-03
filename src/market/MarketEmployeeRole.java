@@ -13,6 +13,7 @@ import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
+import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
@@ -128,7 +129,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
 		if(!inTest){
-			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getPerson().getName()));
+			log.add(new LoggedEvent("received an order from restaurant cook " + ((CookRole) cook).getPerson().getName()));
 		}
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
@@ -183,7 +184,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			}
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
 			log.add(new LoggedEvent("order delivered to restaurant"));
-			order.cook.msgHereIsYourOrder(order.items);	
+			((CookRole) order.cook).msgHereIsYourOrder(order.items);	
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
 

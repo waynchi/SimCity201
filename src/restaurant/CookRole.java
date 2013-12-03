@@ -480,8 +480,6 @@ public class CookRole extends Role implements Cook{
 		return isActive;
 	}
 
-
-	@Override
 	public People getPerson() {
 		return getPersonAgent();
 	}
