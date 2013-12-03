@@ -13,6 +13,7 @@ public class CookGui implements Gui {
 	Boolean isCooking;
 	boolean goingBack = false;
 	boolean leavingWork = false;
+	boolean goingToFridge = false;
 	String foodBeingCooked = null;
 	RestaurantGui gui;
 	private List<String> foodPlated = new ArrayList<String>();
@@ -26,10 +27,10 @@ public class CookGui implements Gui {
     private int cookX = 70;
     private int cookY = 270;
     
-    private int revolvingStandX = 350;
-    private int revolvingStandY = 250;
+    private int revolvingStandX = 350, revolvingStandY = 250;
     
-    private int xExit = 0, yExit = 0;
+    private int exitX = 0, exitY = 0;
+    private int fridgeX = 150, fridgeY = 300;
     
     boolean isPresent;
 	
@@ -67,9 +68,16 @@ public class CookGui implements Gui {
         	goingBack = false;
         	role.msgAtGrill();
         }
+        
         if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == xExit) && (yDestination == yExit) && leavingWork) {
-        	goingBack = false;
+        		&& (xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
+        	goingToFridge = false;
+        	role.msgAtFridge();
+        }
+        
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == exitX) && (yDestination == exitY) && leavingWork) {
+        	leavingWork = false;
         	role.msgAtExit();
         }
         }
@@ -78,7 +86,7 @@ public class CookGui implements Gui {
 	public void draw(Graphics2D g) {
         g.setColor(Color.blue);
 		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.white);
+        g.setColor(Color.black);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
         	g.drawString(foodBeingCooked, 50, 265);
@@ -132,8 +140,8 @@ public class CookGui implements Gui {
 
 	public void DoLeaveWork() {
 		leavingWork = true;
-		xDestination = xExit;
-		yDestination = yExit;
+		xDestination = exitX;
+		yDestination = exitY;
 		
 	}
 	
@@ -167,5 +175,13 @@ public class CookGui implements Gui {
 		goingBack = true;
 		xDestination = cookX;
 		yDestination = cookY;
+	}
+
+
+	public void goToFridge() {
+		// TODO Auto-generated method stub
+		xDestination = fridgeX;
+		yDestination = fridgeY;
+		goingToFridge = true;
 	}
 }

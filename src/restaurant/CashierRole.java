@@ -8,13 +8,10 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import restaurant.test.mock.MockHost;
-
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
-import market.interfaces.MarketCashier;
 import market.interfaces.MarketEmployee;
 import people.Role;
 
