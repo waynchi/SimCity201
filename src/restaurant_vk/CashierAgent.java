@@ -22,7 +22,7 @@ import agent.Agent;
  * of the waiter and gives them to the respective waiters. Also, customers come
  * to the cashier and pay the money.
  */
-public class CashierAgent extends Agent implements Cashier{
+public class CashierAgent extends Agent implements Cashier {
 	
 	// Data
 	
@@ -198,13 +198,13 @@ public class CashierAgent extends Agent implements Cashier{
 	}
 	
 	private Bill findBillThatCanBePaid() {
-		synchronized (bills) {
-			for (Bill b : bills) {
-				if (b.state == BillState.Unpaid && myCash >= b.cost) {
-					return b;
-				}
-			}
-		}
+//		synchronized (bills) {
+//			for (Bill b : bills) {
+//				if (b.state == BillState.Unpaid && myCash >= b.cost) {
+//					return b;
+//				}
+//			}
+//		}
 		return null;
 	}
 	

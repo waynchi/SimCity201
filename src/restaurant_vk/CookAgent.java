@@ -11,7 +11,7 @@ import java.util.concurrent.Semaphore;
 import restaurant_vk.gui.CookGui;
 import restaurant_vk.gui.RestaurantPanel.RevolvingStand;
 import restaurant.interfaces.Cook;
-import restaurant_vk.interfaces.Market;
+import market.interfaces.*;
 import restaurant_vk.interfaces.Waiter;
 import agent.Agent;
 
@@ -22,13 +22,13 @@ import agent.Agent;
  * and plates the orders for the respective waiters to collect. When running
  * low on some food item, he orders it from the three markets it has.
  */
-public class CookAgent extends Agent implements Cook{
+public class CookAgent extends Agent implements Cook {
 
 	// Data
 	
 	private Map<String, Food> inventory = new HashMap<String, Food>();
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-	private List<Market> markets = new ArrayList<Market>();
+//	private List<Market> markets = new ArrayList<Market>();
 	private Timer timer;
 	private CookGui gui = null;
 	private Semaphore movingAround = new Semaphore(0, true);
@@ -112,27 +112,27 @@ public class CookAgent extends Agent implements Cook{
 	 * Action to request for food.
 	 */
 	private void requestFood(Food f) {
-		if (f.m0Req == false) {
-			f.s = FoodState.Requested;
-			print("Requesting Market #0 for " + f.name + ".");
-			markets.get(0).runningLow(f.name, f.qtyRequested);
-			f.m0Req = true;
-		}
-		else if (f.m1Req == false) {
-			print("Requesting Market #1 for " + f.name + ".");
-			f.s = FoodState.Requested;
-			markets.get(1).runningLow(f.name, f.qtyRequested);
-			f.m1Req = true;
-		}
-		else if (f.m2Req == false) {
-			print("Requesting Market #2 for " + f.name + ".");
-			f.s = FoodState.Requested;
-			markets.get(2).runningLow(f.name, f.qtyRequested);
-			f.m2Req = true;
-		}
-		else {
-			f.s = FoodState.Requested;
-		}
+//		if (f.m0Req == false) {
+//			f.s = FoodState.Requested;
+//			print("Requesting Market #0 for " + f.name + ".");
+//			markets.get(0).runningLow(f.name, f.qtyRequested);
+//			f.m0Req = true;
+//		}
+//		else if (f.m1Req == false) {
+//			print("Requesting Market #1 for " + f.name + ".");
+//			f.s = FoodState.Requested;
+//			markets.get(1).runningLow(f.name, f.qtyRequested);
+//			f.m1Req = true;
+//		}
+//		else if (f.m2Req == false) {
+//			print("Requesting Market #2 for " + f.name + ".");
+//			f.s = FoodState.Requested;
+//			markets.get(2).runningLow(f.name, f.qtyRequested);
+//			f.m2Req = true;
+//		}
+//		else {
+//			f.s = FoodState.Requested;
+//		}
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -284,12 +284,12 @@ public class CookAgent extends Agent implements Cook{
 		return null;
 	}
 	
-	/*
-	 * Adds an instance of market to the list of markets.
-	 */
-	public void addMarket(Market m) {
-		markets.add(m);
-	}
+//	/*
+//	 * Adds an instance of market to the list of markets.
+//	 */
+//	public void addMarket(Market m) {
+//		markets.add(m);
+//	}
 	
 	/*
 	 * This is to initialize the inventory of food materials of the cook.
