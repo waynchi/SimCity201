@@ -28,7 +28,7 @@ public class CashierRole extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
-	
+
 	private Map<String, Double> price =Collections.synchronizedMap(new HashMap<String, Double>());
 
 	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
@@ -46,7 +46,7 @@ public class CashierRole extends Role implements Cashier {
 	RestaurantCashierGui cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
-	
+
 	private List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 
 	private Host host;
@@ -91,41 +91,31 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public class MarketBill {
-		public MarketEmployee marketEmployee;
 		Double amount;
-		boolean itemsReceived;
-		boolean checkReceived;
+		boolean itemsReceived = false;
+		boolean checkReceived = false;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (MarketEmployee m , double a, Map<String, Integer> items) {
-			marketEmployee = m;
+		public MarketBill (double a, Map<String, Integer> items) {
 			amount = a;
-			//itemsReceived = false;
 			itemsOrdered = items;
-		}
-
-		public MarketBill(Role _marketEmployee, Map<String, Integer> marketOrder) {
-			// TODO Auto-generated constructor stub
-			marketEmployee = (MarketEmployee) _marketEmployee;
-			itemsOrdered = marketOrder;
 			checkReceived = true;
-			itemsReceived = false;
-			
 		}
 
-		//public String toString () {
-		//	return market.getName() + " " + amount;
-		//}
+		public MarketBill ( Map<String, Integer> items) {
+			itemsOrdered = items;
+			itemsReceived = true;
+		}
 
 	}
 
 
 	public CashierRole(RestaurantGui gui) {
 		if (!inTest) {
-		cashierGui = new RestaurantCashierGui(this);
-		restGui = gui;
-		restGui.getAnimationPanel().addGui(cashierGui);
-		cashierGui.setPresent(false);
+			cashierGui = new RestaurantCashierGui(this);
+			restGui = gui;
+			restGui.getAnimationPanel().addGui(cashierGui);
+			cashierGui.setPresent(false);
 		}
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
@@ -143,18 +133,20 @@ public class CashierRole extends Role implements Cashier {
 
 	// messages
 
+	// from gui
 	public void msgAtExit() {
 		print ("received msgIsAtExit from gui");
 		atExit.release();
 		getPersonAgent().CallstateChanged();
 	}
-	
+
 	public void msgAtPosition() {
 		print ("received msgAtPosition from gui");
 		atPosition.release();
 		getPersonAgent().CallstateChanged();
 	}
-	
+
+	// from people agent
 	public void msgIsActive() {
 		print ("received msgIsActive, position is " + cashierGui.getX() + " " + cashierGui.getY() + " and destination"
 				+ " is " + cashierGui.getXDest() + " " + cashierGui.getYDest());
@@ -168,28 +160,50 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price, Map<String, Integer> items) {
-		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
-		
-		/*boolean orderFound = false;
+	
+	
+	
+	// market interaction
+	
+	// from cook
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+		print("told by cook that market order is delivered, ready to pay");
+		boolean orderFound = false;
 		synchronized(marketBills){
-		for (MarketBill mb : marketBills) {
-			if (mb.itemsOrdered == items) {
-				mb.checkReceived = true;
-				orderFound = true;
+			for (MarketBill mb : marketBills) {
+				if (mb.itemsOrdered == marketOrder) {
+					mb.itemsReceived = true;
+					orderFound = true;
+				}
+			}
+			if (!orderFound) {
+				marketBills.add(new MarketBill(marketOrder));
+			}
+		}
+		getPersonAgent().CallstateChanged();
+	}
+	
+	// from market cashier
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
+
+		boolean orderFound = false;
+		synchronized(marketBills){
+			for (MarketBill mb : marketBills) {
+				if (mb.itemsOrdered == items) {
+					mb.checkReceived = true;
+					orderFound = true;
+				}
 			}
 		}
 		if (!orderFound) {
-			marketBills.add(new MarketBill(marketEmployee, price ,items));
-		}
-		}*/
-		marketBills.add(new MarketBill(marketEmployee, price, items));
-		
-		
+			marketBills.add(new MarketBill(price ,items));
+		}	
 		getPersonAgent().CallstateChanged();
+
 	}
 
-
+	// from market cashier
 	public void msgHereIsChange(double change) {
 		print ("received change " + change + " from market cashier");
 		working_capital += change;
@@ -197,6 +211,12 @@ public class CashierRole extends Role implements Cashier {
 
 	}
 
+	
+	
+	
+	// restaurant interaction
+	
+	// from waiter
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
 		print("received a bill from waiter " + w.getName() + " for customer " + c.getName());
 		log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName() + " with Customer " + c.getName() + " and food " + food));
@@ -212,6 +232,7 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 
+	// from restaurant customer
 	public void msgPayMyCheck (Customer c, Double amount) {
 		print ("received payment from customer " + c.getName());
 		log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName() + " and the amount is " + amount));
@@ -224,28 +245,11 @@ public class CashierRole extends Role implements Cashier {
 			}
 		}
 		working_capital+=amount;
-
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgGotMarketOrder(Role marketEmployee, Map<String, Integer> marketOrder) {
-		print("told by cook that market order is delivered, ready to pay");
-		/*boolean orderFound = false;
-		synchronized(marketBills){
-		for (MarketBill mb : marketBills) {
-			if (mb.itemsOrdered == marketOrder) {
-				mb.itemsReceived = true;
-				orderFound = true;
-			}
-		}
-		if (!orderFound) {
-			marketBills.add(new MarketBill(marketEmployee, marketOrder));
-		}
-		}
-		getPersonAgent().CallstateChanged();*/
 
-	}
-
+	
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
 		print("received msgReadyToHelp from teller");
@@ -268,7 +272,6 @@ public class CashierRole extends Role implements Cashier {
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
 		bank_balance -= funds;
-		//withdrawalSuccessful = true;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -277,7 +280,6 @@ public class CashierRole extends Role implements Cashier {
 		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
 		working_capital -= (funds - bank_balance);
 		bank_balance = funds;
-		//depositSuccessful = true;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -292,7 +294,7 @@ public class CashierRole extends Role implements Cashier {
 			clockIn();
 			return true;
 		}
-		
+
 		synchronized (checks) {
 			for (Check check : checks) {
 				if (check.getState() == checkState.COMPUTED){
@@ -310,22 +312,22 @@ public class CashierRole extends Role implements Cashier {
 				}
 			}
 		}
-		
+
+
+		if (!marketBills.isEmpty()) {
+			synchronized (marketBills) {
+				for (MarketBill mb : marketBills) {
+					if (mb.itemsReceived && mb.checkReceived)
+						payMarket(mb);
+				}
+				return true;
+			}
+		}
 
 		/*if (!marketBills.isEmpty()) {
-			synchronized (marketBills) {
-			for (MarketBill mb : marketBills) {
-				if (mb.itemsReceived && mb.checkReceived)
-					payMarket(mb);
-			}
-		return true;
-		}
-		}*/
-		
-		if (!marketBills.isEmpty()) {
 			payMarket(marketBills.get(0));
 			return true;
-		}
+		}*/
 
 		/*if (loanRequested && loanGranted) {
 			payWorkers();
@@ -366,9 +368,9 @@ public class CashierRole extends Role implements Cashier {
 			prepareToClose();
 			return true;
 		}
-		
+
 		return false;
-		
+
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
@@ -385,15 +387,15 @@ public class CashierRole extends Role implements Cashier {
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
-		host.setCashier(this);
-		cashierGui.setPresent(true);
-		cashierGui.DoGoToWorkingPosition();
-		try {
-			atPosition.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			host.setCashier(this);
+			cashierGui.setPresent(true);
+			cashierGui.DoGoToWorkingPosition();
+			try {
+				atPosition.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		turnActive = false;
 		deposit = false;
@@ -402,8 +404,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void sendCheckToWaiter (final Check c) {
-		print ("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
-				". Customer " + c.customer.getName() + " needs to pay " + c.due);
+
 		log.add(new LoggedEvent("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
 				". Customer " + c.customer.getName() + " needs to pay " + c.due));
 		/*new java.util.Timer().schedule(
@@ -440,9 +441,9 @@ public class CashierRole extends Role implements Cashier {
 	private void payMarket(MarketBill bill){
 		log.add(new LoggedEvent("In action payMarket, paying "+bill.amount));
 		//if (working_capital > bill.amount) {
-			//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
-			bill.marketEmployee.getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
-			setMyMoney(0);
+		//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
+		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+		setMyMoney(0);
 
 		//}
 		/*else {
@@ -451,10 +452,7 @@ public class CashierRole extends Role implements Cashier {
 			setMyMoney(0);
 
 		}*/
-
 		marketBills.remove(bill);
-
-
 	}
 
 	private void prepareToClose() {
@@ -477,7 +475,7 @@ public class CashierRole extends Role implements Cashier {
 			bankState = bankActivityState.ASKED_FOR_HELP;
 			withdraw = true;
 		}
-		
+
 
 	}
 
@@ -487,7 +485,7 @@ public class CashierRole extends Role implements Cashier {
 		for (int i=0; i < host.getWaiters().size(); i++) {
 			host.getWaiters().get(i).getPerson().setMoney( waiter_salary);
 		}
-		host.getCook().getPerson().setMoney(cook_salary);
+		((CookRole) host.getCook()).getPerson().setMoney(cook_salary);
 		host.getPerson().setMoney(host_salary);
 		this.getPersonAgent().setMoney( cashier_salary);
 	}
@@ -499,18 +497,17 @@ public class CashierRole extends Role implements Cashier {
 		deposit = withdraw = false;
 		isActive = false;
 		if (!inTest){
-		cashierGui.DoLeaveWork();
-		try {
-			atExit.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		leaveWork = false;
-		cashierGui.setPresent(false);
-		cashierGui.setDefaultDestination();
-		getPersonAgent().msgDone("RestaurantCashierRole");
-		//DoCloseRestaurant(); //gui stuff
+			cashierGui.DoLeaveWork();
+			try {
+				atExit.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			leaveWork = false;
+			cashierGui.setPresent(false);
+			cashierGui.setDefaultDestination();
+			getPersonAgent().msgDone("RestaurantCashierRole");
 		}
 	}
 

@@ -15,25 +15,21 @@ public class MockCook extends Role implements Cook{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public People getPerson() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public CookGui getGui() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void msgHereIsAnOrder(String choice, Waiter normalWaiterRole,
 			int tableNumber) {
 		// TODO Auto-generated method stub

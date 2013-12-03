@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import restaurant.CookRole;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -55,7 +56,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
-		print ("received an order from employee, deliver to cook " + cook.getPerson().getName());
+		print ("received an order from employee, deliver to cook " + ((CookRole) cook).getPerson().getName());
 		log.add(new LoggedEvent("received message here is an order"));
 		orders.add(new Order (cook, items));
 		stateChanged();
@@ -84,7 +85,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		//		new java.util.TimerTask(){
 		//			public void run(){
 						print("order delivered to restaurant");
-						order.cook.msgHereIsYourOrder(order.items);		
+						((CookRole) order.cook).msgHereIsYourOrder(order.items);		
 						orders.remove(order);
 		//		},
 		//		2000);
