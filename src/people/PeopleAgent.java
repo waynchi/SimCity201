@@ -753,7 +753,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination(840, 42);
+				personGui.setDestination("Restaurant 1");
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -801,7 +801,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination(142, 42); //TODO this is guess
+				personGui.setDestination("Home 1"); //TODO this is guess
 				print("Do Not Have Car");
 			}
 			
@@ -869,7 +869,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination(580, 322);
+				personGui.setDestination("Market");
 				print("Do Not Have Car");
 			}
 		//personGui.GoToMarket(); TODO
@@ -953,7 +953,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination(580, 152);
+				personGui.setDestination("Bank");
 				print("Do Not Have Car");
 			}
 		try {
@@ -1026,7 +1026,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(840, 42);
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1066,7 +1066,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(840, 42);
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1105,7 +1105,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(840, 42);
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1144,7 +1144,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(840, 42);
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1184,7 +1184,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(580, 152);
+							personGui.setDestination("Bank");
 							print("Do Not Have Car");
 						}
 					//TOOD personGui.goToBank();
@@ -1224,7 +1224,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(580, 322);
+							personGui.setDestination("Market");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToMarket();
@@ -1263,7 +1263,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination(580, 322);
+							personGui.setDestination("Market");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToMarket();
