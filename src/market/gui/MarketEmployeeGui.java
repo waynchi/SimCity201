@@ -107,4 +107,11 @@ public class MarketEmployeeGui implements Gui{
 		leaving = true;
 		
 	}
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		xDestination = xCounter;
+		yDestination = yCounter;
+		goToCounter = true;
+	}
 }

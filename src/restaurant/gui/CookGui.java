@@ -136,4 +136,36 @@ public class CookGui implements Gui {
 		yDestination = yExit;
 		
 	}
+	
+	public int getX() {
+		return xPos;
+	}
+	
+	public int getY() {
+		return yPos;
+	}
+	
+	public int getXDest() {
+		return xDestination;
+	}
+	
+	public int getYDest() {
+		return yDestination;
+	}
+	
+	public void setXDest(int x) {
+		xDestination = x;
+	}
+	
+	public void setYDest(int y) {
+		yDestination = y;
+	}
+
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		goingBack = true;
+		xDestination = cookX;
+		yDestination = cookY;
+	}
 }

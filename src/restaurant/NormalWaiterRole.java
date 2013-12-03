@@ -37,6 +37,7 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 			e.printStackTrace();
 		}
 		waiterGui.setPresent(false);
+		waiterGui.setDefaultDestination();
 		isActive = false;
 		leaveWork = false;
 		getPersonAgent().msgDone("RestaurantNormalWaiterRole");

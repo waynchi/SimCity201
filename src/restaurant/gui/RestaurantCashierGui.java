@@ -90,5 +90,28 @@ public class RestaurantCashierGui implements Gui{
 	public void setY(int y) {
 		yDestination = y;
 	}
+	
+	public int getX() {
+		return xPos;
+	}
+	
+	public int getY() {
+		return yPos;
+	}
+	
+	public int getXDest() {
+		return xDestination;
+	}
+	
+	public int getYDest() {
+		return yDestination;
+	}
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		xDestination = 250;
+		yDestination = 250;
+		goingToWorkPlace = true;
+	}
 
 }
