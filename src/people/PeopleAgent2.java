@@ -16,7 +16,7 @@ import city.gui.CityGui;
 import city.gui.PersonGui;
 import agent.Agent;
 
-public class PeopleAgent extends Agent implements People{
+public class PeopleAgent2 extends Agent implements People{
 
 	public List<MyRole> roles = Collections.synchronizedList(new ArrayList<MyRole>());
 	public List<Restaurant> Restaurants = Collections.synchronizedList(new ArrayList<Restaurant>());
@@ -197,104 +197,10 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void msgDone(String role)
 	{
-		print("Recieved msgDone from "+ role);
-		if(role == "CarPassenger")
-		{
-			moving.release();
-		}
-		else if(role == "PersonGui")
-		{
-			moving.release();
-		}
-		else if(role != "ResidentRole")
-		{
-			log.add(new LoggedEvent("Recieved msgDone"));
-			state = AgentState.Idle;
-			event = AgentEvent.Idle;
-			if(role.equals("RestaurantCustomerRole"))
-			{
-				hunger = HungerState.NotHungry;
-				Hunger = 2400;
-			}
-//			if(role.equals("BankCustomerRole"))
-//			{
-//				
-//			}
-			if(role.equals("MarketCustomerRole"))
-			{
-				hasCar = true;
-			}
-			if(role.equals("RepairManFixing"))
-			{
-				state = AgentState.Working;
-				event = AgentEvent.RepairManMoving;
-				stateChanged();
-			}
-			if(role.equals("RepairManFixed"))
-			{
-				state = AgentState.Working;
-				event = AgentEvent.RepairManMovingShop;
-			}
-			if(role.equals("DoneEating"))
-			{
-				hunger = HungerState.NotHungry;
-				Hunger = 2400;
-			}
-			if(role.equals("RestaurantCashierRole") || role.equals("RestaurantHostRole") || role.equals("RestaurantWaiterRole") || role.equals("RestaurantCookRole"))
-			{
-				//Gui Stuff TODO
-				for(MyRole r: roles)
-				{
-					if(r.description.equals("Resident"))
-					{	
-						if(r.role.isActive == false)
-						{
-						r.role.msgIsActive();
-						}
-					}
-				}
-			}
-			if(role.equals("MarketEmployeeRole") || role.equals("TellerRole") || role.equals("MarketCashierRole"))
-			{
-				for(MyRole r : roles)
-				{
-					//Gui STuff TODO
-					if(r.description.equals("Resident"))
-					{	
-						if(r.role.isActive == false)
-						{
-						r.role.msgIsActive();
-						}
-						//Stop
-					}
-				}
-			}
-		}
-		else
-		{
-//			//unfreeze the semaphore in the gui
-//			if(event == AgentEvent.GoingToWork)
-//			{
-//				//event == AgentEvent.GoingToWorkTwo;
-//				GoToWorkTwo();
-//			}
-			if(event == AgentEvent.GoingToBuyCar)
-			{
-				GoBuyCarTwo();
-			}
-			
-//			if(event == AgentEvent.GoingToRestaurant)
-//			{
-//				GoToRestaurantTwo();
-//			}
-//			if(event == AgentEvent.GoingToDepositMoney || event == AgentEvent.GoingToRetrieveMoney)
-//			{
-//				GoToBankTwo();
-//			}
-		}
+		
 	}
 	
-	public PeopleAgent(String name, double Money, boolean hasCar)
+	public PeopleAgent2(String name, double Money, boolean hasCar)
 	{
 		super();
 		this.name = name;
@@ -313,348 +219,13 @@ public class PeopleAgent extends Agent implements People{
 	}
 	
 	public void msgTimeIs(int Time)
-	{
-		if(type.equals("default"))
-		{
-		/*if(Time == 0)
-		{
-			event = AgentEvent.GoingToRestaurant;
-			stateChanged();
-			print("GoingToCar");
-			return;
-		}*/
-		Hunger--;
-		if(Hunger == 0)
-		{
-			hunger = HungerState.Hungry;
-		}
-		if(Time == 800 && state == AgentState.Sleeping)
-		{
-			event = AgentEvent.WakingUp;
-			log.add(new LoggedEvent("Waking Up In Message"));
-			stateChanged();
-			return;
-		}
-		if(Time == 2330)
-		{
-			event = AgentEvent.GoingToSleep;
-			buy = BuyState.NextDay;
-			log.add(new LoggedEvent("Sleeping In Message"));
-			Hunger = 1230;
-			stateChanged();
-			return;
-		}
-		if(Time >= 2330 && state != AgentState.Sleeping)
-		{
-			state = AgentState.IdleAtHome;
-			event = AgentEvent.GoingToSleep;
-			buy = BuyState.NextDay;
-			//print("Sleeping because of a bug");
-			log.add(new LoggedEvent("Sleeping In Message"));
-			Hunger = 1215;
-			stateChanged();
-			return;
-		}
-		if(state == AgentState.Idle)
-		{
-			if(!jobs.isEmpty())
-			{
-				for(int i = 0; i < jobs.size(); i++)
-				{
-				if(jobs.get(i).start - Time >= 200 && Time <=2100 && buy == BuyState.NextDay && Time >= 1045)
-				{
-					if(!hasCar)
-					{
-						if(rand.nextInt(100) <= 100)
-						{
-							buy = BuyState.GoingToBuy;
-						}
-						else
-						{
-							buy = BuyState.NotBuying;
-						}
-						if(buy == BuyState.GoingToBuy)
-						{
-							if(Money >= 30000)
-							{
-								event = AgentEvent.GoingToBuyCar;
-								print("I am going to buy a car");
-								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-								buy = BuyState.NotBuying;
-								stateChanged();
-								return;
-							}
-//							else
-//							{
-//								event = AgentEvent.GoingToRetrieveMoney;
-//								log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//								stateChanged();
-//								buy = BuyState.NotBuying;
-//								return;
-//							}
-							
-						}
-					}
-					else
-					{
-						//System.out.println(Money);
-						if(Money >= 1000000 && Time >= 1130)
-						{
-							event = AgentEvent.GoingToDepositMoney;
-							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-							stateChanged();
-							return;
-						}
-					}
-				}
-				}
-			}
-			if(location != AgentLocation.Home)
-			{
-				event = AgentEvent.GoingHome;
-				stateChanged();
-				return;
-			}
-		}
-		int lastTime = 100000;
-		for(Job job: jobs)
-		{
-		if(Time == job.start)
-		{
-			event = AgentEvent.GoingToWork;
-			print("Going To Work");
-			log.add(new LoggedEvent("Going To Work"));
-			stateChanged();
-			return;
-		}
-		if(Time == job.end)
-		{
-			event = AgentEvent.LeavingWork;
-			log.add(new LoggedEvent("Leaving Work"));
-			stateChanged();
-			return;
-		}
-		lastTime = job.end;
-		}
-		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
-		if(state == AgentState.Idle)
-		{
-			if(hunger == HungerState.Hungry)
-			{
-				if(Time <= 1830)
-				{
-					if(rand.nextInt(1) < 1)
-					{
-						event = AgentEvent.GoingToRestaurant;
-						print("Going To Restaurant To Eat");
-						stateChanged();
-						return;
-					}
-					else
-					{
-						event = AgentEvent.GoingHome;
-						print("Going Home To Eat");
-						stateChanged();
-						return;
-					}
-				}
-				else
-				{
-					event = AgentEvent.GoingHome;
-					print("Going Home To Eat");
-					stateChanged();
-					
-					return;
-					
-				}
-				
-			}
-		}
-		if(state == AgentState.IdleAtHome)
-		{
-			if(hunger == HungerState.Hungry)
-			{
-				if(Time <= 1830)
-				{
-					if(rand.nextInt(1) < 1)
-					{
-						event = AgentEvent.GoingToRestaurant;
-						print("Going To Restaurant To Eat");
-						stateChanged();
-						return;
-					}
-					else
-					{
-						event = AgentEvent.GoingHome;
-						print("Going Home To Eat");
-						stateChanged();
-						return;
-					}
-				}
-				else
-				{
-					event = AgentEvent.EatingAtHome;
-					print("Going Home To Eat");
-					stateChanged();
-					return;
-				}
-			}
-		}
-		if(Time >= lastTime && state == AgentState.Idle && Time <= 2100 && buy == BuyState.NextDay)
-		{
-			if(!hasCar)
-			{
-				if(rand.nextInt(100) <= 100)
-				{
-					buy = BuyState.GoingToBuy;
-				}
-				else
-				{
-					buy = BuyState.NotBuying;
-				}
-				if(buy == BuyState.GoingToBuy)
-				{
-					if(!(Time >= 2100) && Money >= 30000)
-					{
-						event = AgentEvent.GoingToBuyCar;
-						stateChanged();
-						return;
-					}
-//					else if(!(Time>= 2100 && Money <= 30000))
-//					{
-//						event = AgentEvent.GoingToRetrieveMoney;
-//						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//						stateChanged();
-//						return;
-//					}
-					buy = BuyState.NotBuying;
-				}
-			}				
-			else
-			{
-				if(Money >= 1000000)
-				{
-					event = AgentEvent.GoingToDepositMoney;
-					stateChanged();
-					return;
-				}
-			}
-			//event = AgentEvent.GoingHome;
-		}
-		}
-		
+	{		
 	}
 
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-//		print("My Current State is: " + state.toString());
-//		print("My Current Event is: " + event.toString());
-//		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
-		if(type.equals("default"))
-		{
-		synchronized(roles){
-		for(MyRole m : roles)
-		{
-			if(m.role.isActive)
-			{
-				Roles = m.role.pickAndExecuteAnAction();
-			}
-		}
-		}
-		if(state == AgentState.Working && event == AgentEvent.RepairManMoving)
-		{
-			GoRepair();
-			//event = AgentEvent.RepairManArrived;
-			Person = true;		
-		}
-		if(state == AgentState.Working && event == AgentEvent.RepairManMovingShop)
-		{
-			GoRepairShop();
-			Person = true;
-		}
-		if(state == AgentState.Sleeping && event == AgentEvent.WakingUp)
-		{
-			state = AgentState.Idle;
-			log.add(new LoggedEvent("Waking Up In Scheduler. New State is " + state.toString()));
-			Person = true;
-		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToWork)
-		{
-			state = AgentState.Working;
-			log.add(new LoggedEvent("Going To Work. New State is " + state.toString()));
-			GoToWork();
-			Person = true;
-		}
-		if(state == AgentState.Working && event == AgentEvent.LeavingWork)
-		{
-			event = AgentEvent.Waiting;
-			state = AgentState.Waiting;
-			log.add(new LoggedEvent("Leaving Work. New State is " + state.toString()));
-			LeaveWork();
-			Person = true;
-		}
-		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToRestaurant)
-		{
-			state = AgentState.EatingAtRestaurant;
-			GoToRestaurant();
-			Person = true;
-		}
-		if((state == AgentState.Idle && event == AgentEvent.GoingHome))
-		{
-			if(hunger == HungerState.Hungry)
-			{
-			print("Eating at Home from Schedule");
-			state = AgentState.EatingAtHome;
-			hunger = HungerState.Eating;
-			}
-			else
-			{
-			state = AgentState.IdleAtHome;
-			hunger = HungerState.NotHungry;
-			}
-			if(location != AgentLocation.Home)
-			{
-			GoToHouse();
-			}
-			Person = true;
-		}
-		if(state == AgentState.IdleAtHome && event == AgentEvent.EatingAtHome)
-		{
-			hunger = HungerState.Eating;
-			state = AgentState.EatingAtHome;
-			Person = true;
-		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToBuyCar)
-		{
-			state = AgentState.BuyingCar;
-			print("Buying the car");
-			log.add(new LoggedEvent("Going To Buy Car. New State is " + state.toString()));
-			GoBuyCar();
-			Person = true;
-		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToRetrieveMoney)
-		{
-			state = AgentState.GoingToBank;
-			log.add(new LoggedEvent("Going To Bank. New State is " + state.toString()));
-			GoToBank();
-			Person = true;
-		}
-		if(state == AgentState.Idle && event == AgentEvent.GoingToDepositMoney)
-		{
-			state = AgentState.GoingToBank;
-			log.add(new LoggedEvent("Going To Bank. New State is " + state.toString()));
-			GoToBank();
-			Person = true;
-		}
-		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToSleep)
-		{
-			state = AgentState.Sleeping;
-			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
-			Person = true;
-		}
-		}
 		return (Roles || Person);
 	}
 
@@ -753,7 +324,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Restaurant 1");
+				personGui.setDestination(840, 42);
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -794,14 +365,14 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Home " + HomeNum);
+						((CarPassengerRole)r.role).setDestination("Home 1");
 						r.role.msgIsActive();
 					}
 				}
 			}
 			else
 			{
-				personGui.setDestination("Home 1"); //TODO this is guess
+				personGui.setDestination(142, 42); //TODO this is guess
 				print("Do Not Have Car");
 			}
 			
@@ -869,7 +440,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Market");
+				personGui.setDestination(580, 322);
 				print("Do Not Have Car");
 			}
 		//personGui.GoToMarket(); TODO
@@ -953,7 +524,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Bank");
+				personGui.setDestination(580, 152);
 				print("Do Not Have Car");
 			}
 		try {
@@ -1026,7 +597,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1066,7 +637,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1105,7 +676,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1144,7 +715,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination(840, 42);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1184,7 +755,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Bank");
+							personGui.setDestination(580, 152);
 							print("Do Not Have Car");
 						}
 					//TOOD personGui.goToBank();
@@ -1224,7 +795,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Market");
+							personGui.setDestination(580, 322);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToMarket();
@@ -1263,7 +834,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Market");
+							personGui.setDestination(580, 322);
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToMarket();

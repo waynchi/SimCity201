@@ -2,20 +2,12 @@ package test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
-
-import market.interfaces.MarketEmployee;
 import market.test.MockMarketCashier;
 import market.test.MockMarketEmployee;
-import people.PeopleAgent;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import restaurant.BaseWaiterRole;
 import restaurant.CashierRole;
-import restaurant.NormalWaiterRole;
 import restaurant.gui.RestaurantGui;
-import restaurant.gui.RestaurantPanel;
-import restaurant.interfaces.Waiter;
 import restaurant.test.mock.MockCook;
 import restaurant.test.mock.MockHost;
 import restaurant.test.mock.MockPeople;
@@ -64,24 +56,42 @@ public class NewCashierTest extends TestCase{
 		items.put("Chicken", 3);
 	}      
 	
-	//scenario: make PeopleAgent a CashierRole, then Cashier will do the opening
-	public void testMarketBill() {
+	public void testOneMarketBill() {
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("in clock in"));
+		assertTrue("cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("in clock in"));
 		assertTrue(cashier.getMarketBills().size() == 0);
 		
 		cashier.msgHereIsWhatIsDue(100.0, items); 
-		assertTrue(cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
+		assertTrue("cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
 		assertTrue(cashier.getMarketBills().size() == 1);
+		assertTrue(cashier.getMarketBills().get(0).checkReceived);
+		assertFalse(cashier.getMarketBills().get(0).itemsReceived);
 		cashier.pickAndExecuteAnAction();
 		
 		// cashier shouldn't be doing anything
-		assertTrue(cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
+		assertTrue("cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
 
+		
 		cashier.msgGotMarketOrder(items);
 		assertTrue(cashier.getMarketBills().size() == 1);
+		assertTrue(cashier.getMarketBills().get(0).checkReceived);
+		assertTrue(cashier.getMarketBills().get(0).itemsReceived);
+		cashier.pickAndExecuteAnAction();
 		
+		assertTrue("cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("In action payMarket, amount due is 100"));
+		assertEquals(cashier.getMyMoney(),0.0);
+		mmc.msgHereIsPayment(100000.0, items, cashier);
+		assertTrue("mock market cashier log reads: " + mmc.log.toString(),
+				mmc.log.containsString("received msgHereIsPayment from cashier"));
+		
+		cashier.msgHereIsChange(99900.0);
+		cashier.pickAndExecuteAnAction();
+		assertEquals(cashier.getMyMoney(),99900.0);
 
 	}
 	
