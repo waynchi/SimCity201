@@ -117,7 +117,7 @@ public class HousingRenterRole extends HousingResidentRole implements Renter{
 			public void run() {
 				rentReminder();
 			}
-		}, 0, period);
+		}, period, period);
 	}
 	
 	public void setMoney(double m) {
