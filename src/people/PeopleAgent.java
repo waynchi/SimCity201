@@ -35,6 +35,7 @@ public class PeopleAgent extends Agent implements People{
 	CityGui cityGui;
 	private boolean testmode = false;
 	public int HomeNum;
+	private String type = "default";
 	
 	private Semaphore moving = new Semaphore(0,true);
 	
@@ -68,6 +69,11 @@ public class PeopleAgent extends Agent implements People{
 	public double getMoney()
 	{
 		return Money;
+	}
+	
+	public void setType(String t)
+	{
+		this.type = t;
 	}
 	
 	public void setMoney(double Money)
@@ -308,6 +314,8 @@ public class PeopleAgent extends Agent implements People{
 	
 	public void msgTimeIs(int Time)
 	{
+		if(type.equals("default"))
+		{
 		/*if(Time == 0)
 		{
 			event = AgentEvent.GoingToRestaurant;
@@ -534,6 +542,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//event = AgentEvent.GoingHome;
 		}
+		}
 		
 	}
 
@@ -544,6 +553,8 @@ public class PeopleAgent extends Agent implements People{
 //		print("My Current Event is: " + event.toString());
 //		print("My Current Hunger is : " + hunger.toString());
 		boolean Roles = false, Person = false;
+		if(type.equals("default"))
+		{
 		synchronized(roles){
 		for(MyRole m : roles)
 		{
@@ -642,6 +653,7 @@ public class PeopleAgent extends Agent implements People{
 			state = AgentState.Sleeping;
 			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
 			Person = true;
+		}
 		}
 		return (Roles || Person);
 	}
