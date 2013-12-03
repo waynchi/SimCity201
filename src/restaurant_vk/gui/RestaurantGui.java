@@ -1,6 +1,10 @@
 package restaurant_vk.gui;
 
 import javax.swing.*;
+
+import restaurant.gui.RestaurantAnimationPanel;
+
+import java.awt.Dimension;
 import java.awt.event.*;
 /**
  * Main GUI class.
@@ -17,15 +21,23 @@ public class RestaurantGui extends JFrame implements ActionListener {
     	JPanel temp = new JPanel();
     	temp.setLayout(null);
     	
-        int WINDOWX = 1500;
-        int WINDOWY = 685;
-        int WINDOW_LEFT = 50;
-        int WINDOW_TOP = 50;
+    	int WINDOWX = 500;
+        int WINDOWY = 400;
+
+        Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
+        animationPanel.setPreferredSize(animationDim);
+        animationPanel.setMinimumSize(animationDim);
+        animationPanel.setMaximumSize(animationDim);
         
-        animationPanel.setBounds(0, 0, 680, 480);
-        temp.add(animationPanel);
+        setBounds(50, 50, WINDOWX, WINDOWY);
+        
+        add(animationPanel);
+
     }
 
+    public AnimationPanel getAnimationPanel(){
+    	return animationPanel;
+    }
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
