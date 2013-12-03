@@ -171,16 +171,12 @@ public class CityGui extends JFrame implements ActionListener {
 					cityPanel.people.add(personGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
-					HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
-					houseAnimationPanels.add(houseAnimationPanel);
 					House house = new House("House", 1, HouseType.Villa);
-					HousingResidentRole residentRole = new HousingResidentRole();
 					house.setItems();
-					HouseGui hGui = new HouseGui(house);
-					house.setGui(hGui);
+					houseAnimationPanels.add(house.gui.hp);
+					HousingResidentRole residentRole = new HousingResidentRole();
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
-					houseAnimationPanel.addGui(house.gui);
 					//residentRole.testModeOn();
 					residentRole.setPerson(person);
 					residentRole.isActive = true;
@@ -336,10 +332,10 @@ public class CityGui extends JFrame implements ActionListener {
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
 		
-        buildingPanels.add(restaurantContainer, "" + 15);
-        buildingPanels.add(bankContainer, "" + 14);
+        buildingPanels.add(restaurantContainer, "" + 14);
+        buildingPanels.add(bankContainer, "" + 13);
         
-        buildingPanels.add(marketContainer,"" + 13);
+        buildingPanels.add(marketContainer,"" + 12);
         
         
         for(int j = 0; j < houseAnimationPanels.size(); j++)
