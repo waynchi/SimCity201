@@ -77,7 +77,7 @@ public class HouseGui implements HGui{
 		return true;
 	}
 	
-	private void setItems() {
+	public void setItems() {
 		List<Item> list = h.items;
 		for (Item i : list) {
 			items.add(i.getGui());

@@ -276,6 +276,8 @@ public class House extends Item{
 			i31.setGui(g31);
 			items.add(i31);
 		}
+		
+		gui.setItems();
 	}
 	
 	public void setItemsWithoutGui() {
