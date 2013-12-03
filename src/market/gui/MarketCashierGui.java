@@ -10,7 +10,7 @@ public class MarketCashierGui implements Gui{
 	MarketCashierRole cashier;
 	MarketGui gui;
 	
-	int xDestination = 200, yDestination = 120;
+	int xDestination = 380, yDestination = 0;
 	int xPos = 170, yPos = 0;
 	int xExit = 170, yExit = 0;
 	boolean goingToWorkPlace= false;
@@ -68,6 +68,8 @@ public class MarketCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
+		xDestination = 380;
+		yDestination = 0;
 		goingToWorkPlace = true;
 		
 	}
@@ -77,6 +79,15 @@ public class MarketCashierGui implements Gui{
 		xDestination = xExit;
 		yDestination = yExit;
 		leaving = true;
+	}
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		xPos = 170; 
+		yPos = 0;
+		xDestination = 380;
+		yDestination = 0;
+		goingToWorkPlace = true;
 	}
 
 }

@@ -42,6 +42,7 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 			e.printStackTrace();
 		}
 		waiterGui.setPresent(false);
+		waiterGui.setDefaultDestination();
 		isActive = false;
 		getPersonAgent().msgDone("RestaurantSpecialWaiterRole");
 	}

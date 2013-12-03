@@ -24,6 +24,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 
     private List<Gui> guis = new ArrayList<Gui>();
     private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
+    private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
+
 
 
     public RestaurantAnimationPanel() {
@@ -53,8 +55,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Here is the table
         g2.setColor(Color.ORANGE);
         for (int i=1; i<4; i++){
-            g2.fillRect(50+100*(i-1), 100, TABLEWIDTH, TABLEWIDTH);//200 and 250 need to be table params
-
+            g2.drawImage(rest_table.getImage(),50+100*(i-1), 100,50,50, null);
         }
 
         g2.setColor(Color.yellow);

@@ -18,7 +18,7 @@ public class Lane {
 	boolean startAtOrigin;
 	Color laneColor;
 	Color sideColor;
-	ArrayList<Vehicle> vehicles;
+	ArrayList<VehicleGui> vehicles;
 	public String name;
 	boolean hasCar;
 	
@@ -49,7 +49,7 @@ public class Lane {
 			sides.add( new Line2D.Double( xOrigin+width, yOrigin, xOrigin+width, yOrigin+height ) );
 		}
 		
-		vehicles = new ArrayList<Vehicle>();
+		vehicles = new ArrayList<VehicleGui>();
 	}
 	public void draw( Graphics2D g2 ) {
 		g2.setColor( laneColor );

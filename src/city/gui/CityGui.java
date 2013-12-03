@@ -267,7 +267,7 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if(job.equals("MarketCashier"))
 					{
-						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
@@ -276,7 +276,7 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if(job.equals("MarketCustomer"))
 					{
-						MarketCashierRole marketCashierRole = new MarketCashierRole();
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);

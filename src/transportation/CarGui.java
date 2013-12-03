@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import city.gui.CityPanel;
 import city.gui.Lane;
-import city.gui.Vehicle;
+import city.gui.VehicleGui;
 import transportation.interfaces.Car;
 
-public class CarGui extends Vehicle{
+public class CarGui extends VehicleGui{
 
 	
 	String destination;

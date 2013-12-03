@@ -6,11 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import javax.smartcardio.ATR;
+
 import bank.interfaces.Teller;
 import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import market.gui.MarketCashierGui;
+import market.gui.MarketEmployeeGui;
+import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -23,6 +28,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private MarketEmployee marketEmployee;
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
+	MarketGui marketGui = null;
+	MarketCashierGui marketCashierGui = null;
 
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
@@ -57,7 +64,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 	}
 	
-	public MarketCashierRole() {
+	public MarketCashierRole(MarketGui gui) {
+		marketGui = gui;
+		marketCashierGui = new MarketCashierGui(this);
+		marketGui.getAnimationPanel().addGui(marketCashierGui);
+		marketCashierGui.setPresent(false);
 		priceList.put("Steak", 7.99);
 		priceList.put("Chicken", 7.99);
 		priceList.put("Salad", 2.99);
@@ -70,12 +81,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// messages
 
 	public void msgIsActive() {
+		log.add(new LoggedEvent("received msgIsActive"));
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
 	}//tested
 
 	public void msgIsInActive() {
+		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}//tested
@@ -94,14 +107,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// for regular Market Customer
 	public void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items){
-		if (!inTest)	print ("got a check from employee for customer " + customer.getPerson().getName());
+		if (!inTest)	log.add(new LoggedEvent("got a check for customer " + customer.getPerson().getName() ));
 		checks.add(new Check(customer, items));
 		getPersonAgent().CallstateChanged();
 	}//tested
 
 	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
-		print ("got a check from employee for restaurant cashier " + restCashier.getName() + " and restaurant ordered ");
+		print ("got a check for restaurant cashier " + restCashier.getName());
 		checks.add(new Check(restCashier, items));
 		getPersonAgent().CallstateChanged();
 
@@ -109,7 +122,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from regular market customer
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
-		if (!inTest) print ("marketCustomer " + customer.getPerson().getName() + " is paying " + totalPaid);
+		if (!inTest) log.add(new LoggedEvent("marketCustomer " + customer.getPerson().getName() + " is paying " + totalPaid));
 		for (Check c : checks) {
 			if (c.customer == customer) {
 				c.state = checkState.PAID;
@@ -124,7 +137,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from restaurant cashier
 	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
-		print ("restaurant cashier " + cashier.getName() + " is paying " + amount + " for order ");
+		log.add(new LoggedEvent("restaurant cashier " + cashier.getName() + " is paying " + amount));
 		for (Check c : checks) {
 			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
@@ -205,18 +218,23 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// action
 	private void clockIn() {
-		print ("clock in");
-		log.add(new LoggedEvent("in action clockIn"));
+		log.add(new LoggedEvent("clock in"));
 		if (!inTest){
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		marketEmployee.setCashier(this);
+		marketCashierGui.setPresent(true);
+		marketCashierGui.DoGoToWorkingPosition();
+		try {
+			atPosition.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		}
 		turnActive = false;
 	}
 	
 	private void computeAndSendCheck(Check check) {
-		log.add(new LoggedEvent("in action compute and send check"));
-
 		//compute the total amount
 		for (Map.Entry<String,Integer> entry : check.items.entrySet()) {
 			check.totalDue += priceList.get(entry.getKey());
@@ -224,11 +242,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			print ("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and amount is " + check.totalDue);
+			log.add(new LoggedEvent("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and total due is " + check.totalDue));
 			check.restaurantCashier.msgHereIsWhatIsDue(marketEmployee, check.totalDue, check.items);
 		}
 		else { // check is for market customer
-			if (!inTest) print ("sending check to customer " + check.customer.getPerson().getName() + " and total due is " + check.totalDue);
+			log.add(new LoggedEvent("sending check to customer and total due is " + check.totalDue));
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
 		check.state = checkState.SENT;
@@ -236,17 +254,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	private void giveChangeToCustomer(Check check) {
-		log.add(new LoggedEvent("in action give change to customer"));
 		double change = check.totalPaid - check.totalDue;
 		marketMoney -= change;
 		if (check.restaurantCashier != null) {
+			log.add(new LoggedEvent("giving change to restaurant cashier and the amount is " + change));
 			check.restaurantCashier.msgHereIsChange (change);
-			print ("giving change to restaurant cashier " + " and the amount is " + change);
 		}
 		
 		else { // check is for regular customer
+			log.add(new LoggedEvent("giving change to customer and the amount is " + change));
 			check.customer.msgHereIsChange(change);
-			print ("giving change to customer " + " and the amount is " + change);
 		}
 		checks.remove(check);
 	}
@@ -255,6 +272,15 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		log.add(new LoggedEvent("in action done"));
 		isActive = false;
 		leaveWork = false;
+		marketCashierGui.DoLeaveWork();
+		try {
+			atExit.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		marketCashierGui.setPresent(false);
+		marketCashierGui.setDefaultDestination();
 		getPersonAgent().msgDone("MarketCashierRole");
 	}
 

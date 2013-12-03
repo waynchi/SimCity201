@@ -186,4 +186,26 @@ public class WaiterGui implements Gui {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public int getX() {
+		return xPos;
+	}
+	
+	public int getY() {
+		return yPos;
+	}
+	
+	public int getXDest() {
+		return xDestination;
+	}
+	
+	public int getYDest() {
+		return yDestination;
+	}
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		xDestination = 50+30*homeIndex;
+    	yDestination = 10;
+	}
 }

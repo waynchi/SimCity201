@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import market.MarketCashierRole;
+import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import people.PeopleAgent;
@@ -33,8 +34,9 @@ public class MarketCashierTest extends TestCase{
 
 	public void setUp() throws Exception{
 		super.setUp();  
+		MarketGui gui = new MarketGui();
 		people = new PeopleAgent("people", 0.0, false);
-		cashier = new MarketCashierRole();
+		cashier = new MarketCashierRole(gui);
 		people.addRole(cashier, "MarketCashierRole");
 		cashier.setPerson(people);
 		mme = new MockMarketEmployee("mme");
@@ -52,7 +54,7 @@ public class MarketCashierTest extends TestCase{
 		assertFalse(cashier.isActive());
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("in action clockIn"));
+		assertTrue(cashier.log.containsString("clock in"));
 		assertFalse(cashier.turnActive);
 		
 		cashier.msgIsInActive();
@@ -72,7 +74,7 @@ public class MarketCashierTest extends TestCase{
 		assertEquals(cashier.checks.size(),1);
 		
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("in action compute and send check"));
+		assertTrue(cashier.log.containsString("sending check to customer and total due is 100000.0"));
 		assertEquals(cashier.checks.get(0).totalDue, 100000.0);
 		
 		//check if message is sent to mock customer
@@ -82,7 +84,8 @@ public class MarketCashierTest extends TestCase{
 		assertEquals(cashier.marketMoney,10000.0);
 		cashier.msgHereIsPayment(mmc, 100050.0);
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("in action give change to customer"));
+		assertTrue("cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("giving change to customer and the amount is 50"));
 		assertEquals(cashier.marketMoney,110000.0);
 		
 		

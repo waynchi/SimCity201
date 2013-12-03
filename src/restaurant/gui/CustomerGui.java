@@ -59,6 +59,7 @@ public class CustomerGui implements Gui{
 			else if (leaving) {
 				customer.msgAtExit();
 				isHungry = false;
+				leaving = false;
 				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
 			command=Command.noCommand;

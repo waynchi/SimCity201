@@ -90,12 +90,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// messages
 
 	public void msgIsActive() {
+		log.add(new LoggedEvent("received msgActive"));
 		isActive = true;
 		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
+		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -117,7 +119,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
-		print ("got an order from market customer " + customer.getPerson().getName());
+		log.add(new LoggedEvent("received an order from market customer " + customer.getPerson().getName()));
 		orders.add(new Order(customer, chosenItems));
 		getPersonAgent().CallstateChanged();
 
@@ -126,7 +128,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
 		if(!inTest){
-		print ("got an order from cook " + cook.getPerson().getName());
+			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getPerson().getName()));
 		}
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
@@ -172,17 +174,16 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		log.add(new LoggedEvent("in action give order to customer"));
+		//log.add(new LoggedEvent("in action give order to customer"));
 		if(!inTest)		getOrder(order.items);
 		// if order is from restaurant
 		if (order.cook != null) {
 			if(!inTest){
-			print ("sending truck to restaurant cook " + order.cook.getPerson().getName());
+			//	log.add(new LoggedEvent("sending truck to restaurant cook " + order.cook.getPerson().getName()));
 			}
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
-			print("order delivered to restaurant");
+			log.add(new LoggedEvent("order delivered to restaurant"));
 			order.cook.msgHereIsYourOrder(order.items);	
-			print ("sending bill to market cashier ");
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
 
@@ -191,7 +192,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		else {
 			//if (order.customer.getPerson().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
 				//gui.doWalkToCustomer(order.customer);
-			print ("giving items to customer " + order.customer.getPerson().getName());
+			log.add(new LoggedEvent("giving items to customer " + order.customer.getPerson().getName()));
 				order.customer.msgHereIsYourOrder(order.items);
 			//}
 
@@ -230,6 +231,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		isActive = false;
 		leaveWork = false;
 		employeeGui.setPresent(false);
+		employeeGui.setDefaultDestination();
 		getPersonAgent().msgDone("MarketEmployeeRole");
 	}
 

@@ -39,7 +39,7 @@ public class MarketCustomerGui implements Gui{
 			yPos++;
 		else if (yPos > yDestination)
 			yPos--;
-		if (xPos == xDestination && yPos == yDestination && xDestination == xCounter && yDestination == yCounter) {
+		if (xPos == xCounter && yPos == yCounter && xDestination == xCounter && yDestination == yCounter) {
 			marketCustomer.msgAtCounter();
 		}
 		if (xPos == xDestination && yPos == yDestination && xDestination == xRegister && yDestination == yRegister) {

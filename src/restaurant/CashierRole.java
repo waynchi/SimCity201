@@ -156,14 +156,14 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
-		print ("received msgIsActive");
+		print ("received msgIsActive, position is " + cashierGui.getX() + " " + cashierGui.getY() + " and destination"
+				+ " is " + cashierGui.getXDest() + " " + cashierGui.getYDest());
 		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
-		print ("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -386,9 +386,6 @@ public class CashierRole extends Role implements Cashier {
 		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
 		host.setCashier(this);
-		
-		cashierGui.setX(250);
-		cashierGui.setY(250);
 		cashierGui.setPresent(true);
 		cashierGui.DoGoToWorkingPosition();
 		try {
@@ -511,6 +508,7 @@ public class CashierRole extends Role implements Cashier {
 		}
 		leaveWork = false;
 		cashierGui.setPresent(false);
+		cashierGui.setDefaultDestination();
 		getPersonAgent().msgDone("RestaurantCashierRole");
 		//DoCloseRestaurant(); //gui stuff
 		}
