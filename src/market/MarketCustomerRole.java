@@ -52,7 +52,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	// messages
 	public void msgIsActive () {
-		print ("got msgIsActive, going to buy car");
+		log.add(new LoggedEvent("received msgIsActive"));
 		isActive = true;
 		customerGui.setPresent(true);
 		itemsNeeded.put("Car", 1);
@@ -87,7 +87,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 
 	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
-		print ("received my item ");
+		log.add(new LoggedEvent("received my item "));
 		itemsReceived = _itemsReceived;
 		event = marketCustomerEvent.RECEIVED_ORDER;
 		// need to tell People what we've got
@@ -101,7 +101,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 
 	public void msgHereIsWhatIsDue(double _totalDue, MarketCashier c) {
-		print ("got bill for my order and total amount is " + _totalDue);
+		log.add(new LoggedEvent("got bill for my order and total amount is " + _totalDue));
 		totalDue = _totalDue;
 		cashier = c;
 		event = marketCustomerEvent.RECEIVED_CHECK;
@@ -110,7 +110,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}//tested
 
 	public void msgHereIsChange(double totalChange) {
-		print ("received change from cashier and amount is " + totalChange);
+		log.add(new LoggedEvent("received change from cashier and amount is " + totalChange));
 		double money = getPersonAgent().getMoney();
 		money += totalChange;
 		getPersonAgent().setMoney(money);
@@ -158,7 +158,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	//action
 	private void orderItem() {
-		log.add(new LoggedEvent("in action order item"));
 		if (!inTest){
 			//customerGui.DoLineUp();
 			customerGui.DoGoToMarketEmployee();
@@ -169,14 +168,13 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			e.printStackTrace();
 		}
 		}
-		
+		log.add(new LoggedEvent("ordering my items"));
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
 	}
 	
 
 	private void payBill() {
-		log.add(new LoggedEvent("in action pay bill"));
 		if (!inTest){
 		customerGui.DoGoToRegister();
 		try {
@@ -185,15 +183,15 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print ("here is payment " + getPersonAgent().getMoney());
 		}
+		log.add(new LoggedEvent("paying my bill"));
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);
 		state = marketCustomerState.PAID;	
 	}
 
 	private void done() {
-		log.add(new LoggedEvent("in action done"));
+		log.add(new LoggedEvent("done and leaving"));
 		if (!inTest){
 		customerGui.DoGoToExit();
 		try {

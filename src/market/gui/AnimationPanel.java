@@ -54,7 +54,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
         // here is the register
         g2.setColor(Color.orange);
-        g2.fillRect(350, 30, 100, 40);
+        g2.fillRect(350, 30, 100, 30);
         
         // here are the cabinets
         g2.setColor(Color.blue);
@@ -123,5 +123,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
             }
 		}
 		repaint();
+	}
+
+	public void addGui(MarketCashierGui marketCashierGui) {
+		// TODO Auto-generated method stub
+		guis.add(marketCashierGui);
 	}
 }
