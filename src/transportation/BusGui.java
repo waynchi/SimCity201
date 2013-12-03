@@ -3,11 +3,11 @@ import java.util.*;
 
 import city.gui.CityPanel;
 import city.gui.Lane;
-import city.gui.Vehicle;
+import city.gui.VehicleGui;
 
 import transportation.interfaces.Bus;
 
-public class BusGui extends Vehicle{
+public class BusGui extends VehicleGui{
 
 	/**
 	 * @param args

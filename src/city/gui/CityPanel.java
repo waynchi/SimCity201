@@ -20,7 +20,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
 	ArrayList<Lane> lanes;
 	ArrayList<Sidewalk> sidewalks;
-	ArrayList<Vehicle> vehicles;
+	ArrayList<VehicleGui> vehicles;
 	ArrayList<PersonGui> people;
 	public List<BusStop> busStops;
 	ArrayList<Lane> road1,road2,road3,road4,road5,road6,road7,road8,road9,road10,road11,road12,road13,road14,road15,road16,road17,road18,road19,road20,road21,road22;
@@ -54,7 +54,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		buildings = new ArrayList<Building>();
 		lanes = new ArrayList<Lane>();
 		sidewalks = new ArrayList<Sidewalk>();
-		vehicles = new ArrayList<Vehicle>();
+		vehicles = new ArrayList<VehicleGui>();
 		people = new ArrayList<PersonGui>();
 		busStops = new ArrayList<BusStop>();
 		this.city = city;
@@ -892,7 +892,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
-			Vehicle v = vehicles.get(i);
+			VehicleGui v = vehicles.get(i);
 			v.draw(g2);
 		}
 		for(int i=0;i<people.size();i++) {
@@ -902,7 +902,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 	}
 	
-	public void removeVehicle(Vehicle v) {
+	public void removeVehicle(VehicleGui v) {
 		v.setDestination(0, 0);
 	}
 	public void removePerson(PersonGui p) {
