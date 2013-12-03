@@ -66,6 +66,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 			if (gui.isPresent())
 				gui.draw(g);
 		}
+		gui.updatePosition();
 		gui.draw(g);
 	}
 	
