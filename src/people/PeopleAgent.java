@@ -216,10 +216,10 @@ public class PeopleAgent extends Agent implements People{
 				hunger = HungerState.NotHungry;
 				Hunger = 2400;
 			}
-			if(role.equals("BankCustomerRole"))
-			{
-				
-			}
+//			if(role.equals("BankCustomerRole"))
+//			{
+//				
+//			}
 			if(role.equals("MarketCustomerRole"))
 			{
 				hasCar = true;
@@ -495,7 +495,6 @@ public class PeopleAgent extends Agent implements People{
 				{
 					event = AgentEvent.EatingAtHome;
 					print("Going Home To Eat");
-					System.out.println("test");
 					stateChanged();
 					return;
 				}
@@ -606,6 +605,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
+			print("Eating at Home from Schedule");
 			state = AgentState.EatingAtHome;
 			hunger = HungerState.Eating;
 			}
@@ -746,7 +746,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Home 1");
+						((CarPassengerRole)r.role).setDestination("Restaurant 1");
 						r.role.msgIsActive();
 					}
 				}
@@ -862,7 +862,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Home 1");
+						((CarPassengerRole)r.role).setDestination("Market");
 						r.role.msgIsActive();
 					}
 				}
