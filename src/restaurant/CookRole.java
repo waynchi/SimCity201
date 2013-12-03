@@ -41,6 +41,7 @@ public class CookRole extends Role implements Cook{
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
+	protected Semaphore atFridge = new Semaphore (0,true);
 
 	
 	private CookGui cookGui = null;
@@ -118,6 +119,12 @@ public class CookRole extends Role implements Cook{
 
 	public void msgAtGrill() {
 		atGrill.release();
+		myPerson.CallstateChanged();
+	}
+	
+
+	public void msgAtFridge() {
+		atFridge.release();
 		myPerson.CallstateChanged();
 	}
 
@@ -275,6 +282,22 @@ public class CookRole extends Role implements Cook{
 		f.amount--;
 
 		order.state = OrderState.COOKING;
+		cookGui.goToFridge();
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		cookGui.DoGoToCookingPlace();
+		try {
+			atGrill.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		cookGui.cookFood(order.food);
 		new java.util.Timer().schedule(
 				new java.util.TimerTask(){
@@ -483,6 +506,8 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
+
+
 
 
 

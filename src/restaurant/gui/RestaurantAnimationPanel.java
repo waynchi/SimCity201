@@ -25,6 +25,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private List<Gui> guis = new ArrayList<Gui>();
     private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
     private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
+    private ImageIcon fridge = new ImageIcon("res/restaurant/fridge.png");
 
 
 
@@ -58,15 +59,18 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
             g2.drawImage(rest_table.getImage(),50+100*(i-1), 100,50,50, null);
         }
 
+        // grilling
         g2.setColor(Color.yellow);
         g2.fillRect(50, 250, 60, 20);//cooking
-        //g2.fillRect(250, 250, 20, 20);//cashier
         
-        // grilling
+        // plating
     	g2.setColor(Color.lightGray);
         for (int i=1; i<4; i++) {
         	g2.fillRect(50+45*(i-1), 210, 40, 20);
         }
+        
+        // fridge
+        g2.drawImage(fridge.getImage(),150,320,30,60, null);
         
         //revolving stand
         g2.fillOval(350, 250, 70, 70);
@@ -75,10 +79,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.white);
         g2.drawString("Cooking", 0, 265);
         g2.drawString("Plating",0,225);
-        
-        //
-        //g2.drawString("Cashier", 250, 280);
-        
+                
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {
