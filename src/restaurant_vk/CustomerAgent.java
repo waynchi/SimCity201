@@ -1,7 +1,7 @@
 package restaurant_vk;
 
 import restaurant_vk.gui.CustomerGui;
-import restaurant_vk.interfaces.Cashier;
+import restaurant_vk.CashierAgent;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
@@ -32,7 +32,7 @@ public class CustomerAgent extends Agent implements Customer{
 	// agent correspondents
 	private Host host;
 	private Waiter waiter;
-	private Cashier cashier = null;
+	private CashierAgent cashier = null;
 	
 	private Semaphore movingAround = new Semaphore(0, true);
 
@@ -524,7 +524,7 @@ public class CustomerAgent extends Agent implements Customer{
 		return menu;
 	}
 	
-	public void setCashier(Cashier c) {
+	public void setCashier(CashierAgent c) {
 		cashier = c;
 	}
 	

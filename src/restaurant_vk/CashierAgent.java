@@ -3,12 +3,14 @@ package restaurant_vk;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-import restaurant_vk.interfaces.Cashier;
+import bank.interfaces.Teller;
+import restaurant.interfaces.Cashier;
 import restaurant_vk.interfaces.Customer;
-import restaurant_vk.interfaces.Market;
+import restaurant.interfaces.Cashier;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
 import agent.Agent;
@@ -60,19 +62,6 @@ public class CashierAgent extends Agent implements Cashier{
 		mc.amountPaid = cash;
 		mc.l = l;
 		mc.s = CheckState.BeingPaid;
-		stateChanged();
-	}
-	
-	/*
-	 * A message called by markets to give bills to the cashier for
-	 * the stuff bought by the cook.
-	 */
-	public void hereIsBillForMaterials(Market m, double cost) {
-		Bill b = new Bill(m, cost);
-		synchronized (bills) {
-			bills.add(b);
-		}
-		print("Received bill of $" + b.cost + " from " + b.m + ".");
 		stateChanged();
 	}
 	
@@ -137,10 +126,10 @@ public class CashierAgent extends Agent implements Cashier{
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
-		b.m.hereIsMoney(b.cost);
-		myCash = myCash - b.cost;
-		b.state = BillState.Paid;
-		print("Paid " + b.m + " $" + b.cost + ".");
+//		b.m.hereIsMoney(b.cost);
+//		myCash = myCash - b.cost;
+//		b.state = BillState.Paid;
+//		print("Paid " + b.m + " $" + b.cost + ".");
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -320,15 +309,56 @@ public class CashierAgent extends Agent implements Cashier{
 	enum BillState {Unpaid, Paid};
 	
 	public class Bill {
-		private Market m;
-		private double cost;
-		private BillState state;
-		
-		public Bill(Market m, double cst) {
-			this.m = m;
-			this.cost = cst;
-			state = BillState.Unpaid;
-		}
+//		private Market m;
+//		private double cost;
+//		private BillState state;
+//		
+//		public Bill(Market m, double cst) {
+//			this.m = m;
+//			this.cost = cst;
+//			state = BillState.Unpaid;
+//		}
 	}
 
+	@Override
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsChange(double change) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGiveLoan(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgWithdrawSuccessful(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
+	}
 }
