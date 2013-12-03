@@ -134,7 +134,7 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
-	// from market truck
+	// from market truck (market employee for now)
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
@@ -250,7 +250,7 @@ public class CookRole extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(getPersonAgent().getMarketEmployee(0),order.marketOrder);
+		cashier.msgGotMarketOrder(order.marketOrder);
 		marketOrders.remove(order);
 	}
 	

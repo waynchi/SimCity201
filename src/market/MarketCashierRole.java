@@ -114,7 +114,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
-		print ("got a check for restaurant cashier " + restCashier.getName());
+		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + restCashier.getName()));
 		checks.add(new Check(restCashier, items));
 		getPersonAgent().CallstateChanged();
 
@@ -243,9 +243,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
 			log.add(new LoggedEvent("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and total due is " + check.totalDue));
-			check.restaurantCashier.msgHereIsWhatIsDue(marketEmployee, check.totalDue, check.items);
+			check.restaurantCashier.msgHereIsWhatIsDue( check.totalDue, check.items);
 		}
-		else { // check is for market customer
+		
+		// check is for market customer
+		else { 
 			log.add(new LoggedEvent("sending check to customer and total due is " + check.totalDue));
 			check.customer.msgHereIsWhatIsDue(check.totalDue, this);
 		}
