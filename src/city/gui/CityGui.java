@@ -172,6 +172,8 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					House house = new House("House", 1, HouseType.Villa);
+					HouseGui houseGui = new HouseGui(house);
+					house.setGui(houseGui);
 					house.setItems();
 					houseAnimationPanels.add(house.gui.hp);
 					HousingResidentRole residentRole = new HousingResidentRole();
