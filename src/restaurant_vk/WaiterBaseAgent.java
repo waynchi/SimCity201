@@ -6,8 +6,8 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import restaurant_vk.gui.WaiterGui;
-import restaurant_vk.interfaces.Cashier;
-import restaurant_vk.interfaces.Cook;
+import restaurant_vk.CashierAgent;
+import restaurant_vk.CookAgent;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
@@ -22,10 +22,10 @@ public class WaiterBaseAgent extends Agent implements Waiter {
 	protected Semaphore movingAround = new Semaphore(0, true);
 	public WaiterGui gui = null;
 	protected Host host;
-	protected Cook cook;
+	protected CookAgent cook;
 	protected String name = "";
 	protected MyState state = MyState.Working;
-	protected Cashier cashier = null;
+	protected CashierAgent cashier = null;
 		
 	public WaiterBaseAgent(Host host, String name) {
 		super();
@@ -556,7 +556,7 @@ public class WaiterBaseAgent extends Agent implements Waiter {
 		return mc;
 	}
 	
-	public void setCook(Cook cook) {
+	public void setCook(CookAgent cook) {
 		this.cook = cook;
 	}
 	
@@ -572,7 +572,7 @@ public class WaiterBaseAgent extends Agent implements Waiter {
 		return name;
 	}
 	
-	public void setCashier(Cashier c) {
+	public void setCashier(CashierAgent c) {
 		cashier = c;
 	}
 	
