@@ -108,10 +108,85 @@ public class PersonGui extends Rectangle2D.Double {
 
 	}
 
-	public void setDestination(int xd, int yd) {
+//	public void setDestination(int xd, int yd) {
+//		called = true;
+//		xDestination = xd;
+//		yDestination = yd;
+//	}
+	public void setDestination(String destination) {
 		called = true;
-		xDestination = xd;
-		yDestination = yd;
+		
+		//LEFT HOMES
+		if(destination.equals("Home 1")) {
+			xDestination = 92;
+			yDestination = 10;
+		}
+		else if(destination.equals("Home 2")) {
+			xDestination = 92;
+			yDestination = 20;
+		}
+		else if(destination.equals("Home 3")) {
+			xDestination = 92;
+			yDestination = 60;
+		}
+		else if(destination.equals("Home 4")) {
+			xDestination = 92;
+			yDestination = 180;
+		}
+		else if(destination.equals("Home 5")) {
+			xDestination = 92;
+			yDestination = 220;
+		}
+		else if(destination.equals("Home 6")) {
+			xDestination = 92;
+			yDestination = 260;
+		}
+		
+		//RIGHT HOMES
+		else if(destination.equals("Home 7")) {
+			xDestination = 142;
+			yDestination = 10;
+		}
+		else if(destination.equals("Home 8")) {
+			xDestination = 142;
+			yDestination = 20;
+		}
+		else if(destination.equals("Home 9")) {
+			xDestination = 142;
+			yDestination = 60;
+		}
+		else if(destination.equals("Home 10")) {
+			xDestination = 142;
+			yDestination = 180;
+		}
+		else if(destination.equals("Home 11")) {
+			xDestination = 142;
+			yDestination = 220;
+		}
+		else if(destination.equals("Home 12")) {
+			xDestination = 142;
+			yDestination = 260;
+		}
+		else if(destination.equals("Black Abyss")) {
+			xDestination = 0;
+			yDestination = 0;
+		}
+		else if(destination.equals("Wander")) {
+			xDestination = 1;
+			yDestination = 1;
+		}
+		else if(destination.equals("Restaurant 1")) {
+			xDestination = 840;
+			yDestination = 42;
+		}
+		else if(destination.equals("Market")) {
+			xDestination = 580;
+			yDestination = 322;
+		}
+		else if(destination.equals("Bank")) {
+			xDestination = 580;
+			yDestination = 152;
+		}
 	}
 
 	public void setOrientation() {
@@ -159,22 +234,8 @@ public class PersonGui extends Rectangle2D.Double {
 			g2.fill(this);
 			g2.draw(this);
 
-			// System.out.println(x+","+y + " destination: " + xDestination +
-			// "," + yDestination);
-
-			// System.out.println(x+","+y + " destination: " + xDestination +
-			// "," + yDestination);
-
-			// System.out.println(getCurrentLane());
-
+			System.out.println("x " + x + "xD" + xDestination+ "y " + y + "yD " + yDestination);
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
-				this.currentCell.hasPerson = false;
-				called = false;
-				cityPanel.removePerson(this);
-				person.msgDone("PersonGui");
-
-			}
-			if (getCurrentLane().equals("30_0")) { // At home
 				this.currentCell.hasPerson = false;
 				called = false;
 				cityPanel.removePerson(this);
@@ -218,21 +279,27 @@ public class PersonGui extends Rectangle2D.Double {
 			if (getCurrentLane().equals("3_5")) {
 				this.currentCell.hasPerson = false;
 				// Intersection
-				if (yDestination < 152) {
-					// We need to cross
-					this.direction = "up";
-					sidewalkSegment = allSidewalks.get(16);
-					currentCell = sidewalkSegment.get(12);
-				}
-				if (yDestination == 152) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(22);
-					currentCell = sidewalkSegment.get(0);
-				}
-				if (yDestination > 152) {
-					this.direction = "down";
-					sidewalkSegment = allSidewalks.get(18);
-					currentCell = sidewalkSegment.get(0);
+				if(xDestination > 200) {
+					if (yDestination < 152) {
+						// We need to cross
+						this.direction = "up";
+						sidewalkSegment = allSidewalks.get(16);
+						currentCell = sidewalkSegment.get(12);
+					}
+					if (yDestination == 152) {
+						this.direction = "right";
+						sidewalkSegment = allSidewalks.get(22);
+						currentCell = sidewalkSegment.get(0);
+					}
+					if (yDestination > 152) {
+						this.direction = "down";
+						sidewalkSegment = allSidewalks.get(18);
+						currentCell = sidewalkSegment.get(0);
+					}
+				} else { //Go backwards, we want to go to the residential area
+					this.direction="left";
+					sidewalkSegment = allSidewalks.get(3);
+					currentCell = sidewalkSegment.get(3);
 				}
 			}
 			if (getCurrentLane().equals("17_0")) {
@@ -371,7 +438,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if (getCurrentLane().equals("2_0")) {
 				this.currentCell.hasPerson = false;
-				if (xDestination > 140) {
+				if (xDestination > 90 && xDestination < 142) {
 					// Cross
 					if (yDestination < y) {
 						// Go up

@@ -1,8 +1,14 @@
 package city.gui;
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 
 import transportation.BusStop;
 
@@ -24,6 +30,7 @@ public class VehicleGui extends Rectangle2D.Double {
 	Color vehicleColor;
 	int time;
 	public String typeOfVehicle;
+	private ImageIcon img = null;
 	
 	public VehicleGui( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
@@ -36,8 +43,12 @@ public class VehicleGui extends Rectangle2D.Double {
 		redLight = false;
 		this.cityPanel = cityPanel;
 		this.direction = "right";
-
-
+		
+		if(typeOfVehicle.equals("Bus"))
+			img = new ImageIcon("res/transportation/busicon.png");
+		else if(typeOfVehicle.equals("Car"))
+			img = new ImageIcon("res/transportation/caricon.png");
+			
 	}
 	public void setLane(Lane l) {
 		this.currentCell = laneSegment.get(laneSegment.indexOf(l));
@@ -139,16 +150,25 @@ public class VehicleGui extends Rectangle2D.Double {
 	}
 	
 	public void draw(Graphics2D g2) {
-
+		
 		if(xDestination > 0 && yDestination > 0)
 		{
+//			if(typeOfVehicle.equals("Car"))
+//				System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
+			
 		time++;
 		if(typeOfVehicle.equals("Bus"))
 			g2.setColor(Color.yellow);
 		else
 			g2.setColor( Color.blue );
-		g2.fill( this );
-		g2.draw(this);
+		
+		
+		
+//		g2.fill( this );
+//		g2.draw(this);
+//		
+		g2.drawImage(img.getImage(), (int)x, (int)y, 20, 20, null);
+
 
 		if(getCurrentLane().equals("1_0")) {
 			currentCell.hasCar = false;
@@ -162,10 +182,6 @@ public class VehicleGui extends Rectangle2D.Double {
 					this.direction="up";
 					laneSegment = allLanes.get(18);
 					currentCell = laneSegment.get(6);
-				} else {
-					this.direction="down";
-					laneSegment = allLanes.get(21);
-					currentCell = laneSegment.get(0);
 				}
 			}
 		}
@@ -307,7 +323,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell.hasCar = false;
 
 			//Intersection
-			if(x > xDestination) {
+			if(x < xDestination) {
 				//Option 1
 				this.direction="right";
 				laneSegment = allLanes.get(11);
@@ -421,6 +437,14 @@ public class VehicleGui extends Rectangle2D.Double {
 			laneSegment = allLanes.get(17);
 			currentCell = laneSegment.get(0);
 		}
+		else if(getCurrentLane().equals("18_4") && yDestination >= 132) {
+			currentCell.hasCar = false;
+
+			this.direction = "left";
+			laneSegment = allLanes.get(8);
+			int hackFirstCell = laneSegment.size() - 1;
+			currentCell = laneSegment.get(hackFirstCell);
+		}
 		else if(getCurrentLane().equals("18_14")) {
 			currentCell.hasCar = false;
 
@@ -479,19 +503,21 @@ public class VehicleGui extends Rectangle2D.Double {
 				
 
 			}
-			//Option #2
-			else if(yDestination == 152) {
-				this.direction = "right";
-				laneSegment = allLanes.get(7);
-				currentCell = laneSegment.get(0);
-
-			}
-			else if(yDestination > 152) {
+			else if(yDestination == 322) {
 			//Option #3
 				this.direction="down";
 				laneSegment = allLanes.get(12);
 				currentCell = laneSegment.get(6);
 			}
+			//Option #2
+			else {
+				this.direction = "right";
+				laneSegment = allLanes.get(7);
+				currentCell = laneSegment.get(0);
+
+			}
+			
+			
 			
 			
 		}

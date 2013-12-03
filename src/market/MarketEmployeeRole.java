@@ -13,6 +13,7 @@ import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
+import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
@@ -128,7 +129,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from restaurant cook
 	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
 		if(!inTest){
-			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getPerson().getName()));
+			log.add(new LoggedEvent("received an order from restaurant cook " + ((CookRole) cook).getPerson().getName()));
 		}
 		orders.add(new Order (cook, cashier, order));
 		getPersonAgent().CallstateChanged();
@@ -174,33 +175,21 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		//log.add(new LoggedEvent("in action give order to customer"));
 		if(!inTest)		getOrder(order.items);
+		
 		// if order is from restaurant
 		if (order.cook != null) {
-			if(!inTest){
-			//	log.add(new LoggedEvent("sending truck to restaurant cook " + order.cook.getPerson().getName()));
-			}
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
 			log.add(new LoggedEvent("order delivered to restaurant"));
-			order.cook.msgHereIsYourOrder(order.items);	
+			((CookRole) order.cook).msgHereIsYourOrder(order.items);	
 			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
 		}
 
 
-		//if customer is in market, give it the order
+		//if order is from customer
 		else {
-			//if (order.customer.getPerson().getGui().getLocation().equals("market")) { // how to check if customer is in the market...
-				//gui.doWalkToCustomer(order.customer);
 			log.add(new LoggedEvent("giving items to customer " + order.customer.getPerson().getName()));
 				order.customer.msgHereIsYourOrder(order.items);
-			//}
-
-			//if customer is at somewhere else, send a truck to the place
-			//else {
-			//	getNextMarketTruck().msgHereIsAnOrder(order.customer,order.items); 
-
-			//}
 			cashier.msgHereIsACheck(order.customer, order.items);
 		}
 

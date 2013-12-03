@@ -419,7 +419,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		cook.getGui().foodPickedUp(customer.tableNumber);
+		((CookRole) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
 		print ("Bringing food to table " + customer.tableNumber);
 		try {
@@ -431,7 +431,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
-		cashier.msgHereIsBill(customer.c, customer.choice, this);
+		((CashierRole) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	

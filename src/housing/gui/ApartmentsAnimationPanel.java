@@ -1,9 +1,15 @@
 package housing.gui;
 
+import housing.House;
+
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +18,54 @@ import javax.swing.JPanel;
 public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> humanGuis = new ArrayList<HGui>();
 	List<HGui> nonLivingGuis = new ArrayList<HGui>();
+	TestGui g;
+	public ApartmentsGui ag;
 	
-	public ApartmentsAnimationPanel() {
+	public ApartmentsAnimationPanel(ApartmentsGui ag) {
 		super();
+		this.ag = ag;
 		this.setSize(500, 570);
+		this.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int xPos = e.getX();
+				int yPos = e.getY();
+				int houseWidth = 76;
+				int houseHeight = 76;
+				int x = 0;
+				int y = 0;
+				int k = 0;
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 5; j++) {
+						if (xPos >= x && xPos <= (x + houseWidth) && yPos >= y && yPos <= (y + houseHeight)) {
+							g.displayApartment(k);
+							return;
+						}
+						y += (houseHeight + 30);
+						k++;
+					}
+					y = 0;
+					x += (houseHeight + 30);
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+		});
 	}
 	
 	@Override
@@ -33,6 +83,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 			if (gui.isPresent())
 				gui.draw(g);
 		}
+		ag.draw(g);
 	}
 	
 	public void addGui(HGui gui) {
@@ -40,6 +91,14 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 			humanGuis.add(gui);
 		else {
 			nonLivingGuis.add(gui);
+		}
+	}
+	
+	public void setTestGui(TestGui g) {
+		this.g = g;
+		List<House> houses = ag.a.houses;
+		for (House h : houses) {
+			h.gui.hp.setTestGui(g);
 		}
 	}
 }

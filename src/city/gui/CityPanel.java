@@ -667,28 +667,27 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		//First Section, Top Row
 		
-		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 570, 60, "Restaurant 2" );
-		buildings.add(restaurant2);
+//		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 570, 60, "Restaurant 2" );
+//		buildings.add(restaurant2);
 		Building market = new Building( hozX + 230, hozY + 310, 60, 100, 580, 322, "Market" );
 		buildings.add(market);
-		Building restaurant1 = new Building( hozX + 230, hozY + 140, 80, 80, 570, 200, "Restaurant 1" );
-		buildings.add(restaurant1);
-	
-		Building restaurant3 = new Building( hozX + 460, hozY + 30, 40, 40, 810, 42, "Restaurant 3" );
-		buildings.add(restaurant3);
-		Building bank = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
+		Building bank = new Building( hozX + 230, hozY + 140, 80, 80, 560, 302, "Bank" );
 		buildings.add(bank);
-		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
-		buildings.add(restaurant6);
-		Building restaurant7 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 7" );
-		buildings.add(restaurant7);
-		
-	
-		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
-		buildings.add(restaurant4);		
-		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
-		buildings.add(restaurant5);
-		
+		Building restaurant1 = new Building( hozX + 460, hozY + 30, 40, 40, 810, 132, "Restaurant 1" );
+		buildings.add(restaurant1);
+//		Building bank2 = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
+//		buildings.add(bank2);
+//		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
+//		buildings.add(restaurant6);
+//		Building restaurant7 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 7" );
+//		buildings.add(restaurant7);
+//		
+//	
+//		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
+//		buildings.add(restaurant4);		
+//		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
+//		buildings.add(restaurant5);
+//		
 		BusAgent busAgent = new BusAgent();
 		busStops.add(new BusStop(220,180,30,30,220,152, "BusStop1"));
 		busStops.add(new BusStop(680,350,30,30,680,322, "BusStop2"));
@@ -705,7 +704,7 @@ public class CityPanel extends JPanel implements MouseListener {
 //		CarAgent carAgent = new CarAgent();
 //		carAgent.setGui(cg);
 //		carAgent.startThread();
-//		cg.msgGoToThisPlace(carAgent, "Bank");
+//		cg.msgGoToThisPlace(carAgent, "Market");
 //		vehicles.add(cg);
 //		
 		addMouseListener( this );
@@ -906,7 +905,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		v.setDestination(0, 0);
 	}
 	public void removePerson(PersonGui p) {
-		p.setDestination(0, 0);
+		p.setDestination("Black Abyss");
 	}
 	public ArrayList<Building> getBuildings() {
 		return buildings;
