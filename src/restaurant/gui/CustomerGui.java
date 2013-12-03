@@ -25,6 +25,7 @@ public class CustomerGui implements Gui{
 	
 	private Boolean MsgGoToSeatFromAgent = false;
 	private boolean leaving = false;
+	private boolean goingToCashier = false;
     private BufferedImage img = null;
 
 	
@@ -55,7 +56,11 @@ public class CustomerGui implements Gui{
 
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.GoToSeat) customer.msgAtTable();
-			else if (xDestination == 250 && yDestination == 230) customer.msgAtCashier();
+			else if (xDestination == 250 && yDestination == 230 && goingToCashier) {
+				goingToCashier = false;
+				customer.msgAtCashier();
+				
+			}
 			else if (leaving) {
 				customer.msgAtExit();
 				isHungry = false;
@@ -106,6 +111,7 @@ public class CustomerGui implements Gui{
 	public void DoGoToCashier() {
 		// how could customer know where cashier is? I don't know...
 		command = Command.noCommand;
+		goingToCashier = true;
 		xDestination = 250;
 		yDestination = 230;
 		

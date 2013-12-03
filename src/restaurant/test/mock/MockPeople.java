@@ -216,4 +216,10 @@ public class MockPeople extends Mock implements People{
 		return null;
 	}
 
+	@Override
+	public void setType(String t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
