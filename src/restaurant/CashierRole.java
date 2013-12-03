@@ -92,8 +92,8 @@ public class CashierRole extends Role implements Cashier {
 
 	public class MarketBill {
 		Double amount;
-		boolean itemsReceived = false;
-		boolean checkReceived = false;
+		public boolean itemsReceived = false;
+		public boolean checkReceived = false;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
 		public MarketBill (double a, Map<String, Integer> items) {
@@ -317,10 +317,12 @@ public class CashierRole extends Role implements Cashier {
 		if (!marketBills.isEmpty()) {
 			synchronized (marketBills) {
 				for (MarketBill mb : marketBills) {
-					if (mb.itemsReceived && mb.checkReceived)
+					if (mb.itemsReceived && mb.checkReceived){
 						payMarket(mb);
+					return true;
+					}
+
 				}
-				return true;
 			}
 		}
 
@@ -439,10 +441,12 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
-		log.add(new LoggedEvent("In action payMarket, paying "+bill.amount));
+		log.add(new LoggedEvent("In action payMarket, amount due is "+bill.amount));
 		//if (working_capital > bill.amount) {
 		//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
+		if (!inTest) {
 		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+		}
 		setMyMoney(0);
 
 		//}
