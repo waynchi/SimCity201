@@ -56,6 +56,13 @@ public class HouseGui implements HGui{
 			g.drawImage(apartmentImage, 0, 0, null);
 			g.setColor(Color.BLACK);
 			g.drawString(h.number + "", 250, 250);
+			g.setColor(Color.BLUE);
+			g.fillRect(470, 15, 30, 60);
+			g.setColor(Color.BLACK);
+			g.drawString("B", 480, 30);
+			g.drawString("A", 480, 42);
+			g.drawString("C", 480, 54);
+			g.drawString("K", 480, 66);
 		}
 		
 		for (HGui gui : guis) {
@@ -63,13 +70,6 @@ public class HouseGui implements HGui{
 				gui.draw(g);
 			}
 		}
-		g.setColor(Color.BLUE);
-		g.fillRect(470, 15, 30, 60);
-		g.setColor(Color.BLACK);
-		g.drawString("B", 480, 30);
-		g.drawString("A", 480, 42);
-		g.drawString("C", 480, 54);
-		g.drawString("K", 480, 66);
 	}
 
 	@Override
