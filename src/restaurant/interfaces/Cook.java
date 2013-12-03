@@ -2,10 +2,7 @@ package restaurant.interfaces;
 
 import java.util.Map;
 
-import people.People;
-import restaurant.gui.CookGui;
-
 public interface Cook {
-
+	public abstract void msgHereIsYourOrder(Map<String, Integer> items);
 
 }

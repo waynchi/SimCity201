@@ -471,7 +471,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashier.msgPayMyCheck(this, getPersonAgent().getMoney());
+		((CashierRole) cashier).msgPayMyCheck(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);
 		print ("Paying my bill");
 	}

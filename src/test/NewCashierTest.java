@@ -70,13 +70,17 @@ public class NewCashierTest extends TestCase{
 		cashier.pickAndExecuteAnAction();
 		assertTrue(cashier.log.containsString("in clock in"));
 		assertTrue(cashier.getMarketBills().size() == 0);
-		cashier.msgHereIsWhatIsDue(mme, 100.0, items);
+		
+		cashier.msgHereIsWhatIsDue(100.0, items); 
 		assertTrue(cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
 		assertTrue(cashier.getMarketBills().size() == 1);
 		cashier.pickAndExecuteAnAction();
-		// don't know how to solve this null pointer
-		assertTrue(cashier.log.containsString("In action payMarket, paying 100.0"));
+		
+		// cashier shouldn't be doing anything
+		assertTrue(cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
 
+		cashier.msgGotMarketOrder(items);
+		assertTrue(cashier.getMarketBills().size() == 1);
 		
 
 	}
