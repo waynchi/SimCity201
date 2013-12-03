@@ -419,7 +419,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		cook.getGui().foodPickedUp(customer.tableNumber);
+		((CookRole) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
 		print ("Bringing food to table " + customer.tableNumber);
 		try {
