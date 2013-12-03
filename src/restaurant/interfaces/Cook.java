@@ -2,9 +2,7 @@ package restaurant.interfaces;
 
 import java.util.Map;
 
-import people.People;
-
 public interface Cook {
-
+	public abstract void msgHereIsYourOrder(Map<String, Integer> items);
 
 }

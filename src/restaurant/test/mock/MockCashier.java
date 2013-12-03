@@ -19,7 +19,6 @@ public class MockCashier extends Mock implements Cashier {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void msgHereIsBill (Customer c, String food, Waiter w){
 		log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName()));
 	}

@@ -431,7 +431,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
-		cashier.msgHereIsBill(customer.c, customer.choice, this);
+		((CashierRole) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	

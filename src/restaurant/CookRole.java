@@ -57,7 +57,7 @@ public class CookRole extends Role implements Cook{
 
 
 	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
-	private class MarketOrder {
+	public class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean delivered;
 		int marketCount;

@@ -1,5 +1,6 @@
 package market;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.smartcardio.ATR;
 
 import bank.interfaces.Teller;
 import people.Role;
+import restaurant.CashierRole;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -114,7 +116,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
-		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + restCashier.getName()));
+		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + ((CashierRole) restCashier).getName()));
 		checks.add(new Check(restCashier, items));
 		getPersonAgent().CallstateChanged();
 
@@ -137,7 +139,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from restaurant cashier
 	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
-		log.add(new LoggedEvent("restaurant cashier " + cashier.getName() + " is paying " + amount));
+		log.add(new LoggedEvent("restaurant cashier " + ((CashierRole) cashier).getName() + " is paying " + amount));
 		for (Check c : checks) {
 			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
@@ -242,7 +244,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			log.add(new LoggedEvent("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and total due is " + check.totalDue));
+			log.add(new LoggedEvent("sending check to restaurant cashier " + ((CashierRole) check.restaurantCashier).getName() + " and total due is " + check.totalDue));
 			check.restaurantCashier.msgHereIsWhatIsDue( check.totalDue, check.items);
 		}
 		
