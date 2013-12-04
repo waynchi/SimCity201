@@ -91,17 +91,20 @@ public class CashierRole extends Role implements Cashier {
 		Double amount;
 		public boolean itemsReceived = false;
 		public boolean checkReceived = false;
+		public int orderNumber;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (double a, Map<String, Integer> items) {
+		public MarketBill (double a, Map<String, Integer> items, int number) {
 			amount = a;
 			itemsOrdered = items;
 			checkReceived = true;
+			orderNumber = number;
 		}
 
-		public MarketBill ( Map<String, Integer> items) {
+		public MarketBill ( Map<String, Integer> items, int number) {
 			itemsOrdered = items;
 			itemsReceived = true;
+			orderNumber = number;
 		}
 
 	}
@@ -163,38 +166,38 @@ public class CashierRole extends Role implements Cashier {
 	// market interaction
 	
 	// from cook
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
 		print("told by cook that market order is delivered, ready to pay");
 		boolean orderFound = false;
 		synchronized(marketBills){
 			for (MarketBill mb : marketBills) {
-				if (mb.itemsOrdered == marketOrder) {
+				if (mb.orderNumber == orderNumber) {
 					mb.itemsReceived = true;
 					orderFound = true;
 				}
 			}
 			if (!orderFound) {
-				marketBills.add(new MarketBill(marketOrder));
+				marketBills.add(new MarketBill(marketOrder, orderNumber));
 			}
 		}
 		getPersonAgent().CallstateChanged();
 	}
 	
 	// from market cashier
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber) {
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
 
 		boolean orderFound = false;
 		synchronized(marketBills){
 			for (MarketBill mb : marketBills) {
-				if (mb.itemsOrdered == items) {
+				if (mb.orderNumber == orderNumber) {
 					mb.checkReceived = true;
 					orderFound = true;
 				}
 			}
 		}
 		if (!orderFound) {
-			marketBills.add(new MarketBill(price ,items));
+			marketBills.add(new MarketBill(price ,items, orderNumber));
 		}	
 		getPersonAgent().CallstateChanged();
 

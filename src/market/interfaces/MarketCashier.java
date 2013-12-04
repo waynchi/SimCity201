@@ -13,7 +13,7 @@ public interface MarketCashier {
 
 	public abstract void msgHereIsACheck(MarketCustomer customer, Map<String, Integer> items);
 
-	public abstract void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items);
+	public abstract void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items, int orderNumber);
 
 	public abstract void msgHereIsPayment(MarketCustomer customer, double totalPaid);
 	
