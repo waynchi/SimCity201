@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import restaurant_vk.gui.CookGui;
+import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import market.interfaces.*;
 import restaurant_vk.interfaces.Waiter;
@@ -27,13 +28,16 @@ public class CookAgent extends Agent implements Cook {
 	
 	private Map<String, Food> inventory = new HashMap<String, Food>();
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-//	private List<Market> markets = new ArrayList<Market>();
+	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	private Timer timer;
 	private CookGui gui = null;
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
 	private final int period = 5000;
+	private MarketEmployee market;
+	private Cashier cashier;
+	private int orderTracker = 0;
 
 	public CookAgent() {
 		timer = new Timer();
@@ -63,7 +67,6 @@ public class CookAgent extends Agent implements Cook {
 				}
 				if (f.amount < f.low && f.s != FoodState.Requested) {
 					f.s = FoodState.Low;
-//					f.qtyRequested = f.capacity - f.amount;
 				}
 				return;
 			}
@@ -71,10 +74,7 @@ public class CookAgent extends Agent implements Cook {
 		DoCookIt(o.choice);
 		try {
 			movingAround.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (InterruptedException e) {}
 		o.s = State.Cooking;
 		synchronized (f) {
 			print("Amount of " + o.choice + " before cooking: " + f.amount);
@@ -82,7 +82,6 @@ public class CookAgent extends Agent implements Cook {
 			print("Amount of " + o.choice + " after cooking: " + f.amount);
 			if (f.amount < f.low && f.s != FoodState.Requested) {
 				f.s = FoodState.Low;
-//				f.qtyRequested = f.capacity - f.amount;
 			}
 		}
 		timer.schedule(new TimerTask() {
@@ -99,39 +98,31 @@ public class CookAgent extends Agent implements Cook {
 		DoPlateIt(o.choice);
 		try {
 			movingAround.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (InterruptedException e) {}
 		o.w.orderIsReady(o.choice, o.table);
 		o.s = State.Finished;
 	}
 	
-	/*
-	 * Action to request for food.
-	 */
-	private void requestFood(Food f) {
-//		if (f.m0Req == false) {
-//			f.s = FoodState.Requested;
-//			print("Requesting Market #0 for " + f.name + ".");
-//			markets.get(0).runningLow(f.name, f.qtyRequested);
-//			f.m0Req = true;
-//		}
-//		else if (f.m1Req == false) {
-//			print("Requesting Market #1 for " + f.name + ".");
-//			f.s = FoodState.Requested;
-//			markets.get(1).runningLow(f.name, f.qtyRequested);
-//			f.m1Req = true;
-//		}
-//		else if (f.m2Req == false) {
-//			print("Requesting Market #2 for " + f.name + ".");
-//			f.s = FoodState.Requested;
-//			markets.get(2).runningLow(f.name, f.qtyRequested);
-//			f.m2Req = true;
-//		}
-//		else {
-//			f.s = FoodState.Requested;
-//		}
+	public void orderFromMarket() {
+		Map<String, Integer> order = new HashMap<String, Integer>();
+		for (Map.Entry<String, Food> e : inventory.entrySet()) {
+			if (e.getValue().s == FoodState.Low) {
+				Food f = e.getValue();
+				f.s = FoodState.Requested;
+				int qty = f.capacity - f.amount;
+				order.put(f.name, qty);
+			}
+		}
+		MarketOrder o = new MarketOrder(order, orderTracker);
+		marketOrders.add(o);
+		orderTracker++;
+		// Send message to market with orderTracker etc. as parameters.
+	}
+	
+	public void informCashier(MarketOrder mo) {
+		mo.s = MarketOrderState.InformedCashier;
+		// Another parameter for order number should be added to cashier interface.
+		cashier.msgGotMarketOrder(mo.itemsSupplied);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -160,46 +151,6 @@ public class CookAgent extends Agent implements Cook {
 	}
 	
 	/*
-	 * A message called by the market if it doesn't have the requested item.
-	 */
-	public void dontHaveIt(String food, int mNum) {
-		Food f = inventory.get(food);
-		synchronized (f) {
-			f.s = FoodState.Low;
-		}
-		stateChanged();
-	}
-	
-//	/*
-//	 * A message called by the market when it gives the requested materials to
-//	 * the cook.
-//	 */
-//	public void hereAreMaterials(String food, int qty, int marketNum) {
-//		Food f = inventory.get(food);
-//		synchronized (f) {
-//			if (qty < f.qtyRequested) {
-//				f.qtyRequested = f.qtyRequested - qty;
-//				if (marketNum == 0)
-//					f.m0Req = true;
-//				else if (marketNum == 1)
-//					f.m1Req = true;
-//				else if (marketNum == 2)
-//					f.m2Req = true;
-//				f.s = FoodState.Low;
-//			}
-//			else {
-//				f.s = FoodState.Enough;
-//				f.m0Req = false;
-//				f.m1Req = false;
-//				f.m2Req = false;
-//			}
-//			f.amount += qty;
-//		}
-//		print(qty + " " + food + " supplied by Market #" + marketNum + ".");
-//		stateChanged();
-//	}
-	
-	/*
 	 * A message called by the standTimer asking the cook to check
 	 * the stand.
 	 */
@@ -225,11 +176,22 @@ public class CookAgent extends Agent implements Cook {
 	 */
 	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		// Just to make it compile. This should otherwise be a function parameter.
+		int orderNumber = 0;
+		MarketOrder mo = findMarketOrder(orderNumber);
+		mo.itemsSupplied = items;
 		for (Map.Entry<String, Integer> e : items.entrySet()) {
 			Food f = inventory.get(e.getKey());
-			f.qtyNeeded = 0;
-			f.ordered = false;
+			f.s = FoodState.Enough;
+			f.amount += e.getValue();
 		}
+		for (Map.Entry<String, Food> e : inventory.entrySet()) {
+			Food f = e.getValue();
+			if (f.amount < f.low) {
+				f.s = FoodState.Low;
+			}
+		}
+		mo.s = MarketOrderState.Supplied;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -241,10 +203,15 @@ public class CookAgent extends Agent implements Cook {
 	protected boolean pickAndExecuteAnAction() {
 		Order o;
 		
-		// If running low on any food item, request a market for materials.
-		Food f = fFind(FoodState.Low);
-		if (f != null) {
-			requestFood(f);
+		MarketOrder mo = findMarketOrderByState(MarketOrderState.Supplied);
+		if (mo != null) {
+			informCashier(mo);
+			return true;
+		}
+		
+		if (isAnythingLow()) {
+			orderFromMarket();
+			return true;
 		}
 		
 		// Searches for an order that has been cooked and plates it.
@@ -282,6 +249,14 @@ public class CookAgent extends Agent implements Cook {
 	
 	// Utilities
 	
+	public boolean isAnythingLow() {
+		for (Map.Entry<String, Food> e : inventory.entrySet()) {
+			if (e.getValue().s == FoodState.Low)
+				return true;
+		}
+		return false;
+	}
+	
 	/*
 	 * Finds the first order in the list of orders which has the specified
 	 * state.
@@ -296,12 +271,23 @@ public class CookAgent extends Agent implements Cook {
 		return null;
 	}
 	
-//	/*
-//	 * Adds an instance of market to the list of markets.
-//	 */
-//	public void addMarket(Market m) {
-//		markets.add(m);
-//	}
+	private MarketOrder findMarketOrder(int number) {
+		for (MarketOrder o : marketOrders) {
+			if (o.orderNumber == number)
+				return o;
+		}
+		return null;
+	}
+	
+	private MarketOrder findMarketOrderByState(MarketOrderState state) {
+		synchronized (marketOrders) {
+			for (MarketOrder o : marketOrders) {
+				if (o.s == state)
+					return o;
+			}
+		}
+		return null;
+	}
 	
 	/*
 	 * This is to initialize the inventory of food materials of the cook.
@@ -388,8 +374,6 @@ public class CookAgent extends Agent implements Cook {
 		private int low;
 		private int capacity;
 		private FoodState s;
-		private boolean ordered = false;
-		private int qtyNeeded = 0;
 		
 		public Food(String name, int cookingTime, int amount, int low, int capacity) {
 			this.name = name;
@@ -426,10 +410,14 @@ public class CookAgent extends Agent implements Cook {
 	 * A class to encapsulate a market order.
 	 */
 	public class MarketOrder {
-		public Map<String, Integer> items = new HashMap<String, Integer>();
+		public Map<String, Integer> itemsRequested = new HashMap<String, Integer>();
+		public Map<String, Integer> itemsSupplied = new HashMap<String, Integer>();
+		public int orderNumber;
 		public MarketOrderState s;
 		
-		public MarketOrder() {
+		public MarketOrder(Map<String, Integer> items, int num) {
+			itemsRequested = items;
+			orderNumber = num;
 			s = MarketOrderState.Requested;
 		}
 	}
