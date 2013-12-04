@@ -12,9 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JPanel;
-
 import city.gui.CityGui;
 
 public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
@@ -41,7 +39,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 5; j++) {
 						if (xPos >= x && xPos <= (x + houseWidth) && yPos >= y && yPos <= (y + houseHeight)) {
-							g.displayApartment(k);
+							g.displayBuildingPanel();
 							return;
 						}
 						y += (houseHeight + 30);
