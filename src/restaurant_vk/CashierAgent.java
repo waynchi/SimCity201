@@ -35,6 +35,7 @@ public class CashierAgent extends Agent implements Cashier {
 	private double myCash = 20.0;
 	private Timer timer = new Timer();
 	private final int TIME_TO_CHECK_OUT = 1000;
+	private MarketCashier mCashier;
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -187,7 +188,7 @@ public class CashierAgent extends Agent implements Cashier {
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
-		
+		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
