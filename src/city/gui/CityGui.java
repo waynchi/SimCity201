@@ -333,6 +333,14 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
+			
+		for(House h : apartment1.houses) {
+			houseAnimationPanels.add(h.gui.hp);
+		}
+		for(House h : apartment2.houses) {
+			houseAnimationPanels.add(h.gui.hp);
+		}
+			
 		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
 		apartment1Container.setOpaque(true);
 		JScrollPane apartment2Container = new JScrollPane(apartment2.gui.ap);
