@@ -62,6 +62,7 @@ public class CookRole extends Role implements Cook{
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean delivered;
 		int marketCount;
+		int orderNumber = -1;
 
 		private MarketOrder (Map<String,Integer> mo){
 			marketOrder = mo;
@@ -142,13 +143,13 @@ public class CookRole extends Role implements Cook{
 	}	
 
 	// from market truck (market employee for now)
-	public void msgHereIsYourOrder(Map<String, Integer> items) {
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
 		}
 		for (MarketOrder mo : marketOrders) {
-			if (mo.marketOrder == items) {
+			if (mo.orderNumber == orderNumber) {
 				mo.delivered = true;
 			}
 		}
@@ -156,6 +157,18 @@ public class CookRole extends Role implements Cook{
 
 	}
 
+
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+		for (MarketOrder mo : marketOrders) {
+			if (mo.marketOrder == items) {
+				mo.orderNumber = orderNumber;
+			}
+		}
+		getPersonAgent().CallstateChanged();
+		
+	}
+
+	
 	/*public void msgSupply (Map<String,Integer> orderList, Map<String,Integer> supplyList) {
 		synchronized (marketOrders) {
 
@@ -257,7 +270,7 @@ public class CookRole extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(order.marketOrder);
+		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber);
 		marketOrders.remove(order);
 	}
 	
@@ -506,6 +519,8 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
+
+
 
 
 
