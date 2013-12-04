@@ -4,6 +4,7 @@ package bank;
 import agent.Agent;
 import bank.gui.BankCustomerGui;
 import bank.gui.BankGui;
+import bank.gui.RobberGui;
 import bank.interfaces.BankCustomer;
 import bank.interfaces.Teller;
 
@@ -26,7 +27,7 @@ public class RobberRole extends Role implements BankCustomer {
 	private String name;
 
 	Timer timer = new Timer();
-	private BankCustomerGui gui;
+	private RobberGui gui;
 
 	// agent correspondents
 	private Teller teller;
@@ -229,11 +230,11 @@ public class RobberRole extends Role implements BankCustomer {
 		return "customer " + getName();
 	}
 
-	public void setGui(BankCustomerGui g) {
+	public void setGui(RobberGui g) {
 		gui = g;
 	}
 
-	public BankCustomerGui getGui() {
+	public RobberGui getGui() {
 		return gui;
 	}
 	

@@ -64,6 +64,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
         guis.add(gui);
     }
     
+    public void addGui(RobberGui gui) {
+        guis.add(gui);
+    }
+    
     public void updatePosition() {
         for(Gui gui : guis) {
             if (gui.isPresent()) {

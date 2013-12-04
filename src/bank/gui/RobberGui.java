@@ -7,10 +7,11 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import bank.BankCustomerRole;
+import bank.RobberRole;
 
 public class RobberGui implements Gui{
 
-	private BankCustomerRole agent = null;
+	private RobberRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private int custNum;
@@ -29,8 +30,8 @@ public class RobberGui implements Gui{
 	
 	static final int CUST_SIZE = 20;
 
-	public RobberGui(BankCustomerRole c){ //HostAgent m) {
-		agent = c;
+	public RobberGui(RobberRole b){ //HostAgent m) {
+		agent = b;
 		xPos = -20;
 		yPos = 125;
 		isWaiting = false;

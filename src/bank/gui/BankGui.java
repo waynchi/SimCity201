@@ -3,6 +3,7 @@ package bank.gui;
 import javax.swing.*;
 
 import bank.BankCustomerRole;
+import bank.RobberRole;
 import bank.TellerRole;
 import agent.Agent;
 
@@ -22,7 +23,7 @@ public class BankGui extends JPanel implements ActionListener {
      */
 	public static AnimationPanel animationPanel;
     
-    public static List<BankCustomerGui> customers = new ArrayList<BankCustomerGui>();
+    public static List<Gui> customers = new ArrayList<Gui>();
     
     public static TellerGui teller;
 
@@ -72,6 +73,13 @@ public class BankGui extends JPanel implements ActionListener {
     	return g;
     }
     
+    public RobberGui addPerson(RobberRole b) {
+    	RobberGui g = new RobberGui(b);
+    	animationPanel.addGui(g);
+    	b.setGui(g);
+    	return g;
+    }
+    
     public TellerGui addPerson(TellerRole t) {
      	TellerGui g2 = new TellerGui(t);
      	animationPanel.addGui(g2);
@@ -81,12 +89,18 @@ public class BankGui extends JPanel implements ActionListener {
     
     public void popCustomer() {
     	for(int i = 0; i < customers.size(); i++) {
-    		customers.get(i).setCust(i-1);
+    		((BankCustomerGui) customers.get(i)).setCust(i-1);
     	}
     	customers.remove(0);
     }
     
     public void gotoLine(BankCustomerGui b) {
+    	b.setCust(customers.size());
+    	customers.add(b);
+    	b.isWaiting = true;
+    }
+    
+    public void gotoLine(RobberGui b) {
     	b.setCust(customers.size());
     	customers.add(b);
     	b.isWaiting = true;
