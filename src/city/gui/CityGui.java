@@ -1,4 +1,5 @@
 package city.gui;
+import housing.Apartments;
 import housing.House;
 import housing.HouseType;
 import housing.HousingRepairManRole;
@@ -55,8 +56,11 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketGui marketGui = new MarketGui();
-	//HouseAnimationPanel houseAnimationPanel = new HouseAnimationPanel();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
+	Apartments apartment1 = new Apartments("Apartment 1");
+	Apartments apartment2 = new Apartments("Apartment 2");
+
+		
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole1 = new HostRole();
@@ -329,7 +333,10 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
-		
+		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
+		apartment1Container.setOpaque(true);
+		JScrollPane apartment2Container = new JScrollPane(apartment2.gui.ap);
+		apartment2Container.setOpaque(true);
 		JScrollPane marketContainer = new JScrollPane(marketGui);
 		marketContainer.setOpaque(true);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGui1);
@@ -337,6 +344,10 @@ public class CityGui extends JFrame implements ActionListener {
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
 		
+		
+		buildingPanels.add(apartment1Container,"" + 13);
+		buildingPanels.add(apartment2Container,"" + 12);
+
         buildingPanels.add(restaurantContainer, "" + 16);
         buildingPanels.add(bankContainer, "" + 15);
         
@@ -420,7 +431,9 @@ public class CityGui extends JFrame implements ActionListener {
 				p.msgTimeIs(time/x);
 			}
 		}
-
+		if(time % 100 == 60) {
+			time += 40;
+		}
 		if(time == 2400*x) {
 			time=0;
 		}
