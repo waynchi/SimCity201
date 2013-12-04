@@ -65,6 +65,45 @@ public class CashierAgent extends Agent implements Cashier {
 		stateChanged();
 	}
 	
+	/*
+	 * A message called by the cook to tell the cashier that he has received
+	 * the items he had requested from the market.
+	 */
+	@Override
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+	}
+
+	/*
+	 * A message called by the market cashier to give the bill to the cook.
+	 */
+	@Override
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+	}
+
+	/*
+	 * A message called by the market cashier to give back the change to
+	 * the cashier.
+	 */
+	@Override
+	public void msgHereIsChange(double change) {
+	}
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+	}
+
+	@Override
+	public void msgGiveLoan(double funds, double amount) {
+	}
+
+	@Override
+	public void msgWithdrawSuccessful(double funds, double amount) {
+	}
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -318,47 +357,5 @@ public class CashierAgent extends Agent implements Cashier {
 //			this.cost = cst;
 //			state = BillState.Unpaid;
 //		}
-	}
-
-	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereIsChange(double change) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgReadyToHelp(Teller teller) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgGiveLoan(double funds, double amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgWithdrawSuccessful(double funds, double amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgDepositSuccessful(double funds) {
-		// TODO Auto-generated method stub
-		
 	}
 }

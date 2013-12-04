@@ -63,7 +63,7 @@ public class CookAgent extends Agent implements Cook {
 				}
 				if (f.amount < f.low && f.s != FoodState.Requested) {
 					f.s = FoodState.Low;
-					f.qtyRequested = f.capacity - f.amount;
+//					f.qtyRequested = f.capacity - f.amount;
 				}
 				return;
 			}
@@ -82,7 +82,7 @@ public class CookAgent extends Agent implements Cook {
 			print("Amount of " + o.choice + " after cooking: " + f.amount);
 			if (f.amount < f.low && f.s != FoodState.Requested) {
 				f.s = FoodState.Low;
-				f.qtyRequested = f.capacity - f.amount;
+//				f.qtyRequested = f.capacity - f.amount;
 			}
 		}
 		timer.schedule(new TimerTask() {
@@ -170,34 +170,34 @@ public class CookAgent extends Agent implements Cook {
 		stateChanged();
 	}
 	
-	/*
-	 * A message called by the market when it gives the requested materials to
-	 * the cook.
-	 */
-	public void hereAreMaterials(String food, int qty, int marketNum) {
-		Food f = inventory.get(food);
-		synchronized (f) {
-			if (qty < f.qtyRequested) {
-				f.qtyRequested = f.qtyRequested - qty;
-				if (marketNum == 0)
-					f.m0Req = true;
-				else if (marketNum == 1)
-					f.m1Req = true;
-				else if (marketNum == 2)
-					f.m2Req = true;
-				f.s = FoodState.Low;
-			}
-			else {
-				f.s = FoodState.Enough;
-				f.m0Req = false;
-				f.m1Req = false;
-				f.m2Req = false;
-			}
-			f.amount += qty;
-		}
-		print(qty + " " + food + " supplied by Market #" + marketNum + ".");
-		stateChanged();
-	}
+//	/*
+//	 * A message called by the market when it gives the requested materials to
+//	 * the cook.
+//	 */
+//	public void hereAreMaterials(String food, int qty, int marketNum) {
+//		Food f = inventory.get(food);
+//		synchronized (f) {
+//			if (qty < f.qtyRequested) {
+//				f.qtyRequested = f.qtyRequested - qty;
+//				if (marketNum == 0)
+//					f.m0Req = true;
+//				else if (marketNum == 1)
+//					f.m1Req = true;
+//				else if (marketNum == 2)
+//					f.m2Req = true;
+//				f.s = FoodState.Low;
+//			}
+//			else {
+//				f.s = FoodState.Enough;
+//				f.m0Req = false;
+//				f.m1Req = false;
+//				f.m2Req = false;
+//			}
+//			f.amount += qty;
+//		}
+//		print(qty + " " + food + " supplied by Market #" + marketNum + ".");
+//		stateChanged();
+//	}
 	
 	/*
 	 * A message called by the standTimer asking the cook to check
@@ -217,6 +217,19 @@ public class CookAgent extends Agent implements Cook {
 	 */
 	public void atDestination() {
 		movingAround.release();
+	}
+	
+	/*
+	 * A message called by the market truck to deliver items that had
+	 * been requested.
+	 */
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		for (Map.Entry<String, Integer> e : items.entrySet()) {
+			Food f = inventory.get(e.getKey());
+			f.qtyNeeded = 0;
+			f.ordered = false;
+		}
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -360,6 +373,11 @@ public class CookAgent extends Agent implements Cook {
 	enum FoodState {Enough, Low, Requested};
 	
 	/*
+	 * States for a market order.
+	 */
+	enum MarketOrderState {Requested, Supplied, InformedCashier};
+	
+	/*
 	 * Class for encapsulating the food type and its availability
 	 * parameters.
 	 */
@@ -370,10 +388,8 @@ public class CookAgent extends Agent implements Cook {
 		private int low;
 		private int capacity;
 		private FoodState s;
-		int qtyRequested = 0;
-		boolean m0Req = false;
-		boolean m1Req = false;
-		boolean m2Req = false;
+		private boolean ordered = false;
+		private int qtyNeeded = 0;
 		
 		public Food(String name, int cookingTime, int amount, int low, int capacity) {
 			this.name = name;
@@ -382,7 +398,6 @@ public class CookAgent extends Agent implements Cook {
 			this.low = low;
 			this.capacity = capacity;
 			this.s = FoodState.Enough;
-			this.qtyRequested = capacity - low;
 		}
 		
 		public int getCookingTime() {
@@ -406,10 +421,16 @@ public class CookAgent extends Agent implements Cook {
 			s = State.Pending;
 		}
 	}
-
-	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		// TODO Auto-generated method stub
+	
+	/*
+	 * A class to encapsulate a market order.
+	 */
+	public class MarketOrder {
+		public Map<String, Integer> items = new HashMap<String, Integer>();
+		public MarketOrderState s;
 		
+		public MarketOrder() {
+			s = MarketOrderState.Requested;
+		}
 	}
 }

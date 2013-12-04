@@ -101,4 +101,14 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 			h.gui.hp.setTestGui(g);
 		}
 	}
+	
+	public void updatePosition() {
+		for (HGui gui : humanGuis) {
+			gui.updatePosition();
+		}
+		for (HGui gui : nonLivingGuis) {
+			gui.updatePosition();
+		}
+		ag.updatePosition();
+	}
 }
