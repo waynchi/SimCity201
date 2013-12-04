@@ -337,10 +337,10 @@ public class CityGui extends JFrame implements ActionListener {
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
 		
-        buildingPanels.add(restaurantContainer, "" + 14);
-        buildingPanels.add(bankContainer, "" + 13);
+        buildingPanels.add(restaurantContainer, "" + 16);
+        buildingPanels.add(bankContainer, "" + 15);
         
-        buildingPanels.add(marketContainer,"" + 12);
+        buildingPanels.add(marketContainer,"" + 14);
         
         
         for(int j = 0; j < houseAnimationPanels.size(); j++)

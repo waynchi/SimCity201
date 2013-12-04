@@ -48,6 +48,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		double totalPaid;
 		public double totalDue;
 		checkState state;
+		int orderNumber;
 
 		// Check constructor for a regular MarketCustomer
 		public Check (MarketCustomer cust, Map<String, Integer> _items) {
@@ -58,11 +59,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 
 		// Check constructor for a restaurant
-		public Check(Cashier _restaurantCashier, Map<String, Integer> _items) {
+		public Check(Cashier _restaurantCashier, Map<String, Integer> _items, int _orderNumber) {
 			restaurantCashier = _restaurantCashier;
 			items = _items;
 			state = checkState.PENDING;
 			totalPaid = totalDue = 0.0;
+			orderNumber = _orderNumber;
 		}
 	}
 	
@@ -115,9 +117,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}//tested
 
 	// for restaurant Cashier
-	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items) {
+	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items, int orderNumber) {
 		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + ((CashierRole) restCashier).getName()));
-		checks.add(new Check(restCashier, items));
+		checks.add(new Check(restCashier, items, orderNumber));
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -245,7 +247,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
 			log.add(new LoggedEvent("sending check to restaurant cashier " + ((CashierRole) check.restaurantCashier).getName() + " and total due is " + check.totalDue));
-			check.restaurantCashier.msgHereIsWhatIsDue( check.totalDue, check.items);
+			check.restaurantCashier.msgHereIsWhatIsDue( check.totalDue, check.items, check.orderNumber);
 		}
 		
 		// check is for market customer

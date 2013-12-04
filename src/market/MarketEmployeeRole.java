@@ -23,6 +23,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
+	public int restaurantOrderNumber = 0;
 	
 	MarketCashier cashier;
 	MarketEmployeeGui employeeGui;
@@ -48,18 +49,23 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		MarketCustomer customer = null;
 		Cook cook = null;
 		Cashier restaurantCashier = null;
+		int orderNumber;
 		//boolean customerAtMarket;
 		//boolean customerIsRestaurantCashier;
 
 		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
 			customer = cust;
 			items = itemsNeeded;
+			orderNumber = restaurantOrderNumber;
+			restaurantOrderNumber++;
 		}
 
 		public Order(Cook _cook, Cashier _cashier, Map<String, Integer> order) {
 			items = order;
 			cook = _cook;
 			restaurantCashier = _cashier;
+			orderNumber = restaurantOrderNumber;
+			restaurantOrderNumber++;
 		}
 	}
 
@@ -181,8 +187,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if (order.cook != null) {
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
 			log.add(new LoggedEvent("order delivered to restaurant"));
-			((CookRole) order.cook).msgHereIsYourOrder(order.items);	
-			cashier.msgHereIsACheck(order.restaurantCashier, order.items);
+			order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
+			order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
+			cashier.msgHereIsACheck(order.restaurantCashier, order.items, order.orderNumber);
 		}
 
 
