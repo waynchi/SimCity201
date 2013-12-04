@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import people.Role;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
 import market.interfaces.*;
@@ -23,7 +25,7 @@ import agent.Agent;
  * of the waiter and gives them to the respective waiters. Also, customers come
  * to the cashier and pay the money.
  */
-public class CashierAgent extends Agent implements Cashier {
+public class CashierAgent extends Role implements Cashier {
 	
 	// Data
 	
@@ -189,6 +191,9 @@ public class CashierAgent extends Agent implements Cashier {
 	 */
 	private void payBill(Bill b) {
 		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
+		b.s = BillState.Paid;
+		// Reduce restaurant cash.
+		myCash -= b.cost;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -219,6 +224,8 @@ public class CashierAgent extends Agent implements Cashier {
 			return true;
 		}
 		
+		// Find a bill that can be verified and verify it to make it ready
+		// for payment.
 		Bill b = findBillThatCanBeVerified();
 		if (b != null) {
 			verifyBill(b);

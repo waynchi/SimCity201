@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import people.Role;
 import restaurant_vk.gui.CookGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -22,7 +24,7 @@ import agent.Agent;
  * and plates the orders for the respective waiters to collect. When running
  * low on some food item, he orders it from the three markets it has.
  */
-public class CookAgent extends Agent implements Cook {
+public class CookAgent extends Role implements Cook {
 
 	// Data
 	
