@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import people.PeopleAgent.HungerState;
 import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -220,6 +221,18 @@ public class PeopleAgent2 extends Agent implements People{
 	
 	public void msgTimeIs(int Time)
 	{		
+		if(type.equals("default"))
+		{
+			Hunger--;
+			if(Hunger == 0)
+			{
+				hunger = HungerState.Hungry;
+			}
+			if(Time == 800 && state == AgentState.Sleeping)
+		
+				event = AgentEvent.WakingUp;
+			}
+		}
 	}
 
 	//scheduler

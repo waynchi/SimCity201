@@ -9,11 +9,12 @@ public class Restaurant {
 	public Dimension l;
 	public String n;
 	public Integer bankAccountID;
+	public boolean isClosed;
 	public Restaurant(HostRole host, Dimension loc, String name) {
 		this.h = host;
 		this.l = loc;
 		this.n = name;
-		
+		this.isClosed = false;
 	}
 	
 }

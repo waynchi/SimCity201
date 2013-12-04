@@ -9,10 +9,12 @@ public class Market {
 	public Dimension l;
 	public String n;
 	public int bankAccountID;
+	public boolean isClosed;
 	public Market(MarketEmployeeRole m, Dimension loc, String name) {
 		this.mer = m;
 		this.l = loc;
 		this.n = name;
+		this.isClosed = false;
 		
 	}
 }
