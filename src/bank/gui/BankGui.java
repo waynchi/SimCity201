@@ -20,7 +20,7 @@ public class BankGui extends JPanel implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
-	public static AnimationPanel animationPanel = new AnimationPanel();
+	public static AnimationPanel animationPanel;
     
     public static List<BankCustomerGui> customers = new ArrayList<BankCustomerGui>();
     
@@ -30,9 +30,11 @@ public class BankGui extends JPanel implements ActionListener {
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
-    public BankGui() {
+    public BankGui(Timer t) {
         int WINDOWX = 500;
         int WINDOWY = 250;
+        
+        animationPanel = new AnimationPanel(t);
 
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
         animationPanel.setPreferredSize(animationDim);

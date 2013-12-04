@@ -20,14 +20,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public AnimationPanel() {
+    public AnimationPanel(Timer t) {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(20, this );
-    	timer.start();
+    	Timer timer = t;
     }
 
 	public void actionPerformed(ActionEvent e) {
