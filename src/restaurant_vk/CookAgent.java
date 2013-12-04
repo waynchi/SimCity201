@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import restaurant_vk.gui.CookGui;
+import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import market.interfaces.*;
 import restaurant_vk.interfaces.Waiter;
@@ -27,6 +28,7 @@ public class CookAgent extends Agent implements Cook {
 	
 	private Map<String, Food> inventory = new HashMap<String, Food>();
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
+	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 //	private List<Market> markets = new ArrayList<Market>();
 	private Timer timer;
 	private CookGui gui = null;
@@ -34,6 +36,9 @@ public class CookAgent extends Agent implements Cook {
 	private RevolvingStand stand;
 	private Timer standTimer;
 	private final int period = 5000;
+	private MarketEmployee market;
+	private Cashier cashier;
+	private int orderTracker = 0;
 
 	public CookAgent() {
 		timer = new Timer();
@@ -107,10 +112,26 @@ public class CookAgent extends Agent implements Cook {
 		o.s = State.Finished;
 	}
 	
-	/*
-	 * Action to request for food.
-	 */
-	private void requestFood(Food f) {
+	public void orderFromMarket() {
+		Map<String, Integer> order = new HashMap<String, Integer>();
+		for (Map.Entry<String, Food> e : inventory.entrySet()) {
+			if (e.getValue().s == FoodState.Low) {
+				Food f = e.getValue();
+				f.s = FoodState.Requested;
+				int qty = f.capacity - f.amount;
+				order.put(f.name, qty);
+			}
+		}
+		MarketOrder o = new MarketOrder(order, orderTracker);
+		marketOrders.add(o);
+		orderTracker++;
+		// Send message to market with orderTracker etc. as parameters.
+	}
+	
+//	/*
+//	 * Action to request for food.
+//	 */
+//	private void requestFood(Food f) {
 //		if (f.m0Req == false) {
 //			f.s = FoodState.Requested;
 //			print("Requesting Market #0 for " + f.name + ".");
@@ -132,7 +153,7 @@ public class CookAgent extends Agent implements Cook {
 //		else {
 //			f.s = FoodState.Requested;
 //		}
-	}
+//	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -159,16 +180,16 @@ public class CookAgent extends Agent implements Cook {
 		stateChanged();
 	}
 	
-	/*
-	 * A message called by the market if it doesn't have the requested item.
-	 */
-	public void dontHaveIt(String food, int mNum) {
-		Food f = inventory.get(food);
-		synchronized (f) {
-			f.s = FoodState.Low;
-		}
-		stateChanged();
-	}
+//	/*
+//	 * A message called by the market if it doesn't have the requested item.
+//	 */
+//	public void dontHaveIt(String food, int mNum) {
+//		Food f = inventory.get(food);
+//		synchronized (f) {
+//			f.s = FoodState.Low;
+//		}
+//		stateChanged();
+//	}
 	
 //	/*
 //	 * A message called by the market when it gives the requested materials to
@@ -227,8 +248,7 @@ public class CookAgent extends Agent implements Cook {
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
 		for (Map.Entry<String, Integer> e : items.entrySet()) {
 			Food f = inventory.get(e.getKey());
-			f.qtyNeeded = 0;
-			f.ordered = false;
+			f.s = FoodState.Enough;
 		}
 	}
 	
@@ -241,10 +261,15 @@ public class CookAgent extends Agent implements Cook {
 	protected boolean pickAndExecuteAnAction() {
 		Order o;
 		
-		// If running low on any food item, request a market for materials.
-		Food f = fFind(FoodState.Low);
-		if (f != null) {
-			requestFood(f);
+//		// If running low on any food item, request a market for materials.
+//		Food f = fFind(FoodState.Low);
+//		if (f != null) {
+//			requestFood(f);
+//		}
+		
+		if (isAnythingLow()) {
+			orderFromMarket();
+			return true;
 		}
 		
 		// Searches for an order that has been cooked and plates it.
@@ -281,6 +306,14 @@ public class CookAgent extends Agent implements Cook {
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
 	// Utilities
+	
+	public boolean isAnythingLow() {
+		for (Map.Entry<String, Food> e : inventory.entrySet()) {
+			if (e.getValue().s == FoodState.Low)
+				return true;
+		}
+		return false;
+	}
 	
 	/*
 	 * Finds the first order in the list of orders which has the specified
@@ -388,8 +421,6 @@ public class CookAgent extends Agent implements Cook {
 		private int low;
 		private int capacity;
 		private FoodState s;
-		private boolean ordered = false;
-		private int qtyNeeded = 0;
 		
 		public Food(String name, int cookingTime, int amount, int low, int capacity) {
 			this.name = name;
@@ -426,10 +457,14 @@ public class CookAgent extends Agent implements Cook {
 	 * A class to encapsulate a market order.
 	 */
 	public class MarketOrder {
-		public Map<String, Integer> items = new HashMap<String, Integer>();
+		public Map<String, Integer> itemsRequested = new HashMap<String, Integer>();
+		public Map<String, Integer> itemsSupplied = new HashMap<String, Integer>();
+		public int orderNumber;
 		public MarketOrderState s;
 		
-		public MarketOrder() {
+		public MarketOrder(Map<String, Integer> items, int num) {
+			itemsRequested = items;
+			orderNumber = num;
 			s = MarketOrderState.Requested;
 		}
 	}
