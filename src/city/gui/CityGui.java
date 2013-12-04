@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.List;
 
 public class CityGui extends JFrame implements ActionListener {
-	BankGui bankGui = new BankGui();
+	BankGui bankGui;
 	CityPanel cityPanel;
 	JPanel buildingPanels;
 	CardLayout cardLayout;
@@ -89,6 +89,9 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
 		Timer timer = new Timer(5, this);
+		
+		bankGui = new BankGui(timer);
+
 		
 		//Set trace tags
 		RestaurantHostRole1.setTag(AlertTag.RESTAURANT1);
