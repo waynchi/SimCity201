@@ -55,8 +55,12 @@ public class CityGui extends JFrame implements ActionListener {
 
 	MarketGui marketGui = new MarketGui();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
-	Apartments apartment1 = new Apartments("Apartment 1");
-	Apartments apartment2 = new Apartments("Apartment 2");
+	List<HouseAnimationPanel> apartment1HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
+	List<HouseAnimationPanel> apartment2HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
+
+	Apartments apartment1 = new Apartments("a1");
+	Apartments apartment2 = new Apartments("a2");
+	
 
 		
 	
@@ -86,7 +90,9 @@ public class CityGui extends JFrame implements ActionListener {
 	public int time;
 
 	public CityGui() {
-		//this.setResizable(false);
+		apartment1.gui.ap.setCityGui(this);
+		apartment2.gui.ap.setCityGui(this);
+
 		cityPanel = new CityPanel(this);
 		cityPanel.setPreferredSize(new Dimension(1024, 500));		
 		cityPanel.setMaximumSize(new Dimension(1024, 500));
@@ -335,10 +341,10 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 			
 		for(House h : apartment1.houses) {
-			houseAnimationPanels.add(h.gui.hp);
+			apartment1HouseAnimationPanels.add(h.gui.hp);
 		}
 		for(House h : apartment2.houses) {
-			houseAnimationPanels.add(h.gui.hp);
+			apartment2HouseAnimationPanels.add(h.gui.hp);
 		}
 			
 		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
@@ -361,12 +367,22 @@ public class CityGui extends JFrame implements ActionListener {
         
         buildingPanels.add(marketContainer,"" + 14);
         
-        
+         
         for(int j = 0; j < houseAnimationPanels.size(); j++)
         {
         	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
     		houseContainer.setOpaque(true);
     		buildingPanels.add(houseContainer, "" + j);
+        }
+        for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++) {
+        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment1HouseAnimationPanels.get(j));
+        	buildingPanels.add(apartmentHouseContainer, "a1" + j);
+
+        }
+        for(int j = 0; j < apartment2HouseAnimationPanels.size(); j++) {
+        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment2HouseAnimationPanels.get(j));
+        	buildingPanels.add(apartmentHouseContainer, "a2" + j);
+
         }
 
 
