@@ -20,11 +20,6 @@ public class MockCook extends Role implements Cook{
 		return null;
 	}
 
-	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public CookGui getGui() {
 		// TODO Auto-generated method stub
 		return null;
@@ -32,6 +27,19 @@ public class MockCook extends Role implements Cook{
 
 	public void msgHereIsAnOrder(String choice, Waiter normalWaiterRole,
 			int tableNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items,
+			int orderNumber) {
 		// TODO Auto-generated method stub
 		
 	}

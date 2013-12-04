@@ -147,6 +147,7 @@ public class CookRole extends Role implements Cook{
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
+			foods.get(entry.getKey()).isOrdered = false;
 		}
 		for (MarketOrder mo : marketOrders) {
 			if (mo.orderNumber == orderNumber) {
@@ -329,18 +330,14 @@ public class CookRole extends Role implements Cook{
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
 			for (Food f: foods.values()){
-				if (f.amount <= f.low /*&& (!f.isOrdered)*/){
+				if (f.amount <= f.low && (!f.isOrdered)){
 					marketOrder.put(f.type, f.capacity-f.amount);
-					//f.isOrdered = true;
+					f.isOrdered = true;
 				}
 			}
 		}
-		//System.out.println(foods.get("Chicken").isOrdered);
 		marketOrders.add(new MarketOrder(marketOrder));
 		log.add(new LoggedEvent("ordering food from market "));
-		for (Map.Entry<String, Integer> entry : marketOrder.entrySet()) {
-			print (entry.getValue() + " " + entry.getKey());
-		}
 		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
 	

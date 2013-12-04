@@ -311,7 +311,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		cityControls = new CityControls(cityPanel);
+		cityControls = new CityControls(cityPanel, this);
 		cityControls.setPreferredSize(new Dimension(500, 268));
 		cityControls.setMaximumSize(new Dimension(500, 268));
 		cityControls.setMinimumSize(new Dimension(500, 268));
@@ -333,6 +333,14 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
+			
+		for(House h : apartment1.houses) {
+			houseAnimationPanels.add(h.gui.hp);
+		}
+		for(House h : apartment2.houses) {
+			houseAnimationPanels.add(h.gui.hp);
+		}
+			
 		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
 		apartment1Container.setOpaque(true);
 		JScrollPane apartment2Container = new JScrollPane(apartment2.gui.ap);
