@@ -18,7 +18,6 @@ public class MockCashier extends Role implements Cashier {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void msgHereIsBill (Customer c, String food, Waiter w){
 		//log.add(new LoggedEvent("Received msgHereIsBill from Waiter " + w.getName()));
 	}
@@ -27,11 +26,6 @@ public class MockCashier extends Role implements Cashier {
 		//log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName()));
 	}
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void msgHereIsChange(double change) {
@@ -65,15 +59,17 @@ public class MockCashier extends Role implements Cashier {
 	}
 
 	@Override
-	public void msgHereIsWhatIsDue(MarketEmployee marketEmployee, double price,
-			Map<String, Integer> items) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder,
+			int orderNumber) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgGotMarketOrder(Role role, Map<String, Integer> marketOrder) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,
+			int orderNumber) {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
