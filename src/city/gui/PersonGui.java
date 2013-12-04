@@ -116,8 +116,25 @@ public class PersonGui extends Rectangle2D.Double {
 	public void setDestination(String destination) {
 		called = true;
 		
+		//BUS STOPS
+		if(destination.equals("Bus Stop 1")) {
+			xDestination = 240;
+			yDestination = 152;
+		}
+		else if(destination.equals("Bus Stop 2")) {
+			xDestination = 700;
+			yDestination = 322;
+		}
+		else if(destination.equals("Bus Stop 3")) {
+			xDestination = 860;
+			yDestination = 102;
+		}
+		else if(destination.equals("Bus Stop 4")) {
+			xDestination = 680;
+			yDestination = 102;
+		}
 		//LEFT HOMES
-		if(destination.equals("Home 1")) {
+		else if(destination.equals("Home 1")) {
 			xDestination = 92;
 			yDestination = 10;
 		}
