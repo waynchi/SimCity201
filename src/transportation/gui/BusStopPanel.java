@@ -1,7 +1,9 @@
-package transportation;
+package transportation.gui;
 
 
 import javax.swing.*;
+
+import transportation.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class BusStopPanel extends JPanel implements ActionListener {
 	
 	private final int WINDOWX = 500;
     private final int WINDOWY = 400;
@@ -21,7 +23,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private ImageIcon market_background = new ImageIcon("res/market/market_background.jpeg");
     
 
-    public AnimationPanel() {
+    public BusStopPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         

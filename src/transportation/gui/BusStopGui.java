@@ -2,7 +2,6 @@ package transportation.gui;
 
 import javax.swing.*;
 
-import transportation.AnimationPanel;
 
 import city.gui.CityGui;
 
@@ -14,7 +13,7 @@ import java.awt.event.*;
  */
 public class BusStopGui extends JFrame implements ActionListener {
     
-	AnimationPanel animationPanel = new AnimationPanel();
+	BusStopPanel animationPanel = new BusStopPanel();
 
     public BusStopGui() {
         int WINDOWX = 500;
@@ -37,7 +36,7 @@ public class BusStopGui extends JFrame implements ActionListener {
 		
 	}
 	
-	public AnimationPanel getAnimationPanel() {
+	public BusStopPanel getAnimationPanel() {
 		return animationPanel;
 	}
 	
