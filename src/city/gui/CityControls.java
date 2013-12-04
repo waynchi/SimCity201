@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import people.PeopleAgent;
 import city.gui.trace.AlertLevel;
@@ -14,14 +16,20 @@ import city.gui.trace.AlertTag;
 import city.gui.trace.TracePanel;
 
 
-public class CityControls extends JPanel implements ActionListener {
+public class CityControls extends JPanel implements ActionListener, ChangeListener {
 	private JTextField textField;
 	private JTextField textField_1;
 	TracePanel tracePanel;
 	ControlPanel controlPanel;
 	CityPanel cityPanel;
+	CityGui cityGui;
 	
-	public CityControls(CityPanel cityPanel) {
+	
+	static final int FPS_MIN = 1;
+	static final int FPS_MAX = 30;
+	static final int FPS_INIT = 15; 
+	
+	public CityControls(CityPanel cityPanel, CityGui cityGui) {
 		this.cityPanel = cityPanel;
 		
 		this.setVisible(true);
@@ -57,6 +65,18 @@ public class CityControls extends JPanel implements ActionListener {
 			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
 			btnDemonstrateCollisionPerson.addActionListener(this);
 			panel.add(btnDemonstrateCollisionPerson);
+
+			JSlider framesPerSecond = new JSlider(JSlider.HORIZONTAL,
+			                                      FPS_MIN, FPS_MAX, FPS_INIT);
+			framesPerSecond.addChangeListener(this);
+
+			//Turn on labels at major tick marks.
+			framesPerSecond.setMajorTickSpacing(10);
+			framesPerSecond.setMinorTickSpacing(1);
+			framesPerSecond.setPaintTicks(true);
+			framesPerSecond.setPaintLabels(true);
+			
+			panel.add(framesPerSecond);
 			
 			
 			panel.setBackground( Color.ORANGE );
@@ -115,6 +135,21 @@ public class CityControls extends JPanel implements ActionListener {
 		
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void stateChanged(ChangeEvent e) {
+	    JSlider source = (JSlider)e.getSource();
+//	    if (!source.getValueIsAdjusting()) {
+//	        int fps = (int)source.getValue();
+//	        if (fps == 0) {
+//	            if (!frozen) stopAnimation();
+//	        } else {
+//	            delay = 1000 / fps;
+//	            timer.setDelay(delay);
+//	            timer.setInitialDelay(delay * 10);
+//	            if (frozen) startAnimation();
+//	        }
+//	    }
 	}
 	
 	private class ControlPanel extends JPanel {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -70,14 +71,14 @@ public class CashierAgent extends Agent implements Cashier {
 	 * the items he had requested from the market.
 	 */
 	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
 	}
 
 	/*
 	 * A message called by the market cashier to give the bill to the cook.
 	 */
 	@Override
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber) {
 	}
 
 	/*
@@ -162,6 +163,26 @@ public class CashierAgent extends Agent implements Cashier {
 	}
 	
 	/*
+	 * An action to verify a bill before paying it.
+	 */
+	public void verifyBill(Bill b) {
+		List<Map.Entry<String, Integer>> cookItems = (List<Entry<String, Integer>>) b.itemsFromCook.entrySet();
+		List<Map.Entry<String, Integer>> marketItems = (List<Entry<String, Integer>>) b.itemsFromMarket.entrySet();
+		for (Map.Entry<String, Integer> ci : cookItems) {
+			boolean found = false;
+			for (Map.Entry<String, Integer> mi : marketItems) {
+				if (mi.getKey().equals(ci.getKey()) && mi.getValue().equals(ci.getValue())) {
+					found = true;
+				}
+			}
+			if (found == false) {
+				b.s = BillState.Fraud;
+				return;
+			}
+		}
+	}
+	
+	/*
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
@@ -199,8 +220,14 @@ public class CashierAgent extends Agent implements Cashier {
 			return true;
 		}
 		
+		Bill b = findBillThatCanBeVerified();
+		if (b != null) {
+			verifyBill(b);
+			return true;
+		}
+		
 		// Find a pending and affordable bill to be paid to the market and pay.
-		Bill b = findBillThatCanBePaid();
+		b = findBillThatCanBePaid();
 		if (b != null) {
 			payBill(b);
 			return true;
@@ -231,6 +258,15 @@ public class CashierAgent extends Agent implements Cashier {
 				if (mc.s == s) {
 					return mc;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private Bill findBillThatCanBeVerified() {
+		for (Bill b : bills) {
+			if (b.s == BillState.Unpaid && b.itemsFromCook != null && b.itemsFromMarket != null) {
+				return b;
 			}
 		}
 		return null;
@@ -345,17 +381,17 @@ public class CashierAgent extends Agent implements Cashier {
 		}
 	}
 	
-	enum BillState {Unpaid, Paid};
+	enum BillState {Unpaid, Verified, Fraud, Paid};
 	
 	public class Bill {
-//		private Market m;
-//		private double cost;
-//		private BillState state;
-//		
-//		public Bill(Market m, double cst) {
-//			this.m = m;
-//			this.cost = cst;
-//			state = BillState.Unpaid;
-//		}
+		Map<String, Integer> itemsFromCook = null;
+		Map<String, Integer> itemsFromMarket = null;
+		BillState s;
+		int orderNumber;
+		
+		public Bill(int orderNumber) {
+			this.orderNumber = orderNumber;
+			s = BillState.Unpaid;
+		}
 	}
 }
