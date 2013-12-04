@@ -1,12 +1,15 @@
 package city.gui;
 import javax.swing.*;
 
+import people.PeopleAgent;
+
 import transportation.BusAgent;
-import transportation.BusGui;
+import transportation.BusPassengerRole;
 import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
 import transportation.CarPassengerRole;
+import transportation.gui.BusGui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -700,12 +703,26 @@ public class CityPanel extends JPanel implements MouseListener {
 		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
 		vehicles.add(bg);
 		
+		
+		
+		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
+//		personGui.setDestination("Bus Stop 1");
+//		this.people.add(personGui); 
+		
+		BusPassengerRole bpr = new BusPassengerRole();
+		bpr.setPerson(person);
+		bpr.setCurrentBusStop(busStops.get(0));
+		bpr.setDestinationBusStop(busStops.get(1));
+		bpr.msgIsActive();
+		
 //		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
 //		CarAgent carAgent = new CarAgent();
 //		carAgent.setGui(cg);
 //		carAgent.startThread();
 //		cg.msgGoToThisPlace(carAgent, "Market");
 //		vehicles.add(cg);
+		
 //		
 		addMouseListener( this );
 

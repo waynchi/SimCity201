@@ -108,8 +108,9 @@ public class CityControls extends JPanel implements ActionListener {
 		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
 			PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
-			personGui.setDestination("Bus Stop 4");
+			personGui.setDestination("Bus Stop 1");
 			cityPanel.people.add(personGui); 
+			
 			
 		}
 		

@@ -2,6 +2,7 @@ package transportation;
 
 import people.People;
 import people.Role;
+import transportation.gui.BusPassengerGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
@@ -116,7 +117,15 @@ public class BusPassengerRole extends Role implements BusPassenger{
 		myGui = g;
 	}
 
+	public void setCurrentBusStop(BusStop S)
+	{
+		this.currentBusStop = S;
+	}
 	
+	public void setDestinationBusStop(BusStop D)
+	{
+		this.destination = D;
+	}
 
 	
 

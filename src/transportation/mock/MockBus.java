@@ -2,8 +2,8 @@ package transportation.mock;
 
 import people.Role;
 import test.*;
-import transportation.BusGui;
 import transportation.BusStop;
+import transportation.gui.BusGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 

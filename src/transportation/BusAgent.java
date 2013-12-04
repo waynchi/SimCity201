@@ -2,6 +2,7 @@ package transportation;
 import java.util.*;
 
 import agent.Agent;
+import transportation.gui.BusGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 public class BusAgent extends Agent implements Bus{

@@ -2,6 +2,7 @@ package transportation;
 
 import people.People;
 import people.Role;
+import transportation.gui.CarPassengerGui;
 import transportation.interfaces.Car;
 import transportation.interfaces.CarPassenger;
 

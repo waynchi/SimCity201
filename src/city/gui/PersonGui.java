@@ -24,6 +24,7 @@ public class PersonGui extends Rectangle2D.Double {
 	public String typeOfVehicle;
 	People person;
 	boolean called;
+	String destination;
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -115,6 +116,7 @@ public class PersonGui extends Rectangle2D.Double {
 //	}
 	public void setDestination(String destination) {
 		called = true;
+		this.destination = destination;
 		
 		//BUS STOPS
 		if(destination.equals("Bus Stop 1")) {
@@ -253,11 +255,14 @@ public class PersonGui extends Rectangle2D.Double {
 
 			System.out.println("x " + x + "xD" + xDestination+ "y " + y + "yD " + yDestination);
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
+				System.out.println(this.destination +" REACHED");
+				this.reachedDestination(this.destination);
 				this.currentCell.hasPerson = false;
 				called = false;
 				cityPanel.removePerson(this);
 				person.msgDone("PersonGui");
-
+				this.destination = null;
+				
 			}
 			if (getCurrentLane().equals("8_0")) {
 				this.currentCell.hasPerson = false;
@@ -569,8 +574,11 @@ public class PersonGui extends Rectangle2D.Double {
 		redLight = false;
 	}
 
-	public void reachedDestination() {
+	public void reachedDestination(String reachedDestination) {
 		// TODO Auto-generated method stub
-
+		if(reachedDestination.equals("Bus Stop 1"))
+		{
+			
+		}
 	}
 }

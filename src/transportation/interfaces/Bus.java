@@ -1,7 +1,7 @@
 package transportation.interfaces;
 
-import transportation.BusGui;
 import transportation.BusStop;
+import transportation.gui.BusGui;
 
 public interface Bus {
 
