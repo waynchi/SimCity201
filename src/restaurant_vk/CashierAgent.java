@@ -71,14 +71,14 @@ public class CashierAgent extends Agent implements Cashier {
 	 * the items he had requested from the market.
 	 */
 	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
 	}
 
 	/*
 	 * A message called by the market cashier to give the bill to the cook.
 	 */
 	@Override
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber) {
 	}
 
 	/*
@@ -166,8 +166,20 @@ public class CashierAgent extends Agent implements Cashier {
 	 * An action to verify a bill before paying it.
 	 */
 	public void verifyBill(Bill b) {
-		List<Map.Entry<String, Integer>> cookItemsEntries = (List<Entry<String, Integer>>) b.itemsFromCook.entrySet();
-		List<Map.Entry<String, Integer>> marketItems = (List<Entry<String, Integer>>) b.itemsFromMarket.entrySet();;
+		List<Map.Entry<String, Integer>> cookItems = (List<Entry<String, Integer>>) b.itemsFromCook.entrySet();
+		List<Map.Entry<String, Integer>> marketItems = (List<Entry<String, Integer>>) b.itemsFromMarket.entrySet();
+		for (Map.Entry<String, Integer> ci : cookItems) {
+			boolean found = false;
+			for (Map.Entry<String, Integer> mi : marketItems) {
+				if (mi.getKey().equals(ci.getKey()) && mi.getValue().equals(ci.getValue())) {
+					found = true;
+				}
+			}
+			if (found == false) {
+				b.s = BillState.Fraud;
+				return;
+			}
+		}
 	}
 	
 	/*
@@ -369,7 +381,7 @@ public class CashierAgent extends Agent implements Cashier {
 		}
 	}
 	
-	enum BillState {Unpaid, Verified, Paid};
+	enum BillState {Unpaid, Verified, Fraud, Paid};
 	
 	public class Bill {
 		Map<String, Integer> itemsFromCook = null;
