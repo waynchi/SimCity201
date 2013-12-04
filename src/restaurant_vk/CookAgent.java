@@ -225,6 +225,11 @@ public class CookAgent extends Agent implements Cook {
 	 */
 	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
+		for (Map.Entry<String, Integer> e : items.entrySet()) {
+			Food f = inventory.get(e.getKey());
+			f.qtyNeeded = 0;
+			f.ordered = false;
+		}
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -421,14 +426,10 @@ public class CookAgent extends Agent implements Cook {
 	 * A class to encapsulate a market order.
 	 */
 	public class MarketOrder {
-		public String item;
-		public int qtyRequested;
-		public int qtySupplied;
+		public Map<String, Integer> items = new HashMap<String, Integer>();
 		public MarketOrderState s;
 		
-		public MarketOrder(String item, int qty) {
-			this.item = item;
-			this.qtyRequested = qty;
+		public MarketOrder() {
 			s = MarketOrderState.Requested;
 		}
 	}
