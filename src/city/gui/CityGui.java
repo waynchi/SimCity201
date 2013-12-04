@@ -44,7 +44,7 @@ import java.util.List;
 public class CityGui extends JFrame implements ActionListener {
 	BankGui bankGui;
 	CityPanel cityPanel;
-	JPanel buildingPanels;
+	public JPanel buildingPanels;
 	CardLayout cardLayout;
 	CityControls cityControls;
 	List<String> configParams = Collections

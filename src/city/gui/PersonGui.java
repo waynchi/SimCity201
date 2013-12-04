@@ -251,7 +251,6 @@ public class PersonGui extends Rectangle2D.Double {
 			g2.fill(this);
 			g2.draw(this);
 
-			System.out.println("x " + x + "xD" + xDestination+ "y " + y + "yD " + yDestination);
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
 				this.currentCell.hasPerson = false;
 				called = false;
