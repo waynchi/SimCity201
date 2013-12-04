@@ -22,13 +22,14 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	TracePanel tracePanel;
 	ControlPanel controlPanel;
 	CityPanel cityPanel;
+	CityGui cityGui;
 	
 	
 	static final int FPS_MIN = 1;
 	static final int FPS_MAX = 30;
 	static final int FPS_INIT = 15; 
 	
-	public CityControls(CityPanel cityPanel) {
+	public CityControls(CityPanel cityPanel, CityGui cityGui) {
 		this.cityPanel = cityPanel;
 		
 		this.setVisible(true);
