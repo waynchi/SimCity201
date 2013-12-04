@@ -37,7 +37,6 @@ public class CookAgent extends Agent implements Cook {
 	private final int period = 5000;
 	private MarketEmployee market;
 	private Cashier cashier;
-	private int orderTracker = 0;
 
 	public CookAgent() {
 		timer = new Timer();
@@ -113,16 +112,15 @@ public class CookAgent extends Agent implements Cook {
 				order.put(f.name, qty);
 			}
 		}
-		MarketOrder o = new MarketOrder(order, orderTracker);
+		MarketOrder o = new MarketOrder(order);
 		marketOrders.add(o);
-		orderTracker++;
 		// Send message to market with orderTracker etc. as parameters.
 	}
 	
 	public void informCashier(MarketOrder mo) {
 		mo.s = MarketOrderState.InformedCashier;
 		// Another parameter for order number should be added to cashier interface.
-		cashier.msgGotMarketOrder(mo.itemsSupplied);
+		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -171,13 +169,25 @@ public class CookAgent extends Agent implements Cook {
 	}
 	
 	/*
+	 * A message called by the market employee to assign order number to an order.
+	 */
+	@Override
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+		for (MarketOrder mo : marketOrders) {
+			if (mo.itemsRequested == items) {
+				mo.orderNumber = orderNumber;
+				return;
+			}
+		}
+		stateChanged();
+	}
+	
+	/*
 	 * A message called by the market truck to deliver items that had
 	 * been requested.
 	 */
 	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		// Just to make it compile. This should otherwise be a function parameter.
-		int orderNumber = 0;
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
 		MarketOrder mo = findMarketOrder(orderNumber);
 		mo.itemsSupplied = items;
 		for (Map.Entry<String, Integer> e : items.entrySet()) {
@@ -192,6 +202,7 @@ public class CookAgent extends Agent implements Cook {
 			}
 		}
 		mo.s = MarketOrderState.Supplied;
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -415,9 +426,8 @@ public class CookAgent extends Agent implements Cook {
 		public int orderNumber;
 		public MarketOrderState s;
 		
-		public MarketOrder(Map<String, Integer> items, int num) {
+		public MarketOrder(Map<String, Integer> items) {
 			itemsRequested = items;
-			orderNumber = num;
 			s = MarketOrderState.Requested;
 		}
 	}
