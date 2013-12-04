@@ -133,11 +133,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	// order from restaurant cook
-	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
+	public void msgOrder(Map<String, Integer> chosenItems, Cook cook, Cashier cashier) {
 		if(!inTest){
 			log.add(new LoggedEvent("received an order from restaurant cook " + ((CookRole) cook).getPerson().getName()));
 		}
-		orders.add(new Order (cook, cashier, order));
+		orders.add(new Order (cook, cashier, chosenItems));
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -181,15 +181,27 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		if(!inTest)		getOrder(order.items);
+		order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
+		Map<String,Integer> supply = new HashMap<String, Integer>(); 
+		for (Map.Entry<String, Integer> entry: order.items.entrySet()) {
+			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
+				supply.put(entry.getKey(), entry.getValue());
+				items.get(entry.getKey()).inventory -= entry.getValue();
+			}
+			else {
+				supply.put(entry.getKey(), items.get(entry.getKey()).inventory);
+				items.get(entry.getKey()).inventory = 0;
+			}
+		}
+			
+		if(!inTest)		getOrder(supply);
 		
 		// if order is from restaurant
 		if (order.cook != null) {
 			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
+			order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
 			log.add(new LoggedEvent("order delivered to restaurant"));
-			order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
-			order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
-			cashier.msgHereIsACheck(order.restaurantCashier, order.items, order.orderNumber);
 		}
 
 
