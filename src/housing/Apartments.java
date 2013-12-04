@@ -27,11 +27,11 @@ public class Apartments {
 		for (int i = 0; i < 25; i++) {
 			int num = i + 1;
 			House h = new House("Apartment" + num, num, HouseType.Apartment);
-			houses.add(h);
-			h.setItems();
-			h.setApartments(this);
 			HouseGui g = new HouseGui(h);
 			h.setGui(g);
+			h.setItems();
+			houses.add(h);
+			h.setApartments(this);
 		}
 	}
 }

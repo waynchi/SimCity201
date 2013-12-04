@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 
+import city.gui.CityGui;
+
 public class HouseAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> guis = new ArrayList<HGui>();
 	public HouseGui gui;
-	public TestGui tg;
+	public CityGui tg;
 	
 	public HouseAnimationPanel() {
 		super();
@@ -78,7 +80,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 		gui = g;
 	}
 	
-	public void setTestGui(TestGui g) {
+	public void setCityGui(CityGui g) {
 		tg = g;
 	}
 	
