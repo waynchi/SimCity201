@@ -367,6 +367,9 @@ public class CookAgent extends Agent implements Cook {
 	 */
 	enum FoodState {Enough, Low, Requested};
 	
+	/*
+	 * States for a market order.
+	 */
 	enum MarketOrderState {Requested, Supplied, InformedCashier};
 	
 	/*
@@ -414,6 +417,9 @@ public class CookAgent extends Agent implements Cook {
 		}
 	}
 	
+	/*
+	 * A class to encapsulate a market order.
+	 */
 	public class MarketOrder {
 		public String item;
 		public int qtyRequested;
