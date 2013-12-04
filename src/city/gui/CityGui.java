@@ -53,8 +53,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 
-
-
 	MarketGui marketGui = new MarketGui();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	Apartments apartment1 = new Apartments("Apartment 1");
@@ -80,6 +78,8 @@ public class CityGui extends JFrame implements ActionListener {
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
+	
+	public Timer timer;
 
 	private int count = 0;
 
@@ -92,7 +92,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.setMaximumSize(new Dimension(1024, 500));
 		cityPanel.setMinimumSize(new Dimension(1024, 500));
 		
-		Timer timer = new Timer(5, this);
+		timer = new Timer(5, this);
 		
 		bankGui = new BankGui(timer);
 
