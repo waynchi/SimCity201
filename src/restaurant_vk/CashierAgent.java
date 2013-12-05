@@ -16,6 +16,7 @@ import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
 import market.interfaces.*;
 import restaurant_vk.interfaces.Customer;
+import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
 import agent.Agent;
@@ -614,6 +615,10 @@ public class CashierAgent extends Role implements Cashier {
 			}
 		}
 		return false;
+	}
+	
+	public void setHost(HostAgent h) {
+		this.host = h;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
