@@ -22,7 +22,8 @@ public class MarketEmployeeTest extends TestCase{
 	MockMarketCustomer customer;
 	MockCook cook;
 	MockHost host;
-	//MockMarketTruck truck;
+	MockMarketTruck truck1;
+	MockMarketTruck truck2;
 	MockCashier mcashier;
 	Map<String, Integer> items = new HashMap<String, Integer>();
 	Map<String, Integer> restOrder = new HashMap<String, Integer>();
@@ -44,18 +45,19 @@ public class MarketEmployeeTest extends TestCase{
 		cashier = new MockMarketCashier("marketCashier");
 		employee = new MarketEmployeeRole(gui);
 		employee.inTest = true;
-
+		truck1 = new MockMarketTruck("truck1");
+		truck2 = new MockMarketTruck("truck2");
+		employee.addTruck(truck1);
+		employee.addTruck(truck2);
+		
 		employee.setCashier(cashier);
 		host = new MockHost("host");
 		host.setCashier(mcashier);
 		host.setCook(cook);
 		mcashier = new MockCashier("mcashier");
-		employee.inTest = true;
-		//truck = new MockMarketTruck("truck");
 		
 		people.addRole(employee, "MarketEmployeeRole");
 		employee.setPerson(people);
-		//cashier.setMarketEmployee(employee);
 
 		customer = new MockMarketCustomer("customer");
 		cook = new MockCook("cook");
@@ -69,18 +71,46 @@ public class MarketEmployeeTest extends TestCase{
 	
 	public void testOneRestOrder (){
 		employee.msgIsActive();
+		employee.inTest = true;
 		employee.pickAndExecuteAnAction();
 		
-		assertTrue(employee.orders.isEmpty());
+		assertTrue("the order list for market employee should be empty, but it has the size of " + employee.orders.size(), 
+				employee.orders.isEmpty());
 		employee.msgOrder(restOrder, cook, mcashier);
-		assertTrue(employee.orders.size() == 1);
-		
+		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
+				employee.orders.size() == 1);
 		employee.pickAndExecuteAnAction();
-		assertTrue(employee.log.containsString("in action give order to customer"));
-		//assertTrue(employee.getTrucks().get(0).log.containsString("received message here is an order"));
-		cook.msgHereIsYourOrder(restOrder);
-		assertTrue("cook log reads: " + cook.log.toString() ,cook.log.containsString("received msgHereIsYourOrder from market"));
-		assertTrue(cashier.log.containsString("received msgHereIsACheck from employee for restaurant cashier"));
+		
+		assertEquals("inventory of steak should now be decreased to 90, but instead it's "+employee.items.get("Steak").inventory,
+				employee.items.get("Steak").inventory,90);
+		assertEquals("inventory of salad should now be decreased to 95, but instead it's "+employee.items.get("Salad").inventory,
+				employee.items.get("Salad").inventory,95);		
+		assertTrue("employee should be in action give items to customers, instead the log reads " + employee.log.toString(),
+				employee.log.containsString("sending confirmation to cook"));
+		assertTrue("order list is not empty, but instead it has the size of " + employee.orders.size(), 
+				employee.orders.isEmpty());
+		
+		assertTrue("cook should have received the original items list along with an order number, it doesn't. the log reads " + cook.log.toString(),
+				cook.log.containsString("order confirmed, get order number 1"));
+		assertTrue("market cashier should have received a check for cook, it doesn't",
+				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
+		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
+				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+	}
+	
+	public void testOneCustOrder (){
+		
+	}
+	
+	public void testTwoRestOrder (){
+		
+	}
+	
+	public void testTwoCustOrder () {
+		
+	}
+	
+	public void testBoth() {
 		
 	}
 

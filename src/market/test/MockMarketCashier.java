@@ -17,19 +17,17 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	}
 
 	@Override
-	public void msgHereIsACheck(MarketCustomer customer,
-			Map<String, Integer> items) {
+	public void msgHereIsACheck(MarketCustomer customer,Map<String, Integer> items) {
 		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));		
 		
 	}
 
 	@Override
-	public void msgHereIsACheck(Cashier restaurantCashier,
-			Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for restaurant cashier"));		
+	public void msgHereIsACheck(Cashier restaurantCashier,	Map<String, Integer> items, int orderNumber) {
+		log.add(new LoggedEvent("received msgHereIsACheck for restaurant cashier with order number " + orderNumber));		
 		
 	}
-
+	
 	@Override
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
 		log.add(new LoggedEvent("received msgHereIsACheck from customer"));		
@@ -38,8 +36,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	
 
 	@Override
-	public void msgHereIsPayment(Double amount,
-			Map<String, Integer> itemsOrdered, Cashier cashier) {
+	public void msgHereIsPayment(Double amount, Map<String, Integer> itemsOrdered, Cashier cashier) {
 		log.add(new LoggedEvent("received msgHereIsPayment from cashier"));		
 		
 	}
@@ -85,6 +82,8 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 
 }

@@ -19,11 +19,7 @@ public class MockCook extends Mock implements Cook{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsYourOrder from market"));		
-	}
-
+	
 	public CookGui getGui() {
 		// TODO Auto-generated method stub
 		return null;
@@ -41,6 +37,17 @@ public class MockCook extends Mock implements Cook{
 
 	public void setHost(Host host) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
+		
+	}
+
+	@Override
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items,int orderNumber) {
+		log.add(new LoggedEvent("order confirmed, get order number " + orderNumber));
 		
 	}
 }

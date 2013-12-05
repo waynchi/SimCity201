@@ -19,25 +19,19 @@ import people.Role;
 //is proceeded as he wishes.
 public class HostRole extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
-	
 	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
-	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
-	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
-	private boolean leaveWork;
-
-	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	
-	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
-	private int waiterCount = 0;
+	private boolean leaveWork = false;
+	private boolean closeRestaurant = false;
 
-	//total number of customers waiting or eating in restaurant
-	private int customerCount = 0;
-
+	public HostGui hostGui = null;
+	private Cashier cashier;
+	private Cook cook;
+	
 	public Collection<Table> tables;
 	public class Table {
 		RestaurantCustomerRole occupiedBy;
 		int tableNumber;
-
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
@@ -64,10 +58,11 @@ public class HostRole extends Role implements Host{
 		}
 	}
 
-	public HostGui hostGui = null;
-	private Cashier cashier;
-	private Cook cook;
-
+	
+	
+	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
+	private int waiterCount = 0;
 	public class MyWaiter {
 		Waiter w;
 		waiterStatus s;
@@ -82,6 +77,11 @@ public class HostRole extends Role implements Host{
 		}	
 	}
 
+
+	//total number of customers waiting or eating in restaurant
+	private int customerCount = 0;
+	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
+	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	public class MyCustomer {
 		RestaurantCustomerRole customer;
 		customerState state;
@@ -98,6 +98,8 @@ public class HostRole extends Role implements Host{
 	}
 	
 	
+	
+	// constructor
 	public HostRole() {
 		super();
 		// make some tables
@@ -105,10 +107,10 @@ public class HostRole extends Role implements Host{
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));
 		}
-		isActive = false;
-		leaveWork = false;
 	}
 
+	
+	
 	// Messages
 	public void msgIsActive() {
 		isActive = true;
@@ -121,6 +123,12 @@ public class HostRole extends Role implements Host{
 
 	}
 
+	public void msgSetClose() {
+		closeRestaurant = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	
 	public void addWaiter(Waiter w){
 		allWaiters.add(w);
 		waiters.add(new MyWaiter(w));
@@ -303,6 +311,11 @@ public class HostRole extends Role implements Host{
 			done();
 			return true;
 		}
+		
+		if(closeRestaurant) {
+			closeRestaurant();
+			return true;
+		}
 
 		return false;
 		//we have tried all our rules and found
@@ -352,6 +365,10 @@ public class HostRole extends Role implements Host{
 		waiters = new ArrayList<MyWaiter>();
 		allWaiters = new ArrayList<Waiter>();
 		getPersonAgent().msgDone("RestaurantHostRole");
+	}
+	
+	private void closeRestaurant() {
+		getPersonAgent().getRestaurant(0).isClosed = true;
 	}
 
 	//utilities

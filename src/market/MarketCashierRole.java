@@ -77,7 +77,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		priceList.put("Chicken", 7.99);
 		priceList.put("Salad", 2.99);
 		priceList.put("Pizza", 3.99);
-		priceList.put("Car", 100000.0);
+		priceList.put("Car", 20000.0);
 	}
 
 

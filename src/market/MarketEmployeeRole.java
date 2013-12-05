@@ -22,19 +22,20 @@ import restaurant.test.mock.LoggedEvent;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
-	public boolean inTest = false;
-	public int restaurantOrderNumber = 0;
+	public boolean inTest = true;
+	public int restaurantOrderNumber = 1;
 	
 	MarketCashier cashier;
 	MarketEmployeeGui employeeGui;
 	MarketGui marketGui;
 	
 	List<MarketTruck> trucks = new ArrayList<MarketTruck>();
-	int marketTruckCount = 0;
-	Map <String, Item> items = new HashMap<String, Item>();
-	class Item {
+	int marketTruckCount = -1;
+	
+	public Map <String, Item> items = new HashMap<String, Item>();
+	public class Item {
 		String name;
-		int inventory;
+		public int inventory;
 
 		public Item (String n, int i) {
 			name = n;
@@ -82,8 +83,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		marketGui.getAnimationPanel().addGui(employeeGui);
 		employeeGui.setPresent(false);
 		
-		for (int i=0; i<10; i++) { // create 10 market trucks
-			trucks.add(new MarketTruckAgent("MarketTruck "+i));
+		if (!inTest) {
+			for (int i=0; i<10; i++) { // create 10 market trucks
+				trucks.add(new MarketTruckAgent("MarketTruck "+i));
+			}
 		}
 		items.put("Steak", new Item("Steak", 100));
 		items.put("Salad", new Item("Salad", 100));
@@ -99,6 +102,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgIsActive() {
 		log.add(new LoggedEvent("received msgActive"));
 		isActive = true;
+		inTest = false;
 		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
 	}
@@ -181,7 +185,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.items.entrySet()) {
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
@@ -198,10 +201,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		// if order is from restaurant
 		if (order.cook != null) {
-			//getNextMarketTruck().msgHereIsAnOrder(order.cook, order.items);
+			log.add(new LoggedEvent("sending confirmation to cook"));
+			order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
+			
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
-			order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
-			log.add(new LoggedEvent("order delivered to restaurant"));
+			getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+			
+			//order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
 		}
 
 
@@ -224,6 +230,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		else {
 			marketTruckCount ++;
+			print ("in method getNextMarketTruck, trucks size is " + trucks.size());
 			return trucks.get(marketTruckCount);
 		}
 	}
@@ -266,4 +273,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public List<MarketTruck> getTrucks() {
 		return trucks;
 	}
+	
+	public void addTruck (MarketTruck truck) {
+		trucks.add(truck);
+	}
+	
 }

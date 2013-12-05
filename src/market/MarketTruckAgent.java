@@ -22,25 +22,22 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	List<Order> orders = new ArrayList<Order>();
 	String name;
 	Semaphore orderDelivered = new Semaphore(0,true);	
-	
+	private EventLog log = new EventLog();
+
 	
 	public MarketTruckAgent(String n) {
 		name = n;
 	}
 	
 	class Order {
-		MarketCustomer customer = null;
 		Cook cook = null;
 		Map<String,Integer> items;
+		int orderNumber;
 		
-		Order (MarketCustomer c, Map<String, Integer> i) {
-			customer = c;
-			items = i;
-		}
-		
-		Order (Cook c, Map<String, Integer> i) {
+		Order (Cook c, Map<String, Integer> i, int number) {
 			cook = c;
 			items = i;
+			orderNumber = number;
 		}
 	}
 	
@@ -55,10 +52,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		stateChanged();;
 	}
 	
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
-		print ("received an order from employee, deliver to cook " + ((CookRole) cook).getPerson().getName());
-		log.add(new LoggedEvent("received message here is an order"));
-		orders.add(new Order (cook, items));
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
+		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
+		orders.add(new Order (cook, items, number));
 		stateChanged();
 	}
 
@@ -76,8 +72,6 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
 	//actions
 	private void deliverOrder(final Order order) {
-		// if order is from restaurant, deliver to restaurant
-		//if (order.cook != null) {
 		//if(!inTest){
 		//	gui.deliver(order.cook.getPerson());
 		//}
@@ -85,20 +79,16 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		//		new java.util.TimerTask(){
 		//			public void run(){
 						print("order delivered to restaurant");
-						((CookRole) order.cook).msgHereIsYourOrder(order.items);		
+						((CookRole) order.cook).msgHereIsYourOrder(order.items, order.orderNumber);		
 						orders.remove(order);
 		//		},
 		//		2000);
 		
 		//}
-		//else {
-		//	gui.deliver(order.customer.getPerson().getPosition();
-		//	order.customer.msgHereIsYourOrder(order.items);
-		//}
 		
-		 // need a getGui for personAgent
 	}
-	
+
+
 	//utilities
 	
 

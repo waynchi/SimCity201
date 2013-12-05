@@ -12,23 +12,18 @@ public class MockMarketTruck extends Mock implements MarketTruck{
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
-
-	
-	/*public void msgHereIsAnOrder(MarketCustomer customer,
-			Map<String, Integer> items) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
-	@Override
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items) {
-		//log.add(new LoggedEvent("received msgHereIsAnOrder, ready to deliver"));		
-	}
 	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+
+
+	@Override
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
+		log.add(new LoggedEvent("received order number " + number + ", about to deliver it to cook"));
+		
 	}
 
 }

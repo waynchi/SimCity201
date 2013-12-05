@@ -7,11 +7,6 @@ import restaurant.test.mock.EventLog;
 
 public interface MarketTruck {
 
-
-	//void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> items);
-
-	public EventLog log = new EventLog();
-
-	public abstract void msgHereIsAnOrder(Cook cook, Map<String, Integer> items);
+	public abstract void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number);
 
 }
