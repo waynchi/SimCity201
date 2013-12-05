@@ -8,10 +8,15 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import people.People;
+import people.PeopleAgent;
+import people.Role;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
 import market.interfaces.*;
 import restaurant_vk.interfaces.Customer;
+import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
 import agent.Agent;
@@ -23,7 +28,7 @@ import agent.Agent;
  * of the waiter and gives them to the respective waiters. Also, customers come
  * to the cashier and pay the money.
  */
-public class CashierAgent extends Agent implements Cashier {
+public class CashierAgent extends Role implements Cashier {
 	
 	// Data
 	
@@ -32,10 +37,26 @@ public class CashierAgent extends Agent implements Cashier {
 	private Menu m = new Menu();
 	private MyCheck currentCheck = null;
 	private CashierGui gui = null;
-	private double myCash = 20.0;
+	private double workingCapital = 10000.0;
+	private double minCapital = 1000;
 	private Timer timer = new Timer();
 	private final int TIME_TO_CHECK_OUT = 1000;
 	private MarketCashier mCashier;
+	private boolean leave = false;
+	private boolean enter = false;
+	private boolean deposit = false;
+	private boolean withdraw = false;
+	private BankActivity bankActivity = BankActivity.None;
+	private ClosingState closingState = ClosingState.None;
+	public List<Shift> shiftRecord = new ArrayList<Shift>();
+	public Teller teller;
+	private double loanedMoney = 0;
+	public HostAgent host;
+	
+	public double waiterSalary = 100;
+	public double cashierSalary = 100;
+	public double cookSalary = 100;
+	public double hostSalary = 100;
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -73,6 +94,19 @@ public class CashierAgent extends Agent implements Cashier {
 	 */
 	@Override
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
+		boolean found = false;
+		for (Bill b : bills) {
+			if (b.orderNumber == orderNumber) {
+				found = true;
+				b.itemsFromCook = marketOrder;
+			}
+		}
+		if (found == false) {
+			Bill b = new Bill(orderNumber);
+			b.itemsFromCook = marketOrder;
+			bills.add(b);
+		}
+		stateChanged();
 	}
 
 	/*
@@ -80,6 +114,21 @@ public class CashierAgent extends Agent implements Cashier {
 	 */
 	@Override
 	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber) {
+		boolean found = false;
+		for (Bill b : bills) {
+			if (b.orderNumber == orderNumber) {
+				found = true;
+				b.itemsFromMarket = items;
+				b.cost = price;
+			}
+		}
+		if (found == false) {
+			Bill b = new Bill(orderNumber);
+			b.cost = price;
+			b.itemsFromMarket = items;
+			bills.add(b);
+		}
+		stateChanged();
 	}
 
 	/*
@@ -88,22 +137,75 @@ public class CashierAgent extends Agent implements Cashier {
 	 */
 	@Override
 	public void msgHereIsChange(double change) {
+		workingCapital += change;
+		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to inform that it is ready to help
+	 * the cashier.
+	 */
 	@Override
 	public void msgReadyToHelp(Teller teller) {
+		bankActivity = BankActivity.ReadyToHelp;
+		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to tell the amount of loaned money.
+	 */
 	@Override
 	public void msgGiveLoan(double funds, double amount) {
+		workingCapital += amount;
+		loanedMoney += amount;
+		bankActivity = BankActivity.None;
+		stateChanged();
 	}
 
+	/*
+	 * A message called by the cashier to tell the amount of money withdrawn.
+	 */
 	@Override
 	public void msgWithdrawSuccessful(double funds, double amount) {
+		workingCapital += amount;
+		bankActivity = BankActivity.None;
+		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to tell the amount of money deposited. 
+	 */
 	@Override
 	public void msgDepositSuccessful(double funds) {
+		workingCapital = minCapital;
+		bankActivity = BankActivity.None;
+		stateChanged();
+	}
+	
+	/*
+	 * A message that each role calls when he/ she is leaving. This is to
+	 * record their shift so that they could be paid by the cashier.
+	 */
+	public void recordShift(PeopleAgent p, String role) {
+		shiftRecord.add(new Shift(p, role));
+		stateChanged();
+	}
+	
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
+	
+	public void msgIsActive() {
+		enter = true;
+		isActive = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		this.recordShift(((PeopleAgent)myPerson), "Cashier");
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -146,7 +248,7 @@ public class CashierAgent extends Agent implements Cashier {
 				if (m.c == c && (m.s == CheckState.PaidLess || m.s == CheckState.BeingPaid)) {
 					if (cashLeft >= m.c.getCost()) {
 						cashLeft = cashLeft - m.c.getCost();
-						myCash += m.c.getCost();
+						workingCapital += m.c.getCost();
 						m.amountPaid = m.c.getCost();
 						m.s = CheckState.Paid;
 						approvedPayments.add(c);
@@ -189,6 +291,86 @@ public class CashierAgent extends Agent implements Cashier {
 	 */
 	private void payBill(Bill b) {
 		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
+		b.s = BillState.Paid;
+		workingCapital -= b.cost;
+	}
+	
+	/*
+	 * Action to pay an employee his/ her salary.
+	 */
+	public void payEmployee(Shift s) {
+		if (s.role.equals("Waiter")) {
+			s.p.Money += waiterSalary;
+		}
+		else if (s.role.equals("Cook")) {
+			s.p.Money += cookSalary;
+		}
+		else if (s.role.equals("Host")) {
+			s.p.Money += hostSalary;
+		}
+		else if (s.role.equals("Cashier")) {
+			s.p.Money += cashierSalary;
+		}
+	}
+	
+	/*
+	 * Place request to the market to either deposit or withdraw money.
+	 */
+	public void orderBank() {
+		if (deposit == true) {
+			bankActivity = BankActivity.DepositRequested;
+			deposit = false;
+			teller.msgDeposit(getPersonAgent().getRestaurant(1).bankAccountID, workingCapital - minCapital);
+		}
+		else if (withdraw == true) {
+			bankActivity = BankActivity.WithdrawalRequested;
+			withdraw = false;
+			double total = 0.0;
+			if (minCapital > workingCapital)
+				total = minCapital - workingCapital;
+			total += computeTotalSalary();
+			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
+		}
+	}
+	
+	/*
+	 * Preparing to close down.
+	 */
+	public void prepareToClose() {
+		double total = computeTotalSalary() + minCapital;
+		if (workingCapital >= total && shiftRecord.isEmpty()) {
+			teller.msgNeedHelp(this, "blah");
+			bankActivity = BankActivity.HelpRequested;
+			deposit = true;
+		}
+		else {
+			teller.msgNeedHelp(this, "blah");
+			bankActivity = BankActivity.HelpRequested;
+			withdraw = true;
+		}
+		closingState = ClosingState.Preparing;
+	}
+	
+	/*
+	 * An action to shut the restaurant down.
+	 */
+	public void shutDown() {
+		closingState = ClosingState.Done;
+	}
+	
+	/*
+	 * An action to leave the restaurant.
+	 */
+	public void leaveRestaurant() {
+		// Animation
+		isActive = false;
+		myPerson.msgDone("Cashier");
+	}
+	
+	public void enterRestaurant() {
+		enter = false;
+		closingState = ClosingState.None;
+		// Animation
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -198,6 +380,39 @@ public class CashierAgent extends Agent implements Cashier {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (bankActivity == BankActivity.ReadyToHelp) {
+			orderBank();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
+		
+		// Pay money to an employee.
+		Shift s = findPayableShift();
+		if (s != null) {
+			payEmployee(s);
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed && host.anyCustomer() == false && isAnyCheckThere() == false) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
 		// Simply decides which is the current check being taken care of or which
 		// customer is being handled right now.
 		if (currentCheck == null || currentCheck.s == CheckState.Paid || currentCheck.s == CheckState.PaidLess) {
@@ -219,6 +434,8 @@ public class CashierAgent extends Agent implements Cashier {
 			return true;
 		}
 		
+		// Find a bill that can be verified and verify it to make it ready
+		// for payment.
 		Bill b = findBillThatCanBeVerified();
 		if (b != null) {
 			verifyBill(b);
@@ -274,9 +491,28 @@ public class CashierAgent extends Agent implements Cashier {
 	private Bill findBillThatCanBePaid() {
 		synchronized (bills) {
 			for (Bill b : bills) {
-				if (b.s == BillState.Verified && myCash >= b.cost) {
+				if (b.s == BillState.Verified && workingCapital >= b.cost) {
 					return b;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private Shift findPayableShift() {
+		for (Shift s : shiftRecord) {
+			if (s.s == ShiftState.Pending) {
+				double total = minCapital;
+				if (s.role.equals("Cashier"))
+					total += cashierSalary;
+				else if (s.role.equals("Cook"))
+					total += cookSalary;
+				else if (s.role.equals("Waiter"))
+					total += waiterSalary;
+				else if (s.role.equals("Host"))
+					total += hostSalary;
+				if (workingCapital >= total)
+					return s;
 			}
 		}
 		return null;
@@ -295,6 +531,21 @@ public class CashierAgent extends Agent implements Cashier {
 		return bills;
 	}
 	
+	public double computeTotalSalary() {
+		double result = 0.0;
+		for (Shift s : shiftRecord) {
+			if (s.role.equals("Cashier"))
+				result += cashierSalary;
+			else if (s.role.equals("Cook"))
+				result += cookSalary;
+			else if (s.role.equals("Waiter"))
+				result += waiterSalary;
+			else if (s.role.equals("Host"))
+				result += hostSalary;
+		}
+		return result;
+	}
+	
 	public List<CustomerRestaurantCheck> getChecks() {
 		List<CustomerRestaurantCheck> result = new ArrayList<CustomerRestaurantCheck>();
 		synchronized (checks) {
@@ -309,14 +560,14 @@ public class CashierAgent extends Agent implements Cashier {
 	 * Hack for testing.
 	 */
 	public void addCash(double cash) {
-		myCash += cash;
+		workingCapital += cash;
 	}
 	
 	/*
 	 * Hack for testing.
 	 */
 	public double getCash() {
-		return myCash;
+		return workingCapital;
 	}
 	
 	/*
@@ -357,6 +608,19 @@ public class CashierAgent extends Agent implements Cashier {
 		return false;
 	}
 	
+	public boolean isAnyCheckThere() {
+		for (MyCheck mc : checks) {
+			if (mc.s != CheckState.Paid && mc.s != CheckState.PaidLess) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void setHost(HostAgent h) {
+		this.host = h;
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -392,6 +656,24 @@ public class CashierAgent extends Agent implements Cashier {
 		public Bill(int orderNumber) {
 			this.orderNumber = orderNumber;
 			s = BillState.Unpaid;
+		}
+	}
+	
+	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
+	
+	enum ShiftState {Pending, Done};
+	
+	enum ClosingState {None, ToBeClosed, Preparing, Done};
+	
+	public class Shift {
+		PeopleAgent p;
+		String role;
+		ShiftState s;
+		
+		public Shift(PeopleAgent p, String role) {
+			this.p = p;
+			this.role = role;
+			s = ShiftState.Pending;
 		}
 	}
 }

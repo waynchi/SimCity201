@@ -8,13 +8,15 @@ import restaurant_vk.interfaces.Waiter;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 /**
  * @author Vikrant Singhal
  *
  * Restaurant Host Agent. A Host is the manager of a restaurant who sees that all
  * is proceeded as he wishes.
  */
-public class HostAgent extends Agent implements Host{
+public class HostAgent extends Role implements Host{
 	static final int NTABLES = 4;//a global for the number of tables.
 	public List<Customer> customers = Collections.synchronizedList(new ArrayList<Customer>());
 	public List<Waiter> waiters = new ArrayList<Waiter>();
@@ -307,6 +309,18 @@ public class HostAgent extends Agent implements Host{
 	
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+	
+	public boolean anyCustomer() {
+		for (Customer c : customers) {
+			if (c.isReadyToSit())
+				return true;
+		}
+		for (Table t : tables) {
+			if (t.isOccupied())
+				return true;
+		}
+		return false;
 	}
 	
 	public boolean isATableOccupied() {

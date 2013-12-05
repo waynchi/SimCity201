@@ -13,12 +13,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 /**
  * @author Vikrant Singhal
  *
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class CustomerAgent extends Role implements Customer{
 	private String name;
 	private int hungerLevel = 5; // determines length of meal
 	Timer timer = new Timer();
