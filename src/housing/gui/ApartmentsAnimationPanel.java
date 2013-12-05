@@ -41,8 +41,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 5; j++) {
 						if (xPos >= x && xPos <= (x + houseWidth) && yPos >= y && yPos <= (y + houseHeight)) {
-							BuildingPanel[] bp = g.buildingPanels.getComponents();
-							g.displayBuildingPanel(g.buildingPanels.getComponents());
+							// display on city gui
 							return;
 						}
 						y += (houseHeight + 30);
