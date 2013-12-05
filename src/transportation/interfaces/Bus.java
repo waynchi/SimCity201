@@ -1,7 +1,7 @@
 package transportation.interfaces;
 
-import transportation.BusGui;
 import transportation.BusStop;
+import transportation.gui.BusGui;
 
 public interface Bus {
 
@@ -16,5 +16,7 @@ public interface Bus {
 	public abstract void setGui(BusGui bg);
 
 	public abstract void GoToNextStop();
+
+	public abstract void msgNumberOfBoardingPassengers(int size);
 
 }

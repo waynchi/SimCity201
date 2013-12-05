@@ -1,10 +1,11 @@
-package transportation;
+package transportation.gui;
 import java.util.*;
 
 import city.gui.CityPanel;
 import city.gui.Lane;
 import city.gui.VehicleGui;
 
+import transportation.BusStop;
 import transportation.interfaces.Bus;
 
 public class BusGui extends VehicleGui{

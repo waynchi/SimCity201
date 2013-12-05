@@ -2,6 +2,7 @@ package transportation;
 import java.util.*;
 
 import agent.Agent;
+import transportation.gui.BusGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 public class BusAgent extends Agent implements Bus{
@@ -20,6 +21,7 @@ BusGui busGui;
 public enum BusState {driving, newStop, newStopAndPassengersNotified, waitingForNewPassengers, readyToLeave, off};
 BusState busState;
 BusStop currentStop;
+int boardingPassengers;
 List<BusStop> myBusStops = new ArrayList<BusStop>();
 
 public BusAgent(){
@@ -30,10 +32,24 @@ public BusAgent(){
 /* (non-Javadoc)
  * @see transportation.Bus#msgImBoarding(transportation.BusPassengerRole)
  */
+
+@Override
+public void msgNumberOfBoardingPassengers(int size) {
+	// TODO Auto-generated method stub
+	this.boardingPassengers = size;
+}
+
 @Override
 public void msgImBoarding(BusPassenger p){ //remove place
 System.out.println("Bus recieved message that passenger is boarding");
 myBusPassengers.add(new Passenger(p));
+boardingPassengers--;
+	if(boardingPassengers == 0)
+	{
+		System.out.println("Bus recieved last passenger, and is now ready to leave");
+		busState = BusState.readyToLeave;
+		stateChanged();
+	}
 }
 
 /* (non-Javadoc)
@@ -65,7 +81,7 @@ stateChanged();
  */
 @Override
 public void msgAllBusStopPassengersNotified(){
-//System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
+System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }
@@ -154,5 +170,8 @@ private boolean areAllBusPassengersNotified(){
 public void setGui(BusGui bg){
 	busGui = bg;
 }
+
+
+
 }
 

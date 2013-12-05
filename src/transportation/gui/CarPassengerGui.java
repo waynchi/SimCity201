@@ -1,4 +1,4 @@
-package transportation;
+package transportation.gui;
 
 import transportation.interfaces.CarPassenger;
 

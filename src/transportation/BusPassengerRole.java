@@ -1,7 +1,10 @@
 package transportation;
 
+import java.util.concurrent.Semaphore;
+
 import people.People;
 import people.Role;
+import transportation.gui.BusPassengerGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
 
@@ -41,8 +44,10 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	myBus = b;
 	//event = Event.busArrived;
 	//stateChanged();
-	myBus.msgImBoarding(this);
 	currentBusStop.msgLeavingBusStop(this);
+//	System.out.println("Calling bus");
+//	myBus.msgImBoarding(this);
+//	
 	}
 	
 	
@@ -77,46 +82,54 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 	
-		if(event == Event.busArrived && myState == State.waitingAtBusStop) {
-		        myState = State.waitingInBus;
-		        BoardBus();
-		        return true;
-		}
-	
-		if(event == Event.busArrivedAtDestination && myState == State.waitingInBus) {
-		        myState = State.leavingBus;
-		        LeaveBus();
-		        return true;
-		}
+//		if(event == Event.busArrived && myState == State.waitingAtBusStop) {
+//		        myState = State.waitingInBus;
+//		        BoardBus();
+//		        return true;
+//		}
+//	
+//		if(event == Event.busArrivedAtDestination && myState == State.waitingInBus) {
+//		        myState = State.leavingBus;
+//		        LeaveBus();
+//		        return true;
+//		}
 		return false;
 	}
-	
-	private void BoardBus(){
-	System.out.println("Bus passenger preparing to board bus");
-	myBus.msgImBoarding(this);
-	currentBusStop.msgLeavingBusStop(this);
-	}
-
-	private void LeaveBus() {
-	myBus.msgImLeaving(this);
-	myGui.DoLeaveBus(this);
-	//add gui for leaving bus
-	}
-	
-
-	
+//	
+//	private void BoardBus(){
+//	System.out.println("Bus passenger preparing to board bus");
+//	myBus.msgImBoarding(this);
+//	currentBusStop.msgLeavingBusStop(this);
+//	}
+//
+//	private void LeaveBus() {
+//	myBus.msgImLeaving(this);
+//	myGui.DoLeaveBus(this);
+//	//add gui for leaving bus
+//	}
+//	
+//
+//	
 	@Override
 	public void setPerson(People p) {
 		// TODO Auto-generated method stub
 		this.myPerson = p;
 	}
-	
-	public void setGui(BusPassengerGui g)
+//	
+//	public void setGui(BusPassengerGui g)
+//	{
+//		myGui = g;
+//	}
+//
+	public void setCurrentBusStop(BusStop S)
 	{
-		myGui = g;
+		this.currentBusStop = S;
 	}
-
-	
+//	
+	public void setDestinationBusStop(BusStop D)
+	{
+		this.destination = D;
+	}
 
 	
 

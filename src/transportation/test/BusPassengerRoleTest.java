@@ -6,11 +6,11 @@ import junit.framework.TestCase;
 
 import people.People;
 import people.PeopleAgent;
-import transportation.BusGui;
-import transportation.BusPassengerGui;
 import transportation.BusPassengerRole;
 import transportation.BusStop;
 import transportation.BusPassengerRole.State;
+import transportation.gui.BusGui;
+import transportation.gui.BusPassengerGui;
 import transportation.mock.MockBus;
 
 public class BusPassengerRoleTest extends TestCase{

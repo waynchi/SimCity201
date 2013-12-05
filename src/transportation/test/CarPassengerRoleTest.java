@@ -1,7 +1,6 @@
 package transportation.test;
 
 import transportation.CarGui;
-import transportation.CarPassengerGui;
 import transportation.CarPassengerRole;
 import transportation.CarPassengerRole.State;
 import transportation.mock.MockCar;
@@ -10,6 +9,7 @@ import junit.framework.TestCase;
 
 import people.People;
 import people.PeopleAgent;
+import transportation.gui.CarPassengerGui;
 import transportation.interfaces.*;
 
 public class CarPassengerRoleTest extends TestCase{
