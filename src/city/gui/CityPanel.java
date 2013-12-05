@@ -877,7 +877,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.fill(bs);
 		}
 		
-		//g.drawImage(background.getImage(), 0, 0, null);
+		g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
 			VehicleGui v = vehicles.get(i);
