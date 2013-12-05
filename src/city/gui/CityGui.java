@@ -359,10 +359,11 @@ public class CityGui extends JFrame implements ActionListener {
         
         buildingPanels.add(marketContainer,"" + 14);
         
-         
+
+        
         for(int j = 0; j < houseAnimationPanels.size(); j++)
         {
-        	if(j != 12) {
+        	if(j != 12) { //This handles outside houses ONLY
 	        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
 	    		houseContainer.setOpaque(true);
 	    	
@@ -402,6 +403,19 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+	}
+	
+	public void ClearWorld() {
+		for(PeopleAgent person : people) {
+			person.Arrived();
+			person.stopThread();
+			
+		}
+		cityPanel.vehicles.clear();
+		cityPanel.people.clear();
+	}
+	public void CreateWorld() {
+		
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
@@ -447,7 +461,7 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 		}
 		if(time % 100 == 60) {
-			time += 40;
+			time += 39;
 		}
 		if(time == 2400*x) {
 			time=0;
