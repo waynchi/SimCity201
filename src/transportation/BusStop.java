@@ -112,5 +112,12 @@ public void msgAnimationFinishedDoLeaveBusStop(BusPassenger bpr) {
 	return;
 }
 }
+
+public void setGui(BusStopGui bg)
+{
+	myGui = bg;
 }
+
+}
+
 
