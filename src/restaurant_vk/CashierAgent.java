@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import people.People;
 import people.PeopleAgent;
 import people.Role;
 import bank.interfaces.Teller;
@@ -48,6 +50,7 @@ public class CashierAgent extends Role implements Cashier {
 	public List<Shift> shiftRecord = new ArrayList<Shift>();
 	public Teller teller;
 	private double loanedMoney = 0;
+	public HostAgent host;
 	
 	public double waiterSalary = 100;
 	public double cashierSalary = 100;
@@ -137,12 +140,19 @@ public class CashierAgent extends Role implements Cashier {
 		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to inform that it is ready to help
+	 * the cashier.
+	 */
 	@Override
 	public void msgReadyToHelp(Teller teller) {
 		bankActivity = BankActivity.ReadyToHelp;
 		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to tell the amount of loaned money.
+	 */
 	@Override
 	public void msgGiveLoan(double funds, double amount) {
 		workingCapital += amount;
@@ -151,6 +161,9 @@ public class CashierAgent extends Role implements Cashier {
 		stateChanged();
 	}
 
+	/*
+	 * A message called by the cashier to tell the amount of money withdrawn.
+	 */
 	@Override
 	public void msgWithdrawSuccessful(double funds, double amount) {
 		workingCapital += amount;
@@ -158,10 +171,27 @@ public class CashierAgent extends Role implements Cashier {
 		stateChanged();
 	}
 
+	/*
+	 * A message called by the teller to tell the amount of money deposited. 
+	 */
 	@Override
 	public void msgDepositSuccessful(double funds) {
 		workingCapital = minCapital;
 		bankActivity = BankActivity.None;
+		stateChanged();
+	}
+	
+	/*
+	 * A message that each role calls when he/ she is leaving. This is to
+	 * record their shift so that they could be paid by the cashier.
+	 */
+	public void recordShift(PeopleAgent p, String role) {
+		shiftRecord.add(new Shift(p, role));
+		stateChanged();
+	}
+	
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
 		stateChanged();
 	}
 	
@@ -170,11 +200,8 @@ public class CashierAgent extends Role implements Cashier {
 	}
 	
 	public void msgIsInActive() {
-		stateChanged();
-	}
-	
-	public void recordShift(PeopleAgent p, String role) {
-		shiftRecord.add(new Shift(p, role));
+		leave = true;
+		this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		stateChanged();
 	}
 	
@@ -265,6 +292,9 @@ public class CashierAgent extends Role implements Cashier {
 		workingCapital -= b.cost;
 	}
 	
+	/*
+	 * Action to pay an employee his/ her salary.
+	 */
 	public void payEmployee(Shift s) {
 		if (s.role.equals("Waiter")) {
 			s.p.Money += waiterSalary;
@@ -280,9 +310,32 @@ public class CashierAgent extends Role implements Cashier {
 		}
 	}
 	
+	/*
+	 * Place request to the market to either deposit or withdraw money.
+	 */
+	public void orderBank() {
+		if (deposit == true) {
+			bankActivity = BankActivity.DepositRequested;
+			deposit = false;
+			teller.msgDeposit(getPersonAgent().getRestaurant(1).bankAccountID, workingCapital - minCapital);
+		}
+		else if (withdraw == true) {
+			bankActivity = BankActivity.WithdrawalRequested;
+			withdraw = false;
+			double total = 0.0;
+			if (minCapital > workingCapital)
+				total = minCapital - workingCapital;
+			total += computeTotalSalary();
+			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
+		}
+	}
+	
+	/*
+	 * Preparing to close down.
+	 */
 	public void prepareToClose() {
 		double total = computeTotalSalary() + minCapital;
-		if (workingCapital >= total) {
+		if (workingCapital >= total && shiftRecord.isEmpty()) {
 			teller.msgNeedHelp(this, "blah");
 			bankActivity = BankActivity.HelpRequested;
 			deposit = true;
@@ -295,17 +348,20 @@ public class CashierAgent extends Role implements Cashier {
 		closingState = ClosingState.Preparing;
 	}
 	
-	public void orderBank() {
-		if (deposit == true) {
-			bankActivity = BankActivity.DepositRequested;
-			deposit = false;
-			teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, workingCapital - minCapital);
-		}
-		else if (withdraw == true) {
-			bankActivity = BankActivity.WithdrawalRequested;
-			withdraw = false;
-			teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID, workingCapital - minCapital);
-		}
+	/*
+	 * An action to shut the restaurant down.
+	 */
+	public void shutDown() {
+		
+	}
+	
+	/*
+	 * An action to leave the restaurant.
+	 */
+	public void leaveRestaurant() {
+		// Animation
+		isActive = false;
+		myPerson.msgDone("Cashier");
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -320,10 +376,26 @@ public class CashierAgent extends Role implements Cashier {
 			return true;
 		}
 		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
+		
 		// Pay money to an employee.
 		Shift s = findPayableShift();
 		if (s != null) {
 			payEmployee(s);
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed && host.anyCustomer() == false && isAnyCheckThere() == false) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
+			shutDown();
+			leaveRestaurant();
 			return true;
 		}
 		
@@ -447,6 +519,16 @@ public class CashierAgent extends Role implements Cashier {
 	
 	public double computeTotalSalary() {
 		double result = 0.0;
+		for (Shift s : shiftRecord) {
+			if (s.role.equals("Cashier"))
+				result += cashierSalary;
+			else if (s.role.equals("Cook"))
+				result += cookSalary;
+			else if (s.role.equals("Waiter"))
+				result += waiterSalary;
+			else if (s.role.equals("Host"))
+				result += hostSalary;
+		}
 		return result;
 	}
 	
@@ -506,6 +588,15 @@ public class CashierAgent extends Role implements Cashier {
 	public boolean isCheckBeingPaid(Customer c) {
 		for (MyCheck mc : checks) {
 			if (mc.cust == c && mc.s == CheckState.BeingPaid) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isAnyCheckThere() {
+		for (MyCheck mc : checks) {
+			if (mc.s != CheckState.Paid && mc.s != CheckState.PaidLess) {
 				return true;
 			}
 		}

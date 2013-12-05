@@ -311,6 +311,18 @@ public class HostAgent extends Role implements Host{
 		return customers;
 	}
 	
+	public boolean anyCustomer() {
+		for (Customer c : customers) {
+			if (c.isReadyToSit())
+				return true;
+		}
+		for (Table t : tables) {
+			if (t.isOccupied())
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean isATableOccupied() {
 		synchronized (tables) {
 			for (Table t : tables) {
