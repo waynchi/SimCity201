@@ -18,7 +18,7 @@ import java.awt.event.*;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class BusStopGui extends JFrame implements ActionListener {
+public class BusStopGui extends JPanel implements ActionListener {
     
 	BusStopPanel animationPanel = new BusStopPanel();
 //	BusStop bs;
@@ -76,10 +76,10 @@ public class BusStopGui extends JFrame implements ActionListener {
 	 public void updatePosition() {
 	    	animationPanel.updatePosition();
 	}
-	 public static void main(String[] args) {
-			BusStopGui gs = new BusStopGui();
-			
-		}
+//	 public static void main(String[] args) {
+//			BusStopGui gs = new BusStopGui();
+//			
+//		}
 
 
 
