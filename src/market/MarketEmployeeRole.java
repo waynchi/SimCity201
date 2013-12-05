@@ -88,11 +88,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				trucks.add(new MarketTruckAgent("MarketTruck "+i));
 			}
 		}
-		items.put("Steak", new Item("Steak", 100));
-		items.put("Salad", new Item("Salad", 100));
-		items.put("Pizza", new Item("Pizza", 100));
-		items.put("Chicken", new Item("Chicken", 100));
-		items.put("Car", new Item("Car", 100));
+		items.put("Steak", new Item("Steak", 1000000));
+		items.put("Salad", new Item("Salad", 1000000));
+		items.put("Pizza", new Item("Pizza", 1000000));
+		items.put("Chicken", new Item("Chicken", 1000000));
+		items.put("Car", new Item("Car", 1000000));
 
 	}
 

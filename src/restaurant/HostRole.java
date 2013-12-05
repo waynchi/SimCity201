@@ -3,7 +3,6 @@ package restaurant;
 import restaurant.gui.HostGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant.interfaces.Customer;
 import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 
@@ -365,8 +364,9 @@ public class HostRole extends Role implements Host{
 		isActive = false;
 		leaveWork = false;
 		// reset the two lists of waiters
-		waiters = new ArrayList<MyWaiter>();
-		allWaiters = new ArrayList<Waiter>();
+		waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+		allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
+		workers = Collections.synchronizedList(new ArrayList<People>());
 		getPersonAgent().msgDone("RestaurantHostRole");
 	}
 	
