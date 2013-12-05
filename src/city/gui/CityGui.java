@@ -447,7 +447,7 @@ public class CityGui extends JFrame implements ActionListener {
 		time++;
 		if(time % x == 0)
 		{
-			if(time%(x*10) == 0)
+			if(time%(x) == 0)
 			{
 				System.out.println(time/(x));
 			}
@@ -456,7 +456,7 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 		}
 		if(time % 100 == 60) {
-			time += 40;
+			time += 39;
 		}
 		if(time == 2400*x) {
 			time=0;

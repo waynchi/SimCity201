@@ -34,7 +34,7 @@ public class PeopleAgent extends Agent implements People{
 	PersonGui personGui;
 	CityGui cityGui;
 	private boolean testmode = false;
-	public int HomeNum;
+	public int HomeNum = 0;
 	private String type = "default";
 	
 	private Semaphore moving = new Semaphore(0,true);
@@ -357,67 +357,6 @@ public class PeopleAgent extends Agent implements People{
 			stateChanged();
 			return;
 		}*/
-		if(state == AgentState.Idle)
-		{
-			if(!jobs.isEmpty())
-			{
-				for(int i = 0; i < jobs.size(); i++)
-				{
-				if(jobs.get(i).start - Time >= 200 && Time <=2100 && buy == BuyState.NextDay && Time >= 1045)
-				{
-					if(!hasCar)
-					{
-						if(rand.nextInt(100) <= 100)
-						{
-							buy = BuyState.GoingToBuy;
-						}
-						else
-						{
-							buy = BuyState.NotBuying;
-						}
-						if(buy == BuyState.GoingToBuy)
-						{
-							if(Money >= 30000)
-							{
-								event = AgentEvent.GoingToBuyCar;
-								print("I am going to buy a car");
-								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-								buy = BuyState.NotBuying;
-								stateChanged();
-								return;
-							}
-//							else
-//							{
-//								event = AgentEvent.GoingToRetrieveMoney;
-//								log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//								stateChanged();
-//								buy = BuyState.NotBuying;
-//								return;
-//							}
-							
-						}
-					}
-					else
-					{
-						//System.out.println(Money);
-						if(Money >= 1000000 && Time >= 1130)
-						{
-							event = AgentEvent.GoingToDepositMoney;
-							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-							stateChanged();
-							return;
-						}
-					}
-				}
-				}
-			}
-			if(location != AgentLocation.Home)
-			{
-				event = AgentEvent.GoingHome;
-				stateChanged();
-				return;
-			}
-		}
 		int lastTime = 100000;
 		for(Job job: jobs)
 		{
@@ -437,6 +376,71 @@ public class PeopleAgent extends Agent implements People{
 			return;
 		}
 		lastTime = job.end;
+		}
+		if(state == AgentState.Idle)
+		{
+			if(!jobs.isEmpty())
+			{
+				if(buy == BuyState.NextDay && Time <=2100)
+				{
+					if(jobs.get(0).start - Time >= 200)
+					{
+						if(!(Markets.get(0).isClosed))
+						{
+							if(!hasCar)
+							{
+								if(rand.nextInt(100) <= 100)
+								{
+									buy = BuyState.GoingToBuy;
+								}
+								else
+								{
+									buy = BuyState.NotBuying;
+								}
+								if(buy == BuyState.GoingToBuy)
+								{
+									if(Money >= 20000)
+									{
+										location = AgentLocation.Road;
+										event = AgentEvent.GoingToBuyCar;
+										print("I am going to buy a car");
+										log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+										buy = BuyState.NotBuying;
+										stateChanged();
+										return;
+									}
+//									else
+//									{
+//										event = AgentEvent.GoingToRetrieveMoney;
+//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//										stateChanged();
+//										buy = BuyState.NotBuying;
+//										return;
+//									}	
+								}
+							}			
+						}
+					}
+				}
+			}
+			else
+			{
+				//System.out.println(Money);
+				if(Money >= 1000000 && Time >= 1130)
+				{
+					event = AgentEvent.GoingToDepositMoney;
+					location = AgentLocation.Road;
+					log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+					stateChanged();
+					return;
+				}
+			}
+//			if(location != AgentLocation.Home)
+//			{
+//				event = AgentEvent.GoingHome;
+//				stateChanged();
+//				return;
+//			}
 		}
 		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
 		if(state == AgentState.Idle)
@@ -516,7 +520,7 @@ public class PeopleAgent extends Agent implements People{
 				}
 				if(buy == BuyState.GoingToBuy)
 				{
-					if(!(Time >= 2100) && Money >= 30000)
+					if(Money >= 20000)
 					{
 						event = AgentEvent.GoingToBuyCar;
 						stateChanged();
@@ -803,7 +807,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Home 1"); //TODO this is guess
+				personGui.setDestination("Home " + HomeNum); //TODO this is guess
 				print("Do Not Have Car");
 			}
 			
