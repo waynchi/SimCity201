@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
 import people.Role;
 import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.CashierAgent;
@@ -13,7 +12,6 @@ import restaurant_vk.CookAgent;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
-import agent.Agent;
 
 public class WaiterBaseAgent extends Role implements Waiter {
 
