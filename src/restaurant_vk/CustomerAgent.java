@@ -5,7 +5,6 @@ import restaurant_vk.CashierAgent;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
-import agent.Agent;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
 import people.People;
 import people.PeopleAgent;
 import people.Role;
@@ -19,7 +18,6 @@ import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
-import agent.Agent;
 
 /**
  * @author Vikrant Singhal
@@ -99,6 +97,7 @@ public class CashierAgent extends Role implements Cashier {
 			if (b.orderNumber == orderNumber) {
 				found = true;
 				b.itemsFromCook = marketOrder;
+				break;
 			}
 		}
 		if (found == false) {
@@ -120,6 +119,7 @@ public class CashierAgent extends Role implements Cashier {
 				found = true;
 				b.itemsFromMarket = items;
 				b.cost = price;
+				break;
 			}
 		}
 		if (found == false) {

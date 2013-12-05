@@ -8,14 +8,12 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
 import people.Role;
 import restaurant_vk.gui.CookGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import market.interfaces.*;
 import restaurant_vk.interfaces.Waiter;
-import agent.Agent;
 
 /**
  * @author Vikrant Singhal
@@ -121,7 +119,6 @@ public class CookAgent extends Role implements Cook {
 	
 	public void informCashier(MarketOrder mo) {
 		mo.s = MarketOrderState.InformedCashier;
-		// Another parameter for order number should be added to cashier interface.
 		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
 	}
 	

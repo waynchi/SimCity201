@@ -1,6 +1,5 @@
 package restaurant_vk;
 
-import agent.Agent;
 import restaurant_vk.gui.HostGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
