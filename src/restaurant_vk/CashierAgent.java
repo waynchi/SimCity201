@@ -196,6 +196,8 @@ public class CashierAgent extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
+		enter = true;
+		isActive = true;
 		stateChanged();
 	}
 	
@@ -352,7 +354,7 @@ public class CashierAgent extends Role implements Cashier {
 	 * An action to shut the restaurant down.
 	 */
 	public void shutDown() {
-		
+		closingState = ClosingState.Done;
 	}
 	
 	/*
@@ -364,6 +366,12 @@ public class CashierAgent extends Role implements Cashier {
 		myPerson.msgDone("Cashier");
 	}
 	
+	public void enterRestaurant() {
+		enter = false;
+		closingState = ClosingState.None;
+		// Animation
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -371,6 +379,11 @@ public class CashierAgent extends Role implements Cashier {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
 		if (bankActivity == BankActivity.ReadyToHelp) {
 			orderBank();
 			return true;
