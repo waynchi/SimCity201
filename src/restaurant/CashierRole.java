@@ -8,11 +8,13 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
+import people.People;
 import people.Role;
 
 
@@ -57,10 +59,7 @@ public class CashierRole extends Role implements Cashier {
 	private double min_working_capital = 1000.0;
 	private double working_capital = 100000.0;
 	private double bank_balance = 0.0;
-	private int waiter_salary = 100;
-	private int cook_salary = 100;
-	private int  host_salary = 100;
-	private int cashier_salary = 100;
+	private double salary = 200.0;
 
 
 	public class Check {
@@ -125,7 +124,6 @@ public class CashierRole extends Role implements Cashier {
 		min_working_capital = 1000;
 		working_capital = 100000;
 		bank_balance = 0.0;
-		waiter_salary = cook_salary = host_salary = cashier_salary = 100;
 		leaveWork = false;
 		isActive = false;
 		turnActive = false;
@@ -185,7 +183,7 @@ public class CashierRole extends Role implements Cashier {
 	
 	// from market cashier
 	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber) {
-		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price));
+		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
 
 		boolean orderFound = false;
 		synchronized(marketBills){
@@ -198,7 +196,7 @@ public class CashierRole extends Role implements Cashier {
 		}
 		if (!orderFound) {
 			marketBills.add(new MarketBill(price ,items, orderNumber));
-		}	
+		}
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -282,8 +280,7 @@ public class CashierRole extends Role implements Cashier {
 		bank_balance = funds;
 		getPersonAgent().CallstateChanged();
 	}
-
-
+	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
@@ -366,8 +363,9 @@ public class CashierRole extends Role implements Cashier {
 			closeRestaurant();
 			return true;
 		} 
-		if (leaveWork && host.getCustomerSize() == 0) 	{
-			prepareToClose();
+		if (leaveWork) 	{
+			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) prepareToClose();
+			else if (!getPersonAgent().getRestaurant(0).isClosed) leaveWork();
 			return true;
 		}
 
@@ -384,7 +382,6 @@ public class CashierRole extends Role implements Cashier {
 
 	// Actions
 	private void clockIn() {
-		print("in action clockIn");
 		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
@@ -459,9 +456,25 @@ public class CashierRole extends Role implements Cashier {
 		marketBills.remove(bill);
 	}
 
+	// leave work in the middle of a day, i.e. the restaurant is not close yet
+	private void leaveWork() {
+		isActive = false;
+		if (!inTest){
+			cashierGui.DoLeaveWork();
+			try {
+				atExit.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			leaveWork = false;
+			cashierGui.setPresent(false);
+			cashierGui.setDefaultDestination();
+			getPersonAgent().msgDone("RestaurantCashierRole");
+		}	
+	}
+	
 	private void prepareToClose() {
-		print ("in action prepareToClose, will be messaging teller msgNeedHelp");
-
 		log.add(new LoggedEvent("In action prepareToClose"));
 		leaveWork = false;
 		double total = getTotalSalary() + min_working_capital;
@@ -479,24 +492,28 @@ public class CashierRole extends Role implements Cashier {
 			bankState = bankActivityState.ASKED_FOR_HELP;
 			withdraw = true;
 		}
-
-
 	}
 
 	private void payWorkers() {
-		print("in action payWorkers, paying everybody");
+		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		for (int i=0; i < host.getWaiters().size(); i++) {
+		/*for (int i=0; i < host.getWaiters().size(); i++) {
 			host.getWaiters().get(i).getPerson().setMoney( waiter_salary);
 		}
 		((CookRole) host.getCook()).getPerson().setMoney(cook_salary);
 		host.getPerson().setMoney(host_salary);
 		this.getPersonAgent().setMoney( cashier_salary);
+		*/
+		for (People p : ((HostRole)host).getWorkers()) {
+			double money = p.getMoney();
+			money += salary;
+			p.setMoney(money);
+		}
 	}
 
+	
 	private void closeRestaurant() {
-		print ("in action closeRestaurant, goint to the exit");
-		log.add(new LoggedEvent("In action closeRestaurant"));
+		log.add(new LoggedEvent("in action closeRestaurant, goint to the exit"));
 		teller.msgDoneAndLeaving();
 		deposit = withdraw = false;
 		isActive = false;
@@ -517,7 +534,7 @@ public class CashierRole extends Role implements Cashier {
 
 	private double getTotalSalary() {
 		print ("in action getTotalSalary, calculating total salary for workeres");
-		return (host.getWaiters().size()) * waiter_salary + cook_salary + host_salary + cashier_salary;
+		return (((HostRole)host).getWorkers().size() * salary);
 	}
 
 	private void depositExcessMoney() {

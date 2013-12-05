@@ -24,7 +24,8 @@ public class NewCashierTest extends TestCase{
 	MockMarketCashier mmc;
 	RestaurantGui gui;
 	MockHost host;
-	Map<String,Integer> items = new HashMap<String,Integer>();
+	Map<String,Integer> items1 = new HashMap<String,Integer>();
+	Map<String,Integer> items2 = new HashMap<String,Integer>();
 
 
 	public static void main(String args[]) {
@@ -52,40 +53,54 @@ public class NewCashierTest extends TestCase{
 		mme = new MockMarketEmployee("employee");
 		mme.setCashier(mmc);
 		mmc = new MockMarketCashier("customer");
-		items.put("Steak", 2);
-		items.put("Chicken", 3);
+		items1.put("Steak", 2);
+		items1.put("Chicken", 3);
+		items2.put("Steak", 2);
+		items2.put("Chicken", 2);
 	}      
 	
-	public void testOneMarketBill() {
+	public void testOneMarketBill_getBillFirst() {
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
-		assertTrue("cashier log reads: " + cashier.log.toString(),
+		assertTrue("cashier should be in action clockIn but it's not. Instead, cashier log reads: " + cashier.log.toString(),
 				cashier.log.containsString("in clock in"));
-		assertTrue(cashier.getMarketBills().size() == 0);
+		assertTrue("the market bill list should be empty but it's not", 
+				cashier.getMarketBills().size() == 0);
 		
-		cashier.msgHereIsWhatIsDue(100.0, items); 
-		assertTrue("cashier log reads: " + cashier.log.toString(),
-				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
-		assertTrue(cashier.getMarketBills().size() == 1);
-		assertTrue(cashier.getMarketBills().get(0).checkReceived);
-		assertFalse(cashier.getMarketBills().get(0).itemsReceived);
+		cashier.msgHereIsWhatIsDue(100.0, items1, 1); 
+		assertTrue("cashier should have received msgHereIsWhatIsDue but it doesn't. instead cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0 and order number is 1"));
+		assertTrue("the market bill list should have size 1 but it doesn't. instead the size is " + cashier.getMarketBills().size(),
+				cashier.getMarketBills().size() == 1);
+		assertTrue("checkReceived should be true for the market bill just received, but it's not",
+				cashier.getMarketBills().get(0).checkReceived);
+		assertFalse("itemsReceived should be false for the market bill just received, but it's not",
+				cashier.getMarketBills().get(0).itemsReceived);
 		cashier.pickAndExecuteAnAction();
 		
 		// cashier shouldn't be doing anything
-		assertTrue("cashier log reads: " + cashier.log.toString(),
-				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0"));
+		assertTrue("scheduler should not pick anything so the log should be the same but it's not. instead"
+				+ " cashier log reads: " + cashier.log.toString(),
+				cashier.log.containsString("Received msgHereIsWhatIsDue with price 100.0 and order number is 1"));
 
 		
-		cashier.msgGotMarketOrder(items);
-		assertTrue(cashier.getMarketBills().size() == 1);
-		assertTrue(cashier.getMarketBills().get(0).checkReceived);
-		assertTrue(cashier.getMarketBills().get(0).itemsReceived);
+		cashier.msgGotMarketOrder(items2, 1); // different items shouldn't matter, cashier checks the order number only
+		assertTrue("market size should still be 1 but it's not. the size is " + cashier.getMarketBills().size(),
+				cashier.getMarketBills().size() == 1);
+		assertTrue("checkReceived should be true for the market bill just received, but it's not",
+				cashier.getMarketBills().get(0).checkReceived);
+		assertTrue("itemsReceived should be true for the market bill just received, but it's not",
+				cashier.getMarketBills().get(0).itemsReceived);
 		cashier.pickAndExecuteAnAction();
 		
-		assertTrue("cashier log reads: " + cashier.log.toString(),
+		assertTrue("cashier has verified the market bill and should be paying it, but it's not. "
+				+ "instead the cashier log reads: " + cashier.log.toString(),
 				cashier.log.containsString("In action payMarket, amount due is 100"));
-		assertEquals(cashier.getMyMoney(),0.0);
-		mmc.msgHereIsPayment(100000.0, items, cashier);
+		assertEquals("cashier gives every penny to the market cashier so its money should be 0, but it's not. "
+				+ "instead the money is " + cashier.getMyMoney(),
+				cashier.getMyMoney(),0.0);
+		
+		mmc.msgHereIsPayment(100000.0, items1, cashier);
 		assertTrue("mock market cashier log reads: " + mmc.log.toString(),
 				mmc.log.containsString("received msgHereIsPayment from cashier"));
 		

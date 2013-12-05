@@ -20,6 +20,7 @@ import people.Role;
 public class HostRole extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
+	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
 	
 	private boolean leaveWork = false;
 	private boolean closeRestaurant = false;
@@ -114,6 +115,7 @@ public class HostRole extends Role implements Host{
 	// Messages
 	public void msgIsActive() {
 		isActive = true;
+		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -132,6 +134,7 @@ public class HostRole extends Role implements Host{
 	public void addWaiter(Waiter w){
 		allWaiters.add(w);
 		waiters.add(new MyWaiter(w));
+		if(!workers.contains(((BaseWaiterRole)w).getPersonAgent())) workers.add(((BaseWaiterRole)w).getPersonAgent());
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -393,6 +396,7 @@ public class HostRole extends Role implements Host{
 
 	public void setCashier(Cashier c) {
 		cashier = c;
+		if(!workers.contains(((CashierRole)cashier).getPersonAgent())) workers.add(((CashierRole)cashier).getPersonAgent());
 	}
 
 	public Cashier getCashier() {
@@ -401,6 +405,7 @@ public class HostRole extends Role implements Host{
 
 	public void setCook(Cook c) {
 		cook = c;
+		if(!workers.contains(((CookRole)cook).getPersonAgent())) workers.add(((CookRole)cook).getPersonAgent());
 	}
 
 	public Cook getCook() {
@@ -438,6 +443,10 @@ public class HostRole extends Role implements Host{
 	
 	public int getCustomerSize() {
 		return customers.size();
+	}
+	
+	public List<People> getWorkers () {
+		return workers;
 	}
 	
 }

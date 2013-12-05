@@ -194,11 +194,6 @@ public class CookRole extends Role implements Cook{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		//if (onOpen) {
-		//	orderFoodThatIsLow();
-		//	return true;
-		//}
-		
 		if (turnActive) {
 			clockIn();
 			orderFoodThatIsLow();
@@ -415,8 +410,6 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void done() {
-		// gui do go to the exit
-		
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -516,13 +509,6 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
-
-
-
-
-
-
-
 
 }
 

@@ -9,7 +9,7 @@ public class CookTest extends TestCase{
 	}
 
 	public static TestSuite suite ( ) {
-		return new TestSuite(NewCashierTest.class);
+		return new TestSuite(CookTest.class);
 	}
 
 	public void setUp() throws Exception{
