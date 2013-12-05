@@ -369,6 +369,7 @@ public class HostRole extends Role implements Host{
 	
 	private void closeRestaurant() {
 		getPersonAgent().getRestaurant(0).isClosed = true;
+		closeRestaurant = false;
 	}
 
 	//utilities

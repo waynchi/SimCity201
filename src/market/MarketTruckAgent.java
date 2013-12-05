@@ -78,8 +78,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		//new java.util.Timer().schedule(
 		//		new java.util.TimerTask(){
 		//			public void run(){
-						print("order delivered to restaurant");
-						((CookRole) order.cook).msgHereIsYourOrder(order.items, order.orderNumber);		
+						((CookRole) order.cook).msgHereIsYourOrder(order.items, order.orderNumber);	
+						log.add(new LoggedEvent("order delivered to restaurant"));
 						orders.remove(order);
 		//		},
 		//		2000);

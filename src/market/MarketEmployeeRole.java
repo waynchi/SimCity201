@@ -230,7 +230,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		else {
 			marketTruckCount ++;
-			print ("in method getNextMarketTruck, trucks size is " + trucks.size());
 			return trucks.get(marketTruckCount);
 		}
 	}
