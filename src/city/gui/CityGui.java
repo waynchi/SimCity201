@@ -189,6 +189,7 @@ public class CityGui extends JFrame implements ActionListener {
 					house.setItems();
 					houseAnimationPanels.add(house.gui.hp);
 					HousingResidentRole residentRole = new HousingResidentRole();
+					
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
 					//residentRole.testModeOn();
@@ -361,9 +362,12 @@ public class CityGui extends JFrame implements ActionListener {
          
         for(int j = 0; j < houseAnimationPanels.size(); j++)
         {
-        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
-    		houseContainer.setOpaque(true);
-    		buildingPanels.add(houseContainer, "" + j);
+        	if(j != 12) {
+	        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+	    		houseContainer.setOpaque(true);
+	    	
+	    		buildingPanels.add(houseContainer, "" + j);
+        	}
         }
         for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++) {
         	JScrollPane apartmentHouseContainer = new JScrollPane(apartment1HouseAnimationPanels.get(j));
