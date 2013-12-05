@@ -17,4 +17,6 @@ public interface Bus {
 
 	public abstract void GoToNextStop();
 
+	public abstract void msgNumberOfBoardingPassengers(int size);
+
 }

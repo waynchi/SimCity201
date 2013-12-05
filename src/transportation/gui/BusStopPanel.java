@@ -44,7 +44,7 @@ public class BusStopPanel extends JPanel implements ActionListener {
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
         
-        g2.drawImage(market_background.getImage(), 0, 0, 500, 400, null);
+        //g2.drawImage(market_background.getImage(), 0, 0, 500, 400, null);
 
 
 
@@ -83,8 +83,8 @@ public class BusStopPanel extends JPanel implements ActionListener {
 		repaint();
 	}
 
-//	public void addGui(MarketCashierGui marketCashierGui) {
-//		// TODO Auto-generated method stub
-//		guis.add(marketCashierGui);
-//	}
+	public void addGui(BusStopPassengerGui bpg) {
+		// TODO Auto-generated method stub
+		guis.add(bpg);
+	}
 }
