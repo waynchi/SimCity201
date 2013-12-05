@@ -331,12 +331,14 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == 800 && state == AgentState.Sleeping)
 		{
 			event = AgentEvent.WakingUp;
+			location = AgentLocation.Home;
 			log.add(new LoggedEvent("Waking Up In Message"));
 			stateChanged();
 			return;
 		}
 		if(Time == 2330)
 		{
+			location = AgentLocation.Home;
 			event = AgentEvent.GoingToSleep;
 			buy = BuyState.NextDay;
 			log.add(new LoggedEvent("Sleeping In Message"));
@@ -344,7 +346,7 @@ public class PeopleAgent extends Agent implements People{
 			stateChanged();
 			return;
 		}
-		if(Time >= 2330 && state != AgentState.Sleeping)
+		/*if(Time >= 2330 && state != AgentState.Sleeping)
 		{
 			state = AgentState.IdleAtHome;
 			event = AgentEvent.GoingToSleep;
@@ -354,7 +356,7 @@ public class PeopleAgent extends Agent implements People{
 			Hunger = 1215;
 			stateChanged();
 			return;
-		}
+		}*/
 		if(state == AgentState.Idle)
 		{
 			if(!jobs.isEmpty())

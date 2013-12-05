@@ -27,10 +27,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	
 	static final int FPS_MIN = 1;
 	static final int FPS_MAX = 30;
-	static final int FPS_INIT = 15; 
+	static final int FPS_INIT = 5; 
 	
 	public CityControls(CityPanel cityPanel, CityGui cityGui) {
 		this.cityPanel = cityPanel;
+		this.cityGui = cityGui;
 		
 		this.setVisible(true);
 
@@ -139,17 +140,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	
 	public void stateChanged(ChangeEvent e) {
 	    JSlider source = (JSlider)e.getSource();
-//	    if (!source.getValueIsAdjusting()) {
-//	        int fps = (int)source.getValue();
-//	        if (fps == 0) {
-//	            if (!frozen) stopAnimation();
-//	        } else {
-//	            delay = 1000 / fps;
-//	            timer.setDelay(delay);
-//	            timer.setInitialDelay(delay * 10);
-//	            if (frozen) startAnimation();
-//	        }
-//	    }
+	    if (!source.getValueIsAdjusting()) {
+	    	int fps = (int)source.getValue();
+	    	cityGui.timer.setDelay(fps);
+	    }
 	}
 	
 	private class ControlPanel extends JPanel {

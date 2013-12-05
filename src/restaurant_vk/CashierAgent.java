@@ -10,8 +10,8 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
+import market.interfaces.*;
 import restaurant_vk.interfaces.Customer;
-import restaurant.interfaces.Cashier;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
 import agent.Agent;
@@ -35,6 +35,7 @@ public class CashierAgent extends Agent implements Cashier {
 	private double myCash = 20.0;
 	private Timer timer = new Timer();
 	private final int TIME_TO_CHECK_OUT = 1000;
+	private MarketCashier mCashier;
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -180,16 +181,14 @@ public class CashierAgent extends Agent implements Cashier {
 				return;
 			}
 		}
+		b.s = BillState.Verified;
 	}
 	
 	/*
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
-//		b.m.hereIsMoney(b.cost);
-//		myCash = myCash - b.cost;
-//		b.state = BillState.Paid;
-//		print("Paid " + b.m + " $" + b.cost + ".");
+		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -273,13 +272,13 @@ public class CashierAgent extends Agent implements Cashier {
 	}
 	
 	private Bill findBillThatCanBePaid() {
-//		synchronized (bills) {
-//			for (Bill b : bills) {
-//				if (b.state == BillState.Unpaid && myCash >= b.cost) {
-//					return b;
-//				}
-//			}
-//		}
+		synchronized (bills) {
+			for (Bill b : bills) {
+				if (b.s == BillState.Verified && myCash >= b.cost) {
+					return b;
+				}
+			}
+		}
 		return null;
 	}
 	
@@ -388,6 +387,7 @@ public class CashierAgent extends Agent implements Cashier {
 		Map<String, Integer> itemsFromMarket = null;
 		BillState s;
 		int orderNumber;
+		double cost;
 		
 		public Bill(int orderNumber) {
 			this.orderNumber = orderNumber;

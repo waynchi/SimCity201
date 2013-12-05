@@ -9,10 +9,12 @@ public class Bank {
 	public TellerRole t;
 	public Dimension l;
 	public String n;
+	public boolean isClosed;
 	public Bank(TellerRole host, Dimension loc, String name) {
 		this.t = host;
 		this.l = loc;
 		this.n = name;
+		this.isClosed = false;
 		
 	}
 	
