@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
+import people.PeopleAgent;
 import people.Role;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
@@ -34,10 +34,25 @@ public class CashierAgent extends Role implements Cashier {
 	private Menu m = new Menu();
 	private MyCheck currentCheck = null;
 	private CashierGui gui = null;
-	private double myCash = 20.0;
+	private double workingCapital = 10000.0;
+	private double minCapital = 1000;
 	private Timer timer = new Timer();
 	private final int TIME_TO_CHECK_OUT = 1000;
 	private MarketCashier mCashier;
+	private boolean leave = false;
+	private boolean enter = false;
+	private boolean deposit = false;
+	private boolean withdraw = false;
+	private BankActivity bankActivity = BankActivity.None;
+	private ClosingState closingState = ClosingState.None;
+	public List<Shift> shiftRecord = new ArrayList<Shift>();
+	public Teller teller;
+	private double loanedMoney = 0;
+	
+	public double waiterSalary = 100;
+	public double cashierSalary = 100;
+	public double cookSalary = 100;
+	public double hostSalary = 100;
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -75,6 +90,19 @@ public class CashierAgent extends Role implements Cashier {
 	 */
 	@Override
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
+		boolean found = false;
+		for (Bill b : bills) {
+			if (b.orderNumber == orderNumber) {
+				found = true;
+				b.itemsFromCook = marketOrder;
+			}
+		}
+		if (found == false) {
+			Bill b = new Bill(orderNumber);
+			b.itemsFromCook = marketOrder;
+			bills.add(b);
+		}
+		stateChanged();
 	}
 
 	/*
@@ -82,6 +110,21 @@ public class CashierAgent extends Role implements Cashier {
 	 */
 	@Override
 	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber) {
+		boolean found = false;
+		for (Bill b : bills) {
+			if (b.orderNumber == orderNumber) {
+				found = true;
+				b.itemsFromMarket = items;
+				b.cost = price;
+			}
+		}
+		if (found == false) {
+			Bill b = new Bill(orderNumber);
+			b.cost = price;
+			b.itemsFromMarket = items;
+			bills.add(b);
+		}
+		stateChanged();
 	}
 
 	/*
@@ -90,22 +133,49 @@ public class CashierAgent extends Role implements Cashier {
 	 */
 	@Override
 	public void msgHereIsChange(double change) {
+		workingCapital += change;
+		stateChanged();
 	}
 
 	@Override
 	public void msgReadyToHelp(Teller teller) {
+		bankActivity = BankActivity.ReadyToHelp;
+		stateChanged();
 	}
 
 	@Override
 	public void msgGiveLoan(double funds, double amount) {
+		workingCapital += amount;
+		loanedMoney += amount;
+		bankActivity = BankActivity.None;
+		stateChanged();
 	}
 
 	@Override
 	public void msgWithdrawSuccessful(double funds, double amount) {
+		workingCapital += amount;
+		bankActivity = BankActivity.None;
+		stateChanged();
 	}
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
+		workingCapital = minCapital;
+		bankActivity = BankActivity.None;
+		stateChanged();
+	}
+	
+	public void msgIsActive() {
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		stateChanged();
+	}
+	
+	public void recordShift(PeopleAgent p, String role) {
+		shiftRecord.add(new Shift(p, role));
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -148,7 +218,7 @@ public class CashierAgent extends Role implements Cashier {
 				if (m.c == c && (m.s == CheckState.PaidLess || m.s == CheckState.BeingPaid)) {
 					if (cashLeft >= m.c.getCost()) {
 						cashLeft = cashLeft - m.c.getCost();
-						myCash += m.c.getCost();
+						workingCapital += m.c.getCost();
 						m.amountPaid = m.c.getCost();
 						m.s = CheckState.Paid;
 						approvedPayments.add(c);
@@ -192,8 +262,50 @@ public class CashierAgent extends Role implements Cashier {
 	private void payBill(Bill b) {
 		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
 		b.s = BillState.Paid;
-		// Reduce restaurant cash.
-		myCash -= b.cost;
+		workingCapital -= b.cost;
+	}
+	
+	public void payEmployee(Shift s) {
+		if (s.role.equals("Waiter")) {
+			s.p.Money += waiterSalary;
+		}
+		else if (s.role.equals("Cook")) {
+			s.p.Money += cookSalary;
+		}
+		else if (s.role.equals("Host")) {
+			s.p.Money += hostSalary;
+		}
+		else if (s.role.equals("Cashier")) {
+			s.p.Money += cashierSalary;
+		}
+	}
+	
+	public void prepareToClose() {
+		double total = computeTotalSalary() + minCapital;
+		if (workingCapital >= total) {
+			teller.msgNeedHelp(this, "blah");
+			bankActivity = BankActivity.HelpRequested;
+			deposit = true;
+		}
+		else {
+			teller.msgNeedHelp(this, "blah");
+			bankActivity = BankActivity.HelpRequested;
+			withdraw = true;
+		}
+		closingState = ClosingState.Preparing;
+	}
+	
+	public void orderBank() {
+		if (deposit == true) {
+			bankActivity = BankActivity.DepositRequested;
+			deposit = false;
+			teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, workingCapital - minCapital);
+		}
+		else if (withdraw == true) {
+			bankActivity = BankActivity.WithdrawalRequested;
+			withdraw = false;
+			teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID, workingCapital - minCapital);
+		}
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -203,6 +315,18 @@ public class CashierAgent extends Role implements Cashier {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if (bankActivity == BankActivity.ReadyToHelp) {
+			orderBank();
+			return true;
+		}
+		
+		// Pay money to an employee.
+		Shift s = findPayableShift();
+		if (s != null) {
+			payEmployee(s);
+			return true;
+		}
+		
 		// Simply decides which is the current check being taken care of or which
 		// customer is being handled right now.
 		if (currentCheck == null || currentCheck.s == CheckState.Paid || currentCheck.s == CheckState.PaidLess) {
@@ -281,9 +405,28 @@ public class CashierAgent extends Role implements Cashier {
 	private Bill findBillThatCanBePaid() {
 		synchronized (bills) {
 			for (Bill b : bills) {
-				if (b.s == BillState.Verified && myCash >= b.cost) {
+				if (b.s == BillState.Verified && workingCapital >= b.cost) {
 					return b;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private Shift findPayableShift() {
+		for (Shift s : shiftRecord) {
+			if (s.s == ShiftState.Pending) {
+				double total = minCapital;
+				if (s.role.equals("Cashier"))
+					total += cashierSalary;
+				else if (s.role.equals("Cook"))
+					total += cookSalary;
+				else if (s.role.equals("Waiter"))
+					total += waiterSalary;
+				else if (s.role.equals("Host"))
+					total += hostSalary;
+				if (workingCapital >= total)
+					return s;
 			}
 		}
 		return null;
@@ -302,6 +445,11 @@ public class CashierAgent extends Role implements Cashier {
 		return bills;
 	}
 	
+	public double computeTotalSalary() {
+		double result = 0.0;
+		return result;
+	}
+	
 	public List<CustomerRestaurantCheck> getChecks() {
 		List<CustomerRestaurantCheck> result = new ArrayList<CustomerRestaurantCheck>();
 		synchronized (checks) {
@@ -316,14 +464,14 @@ public class CashierAgent extends Role implements Cashier {
 	 * Hack for testing.
 	 */
 	public void addCash(double cash) {
-		myCash += cash;
+		workingCapital += cash;
 	}
 	
 	/*
 	 * Hack for testing.
 	 */
 	public double getCash() {
-		return myCash;
+		return workingCapital;
 	}
 	
 	/*
@@ -399,6 +547,24 @@ public class CashierAgent extends Role implements Cashier {
 		public Bill(int orderNumber) {
 			this.orderNumber = orderNumber;
 			s = BillState.Unpaid;
+		}
+	}
+	
+	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
+	
+	enum ShiftState {Pending, Done};
+	
+	enum ClosingState {None, ToBeClosed, Preparing, Done};
+	
+	public class Shift {
+		PeopleAgent p;
+		String role;
+		ShiftState s;
+		
+		public Shift(PeopleAgent p, String role) {
+			this.p = p;
+			this.role = role;
+			s = ShiftState.Pending;
 		}
 	}
 }
