@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import people.PeopleAgent;
 
 import people.Role;
 
@@ -26,7 +27,6 @@ public class CustomerAgent extends Role implements Customer{
 	private CustomerGui customerGui;
 	private String choice = new String("");
 	private Menu menu;
-	private double cash = 0.0;
 	private CustomerRestaurantCheck currentCheck = null;
 	private List<CustomerRestaurantCheck> checks = new ArrayList<CustomerRestaurantCheck>();
 
@@ -44,10 +44,9 @@ public class CustomerAgent extends Role implements Customer{
 	private AgentState state = AgentState.DoingNothing;// The start state
 	AgentEvent event = AgentEvent.none;
 
-	public CustomerAgent(String name, double cash) {
+	public CustomerAgent(String name) {
 		super();
 		this.name = name;
-		this.cash = cash;
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
@@ -104,7 +103,7 @@ public class CustomerAgent extends Role implements Customer{
 		event = AgentEvent.seated;
 		List<String> menuItems = menu.getAllFoodNames();
 		for (String s : menuItems) {
-			if (menu.getPrice(s) <= cash) {
+			if (menu.getPrice(s) <= ((PeopleAgent)myPerson).Money) {
 				leaveOption = false;
 				break;
 			}
@@ -197,17 +196,17 @@ public class CustomerAgent extends Role implements Customer{
 	 */
 	public void hereIsChangeAndApprovedPayments(double change, List<CustomerRestaurantCheck> approvedPayments) {
 		event = AgentEvent.changeCollected;
-		cash += change;
+		((PeopleAgent)myPerson).Money += change;
 		for (CustomerRestaurantCheck c : approvedPayments) {
 			checks.remove(c);
 		}
 		if (! checks.isEmpty()) {
 			print("I will pay the dues the next time!");
-			print("I still have to pay fo " + checks.size() + " checks and I have $" + cash + " with me now.");
+			print("I still have to pay fo " + checks.size() + " checks and I have $" + ((PeopleAgent)myPerson).Money + " with me now.");
 		}
 		else {
 			print("Thanks!");
-			print("I have $" + cash + " with me now.");
+			print("I have $" + ((PeopleAgent)myPerson).Money + " with me now.");
 		}
 //		customerGui.autoUpdate();
 		stateChanged();
@@ -426,8 +425,8 @@ public class CustomerAgent extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashier.hereIsPayment(currentCheck, cash, checks);
-		cash = 0.0;
+		cashier.hereIsPayment(currentCheck, ((PeopleAgent)myPerson).Money, checks);
+		((PeopleAgent)myPerson).Money = 0.0;
 		print("Take the money.");
 	}
 	
@@ -549,7 +548,7 @@ public class CustomerAgent extends Role implements Customer{
 	}
 	
 	public double getCash() {
-		return cash;
+		return ((PeopleAgent)myPerson).Money;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
