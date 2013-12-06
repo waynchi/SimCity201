@@ -10,6 +10,7 @@ import transportation.CarAgent;
 import transportation.CarGui;
 import transportation.CarPassengerRole;
 import transportation.gui.BusGui;
+import transportation.gui.BusStopGui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -699,10 +700,14 @@ public class CityPanel extends JPanel implements MouseListener {
 //		buildings.add(restaurant5);
 //		
 		BusAgent busAgent = new BusAgent();
-		busStops.add(new BusStop(220,180,30,30,220,152, "BusStop1"));
-		busStops.add(new BusStop(680,350,30,30,680,322, "BusStop2"));
-		busStops.add(new BusStop(880,90,30,30,870,132, "BusStop3"));
-		busStops.add(new BusStop(650,90,30,30,660,132, "BusStop4"));
+		BusStopGui busStopGui = new BusStopGui();
+		busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
+		busStopGui = new BusStopGui();
+		busStops.add(new BusStop(busStopGui,680,350,30,30,680,322, "BusStop2"));
+		busStopGui = new BusStopGui();
+		busStops.add(new BusStop(busStopGui,880,90,30,30,870,132, "BusStop3"));
+		busStopGui = new BusStopGui();
+		busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
 		
 		BusGui bg = new BusGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
 		busAgent.setGui(bg);
@@ -719,8 +724,8 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		BusPassengerRole bpr = new BusPassengerRole();
 		bpr.setPerson(person);
-		bpr.setCurrentBusStop(busStops.get(0));
-		bpr.setDestinationBusStop(busStops.get(1));
+		bpr.setCurrentBusStop(busStops.get(1));
+		bpr.setDestinationBusStop(busStops.get(0));
 		bpr.msgIsActive();
 		
 //		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
@@ -922,12 +927,16 @@ public class CityPanel extends JPanel implements MouseListener {
 		for ( int i=0; i<buildings.size(); i++ ) {
 			Building b = buildings.get(i);
 			if ( b.contains( me.getX(), me.getY() ) ) {
-				
-				
 				b.displayBuilding();
 			}
 		}
-		
+		for( int i=0; i<busStops.size(); i++ ) {
+			BusStop bs = busStops.get(i);
+			if(bs.contains(me.getX(), me.getY() ) ) {
+				System.out.println("Clicked BusStop: " + (i+1));
+				bs.displayBuilding();
+			}
+		}
 		
 	}
 

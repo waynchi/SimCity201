@@ -36,7 +36,7 @@ public class BusStopGui extends JPanel implements ActionListener {
     	setBounds(50, 50, WINDOWX, WINDOWY);
         add(animationPanel);
     	setVisible(true);
-    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    	busAgent = new BusAgent();
 //    	bs = new BusStop(this,0,0,0,0,0,0,"busstop");
 //    	bpr = new BusPassengerRole();

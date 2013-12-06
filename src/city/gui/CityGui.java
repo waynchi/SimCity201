@@ -27,6 +27,7 @@ import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
+import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
 import transportation.CarPassengerRole;
@@ -339,6 +340,11 @@ public class CityGui extends JFrame implements ActionListener {
             BuildingPanel bp = new BuildingPanel(b, i, this);
             b.setBuildingPanel(bp);
 		}
+		for(int i = 0; i < cityPanel.busStops.size(); i++) {
+			BusStop bs = cityPanel.busStops.get(i);
+			BuildingPanel bp = new BuildingPanel(bs,i+buildings.size(),this);
+			bs.setBuildingPanel(bp);
+		}
 			
 		for(House h : apartment1.houses) {
 			apartment1HouseAnimationPanels.add(h.gui.hp);
@@ -357,6 +363,14 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantContainer.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
+		JScrollPane busStop1Container = new JScrollPane(this.cityPanel.busStops.get(0).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop2Container = new JScrollPane(this.cityPanel.busStops.get(1).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop3Container = new JScrollPane(this.cityPanel.busStops.get(2).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop4Container = new JScrollPane(this.cityPanel.busStops.get(3).getGui());
+		busStop1Container.setOpaque(true);
 		
 		
 		buildingPanels.add(apartment1Container,"" + 13);
@@ -366,6 +380,11 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(bankContainer, "" + 15);
         
         buildingPanels.add(marketContainer,"" + 14);
+        buildingPanels.add(busStop1Container,"" + 17);
+        buildingPanels.add(busStop2Container,"" + 18);
+        buildingPanels.add(busStop3Container,"" + 19);
+        buildingPanels.add(busStop4Container,"" + 20);
+        
         
          
         for(int j = 0; j < houseAnimationPanels.size(); j++)
