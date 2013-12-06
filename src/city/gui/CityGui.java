@@ -371,6 +371,8 @@ public class CityGui extends JFrame implements ActionListener {
 		busStop1Container.setOpaque(true);
 		JScrollPane busStop4Container = new JScrollPane(this.cityPanel.busStops.get(3).getGui());
 		busStop1Container.setOpaque(true);
+		JScrollPane bus1Container = new JScrollPane(this.cityPanel.buses.get(0).getGui());
+		bus1Container.setOpaque(true);
 		
 		
 		buildingPanels.add(apartment1Container,"" + 13);

@@ -34,6 +34,7 @@ public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, in
 	this.yLocation = yLoc;
 	this.name = name;
 	this.myGui = bg;
+	
 }
 
 
