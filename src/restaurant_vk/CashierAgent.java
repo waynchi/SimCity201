@@ -364,6 +364,7 @@ public class CashierAgent extends Role implements Cashier {
 	public void leaveRestaurant() {
 		// Animation
 		isActive = false;
+		leave = false;
 		myPerson.msgDone("Cashier");
 	}
 	
@@ -380,16 +381,20 @@ public class CashierAgent extends Role implements Cashier {
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		// Do the entering activity.
 		if (enter == true) {
 			enterRestaurant();
 			return true;
 		}
 		
+		// If ther bank is ready to help, make the required request from it.
 		if (bankActivity == BankActivity.ReadyToHelp) {
 			orderBank();
 			return true;
 		}
 		
+		// If have to leave, or shift is over (and the restaurant is not
+		// being closed down), then leave.
 		if (leave == true && closingState == ClosingState.None) {
 			leaveRestaurant();
 			return true;
@@ -402,14 +407,24 @@ public class CashierAgent extends Role implements Cashier {
 			return true;
 		}
 		
+		// If the restaurant has been closed and there is no customer in the restaurant
+		// then prepare to close down.
 		if (closingState == ClosingState.ToBeClosed && host.anyCustomer() == false && isAnyCheckThere() == false) {
 			prepareToClose();
 			return true;
 		}
 		
+		// If there is no customer in the restaurant and preparation is complete, then
+		// check if there is anybody left to be paid. If there isn't, and there is excess
+		// money, then deposit it. Else, shut down the restaurant..
 		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
-			shutDown();
-			leaveRestaurant();
+			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
+				prepareToClose();
+			}
+			else {
+				shutDown();
+				leaveRestaurant();
+			}
 			return true;
 		}
 		
@@ -527,10 +542,6 @@ public class CashierAgent extends Role implements Cashier {
 		return "Cashier";
 	}
 	
-	public List<Bill> getBills() {
-		return bills;
-	}
-	
 	public double computeTotalSalary() {
 		double result = 0.0;
 		for (Shift s : shiftRecord) {
@@ -554,58 +565,6 @@ public class CashierAgent extends Role implements Cashier {
 			}
 		}
 		return result;
-	}
-	
-	/*
-	 * Hack for testing.
-	 */
-	public void addCash(double cash) {
-		workingCapital += cash;
-	}
-	
-	/*
-	 * Hack for testing.
-	 */
-	public double getCash() {
-		return workingCapital;
-	}
-	
-	/*
-	 * Hack for testing.
-	 */
-	public int getLessPaidChecksNumber(Customer c) {
-		int result = 0;
-		for (MyCheck mc : checks) {
-			if (mc.cust == c && mc.s == CheckState.PaidLess) {
-				result++;
-			}
-		}
-		return result;
-	}
-	
-	/*
-	 * Hack for testing.
-	 */
-	public int getPaidChecksNumber(Customer c) {
-		int result = 0;
-		for (MyCheck mc : checks) {
-			if (mc.cust == c && mc.s == CheckState.Paid) {
-				result++;
-			}
-		}
-		return result;
-	}
-	
-	/*
-	 * Hack for testing.
-	 */
-	public boolean isCheckBeingPaid(Customer c) {
-		for (MyCheck mc : checks) {
-			if (mc.cust == c && mc.s == CheckState.BeingPaid) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public boolean isAnyCheckThere() {
