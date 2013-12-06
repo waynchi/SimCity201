@@ -12,7 +12,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
-
 import people.Role;
 
 /**
@@ -36,8 +35,6 @@ public class CustomerAgent extends Role implements Customer{
 	private CashierAgent cashier = null;
 	
 	private Semaphore movingAround = new Semaphore(0, true);
-
-	// private boolean isHungry = false; //hack for gui
 	
 	private boolean leaveOption = false;
 	
@@ -73,7 +70,6 @@ public class CustomerAgent extends Role implements Customer{
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
 		this.menu = m;
-//		customerGui.autoUpdate();
 		stateChanged();
 	}
 
@@ -177,7 +173,6 @@ public class CustomerAgent extends Role implements Customer{
 		state = AgentState.DecidingOrder;
 		leaveOption = true;
 		customerGui.setLeaveOption(leaveOption);
-//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -208,7 +203,6 @@ public class CustomerAgent extends Role implements Customer{
 			print("Thanks!");
 			print("I have $" + ((PeopleAgent)myPerson).Money + " with me now.");
 		}
-//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -218,7 +212,6 @@ public class CustomerAgent extends Role implements Customer{
 	public void tablesAreFull() {
 		leaveOption = true;
 		customerGui.setLeaveOption(leaveOption);
-//		customerGui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -329,7 +322,6 @@ public class CustomerAgent extends Role implements Customer{
 	 */
 	private void goToRestaurant() {
 		Do("Going to restaurant");
-//		customerGui.autoUpdate();
 		customerGui.DoGoToRestaurant();
 		try {
 			movingAround.acquire();
@@ -353,7 +345,6 @@ public class CustomerAgent extends Role implements Customer{
 	 */
 	private void seated() {
 		customerGui.setMenuCopy();
-//		customerGui.autoUpdate();
 		print("I'm sitting.");
 	}
 	
@@ -389,11 +380,9 @@ public class CustomerAgent extends Role implements Customer{
 			public void run() {
 				print("Done eating, cookie=" + cookie);
 				event = AgentEvent.doneEating;
-				// isHungry = false;
 				stateChanged();
 			}
-		}, 5000);// getHungerLevel() * 1000);
-		//how long to wait before running task
+		}, 5000);
 	}
 
 	/*
@@ -407,7 +396,6 @@ public class CustomerAgent extends Role implements Customer{
 		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoExitRestaurant();
 		currentCheck = null;
-//		cash += 10;
 		isActive = false;
 		myPerson.msgDone("Customer");
 	}
@@ -440,7 +428,6 @@ public class CustomerAgent extends Role implements Customer{
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
-//		cash += 10;
 		isActive = false;
 		myPerson.msgDone("Customer");
 	}
