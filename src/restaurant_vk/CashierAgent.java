@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-import people.People;
 import people.PeopleAgent;
 import people.Role;
 import bank.interfaces.Teller;
@@ -27,7 +26,6 @@ import restaurant_vk.gui.CashierGui;
  * to the cashier and pay the money.
  */
 public class CashierAgent extends Role implements Cashier {
-	
 	// Data
 	
 	private List<MyCheck> checks = Collections.synchronizedList(new ArrayList<MyCheck>());
@@ -328,7 +326,7 @@ public class CashierAgent extends Role implements Cashier {
 			double total = 0.0;
 			if (minCapital > workingCapital)
 				total = minCapital - workingCapital;
-			total += computeTotalSalary();
+			total += computeRequiredMoney();
 			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
 		}
 	}
@@ -337,7 +335,7 @@ public class CashierAgent extends Role implements Cashier {
 	 * Preparing to close down.
 	 */
 	public void prepareToClose() {
-		double total = computeTotalSalary() + minCapital;
+		double total = computeRequiredMoney();
 		if (workingCapital >= total && shiftRecord.isEmpty()) {
 			teller.msgNeedHelp(this, "blah");
 			bankActivity = BankActivity.HelpRequested;
@@ -387,7 +385,7 @@ public class CashierAgent extends Role implements Cashier {
 			return true;
 		}
 		
-		// If ther bank is ready to help, make the required request from it.
+		// If the bank is ready to help, make the required request from it.
 		if (bankActivity == BankActivity.ReadyToHelp) {
 			orderBank();
 			return true;
@@ -419,6 +417,9 @@ public class CashierAgent extends Role implements Cashier {
 		// money, then deposit it. Else, shut down the restaurant..
 		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
 			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
+				prepareToClose();
+			}
+			else if (!shiftRecord.isEmpty() && workingCapital < computeRequiredMoney()) {
 				prepareToClose();
 			}
 			else {
@@ -542,8 +543,8 @@ public class CashierAgent extends Role implements Cashier {
 		return "Cashier";
 	}
 	
-	public double computeTotalSalary() {
-		double result = 0.0;
+	public double computeRequiredMoney() {
+		double result = minCapital;
 		for (Shift s : shiftRecord) {
 			if (s.role.equals("Cashier"))
 				result += cashierSalary;
@@ -553,16 +554,6 @@ public class CashierAgent extends Role implements Cashier {
 				result += waiterSalary;
 			else if (s.role.equals("Host"))
 				result += hostSalary;
-		}
-		return result;
-	}
-	
-	public List<CustomerRestaurantCheck> getChecks() {
-		List<CustomerRestaurantCheck> result = new ArrayList<CustomerRestaurantCheck>();
-		synchronized (checks) {
-			for (MyCheck mc : checks) {
-				result.add(mc.c);
-			}
 		}
 		return result;
 	}
@@ -618,11 +609,7 @@ public class CashierAgent extends Role implements Cashier {
 		}
 	}
 	
-	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
-	
 	enum ShiftState {Pending, Done};
-	
-	enum ClosingState {None, ToBeClosed, Preparing, Done};
 	
 	public class Shift {
 		PeopleAgent p;
@@ -635,4 +622,8 @@ public class CashierAgent extends Role implements Cashier {
 			s = ShiftState.Pending;
 		}
 	}
+	
+	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
+	
+	enum ClosingState {None, ToBeClosed, Preparing, Done};
 }
