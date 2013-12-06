@@ -8,8 +8,8 @@ public class WaiterSpecialAgent extends WaiterBaseAgent implements Waiter {
 	
 	public RevolvingStand stand;
 	
-	public WaiterSpecialAgent(Host host, String name, RevolvingStand s) {
-		super(host, name);
+	public WaiterSpecialAgent(Host host, RevolvingStand s) {
+		super(host);
 		this.stand = s;
 	}
 		

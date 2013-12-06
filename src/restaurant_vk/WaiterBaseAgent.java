@@ -24,17 +24,15 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	public WaiterGui gui = null;
 	protected Host host;
 	protected CookAgent cook;
-	protected String name = "";
 	protected MyState state = MyState.Working;
 	protected CashierAgent cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
 	private ClosingState closingState = ClosingState.Closed;
 		
-	public WaiterBaseAgent(Host host, String name) {
+	public WaiterBaseAgent(Host host) {
 		super();
 		this.host = host;
-		this.name = name;
 	}
 		
 	/**--------------------------------------------------------------------------------------------------------------
@@ -639,10 +637,6 @@ public class WaiterBaseAgent extends Role implements Waiter {
 		return gui;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
 	public void setCashier(CashierAgent c) {
 		cashier = c;
 	}
@@ -685,7 +679,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	
 	@Override
 	public String toString() {
-		return "Waiter " + name;
+		return "Waiter " + ((PeopleAgent)myPerson).name;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------

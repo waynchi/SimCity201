@@ -20,7 +20,6 @@ import people.Role;
  * Restaurant customer agent.
  */
 public class CustomerAgent extends Role implements Customer{
-	private String name;
 	private int hungerLevel = 5; // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
@@ -28,22 +27,16 @@ public class CustomerAgent extends Role implements Customer{
 	private Menu menu;
 	private CustomerRestaurantCheck currentCheck = null;
 	private List<CustomerRestaurantCheck> checks = new ArrayList<CustomerRestaurantCheck>();
-
-	// agent correspondents
 	private Host host;
 	private Waiter waiter;
 	private CashierAgent cashier = null;
-	
 	private Semaphore movingAround = new Semaphore(0, true);
-	
 	private boolean leaveOption = false;
-	
-	private AgentState state = AgentState.DoingNothing;// The start state
-	AgentEvent event = AgentEvent.none;
+	private AgentState state = AgentState.DoingNothing;
+	private AgentEvent event = AgentEvent.none;
 
-	public CustomerAgent(String name) {
+	public CustomerAgent() {
 		super();
-		this.name = name;
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
@@ -196,11 +189,9 @@ public class CustomerAgent extends Role implements Customer{
 			checks.remove(c);
 		}
 		if (! checks.isEmpty()) {
-			print("I will pay the dues the next time!");
 			print("I still have to pay fo " + checks.size() + " checks and I have $" + ((PeopleAgent)myPerson).Money + " with me now.");
 		}
 		else {
-			print("Thanks!");
 			print("I have $" + ((PeopleAgent)myPerson).Money + " with me now.");
 		}
 		stateChanged();
@@ -450,10 +441,6 @@ public class CustomerAgent extends Role implements Customer{
 
 	// Utilities
 
-	public String getName() {
-		return name;
-	}
-
 	public int getHungerLevel() {
 		return hungerLevel;
 	}
@@ -463,7 +450,7 @@ public class CustomerAgent extends Role implements Customer{
 	}
 
 	public String toString() {
-		return "customer " + getName();
+		return "customer " + ((PeopleAgent)myPerson).name;
 	}
 
 	public void setGui(CustomerGui g) {
@@ -487,10 +474,6 @@ public class CustomerAgent extends Role implements Customer{
 	
 	public void setWaiter(Waiter waiter) {
 		this.waiter = waiter;
-	}
-
-	public String getCustomerName() {
-		return name;
 	}
 	
 	/*

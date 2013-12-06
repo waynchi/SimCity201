@@ -22,6 +22,4 @@ public interface Host {
 	public List<Waiter> getWaiters();
 	
 	public boolean pickAndExecuteAnAction();
-	
-	public String getName();
 }

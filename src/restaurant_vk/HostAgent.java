@@ -24,7 +24,6 @@ public class HostAgent extends Role implements Host{
 	public List<Waiter> waiters = new ArrayList<Waiter>();
 	private List<MyWaiter> myWaiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public Collection<Table> tables;
-	private String name;
 	private int waiterIndex = 0; 
 	private Semaphore movingAround = new Semaphore(0,true);
 	public HostGui gui = null;
@@ -35,10 +34,8 @@ public class HostAgent extends Role implements Host{
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
 
-	public HostAgent(String name) {
+	public HostAgent() {
 		super();
-
-		this.name = name;
 		
 		// Make some tables
 		tables = new ArrayList<Table>(NTABLES);
@@ -334,14 +331,6 @@ public class HostAgent extends Role implements Host{
 	
 	public List<Waiter> getWaiters() {
 		return waiters;
-	}
-	
-	public String getMaitreDName() {
-		return name;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public List<Customer> getWaitingCustomers() {

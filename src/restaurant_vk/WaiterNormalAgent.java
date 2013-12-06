@@ -13,8 +13,8 @@ public class WaiterNormalAgent extends WaiterBaseAgent implements Waiter {
 	
 	// Data
 	
-	public WaiterNormalAgent(Host host, String name) {
-		super(host, name);
+	public WaiterNormalAgent(Host host) {
+		super(host);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
