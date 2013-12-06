@@ -110,6 +110,7 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	public void orderFromMarket() {
+		print("Ordering from market.");
 		Map<String, Integer> order = new HashMap<String, Integer>();
 		for (Map.Entry<String, Food> e : inventory.entrySet()) {
 			if (e.getValue().s == FoodState.Low) {
@@ -125,6 +126,7 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	public void informCashier(MarketOrder mo) {
+		print("Informing cashier about order.");
 		mo.s = MarketOrderState.InformedCashier;
 		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
 	}

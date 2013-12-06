@@ -223,6 +223,15 @@ public class CustomerAgent extends Role implements Customer{
 		stateChanged();
 	}
 	
+	public void msgIsActive() {
+		isActive = true;
+		gotHungry();
+	}
+	
+	public void msgIsInActive() {
+		stateChanged();
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 
@@ -399,7 +408,9 @@ public class CustomerAgent extends Role implements Customer{
 		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoExitRestaurant();
 		currentCheck = null;
-		cash += 10;
+//		cash += 10;
+		isActive = false;
+		myPerson.msgDone("Customer");
 	}
 	
 	/*
@@ -430,7 +441,9 @@ public class CustomerAgent extends Role implements Customer{
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
-		cash += 10;
+//		cash += 10;
+		isActive = false;
+		myPerson.msgDone("Customer");
 	}
 	
 	/*
@@ -442,6 +455,8 @@ public class CustomerAgent extends Role implements Customer{
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
+		isActive = false;
+		myPerson.msgDone("Customer");
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
