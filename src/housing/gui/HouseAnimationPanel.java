@@ -1,5 +1,7 @@
 package housing.gui;
 
+import housing.HouseType;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,7 +18,7 @@ import city.gui.CityGui;
 public class HouseAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> guis = new ArrayList<HGui>();
 	public HouseGui gui;
-	public CityGui tg;
+	public CityGui g;
 	
 	public HouseAnimationPanel() {
 		super();
@@ -28,10 +30,17 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int xPos = e.getX();
-				int yPos = e.getY();
-				if (xPos >= 470 && xPos <= 500 && yPos >= 15 && yPos <= 75) {
-					// display on city gui
+				if (gui.h.type == HouseType.Apartment) {
+					int xPos = e.getX();
+					int yPos = e.getY();
+					if (xPos >= 470 && xPos <= 500 && yPos >= 15 && yPos <= 75) {
+						String s = "";
+						if (gui.h.a.name.equals("a1"))
+							s = "13";
+						else if (gui.h.a.name.equals("a2"))
+							s = "12";
+//						g.displayBuildingPanel(s);
+					}
 				}
 			}
 
@@ -81,7 +90,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 	}
 	
 	public void setCityGui(CityGui g) {
-		tg = g;
+		this.g = g;
 	}
 	
 	public void updatePosition() {
