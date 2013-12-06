@@ -9,10 +9,10 @@ public class CashierGui implements Gui {
 	private int jobPosY = 150;
 	private int entranceX = 430;
 	private int entranceY = -20;
-	private int xPos;
-	private int yPos;
-	private int xDestination;
-	private int yDestination;
+	private int xPos = entranceX;
+	private int yPos = entranceY;
+	private int xDestination = entranceX;
+	private int yDestination = entranceY;
 	private State state = State.None;
 	public CashierAgent cashier;
 	
@@ -36,11 +36,12 @@ public class CashierGui implements Gui {
 		if (xPos == xDestination && yPos == yDestination) {
 			if (state == State.Entering) {
 				state = State.OnDuty;
+				cashier.activityDone();
 			}
 			else if (state == State.Exiting) {
 				state = State.None;
+				cashier.activityDone();
 			}
-			cashier.activityDone();
 		}
 	}
 

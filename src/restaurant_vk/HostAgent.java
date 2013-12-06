@@ -21,14 +21,9 @@ public class HostAgent extends Role implements Host{
 	public List<Waiter> waiters = new ArrayList<Waiter>();
 	private List<MyWaiter> myWaiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public Collection<Table> tables;
-
 	private String name;
-	
 	private int waiterIndex = 0; 
-	
-	// To be removed.
-	private Semaphore atTable = new Semaphore(0,true);
-	
+	private Semaphore movingAround = new Semaphore(0,true);
 	public HostGui hostGui = null;
 
 	public HostAgent(String name) {
@@ -87,13 +82,6 @@ public class HostAgent extends Role implements Host{
 		mw.s = WaiterState.Working;
 		stateChanged();
 	}
-
-	// To be removed.
-	public void msgAtTable() {//from animation
-		print("msgAtTable() called");
-		atTable.release();// = true;
-		stateChanged();
-	}
 	
 	/*
 	 * This is called by the gui to add a newly created waiter to the
@@ -132,6 +120,10 @@ public class HostAgent extends Role implements Host{
 		t.setUnoccupied();
 		System.out.println("Table " + table + " is free.");
 		stateChanged();
+	}
+	
+	public void activityDone() {
+		movingAround.release();
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
