@@ -7,7 +7,7 @@ import restaurant_vk.interfaces.Waiter;
 
 public class RevolvingStand {
 	private List<Order> orders = new ArrayList<Order>();
-	private CookAgent cook = new CookAgent();
+	private CookAgent cook = new CookAgent(this);
 
 	synchronized public void addOrder(Waiter waiter, String food, int table) {
 		orders.add(cook.new Order(waiter, food, table));

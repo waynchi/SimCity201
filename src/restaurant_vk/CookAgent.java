@@ -42,14 +42,14 @@ public class CookAgent extends Role implements Cook {
 	private Cashier cashier;
 	private boolean leave = false;
 	private boolean enter = false;
-	private ClosingState closingState = ClosingState.None;
+	private ClosingState closingState = ClosingState.Done;
 	private HostAgent host;
 
-	public CookAgent() {
+	public CookAgent(RevolvingStand s) {
 		timer = new Timer();
 		standTimer = new Timer();
+		this.stand = s;
 		initializeInventory();
-		startStandTimer();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -133,6 +133,7 @@ public class CookAgent extends Role implements Cook {
 	
 	private void enterRestaurant() {
 		if (closingState == ClosingState.Done) {
+			startStandTimer();
 			closingState = ClosingState.None;
 		}
 		gui.DoEnterRestaurant();
@@ -158,6 +159,7 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	private void shutDown() {
+		standTimer.cancel();
 		closingState = ClosingState.Done;
 	}
 	

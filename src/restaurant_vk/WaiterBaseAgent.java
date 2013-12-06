@@ -31,7 +31,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	protected CashierAgent cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
-	private ClosingState closingState = ClosingState.None;
+	private ClosingState closingState = ClosingState.Done;
 		
 	public WaiterBaseAgent(Host host, String name) {
 		super();

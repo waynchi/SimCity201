@@ -43,7 +43,7 @@ public class CashierAgent extends Role implements Cashier {
 	private boolean deposit = false;
 	private boolean withdraw = false;
 	private BankActivity bankActivity = BankActivity.None;
-	private ClosingState closingState = ClosingState.None;
+	private ClosingState closingState = ClosingState.Done;
 	public List<Shift> shiftRecord = new ArrayList<Shift>();
 	public Teller teller;
 	private double loanedMoney = 0;

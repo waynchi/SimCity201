@@ -34,7 +34,7 @@ public class HostAgent extends Role implements Host{
 	public Cashier cashier;
 	public CookAgent cook;
 	private Dimension waiterHomePos = new Dimension(110, 130);
-	private ClosingState closingState = ClosingState.None;
+	private ClosingState closingState = ClosingState.Done;
 
 	public HostAgent(String name) {
 		super();
