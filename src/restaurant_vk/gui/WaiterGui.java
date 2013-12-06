@@ -66,17 +66,20 @@ public class WaiterGui implements Gui{
     }
 
     public void updatePosition() {
-        if (xPos < xDestination)
-            xPos++;
-        else if (xPos > xDestination)
-            xPos--;
+    	if (xPos < xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos += 2;
+		else if (xPos > xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos -= 2;
+		
+		if (yPos < yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos += 2;
+		else if (yPos > yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos -= 2;
 
-        if (yPos < yDestination)
-            yPos++;
-        else if (yPos > yDestination)
-            yPos--;
-
-        if (xPos == xDestination && yPos == yDestination) {
+        if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
+        	xPos = xDestination;
+			yPos = yDestination;
+			
         	if (state == MyState.Entering) {
         		state = MyState.NotMoving;
         		agent.atDestination();

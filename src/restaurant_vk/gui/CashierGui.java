@@ -24,16 +24,20 @@ public class CashierGui implements Gui {
 
 	@Override
 	public void updatePosition() {
-		if (xPos < xDestination)
-			xPos++;
-		if (yPos < yDestination)
-			yPos++;
-		if (xPos > xDestination)
-			xPos--;
-		if (yPos > yDestination)
-			yPos--;
+		if (xPos < xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos += 2;
+		else if (xPos > xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos -= 2;
 		
-		if (xPos == xDestination && yPos == yDestination) {
+		if (yPos < yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos += 2;
+		else if (yPos > yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos -= 2;
+		
+		if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
+			xPos = xDestination;
+			yPos = yDestination;
+			
 			if (state == State.Entering) {
 				state = State.OnDuty;
 				cashier.activityDone();
