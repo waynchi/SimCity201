@@ -27,7 +27,6 @@ public class WaiterGui implements Gui{
 	private int destinationTable = 0;
 	
 	private CustomerGui customerGui;
-	private RestaurantGui gui;
 	
 	private String thingInHand = "";
 	
@@ -46,9 +45,8 @@ public class WaiterGui implements Gui{
      */
     enum MyState {NotMoving, EscortingCustomer, MovingToTable, GoingToRevolvingStand};
 
-    public WaiterGui(WaiterNormalAgent agent, RestaurantGui gui, Dimension homePos) {
+    public WaiterGui(WaiterBaseAgent agent, Dimension homePos) {
         this.agent = agent;
-        this.gui = gui;
         
         homePosX = homePos.width;
         homePosY = homePos.height;

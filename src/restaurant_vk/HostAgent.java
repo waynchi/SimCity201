@@ -1,12 +1,16 @@
 package restaurant_vk;
 
+import restaurant.interfaces.Cashier;
 import restaurant_vk.gui.HostGui;
+import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
+
+import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
-
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -24,7 +28,13 @@ public class HostAgent extends Role implements Host{
 	private String name;
 	private int waiterIndex = 0; 
 	private Semaphore movingAround = new Semaphore(0,true);
-	public HostGui hostGui = null;
+	public HostGui gui = null;
+	private boolean leave = false;
+	private boolean enter = false;
+	public Cashier cashier;
+	public CookAgent cook;
+	private Dimension waiterHomePos = new Dimension(110, 130);
+	private ClosingState closingState = ClosingState.None;
 
 	public HostAgent(String name) {
 		super();
@@ -88,6 +98,9 @@ public class HostAgent extends Role implements Host{
 	 * list of waiters.
 	 */
 	public void addWaiter(Waiter w) {
+		WaiterBaseAgent wa = (WaiterBaseAgent) w;
+		WaiterGui g = new WaiterGui(wa, waiterHomePos);
+		wa.setGui(g);
 		synchronized (waiters) {
 			waiters.add(w);
 		}
@@ -125,6 +138,22 @@ public class HostAgent extends Role implements Host{
 	public void activityDone() {
 		movingAround.release();
 	}
+	
+	public void msgIsActive() {
+		isActive = true;
+		enter = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
+	}
+	
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
 
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
@@ -136,6 +165,27 @@ public class HostAgent extends Role implements Host{
 	 * are occupied, and decides if a waiter could take a break.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !anyCustomer()) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
+		
 		// If there is any waiter who has requested a break, then the host decides
 		// whether he should be given a break.
 		MyWaiter mw = findWaiterByState(WaiterState.BreakRequested);
@@ -227,17 +277,56 @@ public class HostAgent extends Role implements Host{
 		print("Tables are full!");
 	}
 	
+	private void enterRestaurant() {
+		gui.DoEnterRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		enter = false;
+	}
+	
+	private void leaveRestaurant() {
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Host");
+		gui.DoLeaveRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("Host");
+	}
+	
+	private void prepareToClose() {
+		cook.closeRestaurant();
+		for (Waiter w : waiters) {
+			((WaiterBaseAgent) w).closeRestaurant();
+		}
+		closingState = ClosingState.Preparing;
+	}
+	
+	private void shutDown() {
+		closingState = ClosingState.Done;
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 
 	// Utilities
 
 	public void setGui(HostGui gui) {
-		hostGui = gui;
+		this.gui = gui;
+	}
+	
+	public void setCashier(Cashier c) {
+		this.cashier = c;
+	}
+	
+	public void setCook(CookAgent c) {
+		this.cook = c;
 	}
 
 	public HostGui getGui() {
-		return hostGui;
+		return gui;
 	}
 	
 	public List<Waiter> getWaiters() {
@@ -366,4 +455,6 @@ public class HostAgent extends Role implements Host{
 	}
 	
 	enum WaiterState {BreakRequested, OnBreak, Working};
+	
+	enum ClosingState {None, ToBeClosed, Preparing, Done};
 }
