@@ -1,10 +1,6 @@
 package restaurant_vk.gui;
 
-
-import restaurant_vk.CustomerAgent;
 import restaurant_vk.HostAgent;
-//import restaurant.gui.CustomerGui.TableCoordinates;
-
 import java.awt.*;
 
 /*
@@ -12,33 +8,23 @@ import java.awt.*;
  */
 public class HostGui implements Gui {
 
-    private HostAgent agent = null;
-
-    private int xPos = 20, yPos = 130;//default waiter position
-    private int xDestination = 20, yDestination = 130;//default start position
-
+    public HostAgent host = null;
+    private int jobPosX = 20;
+    private int jobPosY = 130;
+    private int entranceX = 20;
+    private int entranceY = -20;
+    private int xPos = entranceX, yPos = entranceY;
+    private int xDestination = entranceX, yDestination = entranceY;
     public static final int xTable = 200;
     public static final int yTable = 250;
     private final int HOST_WIDTH = 20;
     private final int HOST_HEIGHT = 20;
-    private final int tableWidth = 50;
-	private final int tableHeight = 50;
+	private State state = State.None;
 	
-	private int destinationTable = 0;
-	
-	private CustomerGui customerGui;
-	
-	private TableCoordinates[] tables = new TableCoordinates[4];
-	
-	private MyState state = MyState.NotMoving;
+	enum State {None, Entering, Exiting, OnDuty};
 
     public HostGui(HostAgent agent) {
-        this.agent = agent;
-        
-        tables[0] = new TableCoordinates(1, xTable, yTable);
-		tables[1] = new TableCoordinates(2, xTable + tableWidth + 10, yTable);
-		tables[2] = new TableCoordinates(3, xTable + (2 * (tableWidth + 10)), yTable);
-		tables[3] = new TableCoordinates(4, xTable + (3 * (tableWidth + 10)), yTable);
+        this.host = agent;
     }
 
     public void updatePosition() {
@@ -53,23 +39,14 @@ public class HostGui implements Gui {
             yPos--;
 
         if (xPos == xDestination && yPos == yDestination) {
-        	if ((xDestination == tables[0].x + 20) & (yDestination == tables[0].y - 20) || 
-    				(xDestination == tables[1].x + 20) & (yDestination == tables[1].y - 20) || 
-    				(xDestination == tables[2].x + 20) & (yDestination == tables[2].y - 20) || 
-    				(xDestination == tables[3].x + 20) & (yDestination == tables[3].y - 20)) {
-        		if (state == MyState.MovingToTable)
-        			agent.msgAtTable();
-        		else if (state == MyState.EscortingCustomer) {
-        			xDestination = -20;
-        			yDestination = -20;
-        		}
-        	}
-        	else if (xDestination == -20 && yDestination == -20) {
-        		if (state != MyState.NotMoving) { 
-        			agent.msgAtTable();
-        			state = MyState.NotMoving;
-        		}
-        	}
+        	if (state == State.Entering) {
+				state = State.OnDuty;
+				host.activityDone();
+			}
+			else if (state == State.Exiting) {
+				state = State.None;
+				host.activityDone();
+			}
         }
     }
 
@@ -81,72 +58,20 @@ public class HostGui implements Gui {
     }
 
     public boolean isPresent() {
-        return true;
-    }
-
-    public void DoGoToTable(CustomerAgent customer) {
-    	state = MyState.MovingToTable;
-    	setDestinationCoordinates();
+    	if (state != State.None)
+    		return true;
+    	return false;
     }
     
-    public void DoBringToTable(CustomerAgent customer) {
-    	state = MyState.EscortingCustomer;
-    	setDestinationCoordinates();
-    	customerGui.goTo(new Dimension(xDestination - 20, yDestination + 20));
-    }
-
-    public void DoLeaveCustomer() {
-        xDestination = -20;
-        yDestination = -20;
-        System.out.println("Customer leaving. Host speaking.");
-    }
-
-    public int getXPos() {
-        return xPos;
-    }
-
-    public int getYPos() {
-        return yPos;
+    public void DoEnterRestaurant() {
+    	xDestination = jobPosX;
+		yDestination = jobPosY;
+		state = State.Entering;
     }
     
-    public void setCustomerGui(CustomerGui gui) {
-    	customerGui = gui;
+    public void DoLeaveRestaurant() {
+    	xDestination = entranceX;
+		yDestination = entranceY;
+		state = State.Exiting;
     }
-    
-    private void setDestinationCoordinates() {
-    	if (destinationTable == 1) {
-			xDestination = tables[0].x + 20;
-			yDestination = tables[0].y - 20;
-		}
-		else if (destinationTable == 2) {
-			xDestination = tables[1].x + 20;
-			yDestination = tables[1].y - 20;
-		}
-		else if (destinationTable == 3) {
-			xDestination = tables[2].x + 20;
-			yDestination = tables[2].y - 20;
-		}
-		else if (destinationTable == 4) {
-			xDestination = tables[3].x + 20;
-			yDestination = tables[3].y - 20;
-		}
-    }
-    
-    private class TableCoordinates {
-		public int tableNumber;
-		public int x;
-		public int y;
-		
-		public TableCoordinates(int number, int x, int y) {
-			tableNumber = number;
-			this.x = x;
-			this.y = y;
-		}
-	}
-    
-    public void setDestinationTable(int table) {
-    	destinationTable = table;
-    }
-    
-    enum MyState {NotMoving, EscortingCustomer, MovingToTable};
 }
