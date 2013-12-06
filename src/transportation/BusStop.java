@@ -8,6 +8,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import city.gui.BuildingPanel;
+
 public class BusStop extends Rectangle2D.Double{
 	class MyBusPassenger{
 		BusPassenger bp;
@@ -24,9 +26,10 @@ public int xLocation;
 public int yLocation;
 public String name;
 public BusStopGui myGui;
+public BuildingPanel bp;
 
 public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, String name){
-	//super(x,y,width,height);
+	super(x,y,width,height);
 	this.xLocation = xLoc;
 	this.yLocation = yLoc;
 	this.name = name;
@@ -112,5 +115,28 @@ public void msgAnimationFinishedDoLeaveBusStop(BusPassenger bpr) {
 	return;
 }
 }
+
+public void setGui(BusStopGui bg)
+{
+	myGui = bg;
 }
+
+public BusStopGui getGui(){
+	return myGui;
+}
+
+
+public void displayBuilding() {
+	// TODO Auto-generated method stub
+	bp.displayBuildingPanel();
+}
+
+
+public void setBuildingPanel(BuildingPanel bp) {
+	// TODO Auto-generated method stub
+	this.bp = bp;
+}
+
+}
+
 
