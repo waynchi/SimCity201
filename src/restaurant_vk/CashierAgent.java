@@ -430,7 +430,7 @@ public class CashierAgent extends Role implements Cashier {
 			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
 				prepareToClose();
 			}
-			else if (!shiftRecord.isEmpty() && workingCapital < computeRequiredMoney()) {
+			else if (workingCapital < computeRequiredMoney()) {
 				prepareToClose();
 			}
 			else {
