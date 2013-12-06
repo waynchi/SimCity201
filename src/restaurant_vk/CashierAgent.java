@@ -48,6 +48,7 @@ public class CashierAgent extends Role implements Cashier {
 	public Teller teller;
 	private double loanedMoney = 0;
 	public HostAgent host;
+	private Semaphore movingAround = new Semaphore(0, true);
 	
 	public double waiterSalary = 100;
 	public double cashierSalary = 100;
@@ -206,6 +207,10 @@ public class CashierAgent extends Role implements Cashier {
 		stateChanged();
 	}
 	
+	public void activityDone() {
+		movingAround.release();
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -274,6 +279,7 @@ public class CashierAgent extends Role implements Cashier {
 			for (Map.Entry<String, Integer> mi : marketItems) {
 				if (mi.getKey().equals(ci.getKey()) && mi.getValue().equals(ci.getValue())) {
 					found = true;
+					break;
 				}
 			}
 			if (found == false) {
@@ -324,9 +330,7 @@ public class CashierAgent extends Role implements Cashier {
 			bankActivity = BankActivity.WithdrawalRequested;
 			withdraw = false;
 			double total = 0.0;
-			if (minCapital > workingCapital)
-				total = minCapital - workingCapital;
-			total += computeRequiredMoney();
+			total += (computeRequiredMoney() - workingCapital);
 			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
 		}
 	}
@@ -335,8 +339,7 @@ public class CashierAgent extends Role implements Cashier {
 	 * Preparing to close down.
 	 */
 	public void prepareToClose() {
-		double total = computeRequiredMoney();
-		if (workingCapital >= total && shiftRecord.isEmpty()) {
+		if (workingCapital > minCapital && shiftRecord.isEmpty()) {
 			teller.msgNeedHelp(this, "blah");
 			bankActivity = BankActivity.HelpRequested;
 			deposit = true;
@@ -360,7 +363,10 @@ public class CashierAgent extends Role implements Cashier {
 	 * An action to leave the restaurant.
 	 */
 	public void leaveRestaurant() {
-		// Animation
+		gui.DoLeaveRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
 		myPerson.msgDone("Cashier");
@@ -369,7 +375,10 @@ public class CashierAgent extends Role implements Cashier {
 	public void enterRestaurant() {
 		enter = false;
 		closingState = ClosingState.None;
-		// Animation
+		gui.DoEnterRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -569,6 +578,10 @@ public class CashierAgent extends Role implements Cashier {
 	
 	public void setHost(HostAgent h) {
 		this.host = h;
+	}
+	
+	public void setMarketCashier(MarketCashier c) {
+		this.mCashier = c;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
