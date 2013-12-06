@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+
+import people.PeopleAgent;
 import people.Role;
+import restaurant_vk.HostAgent.ClosingState;
 import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.CashierAgent;
 import restaurant_vk.CookAgent;
@@ -26,6 +29,9 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	protected String name = "";
 	protected MyState state = MyState.Working;
 	protected CashierAgent cashier = null;
+	private boolean leave = false;
+	private boolean enter = false;
+	private ClosingState closingState = ClosingState.None;
 		
 	public WaiterBaseAgent(Host host, String name) {
 		super();
@@ -233,7 +239,20 @@ public class WaiterBaseAgent extends Role implements Waiter {
 		stateChanged();
 	}
 	
+	public void msgIsActive() {
+		isActive = true;
+		enter = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
+	}
+	
 	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -421,6 +440,36 @@ public class WaiterBaseAgent extends Role implements Waiter {
 		customers.remove(mc);
 	}
 	
+	private void enterRestaurant() {
+		if (closingState == ClosingState.Done) {
+			closingState = ClosingState.None;
+		}
+		gui.DoEnterRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		enter = false;
+	}
+	
+	private void leaveRestaurant() {
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		gui.DoLeaveRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("Waiter");
+	}
+	
+	private void prepareToClose() {
+		closingState = ClosingState.Preparing;
+	}
+	
+	private void shutDown() {
+		closingState = ClosingState.Done;
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -428,6 +477,27 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer()) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
+		
 		MyCustomer mc;
 		
 		try {
@@ -636,6 +706,8 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	public enum OrderStatus {None, TakenFromCustomer, GivenToCook, ReadyToServe, Served, OutOfMaterials, ToBeOrderedAgain};
 	
 	public enum MyState {Working, WantABreak, OnBreak, RequestedBreak, BackFromBreak};
+	
+	public enum ClosingState {None, ToBeClosed, Preparing, Done};
 	
 	/*
 	 * A private class that encapsulates a customers information.

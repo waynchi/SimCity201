@@ -100,6 +100,7 @@ public class HostAgent extends Role implements Host{
 	public void addWaiter(Waiter w) {
 		WaiterBaseAgent wa = (WaiterBaseAgent) w;
 		WaiterGui g = new WaiterGui(wa, waiterHomePos);
+		waiterHomePos.width += 30;
 		wa.setGui(g);
 		synchronized (waiters) {
 			waiters.add(w);
@@ -278,6 +279,9 @@ public class HostAgent extends Role implements Host{
 	}
 	
 	private void enterRestaurant() {
+		if (closingState == ClosingState.Done) {
+			closingState = ClosingState.None;
+		}
 		gui.DoEnterRestaurant();
 		try {
 			movingAround.acquire();

@@ -35,7 +35,7 @@ public class WaiterGui implements Gui{
 	// An array containing the mapping of the table versus the table coordinates.
 	private TableCoordinates[] tables = new TableCoordinates[4];
 	
-	private MyState state = MyState.NotMoving;
+	private MyState state = MyState.None;
 	
 	private boolean breakCheckBox = false;
 	private boolean breakEnabled = true;
@@ -43,7 +43,7 @@ public class WaiterGui implements Gui{
 	/*
      * States of the waiterGui while performing certain actions.
      */
-    enum MyState {NotMoving, EscortingCustomer, MovingToTable, GoingToRevolvingStand};
+    enum MyState {None, NotMoving, EscortingCustomer, MovingToTable, GoingToRevolvingStand, Entering, Exiting};
 
     public WaiterGui(WaiterBaseAgent agent, Dimension homePos) {
         this.agent = agent;
@@ -51,10 +51,10 @@ public class WaiterGui implements Gui{
         homePosX = homePos.width;
         homePosY = homePos.height;
         
-        xPos = homePosX;
-        yPos = homePosY;
-        xDestination = homePosX;
-        yDestination = homePosY;
+        xPos = -20;
+        yPos = 200;
+        xDestination = xPos;
+        yDestination = yPos;
         
         // Initializing the table coordinates.
         tables[0] = new TableCoordinates(1, xTable, yTable);
@@ -77,7 +77,15 @@ public class WaiterGui implements Gui{
             yPos--;
 
         if (xPos == xDestination && yPos == yDestination) {
-        	if (state == MyState.GoingToRevolvingStand) {
+        	if (state == MyState.Entering) {
+        		state = MyState.NotMoving;
+        		agent.atDestination();
+        	}
+        	else if (state == MyState.Exiting) {
+        		state = MyState.None;
+        		agent.atDestination();
+        	}
+        	else if (state == MyState.GoingToRevolvingStand) {
         		agent.atDestination();
         	}
         	else if (xDestination == 40 && yDestination == 170 && state == MyState.EscortingCustomer) {
@@ -117,7 +125,9 @@ public class WaiterGui implements Gui{
     }
 
     public boolean isPresent() {
-        return true;
+    	if (state != MyState.None)
+    		return true;
+    	return false;
     }
 
     /*
@@ -161,13 +171,17 @@ public class WaiterGui implements Gui{
     	xDestination = homePosX;
     	yDestination = homePosY;
     }
-
-    public int getXPos() {
-        return xPos;
+    
+    public void DoEnterRestaurant() {
+    	state = MyState.Entering;
+    	xDestination = homePosX;
+    	yDestination = homePosY;
     }
-
-    public int getYPos() {
-        return yPos;
+    
+    public void DoLeaveRestaurant() {
+    	state = MyState.Exiting;
+    	xDestination = -20;
+    	yDestination = 200;
     }
     
     public void setCustomerGui(CustomerGui gui) {

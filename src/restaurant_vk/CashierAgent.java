@@ -374,7 +374,9 @@ public class CashierAgent extends Role implements Cashier {
 	
 	public void enterRestaurant() {
 		enter = false;
-		closingState = ClosingState.None;
+		if (closingState == ClosingState.Done) {
+			closingState = ClosingState.None;
+		}
 		gui.DoEnterRestaurant();
 		try {
 			movingAround.acquire();

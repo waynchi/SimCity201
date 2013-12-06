@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 import restaurant_vk.CookAgent;
+import restaurant_vk.gui.WaiterGui.MyState;
 
 public class CookGui implements Gui{
 	private int xPos;
@@ -23,12 +24,16 @@ public class CookGui implements Gui{
 	private Dimension fridge = new Dimension(220, 60);
 	private Dimension plate = new Dimension(140, 90);
 	private Dimension grill = new Dimension(140,40);
-	private MyState state = MyState.Inactive;
+	private MyState state = MyState.None;
+	
+	enum MyState {None, Inactive, Cooking, Plating, Entering, Exiting};
 	
 	public CookGui(CookAgent c) {
 		agent = c;
-		homePosX = xPos = xDestination = 140;
-		homePosY = yPos = yDestination = 90;
+		homePosX = 140;
+		homePosY = 90;
+		xPos = xDestination = -20;
+		yPos = yDestination = 90;
 		
 		setSymbols();
 	}
@@ -46,7 +51,15 @@ public class CookGui implements Gui{
             yPos--;
         
         if (xPos == xDestination && yPos == yDestination) {
-        	if (state == MyState.Cooking) {
+        	if (state == MyState.Entering) {
+        		state = MyState.Inactive;
+        		agent.atDestination();
+        	}
+        	else if (state == MyState.Exiting) {
+        		state = MyState.None;
+        		agent.atDestination();
+        	}
+        	else if (state == MyState.Cooking) {
         		if (xDestination == fridge.width && yDestination == fridge.height) {
         			xDestination = grill.width;
         			yDestination = grill.height;
@@ -107,6 +120,18 @@ public class CookGui implements Gui{
 		state = MyState.Plating;
 	}
 	
+	public void DoEnterRestaurant() {
+    	state = MyState.Entering;
+    	xDestination = homePosX;
+    	yDestination = homePosY;
+    }
+    
+    public void DoLeaveRestaurant() {
+    	state = MyState.Exiting;
+    	xDestination = -20;
+    	yDestination = 90;
+    }
+	
 	/*
 	 * Sets up symbols inside the map.
 	 */
@@ -117,6 +142,4 @@ public class CookGui implements Gui{
 		symbols.put("Pizza", "PI");
 		symbols.put("", "");
 	}
-	
-	enum MyState {Inactive, Cooking, Plating};
 }

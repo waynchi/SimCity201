@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import people.PeopleAgent;
 import people.Role;
+import restaurant_vk.CashierAgent.ClosingState;
 import restaurant_vk.gui.CookGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -37,6 +40,10 @@ public class CookAgent extends Role implements Cook {
 	private final int period = 5000;
 	private MarketEmployee market;
 	private Cashier cashier;
+	private boolean leave = false;
+	private boolean enter = false;
+	private ClosingState closingState = ClosingState.None;
+	private HostAgent host;
 
 	public CookAgent() {
 		timer = new Timer();
@@ -114,12 +121,42 @@ public class CookAgent extends Role implements Cook {
 		}
 		MarketOrder o = new MarketOrder(order);
 		marketOrders.add(o);
-		// Send message to market with orderTracker etc. as parameters.
+		market.msgOrder(order, this, cashier);
 	}
 	
 	public void informCashier(MarketOrder mo) {
 		mo.s = MarketOrderState.InformedCashier;
 		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
+	}
+	
+	private void enterRestaurant() {
+		if (closingState == ClosingState.Done) {
+			closingState = ClosingState.None;
+		}
+		gui.DoEnterRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		enter = false;
+	}
+	
+	private void leaveRestaurant() {
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Cook");
+		gui.DoLeaveRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("Cook");
+	}
+	
+	private void prepareToClose() {
+		closingState = ClosingState.Preparing;
+	}
+	
+	private void shutDown() {
+		closingState = ClosingState.Done;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -205,6 +242,19 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
+	
+	public void msgIsActive() {
+		isActive = true;
+		enter = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -214,6 +264,27 @@ public class CookAgent extends Role implements Cook {
 	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer()) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
+		
 		Order o;
 		
 		MarketOrder mo = findMarketOrderByState(MarketOrderState.Supplied);
@@ -353,6 +424,14 @@ public class CookAgent extends Role implements Cook {
 		}, period, period);
 	}
 	
+	public void setHost(HostAgent h) {
+		this.host = h;
+	}
+	
+	public void addMarket(MarketEmployee m) {
+		this.market = m;
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 
@@ -433,4 +512,6 @@ public class CookAgent extends Role implements Cook {
 			s = MarketOrderState.Requested;
 		}
 	}
+	
+	enum ClosingState {None, ToBeClosed, Preparing, Done};
 }
