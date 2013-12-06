@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import people.People;
+import transportation.BusPassengerRole;
 
 public class PersonGui extends Rectangle2D.Double {
 	public int xDestination;
@@ -577,6 +578,11 @@ public class PersonGui extends Rectangle2D.Double {
 		// TODO Auto-generated method stub
 		if(reachedDestination.equals("Bus Stop 1"))
 		{
+			BusPassengerRole bpr = new BusPassengerRole();
+			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+			bpr.setDestinationBusStop(cityPanel.busStops.get(2));
+			bpr.msgIsActive();
+			person.addRole(bpr, "BusPassenger");
 			
 		}
 	}

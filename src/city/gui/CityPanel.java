@@ -11,6 +11,8 @@ import transportation.CarGui;
 import transportation.CarPassengerRole;
 import transportation.gui.BusGui;
 import transportation.gui.BusStopGui;
+import transportation.gui.InsideBusGui;
+import transportation.interfaces.Bus;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -27,6 +29,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<VehicleGui> vehicles;
 	ArrayList<PersonGui> people;
 	public List<BusStop> busStops;
+	public List<BusGui> buses;
 	ArrayList<Lane> road1,road2,road3,road4,road5,road6,road7,road8,road9,road10,road11,road12,road13,road14,road15,road16,road17,road18,road19,road20,road21,road22;
 	ArrayList<ArrayList<Lane>> allRoads;
 	ArrayList<Sidewalk> sidewalkStrip1,sidewalkStrip2,sidewalkStrip3,sidewalkStrip4,sidewalkStrip5,sidewalkStrip6,
@@ -61,6 +64,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		vehicles = new ArrayList<VehicleGui>();
 		people = new ArrayList<PersonGui>();
 		busStops = new ArrayList<BusStop>();
+		buses = new ArrayList<BusGui>();
 		this.city = city;
 		
 		road1 = new ArrayList<Lane>();
@@ -699,6 +703,7 @@ public class CityPanel extends JPanel implements MouseListener {
 //		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 //		buildings.add(restaurant5);
 //		
+		
 		BusAgent busAgent = new BusAgent();
 		BusStopGui busStopGui = new BusStopGui();
 		busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
@@ -709,7 +714,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		busStopGui = new BusStopGui();
 		busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
 		
-		BusGui bg = new BusGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		InsideBusGui igb = new InsideBusGui();
+		BusGui bg = new BusGui(igb,5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		buses.add(bg);
 		busAgent.setGui(bg);
 		busAgent.startThread();
 		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
@@ -717,16 +724,16 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 		
-		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+//		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 //		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
 //		personGui.setDestination("Bus Stop 1");
 //		this.people.add(personGui); 
 		
-		BusPassengerRole bpr = new BusPassengerRole();
-		bpr.setPerson(person);
-		bpr.setCurrentBusStop(busStops.get(1));
-		bpr.setDestinationBusStop(busStops.get(0));
-		bpr.msgIsActive();
+//		BusPassengerRole bpr = new BusPassengerRole();
+//		bpr.setPerson(person);
+//		bpr.setCurrentBusStop(busStops.get(1));
+//		bpr.setDestinationBusStop(busStops.get(0));
+//		bpr.msgIsActive();
 		
 //		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
 //		CarAgent carAgent = new CarAgent();
@@ -933,8 +940,14 @@ public class CityPanel extends JPanel implements MouseListener {
 		for( int i=0; i<busStops.size(); i++ ) {
 			BusStop bs = busStops.get(i);
 			if(bs.contains(me.getX(), me.getY() ) ) {
-				System.out.println("Clicked BusStop: " + (i+1));
 				bs.displayBuilding();
+			}
+		}
+		for( int i=0; i<buses.size(); i++ ) {
+			BusGui bus = buses.get(i);
+			if(bus.contains(me.getX(), me.getY() ) ) {
+				System.out.println("Clicked Bus: " + (i+1));
+				bus.displayBuilding();
 			}
 		}
 		

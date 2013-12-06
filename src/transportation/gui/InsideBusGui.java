@@ -11,7 +11,7 @@ import java.awt.event.*;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class InsideBusGui extends JFrame implements ActionListener {
+public class InsideBusGui extends JPanel implements ActionListener {
     
 	InsideBusPanel animationPanel = new InsideBusPanel();
 
@@ -27,7 +27,6 @@ public class InsideBusGui extends JFrame implements ActionListener {
     	setBounds(50, 50, WINDOWX, WINDOWY);
         add(animationPanel);
     	setVisible(true);
-    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
    
 	@Override
@@ -43,9 +42,6 @@ public class InsideBusGui extends JFrame implements ActionListener {
 	 public void updatePosition() {
 	    	animationPanel.updatePosition();
 	}
-	 public static void main(String[] args) {
-			InsideBusGui bs = new InsideBusGui();
-			
-		}
+	
 	    
 }

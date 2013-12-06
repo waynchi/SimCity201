@@ -13,16 +13,20 @@ public class BusGui extends VehicleGui{
 	/**
 	 * @param args
 	 */
+	
 	List<BusStop> busStops;
 	Bus busAgent;
 	BusStop nextStop;
 	public enum State {idle,arrived,driving};
 	State busState;
+	InsideBusGui myGui;
 	
-	public BusGui(int i, int j, int k, int l, ArrayList<Lane> road2, Lane lane, ArrayList<ArrayList<Lane>> allRoads, CityPanel cityPanel){
+	public BusGui(InsideBusGui g, int i, int j, int k, int l, ArrayList<Lane> road2, Lane lane, ArrayList<ArrayList<Lane>> allRoads, CityPanel cityPanel){
 		super(5, 5, 10, 10, road2, road2.get(0), allRoads, cityPanel,"Bus");
+		myGui = g;
 		busStops = cityPanel.busStops;
 		busState = State.idle;
+		
 	}
 	
 	public void msgGoToNextStop(Bus busAgent,BusStop currentStop)
@@ -51,6 +55,19 @@ public class BusGui extends VehicleGui{
 		busState = State.arrived;
 		busAgent.msgAnimationFinishedArrivedAtStop(nextStop);
 		}
+	}
+	
+	public InsideBusGui getGui(){
+		return myGui;
+	}
+	
+	public void setGui(InsideBusGui g){
+		myGui = g;
+	}
+
+	public void displayBuilding() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
