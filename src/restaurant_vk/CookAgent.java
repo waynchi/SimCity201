@@ -8,10 +8,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
-
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.CashierAgent.ClosingState;
 import restaurant_vk.gui.CookGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -42,7 +40,7 @@ public class CookAgent extends Role implements Cook {
 	private Cashier cashier;
 	private boolean leave = false;
 	private boolean enter = false;
-	private ClosingState closingState = ClosingState.Done;
+	private ClosingState closingState = ClosingState.Closed;
 	private HostAgent host;
 
 	public CookAgent(RevolvingStand s) {
@@ -132,7 +130,7 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	private void enterRestaurant() {
-		if (closingState == ClosingState.Done) {
+		if (closingState == ClosingState.Closed) {
 			startStandTimer();
 			closingState = ClosingState.None;
 		}
@@ -160,7 +158,7 @@ public class CookAgent extends Role implements Cook {
 	
 	private void shutDown() {
 		standTimer.cancel();
-		closingState = ClosingState.Done;
+		closingState = ClosingState.Closed;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -517,5 +515,5 @@ public class CookAgent extends Role implements Cook {
 		}
 	}
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Done};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed};
 }

@@ -43,7 +43,7 @@ public class CashierAgent extends Role implements Cashier {
 	private boolean deposit = false;
 	private boolean withdraw = false;
 	private BankActivity bankActivity = BankActivity.None;
-	private ClosingState closingState = ClosingState.Done;
+	private ClosingState closingState = ClosingState.Closed;
 	public List<Shift> shiftRecord = new ArrayList<Shift>();
 	public Teller teller;
 	private double loanedMoney = 0;
@@ -356,7 +356,7 @@ public class CashierAgent extends Role implements Cashier {
 	 * An action to shut the restaurant down.
 	 */
 	public void shutDown() {
-		closingState = ClosingState.Done;
+		closingState = ClosingState.Closed;
 	}
 	
 	/*
@@ -374,7 +374,7 @@ public class CashierAgent extends Role implements Cashier {
 	
 	public void enterRestaurant() {
 		enter = false;
-		if (closingState == ClosingState.Done) {
+		if (closingState == ClosingState.Closed) {
 			closingState = ClosingState.None;
 		}
 		gui.DoEnterRestaurant();
@@ -640,5 +640,5 @@ public class CashierAgent extends Role implements Cashier {
 	
 	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Done};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed};
 }

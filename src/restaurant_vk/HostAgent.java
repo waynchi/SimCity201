@@ -6,7 +6,6 @@ import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
-
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -34,7 +33,7 @@ public class HostAgent extends Role implements Host{
 	public Cashier cashier;
 	public CookAgent cook;
 	private Dimension waiterHomePos = new Dimension(110, 130);
-	private ClosingState closingState = ClosingState.Done;
+	private ClosingState closingState = ClosingState.Closed;
 
 	public HostAgent(String name) {
 		super();
@@ -279,7 +278,7 @@ public class HostAgent extends Role implements Host{
 	}
 	
 	private void enterRestaurant() {
-		if (closingState == ClosingState.Done) {
+		if (closingState == ClosingState.Closed) {
 			closingState = ClosingState.None;
 		}
 		gui.DoEnterRestaurant();
@@ -309,7 +308,7 @@ public class HostAgent extends Role implements Host{
 	}
 	
 	private void shutDown() {
-		closingState = ClosingState.Done;
+		closingState = ClosingState.Closed;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -460,5 +459,5 @@ public class HostAgent extends Role implements Host{
 	
 	enum WaiterState {BreakRequested, OnBreak, Working};
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Done};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed};
 }

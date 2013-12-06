@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.HostAgent.ClosingState;
 import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.CashierAgent;
 import restaurant_vk.CookAgent;
@@ -31,7 +29,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	protected CashierAgent cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
-	private ClosingState closingState = ClosingState.Done;
+	private ClosingState closingState = ClosingState.Closed;
 		
 	public WaiterBaseAgent(Host host, String name) {
 		super();
@@ -441,7 +439,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	}
 	
 	private void enterRestaurant() {
-		if (closingState == ClosingState.Done) {
+		if (closingState == ClosingState.Closed) {
 			closingState = ClosingState.None;
 		}
 		gui.DoEnterRestaurant();
@@ -467,7 +465,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	}
 	
 	private void shutDown() {
-		closingState = ClosingState.Done;
+		closingState = ClosingState.Closed;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -707,7 +705,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	
 	public enum MyState {Working, WantABreak, OnBreak, RequestedBreak, BackFromBreak};
 	
-	public enum ClosingState {None, ToBeClosed, Preparing, Done};
+	public enum ClosingState {None, ToBeClosed, Preparing, Closed};
 	
 	/*
 	 * A private class that encapsulates a customers information.
