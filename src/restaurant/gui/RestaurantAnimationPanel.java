@@ -34,7 +34,7 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         setVisible(true);
         
         bufferSize = this.getSize();
-     	timer.start();
+     	Timer t = timer;
     }
 
 	public void actionPerformed(ActionEvent e) {

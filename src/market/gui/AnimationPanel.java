@@ -20,12 +20,12 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private ImageIcon market_background = new ImageIcon("res/market/market_background.jpeg");
     
 
-    public AnimationPanel(Timer timer) {
+    public AnimationPanel(Timer t) {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
-     	timer.start();
+     	Timer timer = t;
     }
 
 	public void actionPerformed(ActionEvent e) {

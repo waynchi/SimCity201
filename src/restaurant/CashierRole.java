@@ -146,8 +146,6 @@ public class CashierRole extends Role implements Cashier {
 
 	// from people agent
 	public void msgIsActive() {
-		print ("received msgIsActive, position is " + cashierGui.getX() + " " + cashierGui.getY() + " and destination"
-				+ " is " + cashierGui.getXDest() + " " + cashierGui.getYDest());
 		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
