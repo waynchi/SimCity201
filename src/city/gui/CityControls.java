@@ -39,8 +39,9 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
-		tabbedPane.addTab("Controls", makePanel("People"));
-		tabbedPane.addTab("TraceLog", makePanel("Other"));
+		tabbedPane.addTab("Controls", makePanel("Controls"));
+		tabbedPane.addTab("TraceLog", makePanel("TraceLog"));
+		tabbedPane.addTab("Scenarios",makePanel("Scenarios"));
 
 		tabbedPane.setPreferredSize(new Dimension(500, 268));
 		
@@ -50,7 +51,59 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	}
 	
 	private JPanel makePanel(String text) {
-		if(text.equals("People")) {
+		if(text.equals("Scenarios")) {
+			JPanel panel = new JPanel();
+			JButton btnScenarioOne = new JButton("Normal Scenario 1");
+			btnScenarioOne.addActionListener(this);
+			panel.add(btnScenarioOne);
+			
+			JButton btnScenario1 = new JButton("Normal Scenario 2");
+			btnScenario1.addActionListener(this);
+			panel.add(btnScenario1);
+			
+			JButton btnScenario2 = new JButton("Normal Scenario 3");
+			btnScenario2.addActionListener(this);
+			panel.add(btnScenario2);
+			
+			JButton btnScenario3 = new JButton("Bus Stop Scenario");
+			btnScenario3.addActionListener(this);
+			panel.add(btnScenario3);
+			
+			JButton btnScenario4 = new JButton("Non-Norm Scenario 1");
+			btnScenario4.addActionListener(this);
+			panel.add(btnScenario4);
+			
+			JButton btnScenario5 = new JButton("Non-Norm Scenario 2");
+			btnScenario5.addActionListener(this);
+			panel.add(btnScenario5);
+			
+			JButton btnScenario6 = new JButton("Trigger Bank Robbery");
+			btnScenario6.addActionListener(this);
+			panel.add(btnScenario6);
+			
+			JButton btnScenario7 = new JButton("Trigger Vehicle Crash");
+			btnScenario7.addActionListener(this);
+			panel.add(btnScenario7);
+			
+			JButton btnScenario8 = new JButton("Trigger Predestrian Getting Hit");
+			btnScenario8.addActionListener(this);
+			panel.add(btnScenario8);
+			
+			JButton btnScenario9 = new JButton("Trigger Weekend");
+			btnScenario9.addActionListener(this);
+			panel.add(btnScenario9);
+			
+			JButton btnClear = new JButton("Clear World");
+			btnClear.addActionListener(this);
+			panel.add(btnClear);
+			
+			JButton btnNewWorld = new JButton("Create World From Config File");
+			btnNewWorld.addActionListener(this);
+			panel.add(btnNewWorld);
+			
+			return panel;
+		}
+		if(text.equals("Controls")) {
 			JPanel panel = new JPanel();
 			textField_1 = new JTextField();
 			panel.add(textField_1);
@@ -66,6 +119,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
 			btnDemonstrateCollisionPerson.addActionListener(this);
 			panel.add(btnDemonstrateCollisionPerson);
+			
 
 			JSlider framesPerSecond = new JSlider(JSlider.HORIZONTAL,
 			                                      FPS_MIN, FPS_MAX, FPS_INIT);
@@ -85,7 +139,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			return panel;
 
 		} 
-		if (text.equals("Other")) {
+		if (text.equals("TraceLog")) {
 			JPanel panel = new JPanel();
 			panel.setLayout(new BorderLayout());
 			tracePanel = new TracePanel();
@@ -120,8 +174,46 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
-		if(e.getActionCommand().equals("Add Vehicles to Demonstrate Collision")) {
+		if(e.getActionCommand().equals("Normal Scenario 1")) {
+			
+		}
+		else if(e.getActionCommand().equals("Create World From Config File")) {
+			System.out.println("Creating World From Config");
+			cityGui.CreateWorld();
+		}
+		else if(e.getActionCommand().equals("Clear World")) {
+			System.out.println("Clearing World");
+			cityGui.ClearWorld();
+		}
+		else if(e.getActionCommand().equals("Normal Scenario 2")) {
+			
+		}
+		else if(e.getActionCommand().equals("Normal Scenario 3")) {
+			
+		}
+		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
+			
+		}
+		else if(e.getActionCommand().equals("Non-Norm Scenario 1")) {
+			
+		}
+		else if(e.getActionCommand().equals("Non-Norm Scenario 2")) {
+			
+		}
+		else if(e.getActionCommand().equals("Trigger Bank Robbery")) {
+			
+		}
+		else if(e.getActionCommand().equals("Trigger Vehicle Crash")) {
+			
+		}
+		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
+			
+		}
+		else if(e.getActionCommand().equals("Trigger Weekend")) {
+			
+		}
+		
+		else if(e.getActionCommand().equals("Add Vehicles to Demonstrate Collision")) {
 			VehicleGui vehicle = new VehicleGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel,"Car");
 			vehicle.setDestination(1,1);
 			cityPanel.vehicles.add(vehicle);

@@ -121,7 +121,6 @@ public class CityGui extends JFrame implements ActionListener {
 
 		FileReader input = null;
 		try {
-			System.out.println(System.getProperty("file.separator"));
 			if(System.getProperty("file.separator").equals("/"))
 			{
 				input = new FileReader( "src//config.txt");
@@ -191,6 +190,7 @@ public class CityGui extends JFrame implements ActionListener {
 					house.setItems();
 					houseAnimationPanels.add(house.gui.hp);
 					HousingResidentRole residentRole = new HousingResidentRole();
+					
 					house.setOccupant(residentRole);
 					residentRole.setTag(AlertTag.HOME);
 					//residentRole.testModeOn();
@@ -203,16 +203,11 @@ public class CityGui extends JFrame implements ActionListener {
 					person.HomeNum = count;
 					count++;
 					person.startThread();
-					//setTest();
-					//person.setTest();
-					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui1);
 						
 						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
 						
-						//WaiterGui g = new WaiterGui(RestaurantNormalWaiterRole);
-						//RestaurantNormalWaiterRole.setGui(g);
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
@@ -306,11 +301,6 @@ public class CityGui extends JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		for (PeopleAgent p : people) {
-//			p.Restaurants.add(restaurant);
-//			p.Markets.add(market);
-//			p.Banks.add(bank);
-//		}
 		setVisible(true);
 		setSize(1024, 768);
 
@@ -335,6 +325,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		// Create the BuildingPanel for each Building object
 		ArrayList<Building> buildings = cityPanel.getBuildings();
+
 		for (int i = 0; i < buildings.size(); i++) {
             Building b = buildings.get(i);
             BuildingPanel bp = new BuildingPanel(b, i, this);
@@ -351,6 +342,7 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		for(House h : apartment2.houses) {
 			apartment2HouseAnimationPanels.add(h.gui.hp);
+
 		}
 			
 		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
@@ -388,12 +380,16 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(busStop4Container,"" + 20);
         
         
-         
+
+        
         for(int j = 0; j < houseAnimationPanels.size(); j++)
         {
-        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
-    		houseContainer.setOpaque(true);
-    		buildingPanels.add(houseContainer, "" + j);
+        	if(j != 12) { //This handles outside houses ONLY
+	        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+	    		houseContainer.setOpaque(true);
+	    	
+	    		buildingPanels.add(houseContainer, "" + j);
+        	}
         }
         for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++) {
         	JScrollPane apartmentHouseContainer = new JScrollPane(apartment1HouseAnimationPanels.get(j));
@@ -406,10 +402,6 @@ public class CityGui extends JFrame implements ActionListener {
 
         }
 
-
-		//getContentPane().add(BorderLayout.WEST, cityControls);
-		//getContentPane().add(BorderLayout.NORTH, cityPanel);
-		//getContentPane().add(BorderLayout.SOUTH, buildingPanels);
         
         buildingPanels.setOpaque(true);
         cityControls.setOpaque(true);
@@ -432,6 +424,19 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+	}
+	
+	public void ClearWorld() {
+		for(PeopleAgent person : people) {
+			person.Arrived();
+			person.stopThread();
+			
+		}
+		cityPanel.vehicles.clear();
+		cityPanel.people.clear();
+	}
+	public void CreateWorld() {
+		
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
