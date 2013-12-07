@@ -22,10 +22,12 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> nonLivingGuis = new ArrayList<HGui>();
 	CityGui g;
 	public ApartmentsGui ag;
+	public final String apartmentsPrefix;
 	
 	public ApartmentsAnimationPanel(ApartmentsGui ag) {
 		super();
 		this.ag = ag;
+		apartmentsPrefix = ag.a.name;
 		this.setSize(500, 570);
 		this.addMouseListener(new MouseListener() {
 
@@ -41,7 +43,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 5; j++) {
 						if (xPos >= x && xPos <= (x + houseWidth) && yPos >= y && yPos <= (y + houseHeight)) {
-							g.displayBuildingPanel(ag.a.name + k);
+							g.displayBuildingPanel(apartmentsPrefix + k);
 							return;
 						}
 						y += (houseHeight + 30);
