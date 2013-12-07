@@ -178,6 +178,12 @@ public class ResidentGui implements HGui{
 		return false;
 	}
 	
+	public boolean isPresentInComplex() {
+		if (location == Location.Apartments)
+			return true;
+		return false;
+	}
+	
 	public void setHouseGui(HouseGui hGui) {
 		this.hGui = hGui;
 	}

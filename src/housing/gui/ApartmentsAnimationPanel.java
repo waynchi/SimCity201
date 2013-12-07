@@ -80,7 +80,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		for (HGui gui : humanGuis) {
-			if (gui.isPresent())
+			if (gui instanceof ResidentGui && ((ResidentGui)gui).isPresentInComplex())
 				gui.draw(g);
 		}
 		for (HGui gui : nonLivingGuis) {
