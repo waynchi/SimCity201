@@ -10,17 +10,22 @@ import java.awt.*;
 
 public class CashierGui implements Gui {
 
-    private CashierAgent agent = null;
+    private Cashier agent = null;
 
-    private int xPos = 90, yPos = 250;//default waiter position
+    private int xPos = -20, yPos = -20;
+    private int jobxPos = 90, jobyPos = 250;
     private int xDestination = 90, yDestination = 250;//default start position
     private int guiWidth = 70, guiHeight = 70;
     int[] xTable = new int[3]; //3 tables
     int[] yTable = new int[3]; //3 tables
     private RestaurantGui restGui;
+    
+    public enum Command {leaving,entering,none};
+    Command command;
+    
    
-    public CashierGui(CashierAgent cashierAgent, RestaurantGui restG) {
-        this.agent = cashierAgent;
+    public CashierGui(Cashier cashier, RestaurantGui restG) {
+        this.agent = cashier;
         this.restGui = restG;
         xTable[0] = 250;
         yTable[0] = 250;
@@ -43,8 +48,17 @@ public class CashierGui implements Gui {
             yPos++;
         else if (yPos > yDestination)
             yPos--;
+        
+        if(xPos == xDestination && yPos == yDestination)
+        {
+        	if(command == Command.leaving)
+        	{
+        		command = Command.none;
+        		((CashierAgent) agent).msgAnimationFinishedDoLeaveRestaruant();
+        	}
+        }
 
-       restGui.updateMoneyOutput(agent.getRestaurantMoney());
+       restGui.updateMoneyOutput(((CashierAgent) agent).getRestaurantMoney());
     }
 
     public void draw(Graphics2D g) 
@@ -52,7 +66,7 @@ public class CashierGui implements Gui {
         g.setColor(Color.BLUE);
         g.fillRect(xPos, yPos, guiWidth, guiHeight);
         g.setColor(Color.WHITE);
-        g.drawString(agent.getName(), xPos, yPos+10);
+        g.drawString(((CashierAgent) agent).getName(), xPos, yPos+10);
         
         
     }
@@ -61,16 +75,16 @@ public class CashierGui implements Gui {
         return true;
     }
 
-    public void DoBringToTable(Customer customer,int table) {
-    	xDestination = xTable[table-1] + 20;
-        yDestination = yTable[table-1] - 20;
-    	
-    }
-
-    public void DoLeaveCustomer() {
-        xDestination = -20;
-        yDestination = -20;
-    }
+//    public void DoBringToTable(Customer customer,int table) {
+//    	xDestination = xTable[table-1] + 20;
+//        yDestination = yTable[table-1] - 20;
+//    	
+//    }
+//
+//    public void DoLeaveCustomer() {
+//        xDestination = -20;
+//        yDestination = -20;
+//    }
 
     public int getXPos() {
         return xPos;
@@ -79,6 +93,24 @@ public class CashierGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+
+
+	public void DoEnterRestaurant() {
+		// TODO Auto-generated method stub
+		xDestination = jobxPos;
+		yDestination = jobyPos;
+		
+	}
+
+
+
+	public void DoLeaveRestaurant() {
+		// TODO Auto-generated method stub
+		xDestination = -20;
+		yDestination = -20;
+		command = Command.leaving;
+	}
 }
 
 

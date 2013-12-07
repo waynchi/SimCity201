@@ -2,6 +2,7 @@ package restaurant_ps;
 
 import agent.Agent;
 import restaurant_ps.gui.CookGui;
+import restaurant_ps.interfaces.Host;
 
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -11,6 +12,7 @@ import market.interfaces.MarketEmployee;
 import java.util.*;
 import java.util.Map.Entry;
 
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -24,9 +26,10 @@ public class CookAgent extends Role implements Cook {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
-	public enum Status {pending, cooking, done, doingNothing, goingToFridge, aboutToCheckForInFridge, arrivedAtFridge, checkingInFridge, readyToMoveToGrill, arrivedAtGrill, onGrill, doneCooking, readyToBePlated, aboutToBePlated, beingPlated, goingToPlateArea, arrivedAtPlatingArea, Plated, tellWaiterFoodIsPlated, hasBeenPickedUp, PlatedAndWaiterNotified, goingToGrill, arrivedAtGrillToPickUpFood, aboutToPutOnGrill};
+	public enum Status {pending, cooking, done, doingNothing, goingToFridge, aboutToCheckForInFridge, arrivedAtFridge, checkingInFridge, readyToMoveToGrill, arrivedAtGrill, onGrill, doneCooking, readyToBePlated, aboutToBePlated, beingPlated, goingToPlateArea, arrivedAtPlatingArea, Plated, tellWaiterFoodIsPlated, hasBeenPickedUp, PlatedAndWaiterNotified, goingToGrill, arrivedAtGrillToPickUpFood, aboutToPutOnGrill,left,personNotified};
 	Status cookState = Status.doingNothing;
 	public enum RestockState {readyToBeChecked,checking,done};
+	public enum ClosingState {None, ToBeClosed, Preparing, Closed};
 	Random generator = new Random();
 	Timer timer = new Timer();
 	
@@ -84,6 +87,10 @@ public class CookAgent extends Role implements Cook {
 	public CookGui cookGui = null;
 	public MarketEmployee marketEmployee;
 	public Cashier cashier;
+	public Host host;
+	boolean enter = false;
+	boolean leave = false;
+	public ClosingState closingState = ClosingState.Closed;
 
 
 //	private Market market;
@@ -99,6 +106,28 @@ public class CookAgent extends Role implements Cook {
 		grills.add(new Grill(1));
 		grills.add(new Grill(2));
 		grills.add(new Grill(3));
+	}
+	
+	public void msgIsActive() {
+		isActive = true;
+		enter = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
+	}
+	
+	public void msgAnimationFinishedEntering() {
+		// TODO Auto-generated method stub
+		enter = false;
+	}
+
+	public void msgAnimationFinishedLeaveRestaurant() {
+		// TODO Auto-generated method stub
+		cookState = Status.left;
+		stateChanged();
 	}
 	
 
@@ -240,6 +269,30 @@ public class CookAgent extends Role implements Cook {
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */
+		if(cookState == Status.left){
+			cookState = Status.personNotified;
+			NotifyPerson();
+		}
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !((HostAgent) host).anyCustomer() && leave == true) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
 		synchronized(myOrders)
 		{
 		for(MyOrder o : myOrders)
@@ -355,6 +408,54 @@ public class CookAgent extends Role implements Cook {
 //		waitingCustomers.remove(customer);
 //		hostGui.DoLeaveCustomer();
 //	} f
+
+	private void shutDown() {
+		// TODO Auto-generated method stub
+		standTimer.cancel();
+		closingState = ClosingState.Closed;
+	}
+
+	private void NotifyPerson() {
+		// TODO Auto-generated method stub
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("Cook");
+	}
+
+	private void leaveRestaurant() {
+		// TODO Auto-generated method stub
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Cook");
+		cookGui.DoLeaveRestaurant();
+//		try {
+//			movingAround.acquire();
+//		} catch (InterruptedException e) {}
+//		isActive = false;
+//		leave = false;
+//		myPerson.msgDone("Cook");
+	}
+
+	private void prepareToClose() {
+		// TODO Auto-generated method stub
+		closingState = ClosingState.Preparing;
+	}
+
+	private void enterRestaurant() {
+		// TODO Auto-generated method stub
+		if (closingState == ClosingState.Closed) {
+			startStandTimer();
+			closingState = ClosingState.None;
+		}
+		cookGui.DoEnterRestaurant();
+//		try {
+//			movingAround.acquire();
+//		} catch (InterruptedException e) {}
+		//enter = false;
+	}
+
+	private void startStandTimer() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private void InformCashier(MarketOrder order) {
 		// TODO Auto-generated method stub
@@ -649,6 +750,8 @@ public class CookAgent extends Role implements Cook {
 		// TODO Auto-generated method stub
 		return this.name;
 	}
+
+	
 
 
 	

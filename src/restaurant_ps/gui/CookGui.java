@@ -33,7 +33,7 @@ public class CookGui implements Gui{
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
-	private enum Command {noCommand, GoToCustomer, GoToSeat, GoToSeatWithFood, GoToCook, LeaveRestaurant, GoToCashier, GoToSeatWithCheck, GoToHomePosition, GoToFridge, GoToGrill, GoToGrillToPickUpFood, GoToPlatingArea, nothing};
+	private enum Command {noCommand, GoToCustomer, GoToSeat, GoToSeatWithFood, GoToCook, LeaveRestaurant, GoToCashier, GoToSeatWithCheck, GoToHomePosition, GoToFridge, GoToGrill, GoToGrillToPickUpFood, GoToPlatingArea, nothing, Entering};
 	private Command command=Command.noCommand;
 	
 	
@@ -66,8 +66,8 @@ public class CookGui implements Gui{
     public List<Order> platedFood = Collections.synchronizedList(new ArrayList<Order>());
 	public CookGui(CookAgent c, RestaurantGui gui){ //HostAgent m) {
 		agent = c;
-		xPos = cookGuiX;
-		yPos = cookGuiY;
+		xPos = -20;
+		yPos = -20;
 		xDestination = xPos;
 		yDestination = yPos;
 		
@@ -91,6 +91,16 @@ public class CookGui implements Gui{
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination) {
+			if(command == Command.Entering)
+			{
+				agent.msgAnimationFinishedEntering();
+				command = command.nothing;
+			}
+			if(command == Command.LeaveRestaurant)
+			{
+				agent.msgAnimationFinishedLeaveRestaurant();
+				command = command.nothing;
+			}
 			if(command == Command.GoToFridge)
 			{
 				agent.msgAnimationFinishedGoToFridge();
@@ -243,6 +253,18 @@ public class CookGui implements Gui{
 		return null;
 	}
 
+	public void DoEnterRestaurant() {
+    	command = Command.Entering;
+    	xDestination = cookGuiX;
+    	yDestination = cookGuiY;
+    }
+
+	public void DoLeaveRestaurant() {
+		// TODO Auto-generated method stub
+		command = Command.LeaveRestaurant;
+		xDestination = -20;
+		yDestination = -20;
+	}
 	
 	
 	

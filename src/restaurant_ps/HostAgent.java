@@ -370,6 +370,16 @@ public class HostAgent extends Role implements Host {
 		// TODO Auto-generated method stub
 		stateChanged();
 	}
+	
+	public boolean anyCustomer(){
+		if(!myWaitingCustomers.isEmpty())
+			return true;
+		for(Table t: tables) {
+			if(t.isOccupied())
+				return true;
+		}
+		return false;
+	}
 
 	
 
