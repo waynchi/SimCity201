@@ -27,6 +27,9 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private final int FRIDGE_TOP_Y = 50;
     private final int FRIDGE_WIDTH = 20;
     private final int FRIDGE_HEIGHT = 40;
+    private final int STAND_LEFT_X = 210;
+    private final int STAND_TOP_Y = 90;
+    private final int STAND_DIAMETER = 20;
     private Image bufferImage;
     private Dimension bufferSize;
 
@@ -76,7 +79,11 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         g2.fillRect(FRIDGE_LEFT_X, FRIDGE_TOP_Y, FRIDGE_WIDTH, FRIDGE_HEIGHT);
         g2.setColor(Color.BLACK);
         g2.drawString("REFRIGERATOR", FRIDGE_LEFT_X + 20, FRIDGE_TOP_Y + 25);
-
+        
+        g2.setColor(Color.ORANGE);
+        g2.fillOval(STAND_LEFT_X, STAND_TOP_Y, STAND_DIAMETER, STAND_DIAMETER);
+        g2.setColor(Color.BLACK);
+        g2.drawString("REVOLVING STAND", STAND_LEFT_X + 20, STAND_TOP_Y + 15);
 
         for(VkGui gui : guis) {
             if (gui.isPresent()) {
