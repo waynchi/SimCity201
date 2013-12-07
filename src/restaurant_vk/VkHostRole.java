@@ -34,6 +34,7 @@ public class VkHostRole extends Role implements Host{
 	public VkCookRole cook;
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
+	public RestaurantVkAnimationPanel ap;
 
 	public VkHostRole(RestaurantVkAnimationPanel p) {
 		super();
@@ -43,6 +44,7 @@ public class VkHostRole extends Role implements Host{
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));
 		}
+		ap = p;
 		gui = new HostGui(this);
 		gui.setAnimationPanel(p);
 	}
@@ -101,6 +103,7 @@ public class VkHostRole extends Role implements Host{
 		WaiterGui g = new WaiterGui(wa, waiterHomePos);
 		waiterHomePos.width += 30;
 		wa.setGui(g);
+		g.setAnimationPanel(ap);
 		synchronized (waiters) {
 			waiters.add(w);
 		}
