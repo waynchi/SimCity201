@@ -20,6 +20,7 @@ public class HostGui implements Gui {
     private final int HOST_WIDTH = 20;
     private final int HOST_HEIGHT = 20;
 	private State state = State.None;
+	public RestaurantVkAnimationPanel ap;
 	
 	enum State {None, Entering, Exiting, OnDuty};
 
@@ -76,5 +77,10 @@ public class HostGui implements Gui {
     	xDestination = entranceX;
 		yDestination = entranceY;
 		state = State.Exiting;
+    }
+    
+    public void setAnimationPanel(RestaurantVkAnimationPanel p) {
+    	this.ap = p;
+    	ap.addGui(this);
     }
 }

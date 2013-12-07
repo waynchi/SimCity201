@@ -1,7 +1,6 @@
 package restaurant_vk.gui;
 
 import restaurant_vk.VkCustomerRole;
-import restaurant_vk.VkHostRole;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +12,8 @@ public class CustomerGui implements Gui{
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean leaveOption = false;
-	
 	private String[] menuArray;
-	
-	// Caption to decide what is to be displayed when the customer is ordering
-	// or eating something.
 	private String caption = "";
-	// The value mapped to the caption key taht will actually be displayed. 
 	private Map<String, String> symbols = new HashMap<String, String>();
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -29,16 +23,14 @@ public class CustomerGui implements Gui{
 	public static final int yTable = 350;
 	private final int CUST_WIDTH = 20;
 	private final int CUST_HEIGHT = 20;
-	AnimationPanel ap;
+	RestaurantVkAnimationPanel ap;
 
-	public CustomerGui(VkCustomerRole c, AnimationPanel p){ //HostAgent m) {
+	public CustomerGui(VkCustomerRole c) {
 		agent = c;
 		xPos = -20;
 		yPos = 300;
 		xDestination = -20;
 		yDestination = 300;
-		this.ap = p;
-		ap.addGui(this);
 		setSymbols();
 	}
 
@@ -71,7 +63,6 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-//				gui.setCustomerEnabled(agent);
 			}
 			else if (command == Command.GoToPay) {
 				agent.msgAnimationFinishedGoToPay();
@@ -82,7 +73,6 @@ public class CustomerGui implements Gui{
 				yPos = 300;
 				xDestination = -20;
 				yDestination = 300;
-//				gui.setCustomerEnabled(agent);
 				agent.msgAnimationFinishedLeaveRestaurant();
 			}
 			command=Command.noCommand;
@@ -181,7 +171,7 @@ public class CustomerGui implements Gui{
 	
 	public void setMenuCopy() {
 		restaurant_vk.Menu m = agent.getMenu();
-		ArrayList<String> l = (ArrayList) m.getAllFoodNames();
+		ArrayList<String> l = (ArrayList<String>) m.getAllFoodNames();
 		int size = l.size();
 		menuArray = null;
 		menuArray = new String[size];
@@ -190,6 +180,11 @@ public class CustomerGui implements Gui{
 			menuArray[i] = s;
 			i++;
 		}
+	}
+	
+	public void setAnimationPanel(RestaurantVkAnimationPanel p) {
+		this.ap = p;
+		ap.addGui(this);
 	}
 	
 	/*

@@ -11,7 +11,7 @@ import java.awt.event.*;
  * Contains the main frame and subsequent panels
  */
 public class VKRestaurantGui extends JFrame implements ActionListener {
-	AnimationPanel animationPanel = new AnimationPanel();
+	RestaurantVkAnimationPanel animationPanel = new RestaurantVkAnimationPanel();
 
     /**
      * Constructor for RestaurantGui class.
@@ -35,7 +35,7 @@ public class VKRestaurantGui extends JFrame implements ActionListener {
 
     }
 
-    public AnimationPanel getAnimationPanel(){
+    public RestaurantVkAnimationPanel getAnimationPanel(){
     	return animationPanel;
     }
 	@Override

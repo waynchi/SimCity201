@@ -11,10 +11,8 @@ import restaurant_vk.VkWaiterNormalRole;
 
 public class WaiterGui implements Gui{
 	private VkWaiterBaseRole agent = null;
-
     private int xPos = 40, yPos = 40;//default waiter position
-    private int xDestination = 40, yDestination = 40;//default start position
-
+    private int xDestination = 40, yDestination = 40;//default start positio
     public static final int xTable = 350;
     public static final int yTable = 350;
     private final int HOST_WIDTH = 20;
@@ -23,22 +21,15 @@ public class WaiterGui implements Gui{
 	private final int tableHeight = 50;
 	private int homePosX;
 	private int homePosY;
-	
 	private int destinationTable = 0;
-	
 	private CustomerGui customerGui;
-	
 	private String thingInHand = "";
-	
 	private Map<String, String> symbols = new HashMap<String, String>();
-	
-	// An array containing the mapping of the table versus the table coordinates.
 	private TableCoordinates[] tables = new TableCoordinates[4];
-	
 	private MyState state = MyState.None;
-	
 	private boolean breakCheckBox = false;
 	private boolean breakEnabled = true;
+	public RestaurantVkAnimationPanel ap;
 	
 	/*
      * States of the waiterGui while performing certain actions.
@@ -288,5 +279,10 @@ public class WaiterGui implements Gui{
 	public void setOffBreak() {
 		breakCheckBox = false;
 		breakEnabled = true;
+	}
+	
+	public void setAnimationPanel(RestaurantVkAnimationPanel p) {
+		this.ap = p;
+		ap.addGui(this);
 	}
 }

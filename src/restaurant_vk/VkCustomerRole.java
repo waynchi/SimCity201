@@ -1,6 +1,7 @@
 package restaurant_vk;
 
 import restaurant_vk.gui.CustomerGui;
+import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
@@ -35,8 +36,10 @@ public class VkCustomerRole extends Role implements Customer{
 	private AgentState state = AgentState.DoingNothing;
 	private AgentEvent event = AgentEvent.none;
 
-	public VkCustomerRole() {
+	public VkCustomerRole(RestaurantVkAnimationPanel p) {
 		super();
+		customerGui = new CustomerGui(this);
+		customerGui.setAnimationPanel(p);
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------

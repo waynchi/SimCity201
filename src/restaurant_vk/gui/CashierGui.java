@@ -15,6 +15,7 @@ public class CashierGui implements Gui {
 	private int yDestination = entranceY;
 	private State state = State.None;
 	public VkCashierRole cashier;
+	public RestaurantVkAnimationPanel ap;
 	
 	enum State {None, Entering, OnDuty, Exiting};
 	
@@ -74,5 +75,10 @@ public class CashierGui implements Gui {
 		xDestination = entranceX;
 		yDestination = entranceY;
 		state = State.Exiting;
+	}
+	
+	public void setAnimationPanel(RestaurantVkAnimationPanel p) {
+		this.ap = p;
+		ap.addGui(this);
 	}
 }

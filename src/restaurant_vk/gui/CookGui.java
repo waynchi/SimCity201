@@ -25,6 +25,7 @@ public class CookGui implements Gui{
 	private Dimension plate = new Dimension(140, 90);
 	private Dimension grill = new Dimension(140,40);
 	private MyState state = MyState.None;
+	public RestaurantVkAnimationPanel ap;
 	
 	enum MyState {None, Inactive, Cooking, Plating, Entering, Exiting};
 	
@@ -133,6 +134,11 @@ public class CookGui implements Gui{
     	state = MyState.Exiting;
     	xDestination = -20;
     	yDestination = 90;
+    }
+    
+    public void setAnimationPanel(RestaurantVkAnimationPanel p) {
+    	this.ap = p;
+    	ap.addGui(this);
     }
 	
 	/*

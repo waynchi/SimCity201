@@ -11,6 +11,7 @@ import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
 import restaurant_vk.gui.CookGui;
+import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import market.interfaces.*;
@@ -43,10 +44,12 @@ public class VkCookRole extends Role implements Cook {
 	private ClosingState closingState = ClosingState.Closed;
 	private VkHostRole host;
 
-	public VkCookRole(RevolvingStand s) {
+	public VkCookRole(RevolvingStand s, RestaurantVkAnimationPanel p) {
 		timer = new Timer();
 		standTimer = new Timer();
 		this.stand = s;
+		gui = new CookGui(this);
+		gui.setAnimationPanel(p);
 		initializeInventory();
 	}
 	

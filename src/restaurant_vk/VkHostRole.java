@@ -2,6 +2,7 @@ package restaurant_vk;
 
 import restaurant.interfaces.Cashier;
 import restaurant_vk.gui.HostGui;
+import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.gui.WaiterGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
@@ -34,7 +35,7 @@ public class VkHostRole extends Role implements Host{
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
 
-	public VkHostRole() {
+	public VkHostRole(RestaurantVkAnimationPanel p) {
 		super();
 		
 		// Make some tables
@@ -42,6 +43,8 @@ public class VkHostRole extends Role implements Host{
 		for (int ix = 1; ix <= NTABLES; ix++) {
 			tables.add(new Table(ix));
 		}
+		gui = new HostGui(this);
+		gui.setAnimationPanel(p);
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
