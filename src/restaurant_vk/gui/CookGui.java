@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
-import restaurant_vk.CookAgent;
+import restaurant_vk.VkCookRole;
 import restaurant_vk.gui.WaiterGui.MyState;
 
 public class CookGui implements Gui{
@@ -15,7 +15,7 @@ public class CookGui implements Gui{
 	private int homePosY;
 	private int xDestination;
 	private int yDestination;
-	private CookAgent agent = null;
+	private VkCookRole agent = null;
 	private final int cookWidth = 20;
 	private final int cookHeight = 20;
 	private Map<String, String> symbols = new HashMap<String, String>();
@@ -28,7 +28,7 @@ public class CookGui implements Gui{
 	
 	enum MyState {None, Inactive, Cooking, Plating, Entering, Exiting};
 	
-	public CookGui(CookAgent c) {
+	public CookGui(VkCookRole c) {
 		agent = c;
 		homePosX = 140;
 		homePosY = 90;

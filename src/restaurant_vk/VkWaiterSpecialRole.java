@@ -3,20 +3,16 @@ package restaurant_vk;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 
-/**
- * @author Vikrant Singhal
- *
- * Waiter of the restaurant. There will be multiple such waiters that will be
- * added via the gui. It has all the responsibilities that a waiter has.
- */
-public class WaiterNormalAgent extends WaiterBaseAgent implements Waiter {
-	
+public class VkWaiterSpecialRole extends VkWaiterBaseRole implements Waiter {
 	// Data
 	
-	public WaiterNormalAgent(Host host) {
-		super(host);
-	}
+	public RevolvingStand stand;
 	
+	public VkWaiterSpecialRole(Host host, RevolvingStand s) {
+		super(host);
+		this.stand = s;
+	}
+		
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -32,14 +28,19 @@ public class WaiterNormalAgent extends WaiterBaseAgent implements Waiter {
 	 * and the table number.
 	 */
 	protected void passOrderToCook(MyCustomer mc) {
-		cook.hereIsOrder(this, mc.choice, mc.table);
-		print("Order has been given to cook.");
+		DoGoToRevolvingStand();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		
+		stand.addOrder(this, mc.choice, mc.table);
+		print("Order has been put in revolving stand.");
 		mc.os = OrderStatus.GivenToCook;
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
-	
+		
 	// Scheduler
 	
 	/**--------------------------------------------------------------------------------------------------------------

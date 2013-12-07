@@ -18,7 +18,7 @@ import people.Role;
  * Restaurant Host Agent. A Host is the manager of a restaurant who sees that all
  * is proceeded as he wishes.
  */
-public class HostAgent extends Role implements Host{
+public class VkHostRole extends Role implements Host{
 	static final int NTABLES = 4;//a global for the number of tables.
 	public List<Customer> customers = Collections.synchronizedList(new ArrayList<Customer>());
 	public List<Waiter> waiters = new ArrayList<Waiter>();
@@ -30,11 +30,11 @@ public class HostAgent extends Role implements Host{
 	private boolean leave = false;
 	private boolean enter = false;
 	public Cashier cashier;
-	public CookAgent cook;
+	public VkCookRole cook;
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
 
-	public HostAgent() {
+	public VkHostRole() {
 		super();
 		
 		// Make some tables
@@ -94,7 +94,7 @@ public class HostAgent extends Role implements Host{
 	 * list of waiters.
 	 */
 	public void addWaiter(Waiter w) {
-		WaiterBaseAgent wa = (WaiterBaseAgent) w;
+		VkWaiterBaseRole wa = (VkWaiterBaseRole) w;
 		WaiterGui g = new WaiterGui(wa, waiterHomePos);
 		waiterHomePos.width += 30;
 		wa.setGui(g);
@@ -286,7 +286,7 @@ public class HostAgent extends Role implements Host{
 	}
 	
 	private void leaveRestaurant() {
-		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Host");
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Host");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -299,9 +299,9 @@ public class HostAgent extends Role implements Host{
 	private void prepareToClose() {
 		cook.closeRestaurant();
 		for (Waiter w : waiters) {
-			((WaiterBaseAgent) w).closeRestaurant();
+			((VkWaiterBaseRole) w).closeRestaurant();
 		}
-		((CashierAgent)cashier).closeRestaurant();
+		((VkCashierRole)cashier).closeRestaurant();
 		closingState = ClosingState.Preparing;
 	}
 	
@@ -322,7 +322,7 @@ public class HostAgent extends Role implements Host{
 		this.cashier = c;
 	}
 	
-	public void setCook(CookAgent c) {
+	public void setCook(VkCookRole c) {
 		this.cook = c;
 	}
 
@@ -386,7 +386,7 @@ public class HostAgent extends Role implements Host{
 	
 	public boolean anyCustomer() {
 		for (Customer c : customers) {
-			if (((CustomerAgent)c).isWaitingInLine())
+			if (((VkCustomerRole)c).isWaitingInLine())
 				return true;
 		}
 		for (Table t : tables) {

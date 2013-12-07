@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
-import restaurant_vk.CustomerAgent;
-import restaurant_vk.WaiterBaseAgent;
-import restaurant_vk.WaiterNormalAgent;
+import restaurant_vk.VkCustomerRole;
+import restaurant_vk.VkWaiterBaseRole;
+import restaurant_vk.VkWaiterNormalRole;
 
 public class WaiterGui implements Gui{
-	private WaiterBaseAgent agent = null;
+	private VkWaiterBaseRole agent = null;
 
     private int xPos = 40, yPos = 40;//default waiter position
     private int xDestination = 40, yDestination = 40;//default start position
@@ -45,7 +45,7 @@ public class WaiterGui implements Gui{
      */
     enum MyState {None, NotMoving, EscortingCustomer, MovingToTable, GoingToRevolvingStand, Entering, Exiting};
 
-    public WaiterGui(WaiterBaseAgent agent, Dimension homePos) {
+    public WaiterGui(VkWaiterBaseRole agent, Dimension homePos) {
         this.agent = agent;
         
         homePosX = homePos.width;
@@ -145,7 +145,7 @@ public class WaiterGui implements Gui{
     /*
      * Bring the customer to the target table.
      */
-    public void DoBringToTable(CustomerAgent customer, int table) {
+    public void DoBringToTable(VkCustomerRole customer, int table) {
     	state = MyState.EscortingCustomer;
     	setDestinationTable(table);
     	setDestinationCoordinates();

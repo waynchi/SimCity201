@@ -1,6 +1,6 @@
 package restaurant_vk.gui;
 
-import restaurant_vk.HostAgent;
+import restaurant_vk.VkHostRole;
 import java.awt.*;
 
 /*
@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class HostGui implements Gui {
 
-    public HostAgent host = null;
+    public VkHostRole host = null;
     private int jobPosX = 20;
     private int jobPosY = 130;
     private int entranceX = 20;
@@ -23,7 +23,7 @@ public class HostGui implements Gui {
 	
 	enum State {None, Entering, Exiting, OnDuty};
 
-    public HostGui(HostAgent agent) {
+    public HostGui(VkHostRole agent) {
         this.host = agent;
     }
 

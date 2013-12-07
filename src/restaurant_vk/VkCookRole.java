@@ -23,7 +23,7 @@ import restaurant_vk.interfaces.Waiter;
  * and plates the orders for the respective waiters to collect. When running
  * low on some food item, he orders it from the three markets it has.
  */
-public class CookAgent extends Role implements Cook {
+public class VkCookRole extends Role implements Cook {
 
 	// Data
 	
@@ -41,9 +41,9 @@ public class CookAgent extends Role implements Cook {
 	private boolean leave = false;
 	private boolean enter = false;
 	private ClosingState closingState = ClosingState.Closed;
-	private HostAgent host;
+	private VkHostRole host;
 
-	public CookAgent(RevolvingStand s) {
+	public VkCookRole(RevolvingStand s) {
 		timer = new Timer();
 		standTimer = new Timer();
 		this.stand = s;
@@ -142,7 +142,7 @@ public class CookAgent extends Role implements Cook {
 	}
 	
 	private void leaveRestaurant() {
-		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Cook");
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -276,7 +276,7 @@ public class CookAgent extends Role implements Cook {
 			return true;
 		}
 		
-		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer() && leave == true) {
+		if (closingState == ClosingState.Preparing && !((VkHostRole)host).anyCustomer() && leave == true) {
 			shutDown();
 			leaveRestaurant();
 			return true;
@@ -426,7 +426,7 @@ public class CookAgent extends Role implements Cook {
 		}, period, period);
 	}
 	
-	public void setHost(HostAgent h) {
+	public void setHost(VkHostRole h) {
 		this.host = h;
 	}
 	

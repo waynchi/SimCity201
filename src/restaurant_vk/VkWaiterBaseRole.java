@@ -8,13 +8,13 @@ import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
 import restaurant_vk.gui.WaiterGui;
-import restaurant_vk.CashierAgent;
-import restaurant_vk.CookAgent;
+import restaurant_vk.VkCashierRole;
+import restaurant_vk.VkCookRole;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 
-public class WaiterBaseAgent extends Role implements Waiter {
+public class VkWaiterBaseRole extends Role implements Waiter {
 
 	// Data
 	
@@ -23,14 +23,14 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	protected Semaphore movingAround = new Semaphore(0, true);
 	public WaiterGui gui = null;
 	protected Host host;
-	protected CookAgent cook;
+	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
-	protected CashierAgent cashier = null;
+	protected VkCashierRole cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
 	private ClosingState closingState = ClosingState.Closed;
 		
-	public WaiterBaseAgent(Host host) {
+	public VkWaiterBaseRole(Host host) {
 		super();
 		this.host = host;
 	}
@@ -448,7 +448,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	}
 	
 	private void leaveRestaurant() {
-		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -483,7 +483,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 			return true;
 		}
 		
-		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer() && leave == true) {
+		if (closingState == ClosingState.Preparing && !((VkHostRole)host).anyCustomer() && leave == true) {
 			shutDown();
 			leaveRestaurant();
 			return true;
@@ -590,7 +590,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 	
 	private void DoSeatCustomer(Customer c, int table) {
 		print("Seating " + c + " at " + table);
-		gui.DoBringToTable((CustomerAgent)c, table);
+		gui.DoBringToTable((VkCustomerRole)c, table);
 	}
 	
 	private void DoGoBack() {
@@ -625,7 +625,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 		return mc;
 	}
 	
-	public void setCook(CookAgent cook) {
+	public void setCook(VkCookRole cook) {
 		this.cook = cook;
 	}
 	
@@ -637,7 +637,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 		return gui;
 	}
 	
-	public void setCashier(CashierAgent c) {
+	public void setCashier(VkCashierRole c) {
 		cashier = c;
 	}
 	

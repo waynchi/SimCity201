@@ -3,7 +3,7 @@ package restaurant_vk.test;
 import static org.junit.Assert.*;
 import java.util.List;
 import org.junit.Test;
-import restaurant_vk.HostAgent;
+import restaurant_vk.VkHostRole;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
@@ -14,17 +14,17 @@ public class HostTest {
 
 	@Test
 	public void sampleTest() {
-		HostAgent host = new HostAgent("Vader");
+		VkHostRole host = new VkHostRole("Vader");
 		Customer c = new MockCustomer("Customer 1");
 		List<Customer> list = host.getCustomers();
 		assertTrue(list.isEmpty());
-		assertFalse(((HostAgent) host).isATableOccupied());
+		assertFalse(((VkHostRole) host).isATableOccupied());
 		host.IWantToEat(c);
 		assertFalse(list.isEmpty());
 		Waiter w = new MockWaiter("Waiter 1");
 		host.addWaiter(w);
 		host.pickAndExecuteAnAction();
-		assertTrue(((HostAgent) host).isATableOccupied());
+		assertTrue(((VkHostRole) host).isATableOccupied());
 	}
 
 }

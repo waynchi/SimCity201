@@ -26,7 +26,7 @@ import restaurant_vk.gui.AnimationPanel;
  * of the waiter and gives them to the respective waiters. Also, customers come
  * to the cashier and pay the money.
  */
-public class CashierAgent extends Role implements Cashier {
+public class VkCashierRole extends Role implements Cashier {
 	// Data
 	
 	private List<MyCheck> checks = Collections.synchronizedList(new ArrayList<MyCheck>());
@@ -48,7 +48,7 @@ public class CashierAgent extends Role implements Cashier {
 	public List<Shift> shiftRecord = new ArrayList<Shift>();
 	public Teller teller;
 	private double loanedMoney = 0;
-	public HostAgent host;
+	public VkHostRole host;
 	private Semaphore movingAround = new Semaphore(0, true);
 	
 	public double waiterSalary = 100;
@@ -56,7 +56,7 @@ public class CashierAgent extends Role implements Cashier {
 	public double cookSalary = 100;
 	public double hostSalary = 100;
 	
-	public CashierAgent(AnimationPanel p) {
+	public VkCashierRole(AnimationPanel p) {
 		gui = new CashierGui(this);
 		
 	}
@@ -586,7 +586,7 @@ public class CashierAgent extends Role implements Cashier {
 		return false;
 	}
 	
-	public void setHost(HostAgent h) {
+	public void setHost(VkHostRole h) {
 		this.host = h;
 	}
 	

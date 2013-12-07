@@ -1,7 +1,7 @@
 package restaurant_vk.gui;
 
-import restaurant_vk.CustomerAgent;
-import restaurant_vk.HostAgent;
+import restaurant_vk.VkCustomerRole;
+import restaurant_vk.VkHostRole;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
+	private VkCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean leaveOption = false;
@@ -21,26 +21,24 @@ public class CustomerGui implements Gui{
 	private String caption = "";
 	// The value mapped to the caption key taht will actually be displayed. 
 	private Map<String, String> symbols = new HashMap<String, String>();
-
-	VKRestaurantGui gui;
-
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToRestaurant, GoToSeat, LeaveRestaurant, GoToPay, GoAway};
 	private Command command=Command.noCommand;
-
 	public static final int xTable = 350;
 	public static final int yTable = 350;
 	private final int CUST_WIDTH = 20;
 	private final int CUST_HEIGHT = 20;
+	AnimationPanel ap;
 
-	public CustomerGui(CustomerAgent c, VKRestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(VkCustomerRole c, AnimationPanel p){ //HostAgent m) {
 		agent = c;
 		xPos = -20;
 		yPos = 300;
 		xDestination = -20;
 		yDestination = 300;
-		this.gui = gui;
+		this.ap = p;
+		ap.addGui(this);
 		setSymbols();
 	}
 

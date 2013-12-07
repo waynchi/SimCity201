@@ -1,7 +1,7 @@
 package restaurant_vk;
 
 import restaurant_vk.gui.CustomerGui;
-import restaurant_vk.CashierAgent;
+import restaurant_vk.VkCashierRole;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
@@ -19,7 +19,7 @@ import people.Role;
  *
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Role implements Customer{
+public class VkCustomerRole extends Role implements Customer{
 	private int hungerLevel = 5; // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
@@ -29,13 +29,13 @@ public class CustomerAgent extends Role implements Customer{
 	private List<CustomerRestaurantCheck> checks = new ArrayList<CustomerRestaurantCheck>();
 	private Host host;
 	private Waiter waiter;
-	private CashierAgent cashier = null;
+	private VkCashierRole cashier = null;
 	private Semaphore movingAround = new Semaphore(0, true);
 	private boolean leaveOption = false;
 	private AgentState state = AgentState.DoingNothing;
 	private AgentEvent event = AgentEvent.none;
 
-	public CustomerAgent() {
+	public VkCustomerRole() {
 		super();
 	}
 
@@ -515,7 +515,7 @@ public class CustomerAgent extends Role implements Customer{
 		return menu;
 	}
 	
-	public void setCashier(CashierAgent c) {
+	public void setCashier(VkCashierRole c) {
 		cashier = c;
 	}
 	

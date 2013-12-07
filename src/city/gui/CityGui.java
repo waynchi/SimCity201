@@ -72,7 +72,7 @@ public class CityGui extends JFrame implements ActionListener {
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole1 = new HostRole();
-	HostAgent RestaurantHostRole2 = new HostAgent();
+	VkHostRole RestaurantHostRole2 = new VkHostRole();
 	
 
 
@@ -238,7 +238,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCookVK")) {
-						CookAgent RestaurantCookRole = new CookAgent(revolvingStand);
+						VkCookRole RestaurantCookRole = new VkCookRole(revolvingStand);
 						
 						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
 						
