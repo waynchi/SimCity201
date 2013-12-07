@@ -229,7 +229,7 @@ public class CityGui extends JFrame implements ActionListener {
 					residentRole.setTag(AlertTag.HOME);
 					//residentRole.testModeOn();
 					residentRole.setPerson(person);
-					//residentRole.isActive = true;
+					residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
 					person.addRole(residentRole, "Resident");
 					
