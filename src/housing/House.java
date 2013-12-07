@@ -2,7 +2,6 @@ package housing;
 
 import housing.gui.HouseGui;
 import housing.gui.ItemGui;
-import housing.gui.TestGui;
 import housing.interfaces.Resident;
 import java.awt.Color;
 import java.util.List;
@@ -109,6 +108,12 @@ public class House extends Item{
 		if (this.isBroken())
 			result.add(this);
 		return result;
+	}
+	
+	public boolean isOccupied() {
+		if (occupant != null)
+			return true;
+		return false;
 	}
 	
 	public void setItems() {
