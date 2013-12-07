@@ -421,6 +421,11 @@ public class VkCookRole extends Role implements Cook {
 		this.market = m;
 	}
 	
+	@Override
+	public int getRestaurantIndex() {
+		return 1;
+	};
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 
@@ -502,5 +507,5 @@ public class VkCookRole extends Role implements Cook {
 		}
 	}
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Closed};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed}
 }
