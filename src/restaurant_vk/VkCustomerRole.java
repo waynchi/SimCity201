@@ -339,6 +339,15 @@ public class VkCustomerRole extends Role implements Customer{
 	 */
 	private void seated() {
 		customerGui.setMenuCopy();
+		List<String> menuItems = menu.getAllFoodNames();
+		List<String> affordableItems = new ArrayList<String>();
+		for (String s : menuItems) {
+			double price = menu.getPrice(s);
+			double money = ((PeopleAgent)myPerson).Money;
+			if (money >= price) {
+				affordableItems.add(s);
+			}
+		}
 		print("I'm sitting.");
 	}
 	

@@ -110,4 +110,10 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
+    
+    public void updatePosition() {
+		for (Gui gui : guis) {
+			gui.updatePosition();
+		}
+	}
 }
