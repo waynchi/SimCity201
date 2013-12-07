@@ -54,7 +54,7 @@ public class CityGui extends JFrame implements ActionListener {
 	CityControls cityControls;
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
-	RestaurantGui restaurantGui1 = new RestaurantGui();
+	RestaurantGui restaurantGuiYc = new RestaurantGui();
 	
 	RestaurantVkAnimationPanel vkAnimationPanel = new RestaurantVkAnimationPanel();
 	
@@ -74,16 +74,16 @@ public class CityGui extends JFrame implements ActionListener {
 		
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
-	HostRole RestaurantHostRole1 = new HostRole();
-	VkHostRole RestaurantHostRole2 = new VkHostRole(vkAnimationPanel);
+	HostRole RestaurantHostRoleYc = new HostRole();
+	VkHostRole RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
 	
 
 
 
 
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
-	Restaurant restaurant = new Restaurant(RestaurantHostRole1, new Dimension(100, 100), "Restaurant 1");
-	Restaurant restaurant2 = new Restaurant(RestaurantHostRole2, new Dimension(100,100), "Restaurant 2");
+	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1");
+	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2");
 	
 
 
@@ -116,7 +116,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		
 		//Set trace tags
-		RestaurantHostRole1.setTag(AlertTag.RESTAURANT1);
+		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
 
 
 
@@ -126,14 +126,14 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
-		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGui1);
+		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGuiYc);
 		
 		//vk revolving stand
 		RevolvingStand revolvingStand = new RevolvingStand();
 		
 		
 		
-		restPanel1.setHost(RestaurantHostRole1);
+		restPanel1.setHost(RestaurantHostRoleYc);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel1.theMonitor;
 
 		FileReader input = null;
@@ -174,7 +174,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Restaurants.add(restaurant);
 					person.Banks.add(bank);
 					person.Markets.add(market);
-					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGui1);
+					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGuiYc);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
 					person.addRole(marketCustomerRole, "MarketCustomer");
 					marketCustomerRole.setPerson(person);
@@ -221,7 +221,7 @@ public class CityGui extends JFrame implements ActionListener {
 					count++;
 					person.startThread();
 					if (job.equals("RestaurantNormalWaiter")) {
-						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGui1);
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGuiYc);
 						
 						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
 						
@@ -231,15 +231,15 @@ public class CityGui extends JFrame implements ActionListener {
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantNormalWaiterVK")) {
-						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRole2);
-						RestaurantHostRole2.addWaiter(RestaurantNormalWaiterRoleVK);						
+						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRoleVk);
+						RestaurantHostRoleVk.addWaiter(RestaurantNormalWaiterRoleVK);						
 						person.addJob("RestaurantNormalWaiterVK", start, end);
 						person.addRole(RestaurantNormalWaiterRoleVK,"RestaurantNormalWaiterVK");
 						RestaurantNormalWaiterRoleVK.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCook")) {
-						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGui1);
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGuiYc);
 						
 						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
 						
@@ -260,18 +260,18 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantHost")) {
 						person.addJob("RestaurantHost", start, end);
-						person.addRole(RestaurantHostRole1, "RestaurantHost");
-						RestaurantHostRole1.setPerson(person);
+						person.addRole(RestaurantHostRoleYc, "RestaurantHost");
+						RestaurantHostRoleYc.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantHostVK")) {
 						person.addJob("RestaurantHostVK", start, end);
-						person.addRole(RestaurantHostRole2, "RestaurantHostVK");
-						RestaurantHostRole1.setPerson(person);
+						person.addRole(RestaurantHostRoleVk, "RestaurantHostVK");
+						RestaurantHostRoleYc.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCashier")) {
-						CashierRole RestaurantCashierRole = new CashierRole(restaurantGui1);
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGuiYc);
 						
 						RestaurantCashierRole.setTag(AlertTag.RESTAURANT1);
 						
@@ -402,7 +402,7 @@ public class CityGui extends JFrame implements ActionListener {
 		apartment2Container.setOpaque(true);
 		JScrollPane marketContainer = new JScrollPane(marketGui);
 		marketContainer.setOpaque(true);
-		JScrollPane restaurantContainer = new JScrollPane(restaurantGui1);
+		JScrollPane restaurantContainer = new JScrollPane(restaurantGuiYc);
 		restaurantContainer.setOpaque(true);
 		JScrollPane restaurantVKContainer = new JScrollPane(vkAnimationPanel);
 		restaurantVKContainer.setOpaque(true);
@@ -499,6 +499,10 @@ public class CityGui extends JFrame implements ActionListener {
 		cardLayout.show(buildingPanels, bp.getName());
 		System.out.println(bp.getName());
 	}
+	public void displayBuildingPanel(String name) {
+		cardLayout.show(buildingPanels, name);
+		System.out.println(name);
+	}
 
 	public static void main(String[] args) {
 		CityGui sc = new CityGui();
@@ -519,7 +523,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		bankGui.updatePosition();
 		marketGui.updatePosition();
-		restaurantGui1.updatePosition();
+		restaurantGuiYc.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
