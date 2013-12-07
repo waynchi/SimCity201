@@ -401,22 +401,6 @@ public class VkCookRole extends Role implements Cook {
 		gui = g;
 	}
 	
-	private Food fFind(FoodState fs) {
-		if (inventory.get("Steak").s == fs) {
-			return inventory.get("Steak");
-		}
-		if (inventory.get("Chicken").s == fs) {
-			return inventory.get("Chicken");
-		}
-		if (inventory.get("Salad").s == fs) {
-			return inventory.get("Salad");
-		}
-		if (inventory.get("Pizza").s == fs) {
-			return inventory.get("Pizza");
-		}
-		return null;
-	}
-	
 	public void setStand(RevolvingStand s) {
 		this.stand = s;
 	}
