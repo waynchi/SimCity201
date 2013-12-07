@@ -204,16 +204,19 @@ public class CityGui extends JFrame implements ActionListener {
 					cityPanel.people.add(personGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
-					House house = new House("House", 1, HouseType.Villa);
-					HouseGui houseGui = new HouseGui(house);
-					house.setGui(houseGui);
-					house.setItems();
-					houseAnimationPanels.add(house.gui.hp);
-					HousingResidentRole residentRole = new HousingResidentRole();
 					
-					house.setOccupant(residentRole);
 					int extraPeople = 0;
-					if(count > 11) {
+					HousingResidentRole residentRole = new HousingResidentRole();
+					if(count <= 11) {
+						House house = new House("House", 1, HouseType.Villa);
+						HouseGui houseGui = new HouseGui(house);
+						house.setGui(houseGui);
+						house.setItems();
+						houseAnimationPanels.add(house.gui.hp);
+						house.setOccupant(residentRole);
+						residentRole.setHouse(house);
+					}
+					else {
 						extraPeople++;
 						for(int i=0;i < extraPeople;  i++) {
 							House apartmentHouse = apartment1.getAvailableApartment();
@@ -226,9 +229,8 @@ public class CityGui extends JFrame implements ActionListener {
 					residentRole.setTag(AlertTag.HOME);
 					//residentRole.testModeOn();
 					residentRole.setPerson(person);
-					residentRole.isActive = true;
+					//residentRole.isActive = true;
 					residentRole.setRepairMan(repairManRole);
-					residentRole.setHouse(house);
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
