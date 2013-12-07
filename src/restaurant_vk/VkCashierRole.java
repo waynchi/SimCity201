@@ -321,6 +321,7 @@ public class VkCashierRole extends Role implements Cashier {
 		else if (s.role.equals("Cashier")) {
 			s.p.Money += cashierSalary;
 		}
+		s.s = ShiftState.Done;
 	}
 	
 	/*
