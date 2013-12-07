@@ -386,7 +386,7 @@ public class HostAgent extends Role implements Host{
 	
 	public boolean anyCustomer() {
 		for (Customer c : customers) {
-			if (c.isReadyToSit())
+			if (((CustomerAgent)c).isWaitingInLine())
 				return true;
 		}
 		for (Table t : tables) {
