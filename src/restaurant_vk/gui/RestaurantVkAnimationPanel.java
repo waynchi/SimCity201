@@ -30,7 +30,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    private List<VkGui> guis = new ArrayList<VkGui>();
 
     public RestaurantVkAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -78,41 +78,41 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         g2.drawString("REFRIGERATOR", FRIDGE_LEFT_X + 20, FRIDGE_TOP_Y + 25);
 
 
-        for(Gui gui : guis) {
+        for(VkGui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
             }
         }
 
-        for(Gui gui : guis) {
+        for(VkGui gui : guis) {
             if (gui.isPresent()) {
                 gui.draw(g2);
             }
         }
     }
 
-    public void addGui(CustomerGui gui) {
+    public void addGui(VkCustomerGui gui) {
         guis.add(gui);
     }
 
-    public void addGui(HostGui gui) {
+    public void addGui(VkHostGui gui) {
         guis.add(gui);
     }
     
-    public void addGui(WaiterGui gui) {
+    public void addGui(VkWaiterGui gui) {
     	guis.add(gui);
     }
     
-    public void addGui(CashierGui gui) {
+    public void addGui(VkCashierGui gui) {
     	guis.add(gui);
     }
     
-    public void addGui(CookGui gui) {
+    public void addGui(VkCookGui gui) {
     	guis.add(gui);
     }
     
     public void updatePosition() {
-		for (Gui gui : guis) {
+		for (VkGui gui : guis) {
 			gui.updatePosition();
 		}
 	}

@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.gui.CookGui;
+import restaurant_vk.gui.VkCookGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -32,7 +32,7 @@ public class VkCookRole extends Role implements Cook {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	private Timer timer;
-	private CookGui gui = null;
+	private VkCookGui gui = null;
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
@@ -48,7 +48,7 @@ public class VkCookRole extends Role implements Cook {
 		timer = new Timer();
 		standTimer = new Timer();
 		this.stand = s;
-		gui = new CookGui(this);
+		gui = new VkCookGui(this);
 		gui.setAnimationPanel(p);
 		initializeInventory();
 	}
@@ -397,7 +397,7 @@ public class VkCookRole extends Role implements Cook {
 		return "Cook";
 	}
 	
-	public void setGui(CookGui g) {
+	public void setGui(VkCookGui g) {
 		gui = g;
 	}
 	

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import restaurant_vk.VkCashierRole;
 
-public class CashierGui implements Gui {
+public class VkCashierGui implements VkGui {
 	private int jobPosX = 620;
 	private int jobPosY = 150;
 	private int entranceX = 430;
@@ -19,7 +19,7 @@ public class CashierGui implements Gui {
 	
 	enum State {None, Entering, OnDuty, Exiting};
 	
-	public CashierGui(VkCashierRole c) {
+	public VkCashierGui(VkCashierRole c) {
 		this.cashier = c;
 	}
 

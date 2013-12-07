@@ -16,7 +16,7 @@ import market.interfaces.*;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
-import restaurant_vk.gui.CashierGui;
+import restaurant_vk.gui.VkCashierGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 
 /**
@@ -33,7 +33,7 @@ public class VkCashierRole extends Role implements Cashier {
 	private List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private Menu m = new Menu();
 	private MyCheck currentCheck = null;
-	private CashierGui gui = null;
+	private VkCashierGui gui = null;
 	private double workingCapital = 10000.0;
 	private double minCapital = 1000;
 	private Timer timer = new Timer();
@@ -57,7 +57,7 @@ public class VkCashierRole extends Role implements Cashier {
 	public double hostSalary = 100;
 	
 	public VkCashierRole(RestaurantVkAnimationPanel p) {
-		gui = new CashierGui(this);
+		gui = new VkCashierGui(this);
 		gui.setAnimationPanel(p);
 	}
 	
@@ -553,7 +553,7 @@ public class VkCashierRole extends Role implements Cashier {
 		return null;
 	}
 	
-	public void setGui(CashierGui g) {
+	public void setGui(VkCashierGui g) {
 		gui = g;
 	}
 	

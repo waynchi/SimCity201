@@ -6,7 +6,7 @@ import java.awt.*;
 /*
  * Don't look at this thing. I just left it as it was in V1.
  */
-public class HostGui implements Gui {
+public class VkHostGui implements VkGui {
 
     public VkHostRole host = null;
     private int jobPosX = 20;
@@ -24,7 +24,7 @@ public class HostGui implements Gui {
 	
 	enum State {None, Entering, Exiting, OnDuty};
 
-    public HostGui(VkHostRole agent) {
+    public VkHostGui(VkHostRole agent) {
         this.host = agent;
     }
 

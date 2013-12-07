@@ -1,9 +1,9 @@
 package restaurant_vk;
 
 import restaurant.interfaces.Cashier;
-import restaurant_vk.gui.HostGui;
+import restaurant_vk.gui.VkHostGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
-import restaurant_vk.gui.WaiterGui;
+import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
@@ -27,7 +27,7 @@ public class VkHostRole extends Role implements Host{
 	public Collection<Table> tables;
 	private int waiterIndex = 0; 
 	private Semaphore movingAround = new Semaphore(0,true);
-	public HostGui gui = null;
+	public VkHostGui gui = null;
 	private boolean leave = false;
 	private boolean enter = false;
 	public Cashier cashier;
@@ -45,7 +45,7 @@ public class VkHostRole extends Role implements Host{
 			tables.add(new Table(ix));
 		}
 		ap = p;
-		gui = new HostGui(this);
+		gui = new VkHostGui(this);
 		gui.setAnimationPanel(p);
 	}
 	
@@ -100,7 +100,7 @@ public class VkHostRole extends Role implements Host{
 	 */
 	public void addWaiter(Waiter w) {
 		VkWaiterBaseRole wa = (VkWaiterBaseRole) w;
-		WaiterGui g = new WaiterGui(wa, waiterHomePos);
+		VkWaiterGui g = new VkWaiterGui(wa, waiterHomePos);
 		waiterHomePos.width += 30;
 		wa.setGui(g);
 		g.setAnimationPanel(ap);
@@ -320,7 +320,7 @@ public class VkHostRole extends Role implements Host{
 
 	// Utilities
 
-	public void setGui(HostGui gui) {
+	public void setGui(VkHostGui gui) {
 		this.gui = gui;
 	}
 	
@@ -332,7 +332,7 @@ public class VkHostRole extends Role implements Host{
 		this.cook = c;
 	}
 
-	public HostGui getGui() {
+	public VkHostGui getGui() {
 		return gui;
 	}
 	
