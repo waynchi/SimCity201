@@ -34,4 +34,12 @@ public class Apartments {
 			h.setApartments(this);
 		}
 	}
+	
+	public House getAvailableApartment() {
+		for (House h : houses) {
+			if (!h.isOccupied())
+				return h;
+		}
+		return null;
+	}
 }
