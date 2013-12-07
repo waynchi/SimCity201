@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import agent.Agent;
 import people.Role;
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketGui;
@@ -91,6 +92,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if (!inTest) {
 			for (int i=0; i<10; i++) { // create 10 market trucks
 				trucks.add(new MarketTruckAgent("MarketTruck "+i, this));
+				((MarketTruckAgent) trucks.get(i)).startThread();
 			}
 		}
 		items.put("Steak", new Item("Steak", 1000000));

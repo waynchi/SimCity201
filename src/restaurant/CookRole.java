@@ -509,6 +509,13 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
+
+
+	@Override
+	public int getRestaurantIndex() {
+		// TODO Auto-generated method stub
+		return restaurantIndex;
+	}
 	
 }
 

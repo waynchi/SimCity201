@@ -9,10 +9,8 @@ import restaurant.CookRole;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-import transportation.CarGui;
 import agent.Agent;
 import market.gui.MarketTruckGui;
-import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 
@@ -21,11 +19,11 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	private EventLog log = new EventLog();
 	public boolean inTest = false;
 	
-	//MarketTruckGui gui = new MarketTruckGui(this);
+	MarketTruckGui gui = null;
 	MarketEmployee employee;
-	List<Order> orders = new ArrayList<Order>();
 	String name;
 	Semaphore atRestaurant = new Semaphore(0,true);
+	Semaphore atMarket = new Semaphore(0,true);
 
 	
 	public MarketTruckAgent(String n, MarketEmployee me) {
@@ -33,11 +31,11 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		name = n;
 	}
 	
+	List<Order> orders = new ArrayList<Order>();
 	class Order {
 		Cook cook = null;
 		Map<String,Integer> items;
-		int orderNumber;
-		
+		int orderNumber;		
 		Order (Cook c, Map<String, Integer> i, int number) {
 			cook = c;
 			items = i;
@@ -45,16 +43,19 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		}
 	}
 	
-	//messages
-	//public void msgHereIsAnOrder(MarketCustomer customer, Map<String,Integer> items) {
-	//	orders.add(new Order (customer, items));
-	//	stateChanged();
-	//}
 	
-	public void msgAtRestaurant() {
-		atRestaurant.release();
-		stateChanged();;
+	//messages
+	
+	public void msgAnimationFinishedArrivedAtDestination(String destination) {
+		if (destination.equals("Market")) {
+			atMarket.release();
+		}
+		else {
+			atRestaurant.release();
+		}
+		stateChanged();
 	}
+	
 	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
@@ -65,6 +66,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
 	
 	//scheduler
+	
 	public boolean pickAndExecuteAnAction() {
 		if (!orders.isEmpty()) {
 			deliverOrder(orders.get(0));
@@ -75,19 +77,34 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
 
 	//actions
+	
 	private void deliverOrder(final Order order) {
 		//if(!inTest){
-				//gui.doDelivery(order.cook, order.orderNumber);
-				//atRestaurant.acquire
+				gui.doDeliver(this, order.cook, order.orderNumber);
+				try {
+					atRestaurant.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (!((CookRole) order.cook).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+					log.add(new LoggedEvent("order delivered to restaurant"));
 					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
 				}
 				else {
+					log.add(new LoggedEvent("restaurant is closed and delivery failed"));
 					employee.msgOrderNotDelivered(order.orderNumber);
 				}
-				log.add(new LoggedEvent("order delivered to restaurant"));
 				orders.remove(order);
+				
+				gui.doGoBackToMarket();
+				try {
+					atMarket.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 
 
