@@ -27,6 +27,10 @@ import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
+//vk
+import restaurant_vk.gui.*;
+import restaurant_vk.*;
+
 import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
@@ -51,6 +55,7 @@ public class CityGui extends JFrame implements ActionListener {
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGui1 = new RestaurantGui();
+	VKRestaurantGui restaurantGui2 = new VKRestaurantGui();
 
 
 
@@ -67,13 +72,16 @@ public class CityGui extends JFrame implements ActionListener {
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
 	HostRole RestaurantHostRole1 = new HostRole();
+	HostAgent RestaurantHostRole2 = new HostAgent();
+	
 
 
 
 
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 	Restaurant restaurant = new Restaurant(RestaurantHostRole1, new Dimension(100, 100), "Restaurant 1");
-
+	Restaurant restaurant2 = new Restaurant(RestaurantHostRole2, new Dimension(100,100), "Restaurant 2");
+	
 
 
 
@@ -116,6 +124,12 @@ public class CityGui extends JFrame implements ActionListener {
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
 		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGui1);
+		
+		//vk revolving stand
+		RevolvingStand revolvingStand = new RevolvingStand();
+		
+		
+		
 		restPanel1.setHost(RestaurantHostRole1);
 		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel1.theMonitor;
 
@@ -223,7 +237,23 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCookRole.setPerson(person);
 						person.hasCar = false;
 					}
+					if (job.equals("RestaurantCookVK")) {
+						CookAgent RestaurantCookRole = new CookAgent(revolvingStand);
+						
+						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
+						
+						person.addJob("RestaurantCook", start, end);
+						person.addRole(RestaurantCookRole, "RestaurantCook");
+						RestaurantCookRole.setPerson(person);
+						person.hasCar = false;
+					}
 					if (job.equals("RestaurantHost")) {
+						person.addJob("RestaurantHost", start, end);
+						person.addRole(RestaurantHostRole1, "RestaurantHost");
+						RestaurantHostRole1.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostVK")) {
 						person.addJob("RestaurantHost", start, end);
 						person.addRole(RestaurantHostRole1, "RestaurantHost");
 						RestaurantHostRole1.setPerson(person);

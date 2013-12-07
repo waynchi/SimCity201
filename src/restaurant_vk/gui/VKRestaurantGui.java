@@ -10,14 +10,14 @@ import java.awt.event.*;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class RestaurantGui extends JFrame implements ActionListener {
+public class VKRestaurantGui extends JFrame implements ActionListener {
 	AnimationPanel animationPanel = new AnimationPanel();
 
     /**
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
-    public RestaurantGui() {
+    public VKRestaurantGui() {
     	JPanel temp = new JPanel();
     	temp.setLayout(null);
     	

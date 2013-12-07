@@ -22,7 +22,7 @@ public class CustomerGui implements Gui{
 	// The value mapped to the caption key taht will actually be displayed. 
 	private Map<String, String> symbols = new HashMap<String, String>();
 
-	RestaurantGui gui;
+	VKRestaurantGui gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -34,7 +34,7 @@ public class CustomerGui implements Gui{
 	private final int CUST_WIDTH = 20;
 	private final int CUST_HEIGHT = 20;
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(CustomerAgent c, VKRestaurantGui gui){ //HostAgent m) {
 		agent = c;
 		xPos = -20;
 		yPos = 300;
