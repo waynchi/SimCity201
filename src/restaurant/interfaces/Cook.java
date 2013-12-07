@@ -7,4 +7,5 @@ public interface Cook {
 
 	public abstract void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber);
 
+	public abstract int getRestaurantIndex();
 }

@@ -29,5 +29,9 @@ public interface MarketEmployee {
 
 	public abstract MarketCashier getCashier();
 
+	public abstract void msgOrderDelivered(int orderNumber);
+
+	public abstract void msgOrderNotDelivered(int orderNumber);
+
 
 }

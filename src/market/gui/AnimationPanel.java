@@ -20,14 +20,12 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private ImageIcon market_background = new ImageIcon("res/market/market_background.jpeg");
     
 
-    public AnimationPanel() {
+    public AnimationPanel(Timer timer) {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
- 
-    	Timer timer = new Timer(20, this );
-    	timer.start();
+     	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -111,9 +109,9 @@ public class AnimationPanel extends JPanel implements ActionListener {
         guis.add(gui);
     }
     
-    public void addGui(MarketTruckGui gui) {
-    	guis.add(gui);
-    }
+    //public void addGui(MarketTruckGui gui) {
+    //	guis.add(gui);
+    //}
 
 	public void updatePosition() {
 		// TODO Auto-generated method stub
@@ -129,4 +127,5 @@ public class AnimationPanel extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		guis.add(marketCashierGui);
 	}
+
 }
