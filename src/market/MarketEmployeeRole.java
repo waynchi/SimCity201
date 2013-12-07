@@ -23,6 +23,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
 	public boolean inTest = true;
+	private boolean turnActive = false;
+	
 	public int restaurantOrderNumber = 1;
 	
 	MarketCashier cashier;
@@ -43,26 +45,29 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
+	
+	enum orderState {NONE, PENDING, TO_BE_REDELIVERED, IN_DELIVERY};
+	
 	public List<Order> orders = new ArrayList<Order>();
 
 	class Order {
-		Map<String, Integer> items = new HashMap<String, Integer>();
+		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
+		Map<String, Integer> supply = new HashMap<String, Integer>();
 		MarketCustomer customer = null;
 		Cook cook = null;
 		Cashier restaurantCashier = null;
 		int orderNumber;
-		//boolean customerAtMarket;
-		//boolean customerIsRestaurantCashier;
-
+		orderState state = orderState.PENDING;
+		
 		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
 			customer = cust;
-			items = itemsNeeded;
+			itemsOrdered = itemsNeeded;
 			orderNumber = restaurantOrderNumber;
 			restaurantOrderNumber++;
 		}
 
 		public Order(Cook _cook, Cashier _cashier, Map<String, Integer> order) {
-			items = order;
+			itemsOrdered = order;
 			cook = _cook;
 			restaurantCashier = _cashier;
 			orderNumber = restaurantOrderNumber;
@@ -85,7 +90,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		if (!inTest) {
 			for (int i=0; i<10; i++) { // create 10 market trucks
-				trucks.add(new MarketTruckAgent("MarketTruck "+i));
+				trucks.add(new MarketTruckAgent("MarketTruck "+i, this));
 			}
 		}
 		items.put("Steak", new Item("Steak", 1000000));
@@ -102,6 +107,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgIsActive() {
 		log.add(new LoggedEvent("received msgActive"));
 		isActive = true;
+		turnActive = true;
 		inTest = false;
 		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
@@ -133,7 +139,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		log.add(new LoggedEvent("received an order from market customer " + customer.getPerson().getName()));
 		orders.add(new Order(customer, chosenItems));
 		getPersonAgent().CallstateChanged();
-
 	}
 
 	// order from restaurant cook
@@ -145,12 +150,44 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().CallstateChanged();
 
 	}
+	
+	// from truck
+	public void msgOrderDelivered(int orderNumber) {
+		for (Order o : orders) {
+			if (o.orderNumber == orderNumber)
+				orders.remove(o);
+				break;
+		}
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgOrderNotDelivered(int orderNumber) {
+		for (Order o : orders) {
+			if (o.orderNumber == orderNumber) {
+				o.state = orderState.TO_BE_REDELIVERED;
+				break;
+			}
+			getPersonAgent().CallstateChanged();
+		}
+	}
+	
 
 	// scheduler
 	public boolean pickAndExecuteAnAction() {
-		if (!orders.isEmpty()) {
-			giveOrderToCustomer(orders.get(0));
+		if (turnActive) {
+			redeliverRestaurantOrder();
 			return true;
+		}
+		
+		if (!orders.isEmpty()) {
+			for (Order o : orders) {
+				if (o.state ==orderState.PENDING) {
+					giveOrderToCustomer(o);
+					return true;
+				}
+			}
+			
+			
 		}
 		
 		if (leaveWork) {
@@ -186,7 +223,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
-		for (Map.Entry<String, Integer> entry: order.items.entrySet()) {
+		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
 				supply.put(entry.getKey(), entry.getValue());
 				items.get(entry.getKey()).inventory -= entry.getValue();
@@ -196,17 +233,19 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				items.get(entry.getKey()).inventory = 0;
 			}
 		}
+		order.supply = supply;
 			
 		if(!inTest)		getOrder(supply);
 		
 		// if order is from restaurant
 		if (order.cook != null) {
-			log.add(new LoggedEvent("sending confirmation to cook"));
-			order.cook.msgHereIsYourOrderNumber(order.items, order.orderNumber);
-			
+			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
+			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber);
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
-			getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
-			
+			if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+				getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+				order.state = orderState.IN_DELIVERY;
+			}
 			//order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
 		}
 
@@ -214,11 +253,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//if order is from customer
 		else {
 			log.add(new LoggedEvent("giving items to customer " + order.customer.getPerson().getName()));
-				order.customer.msgHereIsYourOrder(order.items);
-			cashier.msgHereIsACheck(order.customer, order.items);
+				order.customer.msgHereIsYourOrder(order.itemsOrdered);
+			cashier.msgHereIsACheck(order.customer, order.itemsOrdered);
+			orders.remove(order);
 		}
-
-		orders.remove(order);
 	}
 
 
@@ -234,6 +272,18 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 	}
 
+	private void redeliverRestaurantOrder() {
+		if (!orders.isEmpty()) {
+			for (Order o : orders) {
+				if (o.state == orderState.TO_BE_REDELIVERED && !getPersonAgent().getRestaurant(o.cook.getRestaurantIndex()).isClosed) {
+					getNextMarketTruck().msgHereIsAnOrder(o.cook, o.supply, o.orderNumber);
+					o.state = orderState.IN_DELIVERY;
+				}
+			}
+		}
+		turnActive = false;
+	}
+	
 	private void done() {
 		employeeGui.doExit();
 		try {
