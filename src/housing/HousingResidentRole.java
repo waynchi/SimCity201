@@ -298,8 +298,6 @@ public class HousingResidentRole extends Role implements Resident {
 	
 	public void setHouse(House h) {
 		this.house = h;
-		house.setOccupant(this);
-//		house.gui.add(gui);
 	}
 	
 	public void setRepairMan(RepairMan r) {
@@ -320,11 +318,11 @@ public class HousingResidentRole extends Role implements Resident {
 		int num = generator.nextInt(t);
 		if (num == 0)
 			return Activity.RelaxOnSofa;
-		if (num == 1)
+		else if (num == 1)
 			return Activity.Read;
-		if (num == 2)
+		else if (num == 2)
 			return Activity.WatchTV;
-		if (num == 3)
+		else if (num == 3)
 			return Activity.PlayVideoGames;
 		return Activity.PlayFussball;
 	}

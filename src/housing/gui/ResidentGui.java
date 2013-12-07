@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import people.PeopleAgent;
 
 public class ResidentGui implements HGui{
 	private int xDestination;

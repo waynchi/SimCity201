@@ -52,6 +52,7 @@ public class House extends Item{
 			((HousingResidentRole)occ).gui.hGui = this.gui;
 			if (this.type == HouseType.Apartment) {
 				this.a.gui.add(((HousingResidentRole)occ).gui);
+				((HousingResidentRole)occ).gui.setApartmentsGui(this.a.gui);
 			}
 		}
 	}

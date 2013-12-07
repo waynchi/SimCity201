@@ -19,7 +19,6 @@ import city.gui.CityGui;
 
 public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> humanGuis = new ArrayList<HGui>();
-	List<HGui> nonLivingGuis = new ArrayList<HGui>();
 	CityGui g;
 	public ApartmentsGui ag;
 	public final String apartmentsPrefix;
@@ -80,22 +79,18 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		for (HGui gui : humanGuis) {
-			if (gui instanceof ResidentGui && ((ResidentGui)gui).isPresentInComplex())
+			if (gui instanceof ResidentGui && ((ResidentGui)gui).isPresentInComplex()) {
+				
 				gui.draw(g);
+			}
 		}
-		for (HGui gui : nonLivingGuis) {
-			if (gui.isPresent())
-				gui.draw(g);
-		}
+		ag.updatePosition();
 		ag.draw(g);
 	}
 	
 	public void addGui(HGui gui) {
 		if (!(gui instanceof ApartmentsGui))
 			humanGuis.add(gui);
-		else {
-			nonLivingGuis.add(gui);
-		}
 	}
 	
 	public void setCityGui(CityGui g) {
@@ -108,9 +103,6 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	
 	public void updatePosition() {
 		for (HGui gui : humanGuis) {
-			gui.updatePosition();
-		}
-		for (HGui gui : nonLivingGuis) {
 			gui.updatePosition();
 		}
 		ag.updatePosition();
