@@ -219,10 +219,6 @@ public class CityGui extends JFrame implements ActionListener {
 							House apartmentHouse = apartment1.getAvailableApartment();
 							apartmentHouse.setOccupant(residentRole);
 							residentRole.setHouse(apartmentHouse);
-							System.out.println("TEST");
-
-								
-						
 						}
 					}
 					
@@ -559,7 +555,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%(x) == 0)
 			{
-				//System.out.println(time/(x));
+				System.out.println(time/(x));
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);
