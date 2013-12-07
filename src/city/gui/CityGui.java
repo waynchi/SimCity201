@@ -82,8 +82,8 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
-	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1");
-	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2");
+	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1",1);
+	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2",2);
 	
 
 
