@@ -9,23 +9,27 @@ import restaurant.CookRole;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+import transportation.CarGui;
 import agent.Agent;
 import market.gui.MarketTruckGui;
 import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
 	//data
+	private EventLog log = new EventLog();
 	public boolean inTest = false;
 	
-	MarketTruckGui gui = new MarketTruckGui(this);
+	//MarketTruckGui gui = new MarketTruckGui(this);
+	MarketEmployee employee;
 	List<Order> orders = new ArrayList<Order>();
 	String name;
-	Semaphore orderDelivered = new Semaphore(0,true);	
-	private EventLog log = new EventLog();
+	Semaphore atRestaurant = new Semaphore(0,true);
 
 	
-	public MarketTruckAgent(String n) {
+	public MarketTruckAgent(String n, MarketEmployee me) {
+		employee = me;
 		name = n;
 	}
 	
@@ -47,8 +51,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//	stateChanged();
 	//}
 	
-	public void msgOrderDelivered() {
-		orderDelivered.release();
+	public void msgAtRestaurant() {
+		atRestaurant.release();
 		stateChanged();;
 	}
 	
@@ -73,23 +77,28 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//actions
 	private void deliverOrder(final Order order) {
 		//if(!inTest){
-		//	gui.deliver(order.cook.getPerson());
-		//}
-		//new java.util.Timer().schedule(
-		//		new java.util.TimerTask(){
-		//			public void run(){
-						((CookRole) order.cook).msgHereIsYourOrder(order.items, order.orderNumber);	
-						log.add(new LoggedEvent("order delivered to restaurant"));
-						orders.remove(order);
-		//		},
-		//		2000);
-		
-		//}
-		
+				//gui.doDelivery(order.cook, order.orderNumber);
+				//atRestaurant.acquire
+				if (!((CookRole) order.cook).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
+					employee.msgOrderDelivered(order.orderNumber);
+				}
+				else {
+					employee.msgOrderNotDelivered(order.orderNumber);
+				}
+				log.add(new LoggedEvent("order delivered to restaurant"));
+				orders.remove(order);
 	}
 
 
 	//utilities
+	public void setGui(MarketTruckGui mtg){
+		gui = mtg;
+	}
+	
+	public void setEmployee (MarketEmployee me) {
+		employee = me;
+	}
 	
 
 }

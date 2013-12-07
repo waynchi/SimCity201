@@ -42,10 +42,10 @@ public class CookRole extends Role implements Cook{
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
 	protected Semaphore atFridge = new Semaphore (0,true);
-
 	
 	private CookGui cookGui = null;
 	private RestaurantGui restGui = null;
+	public int restaurantIndex = 0;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
@@ -509,6 +509,6 @@ public class CookRole extends Role implements Cook{
 	public People getPerson() {
 		return getPersonAgent();
 	}
-
+	
 }
 

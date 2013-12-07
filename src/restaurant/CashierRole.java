@@ -12,6 +12,8 @@ import restaurant.test.mock.LoggedEvent;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import com.sun.xml.internal.bind.marshaller.MinimumEscapeHandler;
+
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
 import people.People;
@@ -58,7 +60,6 @@ public class CashierRole extends Role implements Cashier {
 
 	private double min_working_capital = 1000.0;
 	private double working_capital = 100000.0;
-	private double bank_balance = 0.0;
 	private double salary = 200.0;
 
 
@@ -123,7 +124,6 @@ public class CashierRole extends Role implements Cashier {
 
 		min_working_capital = 1000;
 		working_capital = 100000;
-		bank_balance = 0.0;
 		leaveWork = false;
 		isActive = false;
 		turnActive = false;
@@ -261,7 +261,6 @@ public class CashierRole extends Role implements Cashier {
 		print("received loan successful from bank");
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
-		bank_balance -= balance;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -269,15 +268,13 @@ public class CashierRole extends Role implements Cashier {
 		print("received msgWithDrawSuccessful from teller");
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
-		bank_balance -= funds;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgDepositSuccessful(double funds){
 		print("received msgDepositSuccessful from teller");
 		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
-		working_capital -= (funds - bank_balance);
-		bank_balance = funds;
+		working_capital = min_working_capital;
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -497,13 +494,6 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		/*for (int i=0; i < host.getWaiters().size(); i++) {
-			host.getWaiters().get(i).getPerson().setMoney( waiter_salary);
-		}
-		((CookRole) host.getCook()).getPerson().setMoney(cook_salary);
-		host.getPerson().setMoney(host_salary);
-		this.getPersonAgent().setMoney( cashier_salary);
-		*/
 		for (People p : ((HostRole)host).getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
@@ -575,10 +565,6 @@ public class CashierRole extends Role implements Cashier {
 
 	public Map<Customer, Double> getBalance() {
 		return balance;
-	}
-
-	public double getBankBalance() {
-		return bank_balance;
 	}
 
 	public void setBalance(Map<Customer, Double> balance) {

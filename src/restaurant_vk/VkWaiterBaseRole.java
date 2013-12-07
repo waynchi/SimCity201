@@ -169,7 +169,6 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOffBreak();
-//		gui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -184,7 +183,6 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOnBreak();
-//		gui.autoUpdate();
 		stateChanged();
 	}
 	
