@@ -434,8 +434,10 @@ public class CashierAgent extends Role implements Cashier {
 				prepareToClose();
 			}
 			else {
-				shutDown();
-				leaveRestaurant();
+				if (leave == true) {
+					shutDown();
+					leaveRestaurant();
+				}
 			}
 			return true;
 		}

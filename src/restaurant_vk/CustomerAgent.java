@@ -505,6 +505,12 @@ public class CustomerAgent extends Role implements Customer{
 		return false;
 	}
 	
+	public boolean isWaitingInLine() {
+		if (state == AgentState.WaitingInRestaurant)
+			return true;
+		return false;
+	}
+	
 	public Menu getMenu() {
 		return menu;
 	}

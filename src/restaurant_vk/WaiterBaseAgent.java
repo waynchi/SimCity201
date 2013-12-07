@@ -483,7 +483,7 @@ public class WaiterBaseAgent extends Role implements Waiter {
 			return true;
 		}
 		
-		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer()) {
+		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer() && leave == true) {
 			shutDown();
 			leaveRestaurant();
 			return true;

@@ -276,7 +276,7 @@ public class CookAgent extends Role implements Cook {
 			return true;
 		}
 		
-		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer()) {
+		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer() && leave == true) {
 			shutDown();
 			leaveRestaurant();
 			return true;
