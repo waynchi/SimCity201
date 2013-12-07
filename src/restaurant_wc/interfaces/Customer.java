@@ -7,7 +7,7 @@ import restaurant_wc.gui.CustomerGui;
 import restaurant_wc.gui.Gui;
 
 /**
- * A sample Customer interface built to unit test a CashierAgent.
+ * A sample Customer interface built to unit test a WcCashierRole.
  *
  * @author Monroe Ekilah
  *

@@ -5,7 +5,7 @@ package restaurant_wc.interfaces;
 
 import java.util.TimerTask;
 
-import restaurant_wc.CustomerAgent;
+import restaurant_wc.WcCustomerRole;
 import restaurant_wc.MBill;
 import restaurant_wc.test.mock.EventLog;
 

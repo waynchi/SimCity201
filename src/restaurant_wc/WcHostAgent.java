@@ -14,9 +14,9 @@ import java.util.concurrent.Semaphore;
  */
 //We only have 2 types of agents in this prototype. A customer and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
-//the HostAgent. A Host is the manager of a restaurant_wc who sees that all
+//the WcHostAgent. A Host is the manager of a restaurant_wc who sees that all
 //is proceeded as he wishes.
-public class HostAgent extends Agent {
+public class WcHostAgent extends Agent {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -31,7 +31,7 @@ public class HostAgent extends Agent {
 	//Later we will see how it is implemented
 
 	private String name;
-	public HostAgent(String name) {
+	public WcHostAgent(String name) {
 		super();
 
 		this.name = name;

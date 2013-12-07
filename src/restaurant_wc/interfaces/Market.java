@@ -1,10 +1,10 @@
 package restaurant_wc.interfaces;
 
-import restaurant_wc.CookAgent;
+import restaurant_wc.WcCookRole;
 
 public interface Market {
 
-	public abstract void setCook(CookAgent c);
+	public abstract void setCook(WcCookRole c);
 
 	public abstract void setCashier(Cashier c);
 

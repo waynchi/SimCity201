@@ -16,10 +16,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent extends Agent implements Customer{
+public class WcCustomerRole extends Role implements Customer{
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	private double WalletMin = 5.00;
@@ -34,7 +36,7 @@ public class CustomerAgent extends Agent implements Customer{
 	private String MyChoice;
 
 	// agent correspondents
-	private HostAgent host;
+	private WcHostAgent host;
 	private Waiter waiter;
 	private Menu MyMenu;
 	private Cashier cashier;
@@ -50,12 +52,12 @@ public class CustomerAgent extends Agent implements Customer{
 	AgentEvent event = AgentEvent.none;
 
 	/**
-	 * Constructor for CustomerAgent class
+	 * Constructor for WcCustomerRole class
 	 *
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent(String name){
+	public WcCustomerRole(String name){
 		super();
 		this.name = name;
 		
@@ -77,7 +79,7 @@ public class CustomerAgent extends Agent implements Customer{
 		
 	}
 	
-	public void setHost(HostAgent host) {
+	public void setHost(WcHostAgent host) {
 		this.host = host;
 	}
 	
@@ -206,7 +208,7 @@ public class CustomerAgent extends Agent implements Customer{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	protected boolean pickAndExecuteAnAction() {
-		//	CustomerAgent is a finite state machine
+		//	WcCustomerRole is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
 			state = AgentState.WaitingInRestaurant;
@@ -426,7 +428,7 @@ public class CustomerAgent extends Agent implements Customer{
 	private void goToRestaurant() {
 		Do("Going to restaurant_wc");
 		host.msgIWantFood(this);
-		final CustomerAgent myself = this;
+		final WcCustomerRole myself = this;
 		//This is how the customer decides to stay or leave if she's been waiting for a while.
 		/*timer.schedule(new TimerTask() {
 			public void run() {

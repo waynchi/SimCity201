@@ -2,8 +2,8 @@ package restaurant_wc.interfaces;
 
 import java.util.concurrent.Semaphore;
 
-import restaurant_wc.CookAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCookRole;
+import restaurant_wc.WcHostAgent;
 import restaurant_wc.Order;
 import restaurant_wc.Table;
 import restaurant_wc.WaiterAgent.MyCustomer;
@@ -17,9 +17,9 @@ public interface Waiter {
 
 	public abstract String getName();
 
-	public abstract void setHost(HostAgent host);
+	public abstract void setHost(WcHostAgent host);
 
-	public abstract void setCook(CookAgent cook);
+	public abstract void setCook(WcCookRole cook);
 
 	public abstract void setCashier(Cashier cashier);
 

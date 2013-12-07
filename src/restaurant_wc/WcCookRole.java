@@ -28,11 +28,11 @@ import java.util.concurrent.Semaphore;
 
 
 import restaurant_wc.gui.CookGui;
-//import restaurant_wc.CustomerAgent.AgentEvent;
+//import restaurant_wc.WcCustomerRole.AgentEvent;
 //aurant.WaiterAgent.AgentState;
 import agent.Agent;
 
-public class CookAgent extends Agent{
+public class WcCookRole extends Role{
 	//variables
 	public Collection<Order> pendingOrders = Collections.synchronizedList(new ArrayList<Order>());
 	public List<MarketAgent> Markets = Collections.synchronizedList(new ArrayList<MarketAgent>());
@@ -56,7 +56,7 @@ public class CookAgent extends Agent{
 	private Semaphore moving = new Semaphore(0, true);
 	private Semaphore plating = new Semaphore(0,true);
 	
-	public CookAgent(String name){
+	public WcCookRole(String name){
 		super();
 		this.name = name;
 		SteakDish= new Food("Steak", 5000, defaultLevel);

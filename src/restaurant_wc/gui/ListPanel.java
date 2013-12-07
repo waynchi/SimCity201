@@ -1,7 +1,7 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.CustomerAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCustomerRole;
+import restaurant_wc.WcHostAgent;
 
 import javax.swing.*;
 

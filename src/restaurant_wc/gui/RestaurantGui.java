@@ -1,6 +1,6 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.CustomerAgent;
+import restaurant_wc.WcCustomerRole;
 import restaurant_wc.MarketAgent;
 import restaurant_wc.WaiterAgent;
 import restaurant_wc.interfaces.Waiter;
@@ -247,8 +247,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
         stateCB.setVisible(true);
         currentPerson = person;
 
-        if (person instanceof CustomerAgent) {
-            CustomerAgent customer = (CustomerAgent) person;
+        if (person instanceof WcCustomerRole) {
+            WcCustomerRole customer = (WcCustomerRole) person;
             stateCB.setText("Hungry?");
           //Should checkmark be there? 
             stateCB.setSelected(customer.getGui().isHungry());   
@@ -308,7 +308,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         	restPanel.customerPanel.addPerson(textField.getText());
         	if(stateCC.isSelected())
         	{
-        	    CustomerAgent c = (CustomerAgent) currentPerson;
+        	    WcCustomerRole c = (WcCustomerRole) currentPerson;
                 c.getGui().setHungry();
                // stateCC.setEnabled(false); 
                 stateCC.setSelected(false);
@@ -330,8 +330,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
        // }
         if (e.getSource() == stateCB) {
         	if(!paused){
-            if (currentPerson instanceof CustomerAgent) {
-                CustomerAgent c = (CustomerAgent) currentPerson;
+            if (currentPerson instanceof WcCustomerRole) {
+                WcCustomerRole c = (WcCustomerRole) currentPerson;
                 c.getGui().setHungry();
                 stateCB.setEnabled(false);
             }
@@ -351,8 +351,8 @@ public class RestaurantGui extends JFrame implements ActionListener {
         	}
         }
        /* if(e.getSource() == stateCC) {
-        	if (currentPerson instanceof CustomerAgent) {
-        		CustomerAgent c = (CustomerAgent) currentPerson;
+        	if (currentPerson instanceof WcCustomerRole) {
+        		WcCustomerRole c = (WcCustomerRole) currentPerson;
         		c.getGui().setHungry();
         		stateCC.setEnabled(false);
         	}
@@ -364,9 +364,9 @@ public class RestaurantGui extends JFrame implements ActionListener {
      *
      * @param c reference to the customer
      */
-    public void setCustomerEnabled(CustomerAgent c) {
-        if (currentPerson instanceof CustomerAgent) {
-            CustomerAgent cust = (CustomerAgent) currentPerson;
+    public void setCustomerEnabled(WcCustomerRole c) {
+        if (currentPerson instanceof WcCustomerRole) {
+            WcCustomerRole cust = (WcCustomerRole) currentPerson;
             if (c.equals(cust)) {
                 stateCB.setEnabled(true);
                 stateCB.setSelected(false);

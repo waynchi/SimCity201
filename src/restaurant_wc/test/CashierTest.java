@@ -1,12 +1,12 @@
 package restaurant_wc.test;
 
 import junit.framework.*;
-//import restaurant_wc.CashierAgent.cashierBillState;
+//import restaurant_wc.WcCashierRole.cashierBillState;
 //import restaurant_wc.WaiterAgent.Bill;
-import restaurant_wc.CashierAgent;
+import restaurant_wc.WcCashierRole;
 import restaurant_wc.MBill;
-import restaurant_wc.CashierAgent.Check;
-import restaurant_wc.CashierAgent.Debt;
+import restaurant_wc.WcCashierRole.Check;
+import restaurant_wc.WcCashierRole.Debt;
 import restaurant_wc.test.mock.EventLog;
 import restaurant_wc.test.mock.MockCustomer;
 import restaurant_wc.test.mock.MockMarket;
@@ -16,7 +16,7 @@ import restaurant_wc.test.mock.MockWaiter;
 
 /**
  * 
- * This class is a JUnit test class to unit test the CashierAgent's basic interaction
+ * This class is a JUnit test class to unit test the WcCashierRole's basic interaction
  * with waiters, customers, and the host.
  * It is provided as an example to students in CS201 for their unit testing lab.
  *
@@ -25,7 +25,7 @@ import restaurant_wc.test.mock.MockWaiter;
 public class CashierTest extends TestCase
 {
 	//these are instantiated for each test separately via the setUp() method.
-	CashierAgent cashier;
+	WcCashierRole cashier;
 	MockWaiter waiter;
 	MockCustomer customer;
 	MockMarket market, market2;
@@ -36,7 +36,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new CashierAgent("cashier");		
+		cashier = new WcCashierRole("cashier");		
 		customer = new MockCustomer("mockcustomer");		
 		waiter = new MockWaiter("mockwaiter");
 		market = new MockMarket("mockmarket");
@@ -53,14 +53,14 @@ public class CashierTest extends TestCase
 		
 		//check preconditions
 		assertEquals("Cashier should have 0 bills in it. It doesn't.",cashier.pendingChecks.size(), 0);		
-		assertEquals("CashierAgent should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "
+		assertEquals("WcCashierRole should have an empty event log before the Cashier's HereIsBill is called. Instead, the Cashier's event log reads: "
 						+ cashier.log.toString(), 0, cashier.log.size());
 		//Testing Milestone v2.2A 
 		//One Market with one bill
 		System.out.println("Testing Market Interactions");
 		assertEquals("Cashier should have 0 market bills in it", cashier.MarketBills.size(), 0);
 		cashier.msgHereIsMarketBill(new MBill("Steak", 5, 8), market);
-		assertFalse("CashierAgent should have something in MarketBills now.",cashier.MarketBills.isEmpty());
+		assertFalse("WcCashierRole should have something in MarketBills now.",cashier.MarketBills.isEmpty());
 		System.out.println(cashier.log.getLastLoggedEvent().toString());
 		assertTrue("Testing if msg is sent", cashier.log.getLastLoggedEvent().toString().equals("Received HereIsMarketBill from market. Total = 40.0"));
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
@@ -74,7 +74,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 0 market bills in it", cashier.MarketBills.size(), 0);
 		cashier.msgHereIsMarketBill(new MBill("Steak", 3, 8), market);
 		assertTrue("Testing if first market msg is sent", cashier.log.getLastLoggedEvent().toString().equals("Received HereIsMarketBill from market. Total = 24.0"));
-		assertFalse("CashierAgent should have something in MarketBills now.",cashier.MarketBills.isEmpty());
+		assertFalse("WcCashierRole should have something in MarketBills now.",cashier.MarketBills.isEmpty());
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
 		cashier.msgHereIsMarketBill(new MBill("Steak", 2, 8), market2);
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
@@ -97,7 +97,7 @@ public class CashierTest extends TestCase
 		System.out.println("Testing Market Interactions");
 		assertEquals("Cashier should have 0 market bills in it", cashier.MarketBills.size(), 0);
 		cashier.msgHereIsMarketBill(new MBill("Steak", 5, 8), market);
-		assertFalse("CashierAgent should have something in MarketBills now.",cashier.MarketBills.isEmpty());
+		assertFalse("WcCashierRole should have something in MarketBills now.",cashier.MarketBills.isEmpty());
 		System.out.println(cashier.log.getLastLoggedEvent().toString());
 		assertTrue("Testing if msg is sent", cashier.log.getLastLoggedEvent().toString().equals("Received HereIsMarketBill from market. Total = 40.0"));
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
@@ -165,7 +165,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 0 market bills in it", cashier.MarketBills.size(), 0);
 		cashier.msgHereIsMarketBill(new MBill("Steak", 3, 8), market);
 		assertTrue("Testing if first market msg is sent", cashier.log.getLastLoggedEvent().toString().equals("Received HereIsMarketBill from market. Total = 24.0"));
-		assertFalse("CashierAgent should have something in MarketBills now.",cashier.MarketBills.isEmpty());
+		assertFalse("WcCashierRole should have something in MarketBills now.",cashier.MarketBills.isEmpty());
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
 		cashier.msgHereIsMarketBill(new MBill("Steak", 2, 8), market2);
 		assertTrue("Testing Scheduler", cashier.pickAndExecuteAnAction());
