@@ -9,6 +9,7 @@ import restaurant_vk.interfaces.Waiter;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -338,6 +339,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * sitting.
 	 */
 	private void seated() {
+		print("I'm sitting.");
 		customerGui.setMenuCopy();
 		List<String> menuItems = menu.getAllFoodNames();
 		List<String> affordableItems = new ArrayList<String>();
@@ -348,7 +350,21 @@ public class VkCustomerRole extends Role implements Customer{
 				affordableItems.add(s);
 			}
 		}
-		print("I'm sitting.");
+		if (affordableItems.isEmpty()) {
+			print("Screw it. I'm leaving!");
+			event = AgentEvent.abruptlyLeaving;
+			leaveOption = false;
+			customerGui.setLeaveOption(leaveOption);
+		}
+		else {
+			Random generator = new Random();
+			int num = generator.nextInt(affordableItems.size());
+			choice = affordableItems.get(num);
+			event = AgentEvent.orderDecided;
+			print("My choice is " + choice);
+			leaveOption = false;
+			customerGui.setLeaveOption(leaveOption);
+		}
 	}
 	
 	/*
