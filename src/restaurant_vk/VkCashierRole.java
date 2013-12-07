@@ -435,17 +435,19 @@ public class VkCashierRole extends Role implements Cashier {
 		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
 			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
 				prepareToClose();
+				return true;
 			}
 			else if (workingCapital < computeRequiredMoney()) {
 				prepareToClose();
+				return true;
 			}
 			else {
 				if (leave == true) {
 					shutDown();
 					leaveRestaurant();
+					return true;
 				}
 			}
-			return true;
 		}
 		
 		// Simply decides which is the current check being taken care of or which
