@@ -172,7 +172,7 @@ public class HostAgent extends Role implements Host{
 			return true;
 		}
 		
-		if (closingState == ClosingState.Preparing && !anyCustomer()) {
+		if (closingState == ClosingState.Preparing && !anyCustomer() && leave == true) {
 			shutDown();
 			leaveRestaurant();
 			return true;
@@ -301,6 +301,7 @@ public class HostAgent extends Role implements Host{
 		for (Waiter w : waiters) {
 			((WaiterBaseAgent) w).closeRestaurant();
 		}
+		((CashierAgent)cashier).closeRestaurant();
 		closingState = ClosingState.Preparing;
 	}
 	
