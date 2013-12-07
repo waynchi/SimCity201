@@ -47,6 +47,7 @@ import java.util.*;
 import java.util.List;
 
 public class CityGui extends JFrame implements ActionListener {
+	public Timer timer;
 	BankGui bankGui;
 	CityPanel cityPanel;
 	public JPanel buildingPanels;
@@ -54,7 +55,7 @@ public class CityGui extends JFrame implements ActionListener {
 	CityControls cityControls;
 	List<String> configParams = Collections
 			.synchronizedList(new ArrayList<String>());
-	RestaurantGui restaurantGuiYc = new RestaurantGui();
+	RestaurantGui restaurantGuiYc;
 	
 	RestaurantVkAnimationPanel vkAnimationPanel = new RestaurantVkAnimationPanel();
 	
@@ -62,7 +63,7 @@ public class CityGui extends JFrame implements ActionListener {
 	
 
 
-	MarketGui marketGui = new MarketGui();
+	MarketGui marketGui;
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	List<HouseAnimationPanel> apartment1HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	List<HouseAnimationPanel> apartment2HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
@@ -82,7 +83,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 
-	MarketEmployeeRole MarketEmployeeRole = new MarketEmployeeRole(marketGui);
+	MarketEmployeeRole MarketEmployeeRole;
 	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1",1);
 	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2",2);
 	
@@ -96,7 +97,6 @@ public class CityGui extends JFrame implements ActionListener {
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
 	
-	public Timer timer;
 
 	private int count = 0;
 
@@ -114,7 +114,9 @@ public class CityGui extends JFrame implements ActionListener {
 		timer = new Timer(5, this);
 		
 		bankGui = new BankGui(timer);
-
+		restaurantGuiYc = new RestaurantGui(timer);
+		marketGui = new MarketGui(timer);
+		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 		
 		//Set trace tags
 		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
@@ -213,31 +215,15 @@ public class CityGui extends JFrame implements ActionListener {
 					int extraPeople = 0;
 					if(count > 11) {
 						extraPeople++;
-						
-						
-//						for(House h : apartment1.houses) {
-//							if(h.occupant == null) {
-//								availableApartments.add(h);
-//							}
-//						}
-						
 						for(int i=0;i < extraPeople;  i++) {
-							for(House h : apartment1.houses) {
-								if(h.occupant == null) {
-									h.setOccupant(residentRole);
-									residentRole.setHouse(h);
-									System.out.println("TEST");
+							House apartmentHouse = apartment1.getAvailableApartment();
+							apartmentHouse.setOccupant(residentRole);
+							residentRole.setHouse(apartmentHouse);
+							System.out.println("TEST");
 
-								}
-							}
+								
+						
 						}
-//						for(House h : apartment1.houses) {
-//							if(h.occupant == null) {
-//								System.out.println("TEST");
-//								h.setOccupant(residentRole);
-//								residentRole.setHouse(h);
-//							}
-//						}
 					}
 					
 					
