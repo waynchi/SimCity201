@@ -17,6 +17,7 @@ import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 import restaurant_vk.gui.CashierGui;
+import restaurant_vk.gui.AnimationPanel;
 
 /**
  * @author Vikrant Singhal
@@ -54,6 +55,11 @@ public class CashierAgent extends Role implements Cashier {
 	public double cashierSalary = 100;
 	public double cookSalary = 100;
 	public double hostSalary = 100;
+	
+	public CashierAgent(AnimationPanel p) {
+		gui = new CashierGui(this);
+		
+	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
