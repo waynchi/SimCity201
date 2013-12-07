@@ -74,6 +74,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
+	ArrayList<House> availableApartments = new ArrayList<House>();
 	HostRole RestaurantHostRoleYc = new HostRole();
 	VkHostRole RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
 	
@@ -209,6 +210,37 @@ public class CityGui extends JFrame implements ActionListener {
 					HousingResidentRole residentRole = new HousingResidentRole();
 					
 					house.setOccupant(residentRole);
+					int extraPeople = 0;
+					if(count > 11) {
+						extraPeople++;
+						
+						
+//						for(House h : apartment1.houses) {
+//							if(h.occupant == null) {
+//								availableApartments.add(h);
+//							}
+//						}
+						
+						for(int i=0;i < extraPeople;  i++) {
+							for(House h : apartment1.houses) {
+								if(h.occupant == null) {
+									h.setOccupant(residentRole);
+									residentRole.setHouse(h);
+									System.out.println("TEST");
+
+								}
+							}
+						}
+//						for(House h : apartment1.houses) {
+//							if(h.occupant == null) {
+//								System.out.println("TEST");
+//								h.setOccupant(residentRole);
+//								residentRole.setHouse(h);
+//							}
+//						}
+					}
+					
+					
 					residentRole.setTag(AlertTag.HOME);
 					//residentRole.testModeOn();
 					residentRole.setPerson(person);
@@ -220,6 +252,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.HomeNum = count;
 					count++;
 					person.startThread();
+					
+					
+					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGuiYc);
 						
@@ -341,7 +376,10 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(40000);
 						person.hasCar = false;
 					}
+					
+				
 					people.add(person);
+					
 				}
 			}
 			bufRead.close();
