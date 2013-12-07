@@ -473,6 +473,10 @@ public class CityGui extends JFrame implements ActionListener {
 		cardLayout.show(buildingPanels, bp.getName());
 		System.out.println(bp.getName());
 	}
+	public void displayBuildingPanel(String name) {
+		cardLayout.show(buildingPanels, name);
+		System.out.println(name);
+	}
 
 	public static void main(String[] args) {
 		CityGui sc = new CityGui();
