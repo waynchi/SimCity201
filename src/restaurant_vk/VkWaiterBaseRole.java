@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
+import restaurant_vk.VkHostRole.ClosingState;
 import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.VkCookRole;
@@ -446,7 +447,8 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -457,6 +459,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		closingState = ClosingState.Preparing;
 	}
 	

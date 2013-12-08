@@ -1,6 +1,7 @@
 package restaurant_vk;
 
 import restaurant.interfaces.Cashier;
+import restaurant_vk.VkCookRole.ClosingState;
 import restaurant_vk.gui.VkHostGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.gui.VkWaiterGui;
@@ -292,7 +293,8 @@ public class VkHostRole extends Role implements Host{
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Host");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Host");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -303,6 +305,7 @@ public class VkHostRole extends Role implements Host{
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Host");
 		cook.closeRestaurant();
 		for (Waiter w : waiters) {
 			((VkWaiterBaseRole) w).closeRestaurant();

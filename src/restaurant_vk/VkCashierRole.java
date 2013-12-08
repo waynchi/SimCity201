@@ -370,6 +370,8 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to leave the restaurant.
 	 */
 	public void leaveRestaurant() {
+		if (closingState == ClosingState.None)
+			this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();

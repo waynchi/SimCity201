@@ -145,7 +145,8 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -156,6 +157,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
 		closingState = ClosingState.Preparing;
 	}
 	
