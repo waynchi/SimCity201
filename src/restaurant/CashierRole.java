@@ -157,6 +157,8 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	
+	
+	
 	// market interaction
 	
 	// from cook

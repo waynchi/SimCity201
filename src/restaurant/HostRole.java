@@ -114,7 +114,6 @@ public class HostRole extends Role implements Host{
 	// Messages
 	public void msgIsActive() {
 		isActive = true;
-		getPersonAgent().getRestaurant(0).isClosed = false;
 		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		getPersonAgent().getRestaurant(0).isClosed = false;
 		getPersonAgent().CallstateChanged();

@@ -25,7 +25,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public EventLog log = new EventLog();
 	public boolean inTest = true;
 	private boolean turnActive = false;
-	private boolean closeMarket = false;
 	
 	public int restaurantOrderNumber = 1;
 	
@@ -122,11 +121,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgSetClose() {
-		closeMarket = true;
-		getPersonAgent().CallstateChanged();
-	}
-	
 	public void msgAtCabinet() {
 		atCabinet.release();
 		getPersonAgent().CallstateChanged();
@@ -194,10 +188,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 					return true;
 				}
 			}
-		}
-		
-		if (closeMarket) {
-			closeMarket();
+			
+			
 		}
 		
 		if (leaveWork) {
@@ -252,11 +244,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
 			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber);
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
-			//if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
-			//	getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
-			//	order.state = orderState.IN_DELIVERY;
-			//}
-			order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
+			if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+				getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+				order.state = orderState.IN_DELIVERY;
+			}
+			//order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
 		}
 
 
@@ -307,11 +299,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		employeeGui.setPresent(false);
 		employeeGui.setDefaultDestination();
 		getPersonAgent().msgDone("MarketEmployeeRole");
-	}
-	
-	private void closeMarket() {
-		getPersonAgent().getMarket(0).isClosed = true;
-		closeMarket = false;
 	}
 
 	//utilities

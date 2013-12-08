@@ -111,7 +111,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	private int count = 0;
 
-	public int time = 6000;
+	public int time = 0000;
 
 	public CityGui() {
 		apartment1.gui.ap.setCityGui(this);
@@ -615,16 +615,19 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		int x = 10;
 		time++;
-		if(time%(x) == 0)
+		if(time%x == 0)
 		{
-			System.out.println(time/x);
+			if(time%(x) == 0)
+			{
+				System.out.println(time/x);
+			}
+			for (PeopleAgent p : people) {
+				p.msgTimeIs(time/x);
+			}
 		}
-		for (PeopleAgent p : people) {
-			p.msgTimeIs(time/x);
-		}
-		if((time % (100*x)+x) == 60*x) {
-			time += 40*x;
-		}
+//		if((time % (100*x)+x) == 60*x) {
+//			time += 40*x;
+//		}
 		if(time == 2400*x) {
 			time=0;
 		}
