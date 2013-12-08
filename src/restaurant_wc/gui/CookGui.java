@@ -4,18 +4,18 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-import restaurant_wc.CookRole;
+import restaurant_wc.CookRoleWc;
 
 
 public class CookGui implements Gui {
 
-	private CookRole role = null;
+	private CookRoleWc role = null;
 	Boolean isCooking;
 	boolean goingBack = false;
 	boolean leavingWork = false;
 	boolean goingToFridge = false;
 	String foodBeingCooked = null;
-	RestaurantGui gui;
+	RestaurantGuiWc gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
@@ -35,7 +35,7 @@ public class CookGui implements Gui {
     boolean isPresent;
 	
 	
-	public CookGui (CookRole cook) {
+	public CookGui (CookRoleWc cook) {
 		isCooking = false;
 		role = cook;
 		for (int i=0;i<3;i++) {

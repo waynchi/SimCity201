@@ -2,7 +2,7 @@ package restaurant_wc;
 
 import restaurant_wc.BaseWaiterRole.FoodOnMenu;
 import restaurant_wc.gui.CustomerGui;
-import restaurant_wc.gui.RestaurantGui;
+import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant.interfaces.Cashier;
 import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Waiter;
@@ -21,14 +21,14 @@ import people.Role;
 // Customers are created by user, and could be set hungry when created.
 // Customers behave differently upon situations, which depends on the name they have
 
-public class RestaurantCustomerRole extends Role implements Customer{
+public class RestaurantCustomerRoleWc extends Role implements Customer{
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGui customerGui;
-	private RestaurantGui restGui;
+	private RestaurantGuiWc restGui;
 
 	// agent correspondents
-	private HostRole host;
+	private HostRoleWc host;
 	private Waiter waiter;
 	private Cashier cashier;
 	private int tableNum;
@@ -62,7 +62,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 *
 	 * @param name name of the customer
 	 */
-	public RestaurantCustomerRole(RestaurantGui gui){
+	public RestaurantCustomerRoleWc(RestaurantGuiWc gui){
 		super();
 //		// parsing customer name string to get desirable customer behavior
 //		String delims = "[ ]+";
@@ -91,7 +91,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	/**
 	 * hack to establish connection to Host agent and Waiter agent.
 	 */
-	public void setHost(HostRole host) {
+	public void setHost(HostRoleWc host) {
 		this.host = host;
 	}
 	
@@ -106,7 +106,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	public void msgIsActive() {
 		customerGui.setPresent(true);
-		host = (HostRole) myPerson.getHost(0);
+		host = (HostRoleWc) myPerson.getHost(3);
 		print("I'm hungry");
 		state = CustomerState.DOING_NOTHING;
 		event = CustomerEvent.GOT_HUNGRY;
@@ -471,7 +471,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		((CashierRole) cashier).msgPayMyCheck(this, getPersonAgent().getMoney());
+		((CashierRoleWc) cashier).msgPayMyCheck(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);
 		print ("Paying my bill");
 	}
@@ -491,7 +491,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// gui needs to walk to the exit
 		isActive = false;
 		customerGui.setPresent(false);
-		getPersonAgent().msgDone("RestaurantCustomerRole");
+		getPersonAgent().msgDone("RestaurantCustomerRoleWc");
 	}
 
 	

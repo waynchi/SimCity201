@@ -14,7 +14,7 @@ public class CustomerGui implements Gui{
 	private boolean isHungry = false;
 
 	//private HostAgent host;
-	RestaurantGui gui;
+	RestaurantGuiWc gui;
 
 	private int xPos, yPos;
 	private int xExit = 0, yExit = 0;
@@ -65,7 +65,7 @@ public class CustomerGui implements Gui{
 				customer.msgAtExit();
 				isHungry = false;
 				leaving = false;
-				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
+				//gui.setCustomerEnabled((RestaurantCustomerRoleWc) customer);
 			}
 			command=Command.noCommand;
 		}

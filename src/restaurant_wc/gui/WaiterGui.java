@@ -4,7 +4,7 @@ package restaurant_wc.gui;
 import java.util.*;
 
 import restaurant_wc.BaseWaiterRole;
-import restaurant_wc.RestaurantCustomerRole;
+import restaurant_wc.RestaurantCustomerRoleWc;
 import restaurant_wc.interfaces.Customer;
 
 import java.awt.*;
@@ -123,7 +123,7 @@ public class WaiterGui implements Gui {
 
     public void DoApproachCustomer(Customer c) {
     	currentCustomer = c;
-    	Dimension dm = tableMap.get(((RestaurantCustomerRole) c).getTableNumber());
+    	Dimension dm = tableMap.get(((RestaurantCustomerRoleWc) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());

@@ -16,7 +16,7 @@ import people.Role;
  */
 //A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostRole extends Role implements Host{
+public class HostRoleWc extends Role implements Host{
 	static final int NTABLES = 3;//a global for the number of tables.
 	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
@@ -30,14 +30,14 @@ public class HostRole extends Role implements Host{
 	
 	public Collection<Table> tables;
 	public class Table {
-		RestaurantCustomerRole occupiedBy;
+		RestaurantCustomerRoleWc occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(RestaurantCustomerRole cust) {
+		void setOccupant(RestaurantCustomerRoleWc cust) {
 			occupiedBy = cust;
 		}
 
@@ -45,7 +45,7 @@ public class HostRole extends Role implements Host{
 			occupiedBy = null;
 		}
 
-		RestaurantCustomerRole getOccupant() {
+		RestaurantCustomerRoleWc getOccupant() {
 			return occupiedBy;
 		}
 
@@ -83,10 +83,10 @@ public class HostRole extends Role implements Host{
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	public class MyCustomer {
-		RestaurantCustomerRole customer;
+		RestaurantCustomerRoleWc customer;
 		customerState state;
 
-		public MyCustomer (RestaurantCustomerRole cust) {
+		public MyCustomer (RestaurantCustomerRoleWc cust) {
 			customer = cust;
 			if (customerCount >= NTABLES){
 				state = customerState.PENDING;
@@ -100,7 +100,7 @@ public class HostRole extends Role implements Host{
 	
 	
 	// constructor
-	public HostRole() {
+	public HostRoleWc() {
 		super();
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
@@ -115,7 +115,7 @@ public class HostRole extends Role implements Host{
 	public void msgIsActive() {
 		isActive = true;
 		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
-		getPersonAgent().getRestaurant(0).isClosed = false;
+		getPersonAgent().getRestaurant(3).isClosed = false;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -165,7 +165,7 @@ public class HostRole extends Role implements Host{
 	}
 
 	// from hungry CustomerAgent, add to the list
-	public void IWantToEat(RestaurantCustomerRole cust) {
+	public void IWantToEat(RestaurantCustomerRoleWc cust) {
 
 		customers.add(new MyCustomer(cust));
 		System.out.println("got message i want to eat from customer");
@@ -173,7 +173,7 @@ public class HostRole extends Role implements Host{
 
 	}
 
-	public void leaveRestaurant(RestaurantCustomerRole cust){
+	public void leaveRestaurant(RestaurantCustomerRoleWc cust){
 		synchronized(customers){
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
@@ -185,7 +185,7 @@ public class HostRole extends Role implements Host{
 		}
 	}
 
-	public void waitInRestaurant(RestaurantCustomerRole cust){
+	public void waitInRestaurant(RestaurantCustomerRoleWc cust){
 		synchronized(customers){
 
 			for (MyCustomer mc : customers){
@@ -372,7 +372,7 @@ public class HostRole extends Role implements Host{
 	}
 	
 	private void closeRestaurant() {
-		getPersonAgent().getRestaurant(0).isClosed = true;
+		getPersonAgent().getRestaurant(3).isClosed = true;
 		closeRestaurant = false;
 	}
 
@@ -397,7 +397,7 @@ public class HostRole extends Role implements Host{
 
 	public void setCashier(Cashier c) {
 		cashier = c;
-		if(!workers.contains(((CashierRole)cashier).getPersonAgent())) workers.add(((CashierRole)cashier).getPersonAgent());
+		if(!workers.contains(((CashierRoleWc)cashier).getPersonAgent())) workers.add(((CashierRoleWc)cashier).getPersonAgent());
 	}
 
 	public Cashier getCashier() {
@@ -406,7 +406,7 @@ public class HostRole extends Role implements Host{
 
 	public void setCook(Cook c) {
 		cook = c;
-		if(!workers.contains(((CookRole)cook).getPersonAgent())) workers.add(((CookRole)cook).getPersonAgent());
+		if(!workers.contains(((CookRoleWc)cook).getPersonAgent())) workers.add(((CookRoleWc)cook).getPersonAgent());
 	}
 
 	public Cook getCook() {

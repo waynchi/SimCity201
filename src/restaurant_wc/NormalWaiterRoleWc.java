@@ -1,12 +1,12 @@
 package restaurant_wc;
 
-import restaurant_wc.gui.RestaurantGui;
+import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant_wc.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant_wc.interfaces.Waiter;
 
-public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
-	public NormalWaiterRole(RestaurantGui gui) {
+public class NormalWaiterRoleWc extends BaseWaiterRole implements Waiter{
+	public NormalWaiterRoleWc(RestaurantGuiWc gui) {
 		super();
 		restGui = gui;
 		waiterGui = new WaiterGui(this);
@@ -24,7 +24,7 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	public void goPlaceOrder(MyCustomer customer) {
 		cook = host.getCook();
 		print ("Here's an order for table " + customer.tableNumber);
-		((CookRole) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
+		((CookRoleWc) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
 	}
 	

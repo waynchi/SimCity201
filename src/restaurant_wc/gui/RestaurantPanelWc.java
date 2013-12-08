@@ -1,12 +1,12 @@
 package restaurant_wc.gui;
 
 import restaurant_wc.BaseWaiterRole;
-import restaurant_wc.CookRole;
-import restaurant_wc.HostRole;
-import restaurant_wc.NormalWaiterRole;
-import restaurant_wc.RestaurantCustomerRole;
+import restaurant_wc.CookRoleWc;
+import restaurant_wc.HostRoleWc;
+import restaurant_wc.NormalWaiterRoleWc;
+import restaurant_wc.RestaurantCustomerRoleWc;
 import restaurant_wc.SpecialWaiterRole;
-import restaurant_wc.CookRole.MyOrder;
+import restaurant_wc.CookRoleWc.MyOrder;
 
 import javax.swing.*;
 
@@ -20,20 +20,20 @@ import java.util.Vector;
  * Panel in frame that contains all the restaurant information,
  * including host, cook, waiters, and customers.
  */
-public class RestaurantPanel extends JPanel implements ActionListener{
+public class RestaurantPanelWc extends JPanel implements ActionListener{
 
     //Host, cook, waiters and customers
-	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
+	public CookWaiterMonitorWc theMonitor = new CookWaiterMonitorWc();
 
-    private HostRole host;
+    private HostRoleWc host;
     //private HostGui hostGui = new HostGui(host);
-	private CookRole cook;
-    private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
+	private CookRoleWc cook;
+    private Vector<RestaurantCustomerRoleWc> customers = new Vector<RestaurantCustomerRoleWc>();
     private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
-	//private CashierRole cashier = new CashierRole("Cashier", this);
+	//private CashierRoleWc cashier = new CashierRoleWc("Cashier", this);
 
-    private RestaurantGui gui; //reference to main gui
+    private RestaurantGuiWc gui; //reference to main gui
     
     private JButton pauseButton = new JButton ("Pause/Resume");
 	private JPanel imagePanel = new JPanel();
@@ -50,7 +50,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         }
     }*/
 
-    public class CookWaiterMonitor extends Object {
+    public class CookWaiterMonitorWc extends Object {
         private List<MyOrder> orders = new ArrayList<MyOrder>();
         synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
                 orders.add (cook.new MyOrder (food, waiter,table));
@@ -67,12 +67,12 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
     
-    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    public RestaurantPanelWc(RestaurantGuiWc gui, HostRoleWc h) {
     	host = h;
         this.gui = gui;
     }
     
-    public RestaurantPanel(RestaurantGui gui) {
+    public RestaurantPanelWc(RestaurantGuiWc gui) {
         this.gui = gui;
     }
 
@@ -82,7 +82,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		RestaurantCustomerRoleWc c = new RestaurantCustomerRoleWc(gui);	
     		CustomerGui g = new CustomerGui(c);
 
     		gui.animationPanel.addGui(g);// dw
@@ -94,7 +94,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	
     	if (type.equals("Waiters")) {
     		//if (name.equalsIgnoreCase("special")){
-    			BaseWaiterRole w = new NormalWaiterRole(gui);
+    			BaseWaiterRole w = new NormalWaiterRoleWc(gui);
     			if (name.equalsIgnoreCase("special")) {
         			w = new SpecialWaiterRole(theMonitor,gui);
     			}
@@ -121,19 +121,19 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	return waiters;
     }
     
-    public void setCook (CookRole c) {
+    public void setCook (CookRoleWc c) {
     	cook = c;
     }
     
-    public void setHost (HostRole h) {
+    public void setHost (HostRoleWc h) {
     	host = h;
     }
     
-    public CookRole getCook() {
+    public CookRoleWc getCook() {
     	return cook;
     }
 
-    public HostRole getHost() {
+    public HostRoleWc getHost() {
     	return host;
     }
 

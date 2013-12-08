@@ -1,7 +1,7 @@
 package restaurant_wc;
 
 import restaurant_wc.gui.RestaurantCashierGui;
-import restaurant_wc.gui.RestaurantGui;
+import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant.interfaces.Cashier;
 import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Host;
@@ -25,7 +25,7 @@ import people.Role;
 // waiter needs to go to cashier to take the bill
 // customer needs to go to cashier to pay
 
-public class CashierRole extends Role implements Cashier {
+public class CashierRoleWc extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
@@ -43,7 +43,7 @@ public class CashierRole extends Role implements Cashier {
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
 	public bankActivityEvent bankEvent;
 
-	RestaurantGui restGui;
+	RestaurantGuiWc restGui;
 	RestaurantCashierGui cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
@@ -110,7 +110,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public CashierRole(RestaurantGui gui) {
+	public CashierRoleWc(RestaurantGuiWc gui) {
 		if (!inTest) {
 			cashierGui = new RestaurantCashierGui(this);
 			restGui = gui;
@@ -378,7 +378,7 @@ public class CashierRole extends Role implements Cashier {
 	// Actions
 	private void clockIn() {
 		log.add(new LoggedEvent("in clock in"));
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(3);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
 			host.setCashier(this);
@@ -492,7 +492,7 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		for (People p : ((HostRole)host).getWorkers()) {
+		for (People p : ((HostRoleWc)host).getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
 			p.setMoney(money);
@@ -522,7 +522,7 @@ public class CashierRole extends Role implements Cashier {
 
 	private double getTotalSalary() {
 		print ("in action getTotalSalary, calculating total salary for workeres");
-		return (((HostRole)host).getWorkers().size() * salary);
+		return (((HostRoleWc)host).getWorkers().size() * salary);
 	}
 
 	private void depositExcessMoney() {

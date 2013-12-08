@@ -1,14 +1,14 @@
 package restaurant_wc.gui;
 
 
-import restaurant_wc.HostRole;
-import restaurant_wc.RestaurantCustomerRole;
+import restaurant_wc.HostRoleWc;
+import restaurant_wc.RestaurantCustomerRoleWc;
 
 import java.awt.*;
 
 public class HostGui implements Gui {
 
-    private HostRole agent = null;
+    private HostRoleWc agent = null;
 
     private int xPos = -20, yPos = -20;//default waiter position
     private int currentTableX, currentTableY; // position of current table
@@ -18,7 +18,7 @@ public class HostGui implements Gui {
     //public static final int xTable = 200;
     //public static final int yTable = 250;
 
-    public HostGui(HostRole agent) {
+    public HostGui(HostRoleWc agent) {
         this.agent = agent;
     }
 
@@ -35,7 +35,7 @@ public class HostGui implements Gui {
         return true;
     }
 
-    public void DoBringToTable(RestaurantCustomerRole customer, int tableX, int tableY) {
+    public void DoBringToTable(RestaurantCustomerRoleWc customer, int tableX, int tableY) {
         xDestination = tableX + 20;
         yDestination = tableY - 20;
         currentTableX = tableX;

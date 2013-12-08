@@ -1,8 +1,8 @@
 package restaurant_wc;
 
 import restaurant_wc.gui.CookGui;
-import restaurant_wc.gui.RestaurantGui;
-import restaurant_wc.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant_wc.gui.RestaurantGuiWc;
+import restaurant_wc.gui.RestaurantPanelWc.CookWaiterMonitorWc;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_wc.interfaces.Host;
@@ -29,12 +29,12 @@ import people.Role;
 //has not been ordered for now.
 
 
-public class CookRole extends Role implements Cook{
+public class CookRoleWc extends Role implements Cook{
 	public EventLog log = new EventLog();
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
 	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
-	private CookWaiterMonitor theMonitor = null;
+	private CookWaiterMonitorWc theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
@@ -44,7 +44,7 @@ public class CookRole extends Role implements Cook{
 	protected Semaphore atFridge = new Semaphore (0,true);
 	
 	private CookGui cookGui = null;
-	private RestaurantGui restGui = null;
+	private RestaurantGuiWc restGui = null;
 	public int restaurantIndex = 0;
 
 	private Boolean turnActive = false;
@@ -77,7 +77,7 @@ public class CookRole extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRole(CookWaiterMonitor monitor, RestaurantGui gui) {
+	public CookRoleWc(CookWaiterMonitorWc monitor, RestaurantGuiWc gui) {
 		this.restGui = gui;
 		cookGui = new CookGui(this);
 		restGui.getAnimationPanel().addGui(cookGui);
@@ -399,7 +399,7 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(3);
 		host.setCook(this);
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
@@ -496,7 +496,7 @@ public class CookRole extends Role implements Cook{
 		return cookGui;
 	}
 
-	public void setHost(HostRole h) {
+	public void setHost(HostRoleWc h) {
 		host = h;
 	}
 

@@ -3,12 +3,12 @@ package restaurant_wc.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import restaurant_wc.CashierRole;
+import restaurant_wc.CashierRoleWc;
 
 public class RestaurantCashierGui implements Gui{
 	boolean isPresent;
-	CashierRole cashier;
-	RestaurantGui gui;
+	CashierRoleWc cashier;
+	RestaurantGuiWc gui;
 	
 	int xDestination = 250, yDestination = 250;
 	int xPos = 0, yPos = 0;
@@ -17,9 +17,9 @@ public class RestaurantCashierGui implements Gui{
 	boolean leaving = false;
 	
 	
-	public RestaurantCashierGui(CashierRole cashierRole) {
+	public RestaurantCashierGui(CashierRoleWc cashierRoleWc) {
 		// TODO Auto-generated constructor stub
-		cashier = cashierRole;
+		cashier = cashierRoleWc;
 	}
 
 	@Override
