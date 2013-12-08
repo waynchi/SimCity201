@@ -252,11 +252,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
 			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber);
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
-			if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
-				getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
-				order.state = orderState.IN_DELIVERY;
-			}
-			//order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
+			//if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+			//	getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+			//	order.state = orderState.IN_DELIVERY;
+			//}
+			order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
 		}
 
 
