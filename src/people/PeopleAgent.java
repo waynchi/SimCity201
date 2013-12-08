@@ -1391,6 +1391,164 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.RepairRole.msgIsActive();
 		}
+		if(jobs.get(i).job.equals("RestaurantNormalWaiterZt"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantNormalWaiterZt"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+						// TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantNormalWaiter");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.WaiterRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantHostZt"))
+		{
+			for(MyRole r: roles)
+			{
+				
+				if(r.description.equals("RestaurantHostZt"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantHost");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.HostRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCookZt"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCookZt"))
+				{			
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCook");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.CookRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCashierZt"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCashierZt"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCashier");
+					r.role.msgIsActive();
+					
+				}
+			}
+			//roles.RepairRole.msgIsActive();
+		}
 		if(jobs.get(i).job.equals("Teller"))
 		{
 			for(MyRole r: roles)

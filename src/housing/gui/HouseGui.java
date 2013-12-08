@@ -19,7 +19,7 @@ public class HouseGui implements HGui{
 	public House h;
 	List<ItemGui> items = new ArrayList<ItemGui>();
 	List<HGui> guis = new ArrayList<HGui>();
-	public Dimension entranceCoordinatesInternal = new Dimension(455, 345);
+	public Dimension entranceCoordinatesInternal = new Dimension(435, 345);
 	public Dimension entranceCoordinatesExternal = new Dimension();
 	public Image villaImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);
 	public Image apartmentImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_BGR);

@@ -10,28 +10,19 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.Map;
 
-
-
-
-
-
-
-
-
-
-
-
-import restaurant_wc.interfaces.Cashier;
+import bank.interfaces.Teller;
+import people.Role;
+import restaurant.interfaces.*;
 import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Market;
 import restaurant_wc.interfaces.Waiter;
 import restaurant_wc.test.mock.EventLog;
 import restaurant_wc.test.mock.LoggedEvent;
-//import restaurant_wc.CustomerAgent.AgentEvent;
+//import restaurant_wc.WcCustomerRole.AgentEvent;
 //aurant.WaiterAgent.AgentState;
 import agent.Agent;
 
-public class CashierAgent extends Agent implements Cashier{
+public class WcCashierRole extends Role implements Cashier{
 	//variables
 	public List<Check> pendingChecks = Collections.synchronizedList(new ArrayList<Check>());
 	public List<Payment> pendingPayments = Collections.synchronizedList(new ArrayList<Payment>());
@@ -46,7 +37,7 @@ public class CashierAgent extends Agent implements Cashier{
 	Map<String, Food> FoodTypes = new HashMap<String, Food>();
 	public EventLog log = new EventLog();
 	
-	public CashierAgent(String name){
+	public WcCashierRole(String name){
 		
 		super();
 		this.name = name;
@@ -261,6 +252,50 @@ public class CashierAgent extends Agent implements Cashier{
 			this.bill = bill;
 			this.market = market;
 		}
+	}
+
+	@Override
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder,
+			int orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,
+			int orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsChange(double change) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgReadyToHelp(Teller teller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGiveLoan(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgWithdrawSuccessful(double funds, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

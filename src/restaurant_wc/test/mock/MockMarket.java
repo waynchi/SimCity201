@@ -1,6 +1,6 @@
 package restaurant_wc.test.mock;
 
-import restaurant_wc.CookAgent;
+import restaurant_wc.WcCookRole;
 import restaurant_wc.interfaces.Cashier;
 import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Market;
@@ -15,7 +15,7 @@ public class MockMarket  extends Mock implements Market{
 	}
 
 	@Override
-	public void setCook(CookAgent c) {
+	public void setCook(WcCookRole c) {
 		// TODO Auto-generated method stub
 		
 	}

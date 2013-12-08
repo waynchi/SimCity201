@@ -1,7 +1,7 @@
 package restaurant_wc.gui;
 
 
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcHostAgent;
 import restaurant_wc.Table;
 import restaurant_wc.WaiterAgent;
 import restaurant_wc.interfaces.Customer;

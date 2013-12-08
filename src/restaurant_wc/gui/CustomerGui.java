@@ -1,7 +1,7 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.CustomerAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCustomerRole;
+import restaurant_wc.WcHostAgent;
 
 import java.awt.*;
 import java.util.concurrent.Semaphore;
@@ -10,11 +10,11 @@ import javax.swing.ImageIcon;
 
 public class CustomerGui implements Gui{
 
-	private CustomerAgent agent = null;
+	private WcCustomerRole agent = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 
-	//private HostAgent host;
+	//private WcHostAgent host;
 	RestaurantGui gui;
 
 	private int xPos, yPos;
@@ -42,7 +42,7 @@ public class CustomerGui implements Gui{
 	private ImageIcon pizza = new ImageIcon(this.getClass().getResource("pizza.jpg"));
 	
 
-	public CustomerGui(CustomerAgent c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(WcCustomerRole c, RestaurantGui gui){ //WcHostAgent m) {
 		agent = c;
 		xPos = -20;
 		yPos = -20;
@@ -110,7 +110,7 @@ public class CustomerGui implements Gui{
 		isPresent = p;
 	}
 	
-	public CustomerAgent getCustomer() {
+	public WcCustomerRole getCustomer() {
 		return agent;
 	}
 

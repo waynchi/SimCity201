@@ -2,7 +2,7 @@ package restaurant_wc;
 
 import java.util.Timer;
 
-import restaurant_wc.CookAgent.OrderState;
+import restaurant_wc.WcCookRole.OrderState;
 import restaurant_wc.WaiterAgent.OrderWaiter;
 import restaurant_wc.interfaces.Waiter;
 
