@@ -102,7 +102,9 @@ public class RobberRole extends Role implements Robber {
 	}
 	
 	public void msgGetOut() {
-		
+		print("Teller asked me to leave");
+		state = CustomerState.done;
+		stateChanged();
 	}
 	
 	

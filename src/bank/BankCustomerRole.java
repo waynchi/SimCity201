@@ -2,6 +2,7 @@ package bank;
 
 
 import agent.Agent;
+import bank.RobberRole.CustomerState;
 import bank.gui.BankCustomerGui;
 import bank.gui.BankGui;
 import bank.interfaces.BankCustomer;
@@ -34,7 +35,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public int accountID = -1; //Initialize with an impossible value that will be checked later
 	
 	public enum CustomerState
-	{none, waiting, ready, needAccount, finished, done, inline};
+	{none, waiting, ready, needAccount, finished, done, inline, forcedone};
 	
 	public enum CustomerAction 
 	{deposit, withdraw}
@@ -128,7 +129,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 	
 	public void msgGetOut() {
-		
+		print("Teller asked me to leave");
+		state = CustomerState.forcedone;
+		stateChanged();
 	}
 	
 	/**
@@ -154,6 +157,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			}
 			if (state == CustomerState.done) {
 				LeaveBank();
+				return true;
+			}
+			if (state == CustomerState.forcedone) {
+				Leave();
 				return true;
 			}
 		}
@@ -218,6 +225,12 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void LeaveBank(){
 		if (!isTest) gui.DoLeaveBank();
 		teller.msgDoneAndLeaving();
+		myPerson.msgDone("BankCustomerRole");
+		isActive = false;
+	}
+	
+	private void Leave(){
+		if (!isTest) gui.DoLeaveBank();
 		myPerson.msgDone("BankCustomerRole");
 		isActive = false;
 	}
