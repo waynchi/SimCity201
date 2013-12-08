@@ -16,7 +16,7 @@ import market.interfaces.*;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
-import restaurant_vk.gui.CashierGui;
+import restaurant_vk.gui.VkCashierGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 
 /**
@@ -33,7 +33,7 @@ public class VkCashierRole extends Role implements Cashier {
 	private List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private Menu m = new Menu();
 	private MyCheck currentCheck = null;
-	private CashierGui gui = null;
+	private VkCashierGui gui = null;
 	private double workingCapital = 10000.0;
 	private double minCapital = 1000;
 	private Timer timer = new Timer();
@@ -57,7 +57,7 @@ public class VkCashierRole extends Role implements Cashier {
 	public double hostSalary = 100;
 	
 	public VkCashierRole(RestaurantVkAnimationPanel p) {
-		gui = new CashierGui(this);
+		gui = new VkCashierGui(this);
 		gui.setAnimationPanel(p);
 	}
 	
@@ -198,6 +198,7 @@ public class VkCashierRole extends Role implements Cashier {
 	
 	public void closeRestaurant() {
 		closingState = ClosingState.ToBeClosed;
+		this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		stateChanged();
 	}
 	
@@ -209,7 +210,6 @@ public class VkCashierRole extends Role implements Cashier {
 	
 	public void msgIsInActive() {
 		leave = true;
-		this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		stateChanged();
 	}
 	
@@ -321,6 +321,7 @@ public class VkCashierRole extends Role implements Cashier {
 		else if (s.role.equals("Cashier")) {
 			s.p.Money += cashierSalary;
 		}
+		s.s = ShiftState.Done;
 	}
 	
 	/*
@@ -369,6 +370,8 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to leave the restaurant.
 	 */
 	public void leaveRestaurant() {
+		if (closingState == ClosingState.None)
+			this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -435,17 +438,19 @@ public class VkCashierRole extends Role implements Cashier {
 		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
 			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
 				prepareToClose();
+				return true;
 			}
 			else if (workingCapital < computeRequiredMoney()) {
 				prepareToClose();
+				return true;
 			}
 			else {
 				if (leave == true) {
 					shutDown();
 					leaveRestaurant();
+					return true;
 				}
 			}
-			return true;
 		}
 		
 		// Simply decides which is the current check being taken care of or which
@@ -553,7 +558,7 @@ public class VkCashierRole extends Role implements Cashier {
 		return null;
 	}
 	
-	public void setGui(CashierGui g) {
+	public void setGui(VkCashierGui g) {
 		gui = g;
 	}
 	

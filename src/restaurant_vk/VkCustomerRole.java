@@ -1,6 +1,6 @@
 package restaurant_vk;
 
-import restaurant_vk.gui.CustomerGui;
+import restaurant_vk.gui.VkCustomerGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.interfaces.Customer;
@@ -24,7 +24,7 @@ import people.Role;
 public class VkCustomerRole extends Role implements Customer{
 	private int hungerLevel = 5; // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private VkCustomerGui customerGui;
 	private String choice = new String("");
 	private Menu menu;
 	private CustomerRestaurantCheck currentCheck = null;
@@ -39,7 +39,7 @@ public class VkCustomerRole extends Role implements Customer{
 
 	public VkCustomerRole(RestaurantVkAnimationPanel p) {
 		super();
-		customerGui = new CustomerGui(this);
+		customerGui = new VkCustomerGui(this);
 		customerGui.setAnimationPanel(p);
 	}
 
@@ -481,11 +481,11 @@ public class VkCustomerRole extends Role implements Customer{
 		return "customer " + ((PeopleAgent)myPerson).name;
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(VkCustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public VkCustomerGui getGui() {
 		return customerGui;
 	}
 

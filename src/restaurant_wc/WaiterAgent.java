@@ -1,8 +1,8 @@
 package restaurant_wc;
 
 import agent.Agent;
-//import restaurant_wc.CustomerAgent.AgentEvent;
-//import restaurant_wc.CustomerAgent.AgentState;
+//import restaurant_wc.WcCustomerRole.AgentEvent;
+//import restaurant_wc.WcCustomerRole.AgentState;
 import restaurant_wc.gui.WaiterGui;
 import restaurant_wc.interfaces.Cashier;
 import restaurant_wc.interfaces.Customer;
@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  */
 //We only have 2 types of agents in this prototype. A customer and an agent that
 //does all the rest. Rather than calling the other agent a waiter, we called him
-//the HostAgent. A Host is the manager of a restaurant_wc who sees that all
+//the WcHostAgent. A Host is the manager of a restaurant_wc who sees that all
 //is proceeded as he wishes.
 public class WaiterAgent extends Agent implements Waiter {
 	static final int NTABLES = 3;//a global for the number of tables.
@@ -24,8 +24,8 @@ public class WaiterAgent extends Agent implements Waiter {
 	//with List semantics.
 	public List<MyCustomer> MyCustomerList = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	public List<Order> MyReadyOrders = Collections.synchronizedList(new ArrayList<Order>());
-	private HostAgent host;
-	private CookAgent cook;
+	private WcHostAgent host;
+	private WcCookRole cook;
 	private Cashier cashier;
 	public boolean OnBreak = false;
 	private boolean DoIWantToGoOnBreak = false;
@@ -90,18 +90,18 @@ public class WaiterAgent extends Agent implements Waiter {
 	}
 	
 	/* (non-Javadoc)
-	 * @see restaurant_wc.Waiter#setHost(restaurant_wc.HostAgent)
+	 * @see restaurant_wc.Waiter#setHost(restaurant_wc.WcHostAgent)
 	 */
 	@Override
-	public void setHost(HostAgent host) {
+	public void setHost(WcHostAgent host) {
 		this.host = host; 
 	}
 	
 	/* (non-Javadoc)
-	 * @see restaurant_wc.Waiter#setCook(restaurant_wc.CookAgent)
+	 * @see restaurant_wc.Waiter#setCook(restaurant_wc.WcCookRole)
 	 */
 	@Override
-	public void setCook(CookAgent cook) {
+	public void setCook(WcCookRole cook) {
 		this.cook = cook;
 	}
 	
@@ -680,14 +680,14 @@ public class WaiterAgent extends Agent implements Waiter {
 	}
 
 /*	private class Table {
-		CustomerAgent occupiedBy;
+		WcCustomerRole occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(CustomerAgent cust) {
+		void setOccupant(WcCustomerRole cust) {
 			occupiedBy = cust;
 		}
 
@@ -695,7 +695,7 @@ public class WaiterAgent extends Agent implements Waiter {
 			occupiedBy = null;
 		}
 
-		CustomerAgent getOccupant() {
+		WcCustomerRole getOccupant() {
 			return occupiedBy;
 		}
 

@@ -1,8 +1,8 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.CookAgent;
-import restaurant_wc.CustomerAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCookRole;
+import restaurant_wc.WcCustomerRole;
+import restaurant_wc.WcHostAgent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 
 public class CookGui implements Gui{
 
-	private CookAgent cook;
+	private WcCookRole cook;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private int xHome, yHome;
@@ -124,7 +124,7 @@ public class CookGui implements Gui{
 		return true;
 	}
 
-	public void setCook(CookAgent cook) {
+	public void setCook(WcCookRole cook) {
 		// TODO Auto-generated method stub
 		this.cook = cook;		
 	}

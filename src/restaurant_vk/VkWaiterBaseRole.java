@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.gui.WaiterGui;
+import restaurant_vk.VkHostRole.ClosingState;
+import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.VkCookRole;
 import restaurant_vk.interfaces.Customer;
@@ -21,7 +22,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	protected List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	protected Semaphore waitingForOrder = new Semaphore(0, true);
 	protected Semaphore movingAround = new Semaphore(0, true);
-	public WaiterGui gui = null;
+	public VkWaiterGui gui = null;
 	protected Host host;
 	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
@@ -446,7 +447,8 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -457,6 +459,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		closingState = ClosingState.Preparing;
 	}
 	
@@ -627,11 +630,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		this.cook = cook;
 	}
 	
-	public void setGui(WaiterGui gui) {
+	public void setGui(VkWaiterGui gui) {
 		this.gui = gui;
 	}
 	
-	public WaiterGui getGui() {
+	public VkWaiterGui getGui() {
 		return gui;
 	}
 	

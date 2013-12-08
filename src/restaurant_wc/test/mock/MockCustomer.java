@@ -10,7 +10,7 @@ import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Waiter;
 
 /**
- * A sample MockCustomer built to unit test a CashierAgent.
+ * A sample MockCustomer built to unit test a WcCashierRole.
  *
  * @author Wayne Chi
  *

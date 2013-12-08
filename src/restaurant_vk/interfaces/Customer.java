@@ -3,7 +3,7 @@ package restaurant_vk.interfaces;
 import java.util.List;
 import restaurant_vk.CustomerRestaurantCheck;
 import restaurant_vk.Menu;
-import restaurant_vk.gui.CustomerGui;
+import restaurant_vk.gui.VkCustomerGui;
 
 public interface Customer {
 	public void gotHungry();
@@ -32,5 +32,5 @@ public interface Customer {
 	
 	public void setWaiter(Waiter w);
 	
-	public CustomerGui getGui();
+	public VkCustomerGui getGui();
 }

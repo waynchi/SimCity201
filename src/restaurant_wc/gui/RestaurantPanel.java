@@ -1,9 +1,9 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.CashierAgent;
-import restaurant_wc.CookAgent;
-import restaurant_wc.CustomerAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCashierRole;
+import restaurant_wc.WcCookRole;
+import restaurant_wc.WcCustomerRole;
+import restaurant_wc.WcHostAgent;
 import restaurant_wc.MarketAgent;
 import restaurant_wc.WaiterAgent;
 import restaurant_wc.interfaces.Cashier;
@@ -25,15 +25,15 @@ public class RestaurantPanel extends JPanel {
 
     //Host, cook, waiters and customers
 	private List<WaiterAgent> waiters = new ArrayList<WaiterAgent>();
-    private HostAgent host = new HostAgent("Wayne");
+    private WcHostAgent host = new WcHostAgent("Wayne");
     //private WaiterAgent waiter = new WaiterAgent("Wayne");
     //private WaiterGui waiterGui = new WaiterGui(waiter);
-    public CookAgent cook = new CookAgent("Gordon Ramsay");
+    public WcCookRole cook = new WcCookRole("Gordon Ramsay");
     public CookGui cookGui;
-    public CashierAgent cashier = new CashierAgent("Cashier Man");
+    public WcCashierRole cashier = new WcCashierRole("Cashier Man");
     private int waiterNum = 0;
 
-    private Vector<CustomerAgent> customers = new Vector<CustomerAgent>();
+    private Vector<WcCustomerRole> customers = new Vector<WcCustomerRole>();
 
     private JPanel restLabel = new JPanel();
     public ListPanel customerPanel = new ListPanel(this, "Customers");
@@ -115,7 +115,7 @@ public class RestaurantPanel extends JPanel {
         if (type.equals("Customers")) {
 
             for (int i = 0; i < customers.size(); i++) {
-                CustomerAgent temp = customers.get(i);
+                WcCustomerRole temp = customers.get(i);
                 if (temp.getName() == name)
                     gui.updateInfoPanel(temp);
             }
@@ -140,7 +140,7 @@ public class RestaurantPanel extends JPanel {
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		CustomerAgent c = new CustomerAgent(name);	
+    		WcCustomerRole c = new WcCustomerRole(name);	
     		CustomerGui g = new CustomerGui(c, gui);
 
     		gui.animationPanel.addGui(g);// dw
@@ -175,7 +175,7 @@ public class RestaurantPanel extends JPanel {
     	//waiter.paused = true;
     	cook.pause();
     	cashier.pause();
-    	for(CustomerAgent c: customers){
+    	for(WcCustomerRole c: customers){
     		c.pause();
     	}
     }
@@ -188,7 +188,7 @@ public class RestaurantPanel extends JPanel {
     	//waiter.paused = false;
     	cook.restart();
     	cashier.restart();
-    	for(CustomerAgent c: customers){
+    	for(WcCustomerRole c: customers){
     		c.restart();
     	}
 //		host.pausedSem.release();
@@ -198,7 +198,7 @@ public class RestaurantPanel extends JPanel {
 //		//waiter.pausedSem.release();
 //		cook.pausedSem.release();
 //		cashier.pausedSem.release();
-//		for(CustomerAgent c2: customers){
+//		for(WcCustomerRole c2: customers){
 //			c2.pausedSem.release();
 //		}
 	}

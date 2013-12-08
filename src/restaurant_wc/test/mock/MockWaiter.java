@@ -3,8 +3,8 @@ package restaurant_wc.test.mock;
 
 import java.util.concurrent.Semaphore;
 
-import restaurant_wc.CookAgent;
-import restaurant_wc.HostAgent;
+import restaurant_wc.WcCookRole;
+import restaurant_wc.WcHostAgent;
 import restaurant_wc.Menu;
 import restaurant_wc.Order;
 import restaurant_wc.Table;
@@ -17,7 +17,7 @@ import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Waiter;
 
 /**
- * A sample MockWaiter built to unit test a CashierAgent.
+ * A sample MockWaiter built to unit test a WcCashierRole.
  *
  * @author Wayne Chi
  *
@@ -48,13 +48,13 @@ public class MockWaiter extends Mock implements Waiter {
 	}
 
 	@Override
-	public void setHost(HostAgent host) {
+	public void setHost(WcHostAgent host) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setCook(CookAgent cook) {
+	public void setCook(WcCookRole cook) {
 		// TODO Auto-generated method stub
 		
 	}
