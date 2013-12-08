@@ -39,7 +39,7 @@ public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, in
 
 
 public void msgWaitingHere(BusPassenger bpr){
-System.out.println("BusStop recieved message that a bus passenger arrived");
+//System.out.println("BusStop recieved message that a bus passenger arrived");
 MyBusPassenger waitingPassenger = new MyBusPassenger(bpr, new BusStopPassengerGui(bpr,this));
 myGui.getAnimationPanel().addGui(waitingPassenger.bg);
 waitingPassenger.bg.setPresent(true);
@@ -48,7 +48,7 @@ myWaitingPassengers.add(waitingPassenger);
 
 public void msgBusArrived(Bus b){
 	try{
-	System.out.println("BusStop recieved message that bus has arrived");
+	//System.out.println("BusStop recieved message that bus has arrived");
 	currentBus = b;
 	myBoardingPassengers = myWaitingPassengers;
 	b.msgNumberOfBoardingPassengers(myBoardingPassengers.size());

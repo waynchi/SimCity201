@@ -41,12 +41,12 @@ public void msgNumberOfBoardingPassengers(int size) {
 
 @Override
 public void msgImBoarding(BusPassenger p){ //remove place
-System.out.println("Bus recieved message that passenger is boarding");
+//System.out.println("Bus recieved message that passenger is boarding");
 myBusPassengers.add(new Passenger(p));
 boardingPassengers--;
 	if(boardingPassengers == 0)
 	{
-		System.out.println("Bus recieved last passenger, and is now ready to leave");
+		//System.out.println("Bus recieved last passenger, and is now ready to leave");
 		busState = BusState.readyToLeave;
 		stateChanged();
 	}
@@ -57,7 +57,7 @@ boardingPassengers--;
  */
 @Override
 public void msgImLeaving(BusPassenger p){
-	System.out.println("Bus recieved message that passenger is leaving");
+	//System.out.println("Bus recieved message that passenger is leaving");
 Passenger toRemove = findPassenger(p);
 myBusPassengers.remove(toRemove);
 }
@@ -81,7 +81,7 @@ stateChanged();
  */
 @Override
 public void msgAllBusStopPassengersNotified(){
-System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
+//System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }
