@@ -208,7 +208,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 		
 		if (leaveWork) {
-			done();
+			leaveWork();
 			return true;
 		}
 
@@ -272,7 +272,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		checks.remove(check);
 	}
 	
-	private void done() {
+	private void leaveWork() {
 		log.add(new LoggedEvent("in action done"));
 		isActive = false;
 		leaveWork = false;

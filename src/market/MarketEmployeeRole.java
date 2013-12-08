@@ -25,6 +25,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public EventLog log = new EventLog();
 	public boolean inTest = true;
 	private boolean turnActive = false;
+	private boolean closeMarket = false;
 	
 	public int restaurantOrderNumber = 1;
 	
@@ -121,6 +122,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().CallstateChanged();
 	}
 	
+	public void msgSetClose() {
+		closeMarket = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	public void msgAtCabinet() {
 		atCabinet.release();
 		getPersonAgent().CallstateChanged();
@@ -188,8 +194,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 					return true;
 				}
 			}
-			
-			
+		}
+		
+		if (closeMarket) {
+			closeMarket();
 		}
 		
 		if (leaveWork) {
@@ -299,6 +307,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		employeeGui.setPresent(false);
 		employeeGui.setDefaultDestination();
 		getPersonAgent().msgDone("MarketEmployeeRole");
+	}
+	
+	private void closeMarket() {
+		getPersonAgent().getMarket(0).isClosed = true;
+		closeMarket = false;
 	}
 
 	//utilities
