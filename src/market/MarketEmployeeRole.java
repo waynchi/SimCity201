@@ -255,6 +255,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
+		if (order.cook!=null) employeeGui.showGotOrderFromRestaurant();
+
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
@@ -266,6 +268,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				items.get(entry.getKey()).inventory = 0;
 			}
 		}
+		//gui text
+		
 		order.supply = supply;
 
 		if(!inTest)		getOrder(supply);

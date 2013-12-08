@@ -115,4 +115,9 @@ public class MarketEmployeeGui implements Gui{
 		yDestination = yCounter;
 		goToCounter = true;
 	}
+
+	public void showGotOrderFromRestaurant() {
+		// TODO Auto-generated method stub
+		
+	}
 }
