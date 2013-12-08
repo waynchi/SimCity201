@@ -16,7 +16,6 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 import market.test.MockPeople;
-import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
@@ -255,10 +254,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
-		if (order.cook!=null) employeeGui.showGotOrderFromRestaurant();
-
+		
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
+			System.out.print(entry.getKey());
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
 				supply.put(entry.getKey(), entry.getValue());
 				items.get(entry.getKey()).inventory -= entry.getValue();
@@ -268,10 +267,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				items.get(entry.getKey()).inventory = 0;
 			}
 		}
-		//gui text
+		//gui show text
+		if (order.cook!=null) {
+		employeeGui.showGotOrderFromRestaurant();
+		}
 		
 		order.supply = supply;
-
 		if(!inTest)		getOrder(supply);
 
 		// if order is from restaurant

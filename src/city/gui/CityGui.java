@@ -35,6 +35,7 @@ import restaurant_zt.CashierRoleZt;
 import restaurant_zt.CookRoleZt;
 import restaurant_zt.HostRoleZt;
 import restaurant_zt.NormalWaiterRoleZt;
+import restaurant_zt.RestaurantCustomerRoleZt;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
@@ -224,6 +225,11 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
+					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
+					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
+					RestaurantCustomerRoleZt.setPerson(person);
+					
+					
 					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					
@@ -308,8 +314,8 @@ public class CityGui extends JFrame implements ActionListener {
 						
 						RestaurantCookRoleZT.setTag(AlertTag.RESTAURANT1);
 						
-						person.addJob("RestaurantCook", start, end);
-						person.addRole(RestaurantCookRoleZT, "RestaurantCook");
+						person.addJob("RestaurantCookZt", start, end);
+						person.addRole(RestaurantCookRoleZT, "RestaurantCookZt");
 						RestaurantCookRoleZT.setPerson(person);
 						person.hasCar = false;
 					}
@@ -613,6 +619,7 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui.updatePosition();
 		marketGui.updatePosition();
 		restaurantGuiYc.updatePosition();
+		restaurantGuiZt.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();

@@ -2,7 +2,7 @@ package restaurant_zt.gui;
 
 
 import restaurant_zt.HostRoleZt;
-import restaurant_zt.RestaurantCustomerRole;
+import restaurant_zt.RestaurantCustomerRoleZt;
 
 import java.awt.*;
 
@@ -35,7 +35,7 @@ public class HostGuiZt implements Gui {
         return true;
     }
 
-    public void DoBringToTable(RestaurantCustomerRole customer, int tableX, int tableY) {
+    public void DoBringToTable(RestaurantCustomerRoleZt customer, int tableX, int tableY) {
         xDestination = tableX + 20;
         yDestination = tableY - 20;
         currentTableX = tableX;

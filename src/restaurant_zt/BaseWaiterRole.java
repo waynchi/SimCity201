@@ -429,6 +429,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
+		System.out.println("CASHIER:" + cashier);
 		((CashierRoleZt) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
@@ -461,7 +462,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void UpdateTableInfo(Customer c) {
 		currentCustomerNum--;
-		host.msgTableIsFree(((RestaurantCustomerRole) c).getTableNumber());
+		host.msgTableIsFree(((RestaurantCustomerRoleZt) c).getTableNumber());
 	}
 	
 	public abstract void done();
