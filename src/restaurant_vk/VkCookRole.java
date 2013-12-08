@@ -123,7 +123,7 @@ public class VkCookRole extends Role implements Cook {
 		}
 		MarketOrder o = new MarketOrder(order);
 		marketOrders.add(o);
-		market.msgOrder(order, this, cashier);
+		market.msgHereIsAnOrder(order, this, cashier);
 	}
 	
 	public void informCashier(MarketOrder mo) {

@@ -18,7 +18,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgHereIsACheck(MarketCustomer customer,Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));		
+		log.add(new LoggedEvent("received msgHereIsACheck for customer"));		
 		
 	}
 

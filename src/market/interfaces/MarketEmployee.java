@@ -15,7 +15,7 @@ public interface MarketEmployee {
 	public abstract void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems);
 
 	// order from restaurant cook
-	public abstract void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier);
+	public abstract void msgHereIsAnOrder(Map<String, Integer> order, Cook cook, Cashier cashier);
 
 	public abstract void setCashier(MarketCashier marketCashier);
 

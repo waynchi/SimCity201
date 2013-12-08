@@ -2,7 +2,6 @@ package market.test;
 
 import java.util.Map;
 
-import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.LoggedEvent;
@@ -25,7 +24,7 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 	}
 
 	@Override
-	public void msgOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
+	public void msgHereIsAnOrder(Map<String, Integer> order, Cook cook, Cashier cashier) {
 		log.add(new LoggedEvent("received msgOrder from restaurant cook"));				
 	}
 
@@ -74,6 +73,18 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 	public MarketCashier getCashier() {
 		return cashier;
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void msgOrderDelivered(int orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgOrderNotDelivered(int orderNumber) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
