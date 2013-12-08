@@ -469,7 +469,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) <2)
 					{
@@ -499,7 +499,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) < 2)
 					{
@@ -850,10 +850,14 @@ public class PeopleAgent extends Agent implements People{
 //		}
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("RestaurantCustomer"))
+			if(r.description.equals("RestaurantCustomerVk"))
 			{
 				r.role.msgIsActive();
 			}
+//			if(r.description.equals("RestaurantCustomer"))
+//			{
+//				r.role.msgIsActive();
+//			}
 		}
 	}
 		
