@@ -112,7 +112,7 @@ public class ListPanel extends JPanel implements ActionListener {
          validate();
     	
     	
-    	restPanel.restaurantWaiters.add(new WaiterAgent(waiterName,restPanel.cook,(Host) restPanel.host,restPanel.inventory));
+    	restPanel.restaurantWaiters.add(new WaiterAgent(waiterName,restPanel.cook,(restaurant_ps.interfaces.Host) restPanel.host,restPanel.inventory));
     	restPanel.showWaiters();
 	}
     
