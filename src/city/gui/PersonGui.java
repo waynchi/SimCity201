@@ -199,6 +199,14 @@ public class PersonGui extends Rectangle2D.Double {
 			xDestination = 840;
 			yDestination = 42;
 		}
+		else if(destination.equals("Restaurant 2")) {
+			xDestination = 500;
+			yDestination = 42;
+		}
+		else if(destination.equals("Restaurant 3")) {
+			xDestination = 840;
+			yDestination = 152;
+		}
 		else if(destination.equals("Market")) {
 			xDestination = 580;
 			yDestination = 322;

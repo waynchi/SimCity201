@@ -692,6 +692,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 570, 60, "Restaurant 2" );
 		buildings.add(restaurant2);
 		
+		Building restaurant3 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 3" );
+		buildings.add(restaurant3);
+		
 //		Building bank2 = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
 //		buildings.add(bank2);
 //		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
