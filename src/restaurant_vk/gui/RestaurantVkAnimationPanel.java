@@ -1,9 +1,13 @@
 package restaurant_vk.gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -32,6 +36,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private final int STAND_DIAMETER = 20;
     private Image bufferImage;
     private Dimension bufferSize;
+    public Image cookingGrill = new BufferedImage(100, 20, BufferedImage.TYPE_INT_BGR);
 
     private List<VkGui> guis = new ArrayList<VkGui>();
 
@@ -48,6 +53,11 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
  
     	Timer timer = new Timer(20, this );
+    	try {
+			cookingGrill = ImageIO.read(new File("res/restaurant_vk/cookingGrill.jpg"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
     	timer.start();
     }
 
@@ -69,10 +79,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         g2.fillRect(TABLE_LEFT_X + (2 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
         g2.fillRect(TABLE_LEFT_X + (3 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
         
-        g2.setColor(Color.YELLOW);
-        g2.fillRect(GRILL_LEFT_X, GRILL_TOP_Y, GRILL_WIDTH, GRILL_HEIGHT);
-        g2.setColor(Color.BLACK);
-        g2.drawString("GRILL", GRILL_LEFT_X + 30, GRILL_TOP_Y + 15);
+        g.drawImage(cookingGrill, GRILL_LEFT_X, GRILL_TOP_Y, null);
         
         g2.setColor(Color.BLUE);
         g2.fillRect(PLATE_LEFT_X, PLATE_TOP_Y, PLATE_WIDTH, PLATE_HEIGHT);
