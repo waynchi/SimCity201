@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 
 import restaurant_wc.Menu;
 import restaurant_wc.gui.CustomerGui;
-import restaurant_wc.interfaces.Cashier;
+import restaurant.interfaces.Cashier;
 import restaurant_wc.interfaces.Customer;
 import restaurant_wc.interfaces.Waiter;
 

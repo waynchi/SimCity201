@@ -113,7 +113,7 @@ public class WcCookRole extends Role implements Cook{
 		for(int j = 0; j < pendingMOrders.size();)
 		{
 			CallMarket(pendingMOrders.get(j).itemsRequested, pendingMOrders.get(j).MarketNum);
-			pendingMOrders.remove(pendingMOrders.get(j));
+			//pendingMOrders.remove(pendingMOrders.get(j));
 			return true;
 		//}
 			/*
