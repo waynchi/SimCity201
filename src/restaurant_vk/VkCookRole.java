@@ -254,6 +254,9 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	public void msgIsActive() {
+		if (cashier == null) {
+			this.cashier = ((VkHostRole)host).cashier;
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();
