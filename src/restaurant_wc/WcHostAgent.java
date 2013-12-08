@@ -29,12 +29,8 @@ public class WcHostAgent extends Agent {
 	//public WaiterAgent MyWaiter;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
-
-	private String name;
-	public WcHostAgent(String name) {
+	public WcHostAgent() {
 		super();
-
-		this.name = name;
 		// make some tables
 		tables = Collections.synchronizedList(new ArrayList<Table>(NTABLES));
 		synchronized(tables){
@@ -48,15 +44,6 @@ public class WcHostAgent extends Agent {
 		this.MyWaiters.add(new MyWaiter(w));
 		stateChanged();
 	}
-	
-	public String getMaitreDName() {
-		return name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	/*public List getWaitingCustomers() {
 		return waitingCustomers;
 	}

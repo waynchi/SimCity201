@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.Map;
 
+import market.interfaces.MarketEmployee;
 import bank.interfaces.Teller;
 import people.Role;
 import restaurant.interfaces.*;
 import restaurant_wc.interfaces.Customer;
-import restaurant_wc.interfaces.Market;
 import restaurant_wc.interfaces.Waiter;
 import restaurant_wc.test.mock.EventLog;
 import restaurant_wc.test.mock.LoggedEvent;
@@ -32,15 +32,13 @@ public class WcCashierRole extends Role implements Cashier{
 	Food SaladDish;
 	Food ChickenDish;
 	Food PizzaDish;
+	private MarketEmployee market;
 	private double CashRegister = 20;
-	private String name;
 	Map<String, Food> FoodTypes = new HashMap<String, Food>();
 	public EventLog log = new EventLog();
 	
-	public WcCashierRole(String name){
-		
+	public WcCashierRole(){
 		super();
-		this.name = name;
 		SteakDish= new Food("Steak", 15.99);
 		SaladDish = new Food("Salad", 5.99);
 		ChickenDish = new Food("Chicken", 10.99);
@@ -51,15 +49,6 @@ public class WcCashierRole extends Role implements Cashier{
 		FoodTypes.put("Pizza", PizzaDish);
 		
 	}
-	
-	public String getMaitreDName() {
-		return name;
-	}
-
-	public String getName() {
-		return name;
-	}
-	
 	public boolean pickAndExecuteAnAction() {
 		if(!(pendingChecks.size() == 0)){
 			synchronized(pendingChecks){
