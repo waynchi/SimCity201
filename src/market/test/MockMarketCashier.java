@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import bank.interfaces.Teller;
-import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;

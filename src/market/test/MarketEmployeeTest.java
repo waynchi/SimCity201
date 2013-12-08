@@ -5,18 +5,14 @@ import java.util.Map;
 
 import javax.swing.Timer;
 
-import market.MarketCashierRole;
 import market.MarketEmployeeRole;
 import market.gui.MarketGui;
 import market.test.MockPeople.MyRestaurant;
-import people.PeopleAgent;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import restaurant.interfaces.Host;
 import restaurant.test.mock.MockCashier;
 import restaurant.test.mock.MockCook;
 import restaurant.test.mock.MockHost;
-import test.NewCashierTest;
 
 public class MarketEmployeeTest extends TestCase{
 	MarketEmployeeRole employee;
@@ -74,6 +70,7 @@ public class MarketEmployeeTest extends TestCase{
 		customer2 = new MockMarketCustomer("customer2");
 
 		cook = new MockCook("cook");
+		cook.setRestaurantIndex(0);
 		cook.setHost(host);
 		restaurantCashier.setHost(host);
 
