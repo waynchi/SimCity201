@@ -79,6 +79,10 @@ public class TellerRole extends Role implements Teller {
 
 	// Messages
 	
+	public void msgSetClose(){
+		myPerson.getBank(0).isClosed = true;
+	}
+	
 	public void msgGone(){
 		atExit.release();
 		gui.leave = false;
@@ -249,6 +253,7 @@ public class TellerRole extends Role implements Teller {
 	private void giveMoney(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
 		customer.robber.msgPleaseDontHurtMe(1000000);
+		myPerson.getBank(0).isClosed = true;
 		waitingCustomers.remove(customer);
 		for(myBankCustomer cust:waitingCustomers){
 			if (cust.type.equals("customer")) cust.customer.msgGetOut();
