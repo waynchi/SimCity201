@@ -25,7 +25,7 @@ import restaurant.test.mock.LoggedEvent;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
-	public boolean inTest = true;
+	public boolean inTest = false;
 	private boolean turnActive = false;
 	private boolean setClose = false;
 	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
@@ -128,7 +128,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		isActive = true;
 		turnActive = true;
-		inTest = false;
 		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
 	}
@@ -171,7 +170,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from restaurant cook
 	public void msgHereIsAnOrder(Map<String, Integer> chosenItems, Cook cook, Cashier cashier) {
 		if(!inTest){
-			log.add(new LoggedEvent("received an order from restaurant cook " + ((CookRole) cook).getPerson().getName()));
+			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getName()));
 		}
 		orders.add(new Order (cook, cashier, chosenItems));
 		getPersonAgent().CallstateChanged();
@@ -395,6 +394,5 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public List<People> getWorkers () {
 		return workers;
 	}
-	
 
 }
