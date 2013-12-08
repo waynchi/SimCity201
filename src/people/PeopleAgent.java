@@ -364,7 +364,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.start)
 		{
 			event = AgentEvent.GoingToWork;
-			print("Going To Work");
+			print("Going To Work from time is");
 			log.add(new LoggedEvent("Going To Work"));
 			stateChanged();
 			return;
