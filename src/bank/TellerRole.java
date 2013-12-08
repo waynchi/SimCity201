@@ -5,6 +5,7 @@ import bank.gui.BankCustomerGui;
 import bank.gui.BankGui;
 import bank.gui.TellerGui;
 import bank.interfaces.BankCustomer;
+import bank.interfaces.Robber;
 import bank.interfaces.Teller;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class TellerRole extends Role implements Teller {
 	private String name;
 	
 	public enum CustomerState
-	{none, waiting, beingHelped, deposit, newAccount, newAccountLoan, withdraw, loan, done};
+	{none, waiting, beingHelped, deposit, newAccount, newAccountLoan, withdraw, loan, done, robbing};
 	
 	public myBankCustomer currentCustomer = null;
 	
@@ -104,6 +105,18 @@ public class TellerRole extends Role implements Teller {
 	public void msgHere(BankCustomer cust, String name) {
 		print("New customer. Added him to queue");
 		waitingCustomers.add(new myBankCustomer(cust, name, "customer"));
+		stateChanged();
+	}
+	
+	public void msgHere(Robber cust, String name) {
+		print("New customer. Added him to queue");
+		waitingCustomers.add(new myBankCustomer(cust, name, "robber"));
+		stateChanged();
+	}
+	
+	public void msgGiveMoney(){
+		print("I am being robbed");
+		currentCustomer.state = CustomerState.robbing;
 		stateChanged();
 	}
 	
@@ -183,6 +196,10 @@ public class TellerRole extends Role implements Teller {
 						withdrawMoney(currentCustomer);
 						return true;
 					}
+					if (currentCustomer.state == CustomerState.robbing) {
+						giveMoney(currentCustomer);
+						return true;
+					}
 					if (currentCustomer.state == CustomerState.done) {
 						removeCustomer(currentCustomer);
 						return true;
@@ -227,6 +244,11 @@ public class TellerRole extends Role implements Teller {
 		customer.account.funds -= customer.withdrawAmount;
 		customer.customer.msgAccountAndLoan(customer.account.id, customer.account.funds, customer.withdrawAmount);
 		customer.withdrawAmount = 0;
+	}
+	
+	private void giveMoney(myBankCustomer customer) {
+		customer.state = CustomerState.beingHelped;
+		customer.robber.msgPleaseDontHurtMe(1000000);
 	}
 	
 	private void withdrawMoney(myBankCustomer customer) {
@@ -297,6 +319,7 @@ public class TellerRole extends Role implements Teller {
 		BankCustomer customer;
 		Cashier cashier;
 		MarketCashier mcashier;
+		Robber robber;
 		public CustomerState state = CustomerState.none;
 		Account account;
 		double withdrawAmount = 0;
@@ -318,6 +341,12 @@ public class TellerRole extends Role implements Teller {
 		}
 		myBankCustomer(MarketCashier mcashier, String name, String type) {
 			this.mcashier = mcashier;
+			this.state = CustomerState.none;
+			this.name = name;
+			this.type = type;
+		}
+		myBankCustomer(Robber robber, String name, String type) {
+			this.robber = robber;
 			this.state = CustomerState.none;
 			this.name = name;
 			this.type = type;

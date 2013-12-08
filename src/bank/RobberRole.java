@@ -6,6 +6,7 @@ import bank.gui.BankCustomerGui;
 import bank.gui.BankGui;
 import bank.gui.RobberGui;
 import bank.interfaces.BankCustomer;
+import bank.interfaces.Robber;
 import bank.interfaces.Teller;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import people.Role;
 /**
  * Bank customer agent.
  */
-public class RobberRole extends Role implements BankCustomer {
+public class RobberRole extends Role implements Robber {
 	private String name;
 
 	Timer timer = new Timer();
@@ -93,37 +94,9 @@ public class RobberRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
-	public void msgAccountBalance(int accountID, double balance) {
-		this.accountID = accountID;
-		print("Account created. Account has a balance of: " + balance);
-		state = CustomerState.done;
-		stateChanged();
-	}
-	
-	public void msgAccountAndLoan(int accountID, double balance, double money) {
-		this.accountID = accountID;
-		print("Account created. Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.setMoney(myPerson.getMoney()+money);
-		state = CustomerState.done;
-		stateChanged();
-	}
-	
-	public void msgGiveLoan(double balance, double money) {
-		print("Account has a balance of: " + balance + ". Must pay teller next time for loan");
-		myPerson.setMoney(myPerson.getMoney()+money);
-		state = CustomerState.done;
-		stateChanged();
-	}
-	
-	public void msgWithdrawSuccessful(double balance, double money) {
-		myPerson.setMoney(myPerson.getMoney()+money);
-		print("Withdraw successful. Account has a balance of: " + balance);
-		state = CustomerState.done;
-		stateChanged();
-	}
-	
-	public void msgDepositSuccessful(double balance) {
-		print("Deposit successful. Account has a balance of: " + balance);
+	public void msgPleaseDontHurtMe(double Money){
+		print("I stole " + Money + " dollars from the bank, time to leave");
+		myPerson.setMoney(myPerson.getMoney()+Money);
 		state = CustomerState.done;
 		stateChanged();
 	}
@@ -141,14 +114,8 @@ public class RobberRole extends Role implements BankCustomer {
 				return true;
 			}
 			if (state == CustomerState.ready) {
-				if (myPerson.getAgentEvent().equals("GoingToDepositMoney")) {
-					DepositMoney();
-					return true;
-				}
-				if (myPerson.getAgentEvent().equals("GoingToRetrieveMoney")) {
-					WithdrawMoney();
-					return true;
-				}
+				RobBank();
+				return true;
 			}
 			if (state == CustomerState.done) {
 				LeaveBank();
@@ -166,8 +133,8 @@ public class RobberRole extends Role implements BankCustomer {
 		if (isTest) myPerson.getTeller().msgHere(this, name);
 		state = CustomerState.none;
 	}
-
-	private void DepositMoney(){
+	
+	private void RobBank() {
 		if (!isTest) {
 			atTeller.drainPermits();
 			bgui.popCustomer();
@@ -179,44 +146,14 @@ public class RobberRole extends Role implements BankCustomer {
 				e.printStackTrace();
 			}
 		}
-		if (accountID == -1) {
-			myPerson.setMoney(myPerson.getMoney()-100);
-			teller.msgDeposit(deposit);
-			state = CustomerState.finished;
-		}
-		else {
-			myPerson.setMoney(myPerson.getMoney()-100);
-			teller.msgDeposit(accountID, deposit);
-			state = CustomerState.finished;
-		}
-	}
-
-	private void WithdrawMoney(){
-		if (!isTest) {
-			atTeller.drainPermits();
-			bgui.popCustomer();
-			gui.DoGoToTeller();
-			try {
-				atTeller.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (accountID == -1) {
-			teller.msgWithdraw(withdraw);
-			state = CustomerState.finished;
-		}
-		else {
-			teller.msgWithdraw(accountID, withdraw);
-			state = CustomerState.finished;
-		}
+		teller.msgGiveMoney();
+		state = CustomerState.finished;
 	}
 
 	private void LeaveBank(){
 		if (!isTest) gui.DoLeaveBank();
 		teller.msgDoneAndLeaving();
-		myPerson.msgDone("BankCustomerRole");
+		myPerson.msgDone("RobberRole");
 		isActive = false;
 	}
 
