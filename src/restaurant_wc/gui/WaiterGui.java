@@ -1,61 +1,63 @@
 package restaurant_wc.gui;
 
 
-import restaurant_wc.WcHostAgent;
-import restaurant_wc.Table;
-import restaurant_wc.WaiterAgent;
+import java.util.*;
+
+import restaurant_wc.BaseWaiterRole;
+import restaurant_wc.RestaurantCustomerRole;
 import restaurant_wc.interfaces.Customer;
 
 import java.awt.*;
-import java.util.concurrent.Semaphore;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 public class WaiterGui implements Gui {
 
-    private WaiterAgent agent = null;
-    
-    RestaurantGui gui;
+    private BaseWaiterRole role = null;
+    private boolean isPresent = false;
 
-    private int xPos = -20, yPos = -20;//default waiter position
-    private int xDestination = 50, yDestination = 100;//default start position
+    private int xPos = 0, yPos = 0;//default waiter position
+    private int currentTableX = -100;
+    private int currentTableY = -100; // position of current table
     
-    private int tableNum;
-    private boolean RecievingOrder = false;
-    private Semaphore nearCustomer = new Semaphore(0,true);
-    private final int xIncrement = 100;
-    private final int yIncrement = -50;
-    public static final int xTable = 200;
-    public static final int yTable = 250;
-    private final int xCook = 380;
-    private final int yCook = 330;
-    private int waiterNum = 0;
-    public CookGui cookGui;
-    public AnimationPanel mainAnimation;
-    private boolean OrderAppears = false;
-    private boolean bringCustomer = false;
-    private ImageIcon Food = new ImageIcon();
-	private ImageIcon steak = new ImageIcon(this.getClass().getResource("steak.jpg"));
-	private ImageIcon chicken = new ImageIcon(this.getClass().getResource("chicken.jpg"));
-	private ImageIcon salad = new ImageIcon(this.getClass().getResource("salad.jpg"));
-	private ImageIcon pizza = new ImageIcon(this.getClass().getResource("pizza.jpg"));
-
-    public WaiterGui(WaiterAgent waiter, RestaurantGui gui, int waiterNum) {
-        this.agent = waiter;
-        this.gui = gui;
-        this.waiterNum = waiterNum;
-        xDestination = 50;
-        yDestination = 100 + 30* waiterNum;
+    private int homeIndex;
+    
+    private int cookX = 110;
+    private int cookY = 200;
+    
+    private int cashierX = 250;
+    private int cashierY = 250;
+    
+    private int revolvingStandX = 350;
+    private int revolvingStandY = 250;
+    
+    private int xExit = 0, yExit = 0;
+    
+    private int xDestination = 20, yDestination = 20;//default start position
+    private Customer currentCustomer;
+    private BufferedImage img = null;
+    private boolean BringingFoodToCustomer = false;
+    private boolean leaving =false;
+    
+    private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
+    
+    public WaiterGui(BaseWaiterRole role) {
+        try {
+            img = ImageIO.read(getClass().getResource("waiter.png"));
+        } catch (IOException e) {}
+        
+        this.role = role;
+        tableMap.put (1,new Dimension(100,100));
+        tableMap.put (2,new Dimension(200,100));
+        tableMap.put (3,new Dimension(300,100));  
     }
 
-	public RestaurantGui getGui(){
-		return gui;
-	}
-	
-	public void setCookGui(CookGui cookGui){
-		this.cookGui = cookGui;
-	}
-	
+    public void setHomePosition(int x) {
+    	homeIndex = x;
+    }
+    
     public void updatePosition() {
         if (xPos < xDestination)
             xPos++;
@@ -68,92 +70,97 @@ public class WaiterGui implements Gui {
             yPos--;
 
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable + xIncrement*(tableNum-1)+ 20) & (yDestination == yTable + yIncrement*(tableNum-1) - 20)) {
-        	if(RecievingOrder)
-        	{
-        		agent.msgReadyAtTable();
-        		RecievingOrder = false;
-        	}
-        	else
-        	{
-        		agent.msgAtTable();	
-        	}
-           
+        		&& (xDestination == currentTableX -20) && (yDestination == currentTableY -20)) {
+        	BringingFoodToCustomer = false;
+           role.msgAtTable();
         }
-        if(xPos == 50 && yPos <= (100 + waiterNum*30))
-        {
-        	if(agent.fetching)
-        	{
-        		agent.msgAtDoor();
-        		agent.fetching = false;
-        	}
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == cookX) && (yDestination == cookY-20)) {
+           role.msgAtCook();
         }
-        if(xPos == xDestination && yPos == yDestination && bringCustomer)
-        {
-        	bringCustomer = false;
-        	nearCustomer.release();
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == cashierX) && (yDestination == cashierY-20)) {
+           role.msgAtCashier();
         }
-        //System.out.println((xPos) + ", " + yPos);
-        if(xPos == xDestination && yPos == yDestination & (xDestination == xCook) && (yDestination == yCook)) {
-        	//mainAnimation.changeImage();
-        	agent.msgAtCook();
-        	xDestination = 50;
-        	yDestination = 100+30*waiterNum;
-        	
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == 20) && (yDestination == 25)) {
+           role.msgAtWaitingCustomer();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
+           role.msgAtRevolvingStand();
+        }
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == xExit) && (yDestination == yExit && leaving)) {
+           role.msgAtExit();
+           leaving = false;
         }
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
-		if(OrderAppears){
-			g.drawImage(Food.getImage(), xPos+20, yPos, null);
-		}
+        
+    	g.drawImage(img,xPos,yPos,null);
+        g.setColor(Color.BLACK);
+        g.drawString(role.getName(), xPos, yPos+10);
+        if (BringingFoodToCustomer) {
+    		g.setColor(Color.BLACK);
+			g.drawString(currentCustomer.getChoice().substring(0,2),xPos, yPos);
+        }
     }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
-    public void DoBringToTable(Customer customer, int tableNumber) {
-    	//TODO
-    	//not sure if this is legal
-    	if(customer.getGui().waiting)
-    	{
-    		xDestination = customer.getGui().customerNum*30 + 60;
-        	yDestination = 60;
-    	}
-    	else{
-    	xDestination = customer.getGui().getPosX()+20;
-    	yDestination = customer.getGui().getPosY()+20;
-    	}
-    	bringCustomer = true;
-    	try {
-			nearCustomer.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        xDestination = xTable + xIncrement*(tableNumber-1)  + 20;
-        yDestination = yTable + yIncrement*(tableNumber-1) - 20;
-        tableNum = tableNumber;
-        customer.getGui().setTableNumber(tableNumber);
-        System.out.println("Setting table number");
-        customer.getFollowing().release();
-        agent.getTableSet().release();
+    public void DoSeatCustomer(Customer c, int tableNum) {
+        Dimension dm = tableMap.get(tableNum);
+    	xDestination = (int)(dm.getWidth()) - 20;
+        yDestination = (int)(dm.getHeight()) - 20;
+        currentTableX = (int)(dm.getWidth());
+        currentTableY = (int)(dm.getHeight());
+        c.getGui().DoGoToPosition(currentTableX, currentTableY);
+    }
+
+    public void DoApproachCustomer(Customer c) {
+    	currentCustomer = c;
+    	Dimension dm = tableMap.get(((RestaurantCustomerRole) c).getTableNumber());
+    	xDestination = (int)(dm.getWidth()) - 20;
+        yDestination = (int)(dm.getHeight()) - 20;
+        currentTableX = (int)(dm.getWidth());
+        currentTableY = (int)(dm.getHeight());
     }
     
-    public void DoBringFoodToTable(Customer customer, int tableNumber) {
-    	xDestination = xTable + xIncrement*(tableNumber-1)  + 20;
-        yDestination = yTable + yIncrement*(tableNumber-1) - 20;
-        tableNum = tableNumber;
+    public void DoGoToCook() {
+    	xDestination = cookX;
+    	yDestination = cookY-20;
     }
-
-    public void DoLeaveCustomer() {
-        xDestination = 50;
-        yDestination = 100 + 30*waiterNum;
+    
+    public void DoGoToCashier() {
+    	xDestination = cashierX;
+    	yDestination = cashierY - 20;
     }
-
+    
+    public void DoBringFoodToCustomer(Customer c) {
+    	BringingFoodToCustomer = true;
+    	DoApproachCustomer(c);
+    }
+    
+    public void DoGoRest () {
+    	xDestination = 50+30*homeIndex;
+    	yDestination = 10;
+    }
+    
+    public void DoAskCustomer() {
+    	
+    	
+    }
+  
+    
+    public void DoGoToWaitingCustomer() {
+    	xDestination = 20;
+    	yDestination = 25;
+    }
+    
     public int getXPos() {
         return xPos;
     }
@@ -162,40 +169,43 @@ public class WaiterGui implements Gui {
         return yPos;
     }
 
-	public void GoToTable(Customer customer, Table table) {
-		xDestination = xTable + xIncrement*(table.tableNumber-1)  + 20;
-        yDestination = yTable + yIncrement*(table.tableNumber-1) - 20;
-        tableNum = table.tableNumber;
-        RecievingOrder = true;
-		
+	public void DoGoToRevolvingStand() {
+		// TODO Auto-generated method stub
+		xDestination = revolvingStandX;
+		yDestination = revolvingStandY;
+	}
+	
+	public void setPresent(boolean p) {
+		isPresent = p;
 	}
 
-	public void giveCookOrder() {
-		yDestination = yCook;
-		xDestination = xCook;
+	public void DoExit() {
+		xDestination = xExit;
+		yDestination = yExit;
+		leaving = true;
+		// TODO Auto-generated method stub
 		
 	}
 	
-	public void OrderAppearing(boolean appearing, String choice) {
-		if(appearing){
-		cookGui.msgTakingPlate(choice);
-		}
-		if(choice == "Steak") {
-			Food.setImage(steak.getImage());
-			
-		}
-		if(choice == "Chicken") {
-			Food.setImage(chicken.getImage());
-			
-		}
-		if(choice == "Pizza") {
-			Food.setImage(pizza.getImage());
-			
-		}
-		if(choice == "Salad") {
-			Food.setImage(salad.getImage());
-			
-		}
-		OrderAppears = appearing;
+	public int getX() {
+		return xPos;
+	}
+	
+	public int getY() {
+		return yPos;
+	}
+	
+	public int getXDest() {
+		return xDestination;
+	}
+	
+	public int getYDest() {
+		return yDestination;
+	}
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		xDestination = 50+30*homeIndex;
+    	yDestination = 10;
 	}
 }

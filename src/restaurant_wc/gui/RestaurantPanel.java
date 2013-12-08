@@ -1,206 +1,161 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.WcCashierRole;
-import restaurant_wc.WcCookRole;
-import restaurant_wc.WcCustomerRole;
-import restaurant_wc.WcHostAgent;
-import restaurant_wc.MarketAgent;
-import restaurant_wc.WaiterAgent;
-import restaurant_wc.interfaces.Cashier;
-import restaurant_wc.interfaces.Waiter;
+import restaurant_wc.BaseWaiterRole;
+import restaurant_wc.CookRole;
+import restaurant_wc.HostRole;
+import restaurant_wc.NormalWaiterRole;
+import restaurant_wc.RestaurantCustomerRole;
+import restaurant_wc.SpecialWaiterRole;
+import restaurant_wc.CookRole.MyOrder;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.List;
+import java.util.Vector;
 
 /**
- * Panel in frame that contains all the restaurant_wc information,
+ * Panel in frame that contains all the restaurant information,
  * including host, cook, waiters, and customers.
  */
-public class RestaurantPanel extends JPanel {
+public class RestaurantPanel extends JPanel implements ActionListener{
 
     //Host, cook, waiters and customers
-	private List<WaiterAgent> waiters = new ArrayList<WaiterAgent>();
-    private WcHostAgent host = new WcHostAgent("Wayne");
-    //private WaiterAgent waiter = new WaiterAgent("Wayne");
-    //private WaiterGui waiterGui = new WaiterGui(waiter);
-    public WcCookRole cook = new WcCookRole("Gordon Ramsay");
-    public CookGui cookGui;
-    public WcCashierRole cashier = new WcCashierRole("Cashier Man");
-    private int waiterNum = 0;
+	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
 
-    private Vector<WcCustomerRole> customers = new Vector<WcCustomerRole>();
+    private HostRole host;
+    //private HostGui hostGui = new HostGui(host);
+	private CookRole cook;
+    private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
+    private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
-    private JPanel restLabel = new JPanel();
-    public ListPanel customerPanel = new ListPanel(this, "Customers");
-    public ListPanel waiterPanel = new ListPanel(this, "Waiters");
-    private JPanel group = new JPanel();
+	//private CashierRole cashier = new CashierRole("Cashier", this);
 
     private RestaurantGui gui; //reference to main gui
+    
+    private JButton pauseButton = new JButton ("Pause/Resume");
+	private JPanel imagePanel = new JPanel();
+	Boolean agentPaused = false;
 
+	/*public class Order {
+        int table;
+        String food;
+        WaiterAgent waiter;
+        Order (int t, String f,WaiterAgent w) {
+                table  = t;
+                food = f;
+                waiter = w;
+        }
+    }*/
+
+    public class CookWaiterMonitor extends Object {
+        private List<MyOrder> orders = new ArrayList<MyOrder>();
+        synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
+                orders.add (cook.new MyOrder (food, waiter,table));
+        }
+        synchronized public MyOrder removeOrder () {
+                MyOrder temp;
+                temp = orders.get(0);
+                orders.remove(0);
+                return temp;
+       }
+        public int getOrderSize() {
+    		return orders.size();
+    	}
+    }
+
+    
+    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    	host = h;
+        this.gui = gui;
+    }
+    
     public RestaurantPanel(RestaurantGui gui) {
         this.gui = gui;
-       // waiter.setGui(waiterGui);
-      //  host.addWaiter(waiter);
-       // waiter.setHost(host);
-       // waiter.setCook(cook);
-        
-      //  waiters.add(waiter);
-        
-
-        cashier.startThread();
-        /*cook.addMarket(new MarketAgent("First", 0));
-        cook.Markets.get(0).startThread();
-        cook.Markets.get(0).setCook(cook);
-        cook.addMarket(new MarketAgent("Second", 1));
-        cook.Markets.get(1).startThread();
-        cook.Markets.get(1).setCook(cook);
-        cook.addMarket(new MarketAgent("Third", 2));
-        cook.Markets.get(2).startThread();
-        cook.Markets.get(2).setCook(cook);*/
-        cook.startThread();
-        cookGui = new CookGui(gui);
-        gui.animationPanel.addGui(cookGui);
-        cook.setGui(cookGui);
-        cookGui.setCook(cook);
-
-        
-       // waiter.startThread();
-
-      //  gui.animationPanel.addGui(waiterGui);
-        host.startThread();
-
-        setLayout(new GridLayout(1, 2, 20, 20));
-        group.setLayout(new GridLayout(1, 2, 10, 10));
-
-        group.add(customerPanel);
-        group.add(waiterPanel);
-
-        initRestLabel();
-        add(restLabel);
-        add(group);
     }
 
-    /**
-     * Sets up the restaurant_wc label that includes the menu,
-     * and host and cook information
-     */
-    private void initRestLabel() {
-        JLabel label = new JLabel();
-        //restLabel.setLayout(new BoxLayout((Container)restLabel, BoxLayout.Y_AXIS));
-        restLabel.setLayout(new BorderLayout());
-        label.setText(
-                "<html><h3><u>Tonight's Staff</u></h3><table><tr><td>Host:</td><td>" + host.getName() + "</td></tr></table><h3><u> Menu</u></h3><table><tr><td>Steak</td><td>$15.99</td></tr><tr><td>Chicken</td><td>$10.99</td></tr><tr><td>Salad</td><td>$5.99</td></tr><tr><td>Pizza</td><td>$8.99</td></tr></table><br></html>");
 
-        restLabel.setBorder(BorderFactory.createRaisedBevelBorder());
-        restLabel.add(label, BorderLayout.CENTER);
-        restLabel.add(new JLabel("               "), BorderLayout.EAST);
-        restLabel.add(new JLabel("               "), BorderLayout.WEST);
-    }
 
-    /**
-     * When a customer or waiter is clicked, this function calls
-     * updatedInfoPanel() from the main gui so that person's information
-     * will be shown
-     *
-     * @param type indicates whether the person is a customer or waiter
-     * @param name name of person
-     */
-    public void showInfo(String type, String name) {
-
-        if (type.equals("Customers")) {
-
-            for (int i = 0; i < customers.size(); i++) {
-                WcCustomerRole temp = customers.get(i);
-                if (temp.getName() == name)
-                    gui.updateInfoPanel(temp);
-            }
-        }
-        
-        if(type.equals("Waiters")) {
-        	for (int j = 0; j < waiters.size(); j++) {
-        		Waiter tempw = waiters.get(j);
-        		if(tempw.getName() == name)
-        			gui.updateInfoPanel(tempw);
-        		
-        	}
-        }
-    }
-
-    /**
-     * Adds a customer or waiter to the appropriate list
-     *
-     * @param type indicates whether the person is a customer or waiter (later)
-     * @param name name of person
-     */
+	
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		WcCustomerRole c = new WcCustomerRole(name);	
-    		CustomerGui g = new CustomerGui(c, gui);
+    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		CustomerGui g = new CustomerGui(c);
 
     		gui.animationPanel.addGui(g);// dw
     		c.setHost(host);
-    		c.setCashier(cashier);
     		c.setGui(g);
     		customers.add(c);
-    		c.startThread();
+    		//c.startThread();
     	}
+    	
     	if (type.equals("Waiters")) {
-    		WaiterAgent w = new WaiterAgent(name);
-    		WaiterGui h = new WaiterGui(w, gui, waiterNum);
-    		h.setCookGui(cookGui);
-    		waiterNum++;
-    		gui.animationPanel.addGui(h);
-    		w.setCook(cook);
-    		w.setCashier(cashier);
-    		w.setGui(h);
-    		w.setHost(host);
-    		h.mainAnimation = gui.animationPanel;
-    		host.addWaiter(w);
-    		waiters.add(w);
-    		w.startThread();
+    		//if (name.equalsIgnoreCase("special")){
+    			BaseWaiterRole w = new NormalWaiterRole(gui);
+    			if (name.equalsIgnoreCase("special")) {
+        			w = new SpecialWaiterRole(theMonitor,gui);
+    			}
+    			WaiterGui g = new WaiterGui(w);
+        		g.setHomePosition(waiters.size());
+        		
+                gui.animationPanel.addGui(g);
+        		host.addWaiter(w);
+        		waiters.add(w);
+        		w.setHost(host);
+        		w.setGui(g);
+        		w.setCook(cook);
+        		//w.setCashier(cashier);
+        		
+                //w.startThread();
+    		//}
+    	
     	}
     }
     
-    public void pauseAll(){
-    	host.pause();
-    	for(WaiterAgent w: waiters) {
-    		w.pause();
-    	}
-    	//waiter.paused = true;
-    	cook.pause();
-    	cashier.pause();
-    	for(WcCustomerRole c: customers){
-    		c.pause();
-    	}
+   
+
+    public Vector<BaseWaiterRole> getWaiters () {
+    	return waiters;
+    }
+    
+    public void setCook (CookRole c) {
+    	cook = c;
+    }
+    
+    public void setHost (HostRole h) {
+    	host = h;
+    }
+    
+    public CookRole getCook() {
+    	return cook;
     }
 
-	public void restartAll() {
-		host.restart();
-	 	for(WaiterAgent w: waiters) {
-    		w.restart();
-    	}
-    	//waiter.paused = false;
-    	cook.restart();
-    	cashier.restart();
-    	for(WcCustomerRole c: customers){
-    		c.restart();
-    	}
-//		host.pausedSem.release();
-//	 	for(WaiterAgent w1: waiters) {
-//    		w1.pausedSem.release();
-//    	}
-//		//waiter.pausedSem.release();
-//		cook.pausedSem.release();
-//		cashier.pausedSem.release();
-//		for(WcCustomerRole c2: customers){
-//			c2.pausedSem.release();
-//		}
+    public HostRole getHost() {
+    	return host;
+    }
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
+    
+
+/*	public void addWaiter(String name) {
+		WaiterAgent newWaiter = new WaiterAgent(name);
+		WaiterGui newWaiterGui = new WaiterGui(newWaiter);
+		newWaiter.setGui(newWaiterGui);
+		host.addWaiter(newWaiter);
+		newWaiter.setHost(host);
+		newWaiter.setCook(cook);
+        gui.animationPanel.addGui(newWaiterGui);
+        newWaiter.startThread();
+	}
+*/
 }
