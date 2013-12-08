@@ -14,7 +14,7 @@ public class Market {
 		this.mer = m;
 		this.l = loc;
 		this.n = name;
-		this.isClosed = false;
+		this.isClosed = true;
 		
 	}
 }

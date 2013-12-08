@@ -448,7 +448,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(!Restaurants.get(1).isClosed)
 				{
-					if(rand.nextInt(2) <2)
+					if(rand.nextInt(2) <1)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
@@ -481,7 +481,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(!Restaurants.get(1).isClosed)
 				{
-					if(rand.nextInt(2) < 2)
+					if(rand.nextInt(2) < 1)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
