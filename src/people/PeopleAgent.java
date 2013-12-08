@@ -9,6 +9,7 @@ import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
+import restaurant.HostRole;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -380,6 +381,19 @@ public class PeopleAgent extends Agent implements People{
 			stateChanged();
 			return;
 		}
+		if(job.job.contains("RestaurantHost"))
+		{
+			if(Time == 1830)
+			{
+				for(MyRole r: roles)
+				{	
+					if(r.description.equals("RestaurantHost"))
+					{	
+						((HostRole) r.role).msgSetClose();
+					}
+				}
+			}
+		}
 		lastTime = job.end;
 		}
 		if(state == AgentState.Idle)
@@ -470,7 +484,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingHome;
-					print("Going Home To Eat");
+					print("Eating at Home because no restaurants are open.");
 					stateChanged();				
 					return;
 				}	
@@ -500,7 +514,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.EatingAtHome;
-					print("Going Home To Eat");
+					print("Eating at Home because no restaurants are open.");
 					stateChanged();
 					return;
 				}
@@ -1126,8 +1140,7 @@ public class PeopleAgent extends Agent implements People{
 		if(jobs.get(i).job.equals("RestaurantHost"))
 		{
 			for(MyRole r: roles)
-			{
-				
+			{	
 				if(r.description.equals("RestaurantHost"))
 				{	
 					location = AgentLocation.Road;

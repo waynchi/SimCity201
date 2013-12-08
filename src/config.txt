@@ -1,4 +1,3 @@
-1,Nobody,Customer,5000,50000
 1,RepairMan,BobTheBuilder,50000,50000
 1,Teller,teller,1000,1930
 1,RestaurantNormalWaiter,John,1000,1900
