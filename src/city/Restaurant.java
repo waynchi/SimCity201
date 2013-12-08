@@ -15,7 +15,7 @@ public class Restaurant {
 		this.h = host;
 		this.l = loc;
 		this.n = name;
-		this.isClosed = false;
+		this.isClosed = true;
 		this.restaurantIndex = Index;
 	}
 	
