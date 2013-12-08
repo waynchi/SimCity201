@@ -156,7 +156,10 @@ public class CashierAgent extends Role implements Cashier {
 		return name;
 	}
 
-	
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
 	// Messages
 
 	

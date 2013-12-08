@@ -33,6 +33,8 @@ public class WaiterGui implements Gui{
     Customer customerToBeSeated = null;
     Customer customerOrderToGiveToCashier = null;
     Customer lookingForFoodFor = null;
+    int startX = waiterHomeX - 50;
+    int startY = waiterHomeY - 10;
     
     int lastVisitedTable = -1;
     
@@ -41,8 +43,8 @@ public class WaiterGui implements Gui{
 
 	public WaiterGui(Waiter w, RestaurantGui gui, int waiterHomeX, int waiterHomeY){ //HostAgent m) {
 		agent = w;
-		xPos = waiterHomeX - 50;
-		yPos = waiterHomeY - 10;
+		xPos = -20;
+		yPos = -20;
 		xDestination = xPos;
 		yDestination = yPos;
 		//maitreD = m;
@@ -241,6 +243,20 @@ public class WaiterGui implements Gui{
 		yDestination = waiterHomeY-10;
 		command = Command.GoToHomePosition;
 	}
+
+	public void DoEnterRestaurant() {
+		// TODO Auto-generated method stub
+		xDestination = startX;
+		yDestination = startY;
+	}
+
+	public void DoLeaveRestaurant() {
+		// TODO Auto-generated method stub
+		xDestination = -20;
+		yDestination = -20;
+	}
+
+	
 	
 	
 

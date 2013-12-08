@@ -40,9 +40,7 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     private CashierGui cashierGui;
     private CookGui cookGui;
     private CashierAgent cashier;
-    public Market market;
     public List<Food> inventory = new ArrayList<Food>();
-    public List<MarketAgent> markets = new ArrayList<MarketAgent>();
     private int waiterHomeX = 370;
     private int waiterHomeY = 25;
     private Vector<CustomerAgent> customers = new Vector<CustomerAgent>();
@@ -72,15 +70,15 @@ public class RestaurantPanel extends JPanel implements ActionListener {
 		cashier = new CashierAgent("Cashier", 100); //initialize restaurant with $100
         cashierGui = new CashierGui(cashier,gui);
 		//market = new MarketAgent("Market",inventory);
-		markets.add(new MarketAgent("Market 1",inventory));
-		markets.add(new MarketAgent("Market 2",inventory));
-		markets.add(new MarketAgent("Market 3", inventory));
-		for(MarketAgent m : markets)
-		{
-			cook.addMarket(m);
-			m.setCook(cook);
-			m.setCashier(cashier);
-		}
+//		markets.add(new MarketAgent("Market 1",inventory));
+//		markets.add(new MarketAgent("Market 2",inventory));
+//		markets.add(new MarketAgent("Market 3", inventory));
+//		for(MarketAgent m : markets)
+//		{
+//			cook.addMarket(m);
+//			m.setCook(cook);
+//			m.setCashier(cashier);
+//		}
 		host.setGui(hostGui);
        // restaurantWaiters.add(new WaiterAgent("Waiter Sean",cook,host));
         paused = false;
@@ -93,13 +91,13 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         gui.getAnimationPanel().addCashierGui(cashierGui);
         gui.getAnimationPanel().addCookGui(cookGui);
         
-        host.startThread();
-        cook.startThread();
-        cashier.startThread();
-        for(MarketAgent m : markets)
-		{
-			m.startThread();
-		}
+//        host.startThread();
+//        cook.startThread();
+//        cashier.startThread();
+//        for(MarketAgent m : markets)
+//		{
+//			m.startThread();
+//		}
         
 //        setLayout(new GridLayout(1, 2, -15, 0));
 //        group.setLayout(new GridLayout(1, 2, 0, 0));
@@ -143,31 +141,31 @@ public class RestaurantPanel extends JPanel implements ActionListener {
         }
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
-    	if(event.getSource() == pauseButton)
-    	{
-    		if(!paused)
-    		{
-    			paused = true;
-    			pauseAgents();
-			
-    		}
-    		else if(paused)
-    		{
-    			paused = false;
-    			restartAgents();
-			
-    		}
-    	}
+//	@Override
+//	public void actionPerformed(ActionEvent event) {
+//		// TODO Auto-generated method stub
+//    	if(event.getSource() == pauseButton)
+//    	{
+//    		if(!paused)
+//    		{
+//    			paused = true;
+//    			pauseAgents();
+//			
+//    		}
+//    		else if(paused)
+//    		{
+//    			paused = false;
+//    			restartAgents();
+//			
+//    		}
+//    	}
 //    	else if(event.getSource() == addWaiterButton)
 //    	{
 //    		String message = "Please enter the waiter's name:";  
 //        	//Object[] options = {message, checkbox};
 //        	addWaiter(JOptionPane.showInputDialog(message));
 //    	}
-	}
+	//}
     
 //    public void addWaiter(String waiterName) {
 //		// TODO Auto-generated method stub
@@ -179,40 +177,40 @@ public class RestaurantPanel extends JPanel implements ActionListener {
 //    	showWaiters();
 //	}
 
-	protected void restartAgents() {
-		// TODO Auto-generated method stub
-    	pauseButton.setText("Pause");
-		//System.out.println("Restart Agent");
-		host.restartAgent();
-		host.restartWaiters();
-		cook.restartAgent();
-		for(CustomerAgent c : customers)
-		{
-			c.restartAgent();
-		}
-		for(MarketAgent m : markets)
-		{
-			m.restartAgent();
-		}
-	}
+//	protected void restartAgents() {
+//		// TODO Auto-generated method stub
+//    	pauseButton.setText("Pause");
+//		//System.out.println("Restart Agent");
+//		host.restartAgent();
+//		host.restartWaiters();
+//		cook.restartAgent();
+//		for(CustomerAgent c : customers)
+//		{
+//			c.restartAgent();
+//		}
+//		for(MarketAgent m : markets)
+//		{
+//			m.restartAgent();
+//		}
+//	}
     
 
-	protected void pauseAgents() {
-		// TODO Auto-generated method stub
-		pauseButton.setText("Restart");
-		//System.out.println("pause agent");
-		host.pauseWaitersAndTheirCustomers();
-		host.pauseAgent();
-		cook.pauseAgent();
-		for(CustomerAgent c : customers)
-		{
-			c.pauseAgent();
-		}
-		for(MarketAgent m : markets)
-		{
-			m.pauseAgent();
-		}
-	}
+//	protected void pauseAgents() {
+//		// TODO Auto-generated method stub
+//		pauseButton.setText("Restart");
+//		//System.out.println("pause agent");
+//		host.pauseWaitersAndTheirCustomers();
+//		host.pauseAgent();
+//		cook.pauseAgent();
+//		for(CustomerAgent c : customers)
+//		{
+//			c.pauseAgent();
+//		}
+//		for(MarketAgent m : markets)
+//		{
+//			m.pauseAgent();
+//		}
+//	}
 
 	/**
      * Sets up the restaurant label that includes the menu,
@@ -307,13 +305,19 @@ public class RestaurantPanel extends JPanel implements ActionListener {
     		c.setGui(g);
     		c.setCashier(cashier);
     		customers.add(c);
-    		c.startThread();
+    		//c.startThread();
     		if(isHungry)
     		{
     			g.setHungry();
     		}
     	}
     }
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 

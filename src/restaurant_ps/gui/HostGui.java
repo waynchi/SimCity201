@@ -84,6 +84,13 @@ public class HostGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+	public void DoEnterRestaurant() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }
 
 

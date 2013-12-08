@@ -75,7 +75,7 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				//System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled((restaurant.interfaces.Customer) agent);
+				gui.setCustomerEnabled((restaurant_ps.interfaces.Customer) agent);
 				
 			}
 			else if(command == Command.GoToWaiting) {

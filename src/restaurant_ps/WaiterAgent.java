@@ -10,6 +10,9 @@ import restaurant_ps.interfaces.Waiter;
 
 import java.util.*;
 
+import people.PeopleAgent;
+import people.Role;
+
 /**
  * Restaurant Host Agent
  */
@@ -17,7 +20,7 @@ import java.util.*;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class WaiterAgent extends Agent implements Waiter {
+public class WaiterAgent extends Role implements Waiter {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -32,7 +35,9 @@ public class WaiterAgent extends Agent implements Waiter {
 		readyToBeSeated, beingSeated, seated, ready, readyToGiveOrder, waitingForWaiterToGetOrder, 
 		givingOrder, ordered, waitingAfterOrder, readyToBeServed, waitingForWaiterToGetFood, served, busy, waitingForWaiterToReturn, 
 		aboutToTellCustomerToReorder, beingToldToReOrder, goingToTellCustomerToReorder, goingtoBeToldToReOrder, aboutToGiveCashierWaiterRequest, givingCheckRequestToCashier, readyToBeServedAndCheckIsReady, goingToCustomerTable, waitingForCustomersRequest, askedForCheck, goingToGetCheck, askingCashierForCheck, arrivedToCashier, recievedCheck, goingToGiveCheckToCustomer, readyToGiveCheck, aboutToRecieveCheck, aboutToGoToHomePosition, goingToHomePosition, aboutToGetFoodFromWaiter };
-	
+		enum ClosingState {None, ToBeClosed, Preparing, Closed};
+		
+		public ClosingState closingState;
 	
 	
 	public class MyCust{
@@ -60,10 +65,13 @@ public class WaiterAgent extends Agent implements Waiter {
 	private boolean wantsToGoOnBreak;
 	public WaiterGui waiterGui = null;
 	public State waiterState = State.doingNothing;
-	private Cook cook;
+	protected Cook cook;
 	private Host host;
 	private Cashier cashier;
 	List<Food> inventory;
+	public RevolvingStand revolvingStand;
+	private boolean leave = false;
+	private boolean enter = false;
 	public WaiterAgent(String name, Cook cook, Host host, List<Food> inventory) {
 		super();
 		
@@ -84,6 +92,17 @@ public class WaiterAgent extends Agent implements Waiter {
 	/* (non-Javadoc)
 	 * @see restaurant.Waiter#getMaitreDName()
 	 */
+	public void msgIsActive() {
+		isActive = true;
+		enter = true;
+		stateChanged();
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
+	}
+	
 	@Override
 	public String getMaitreDName() {
 		return name;
@@ -123,6 +142,11 @@ public class WaiterAgent extends Agent implements Waiter {
 	/* (non-Javadoc)
 	 * @see restaurant.Waiter#msgAnimationFinishedGoToSeat(int)
 	 */
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
+	
 	@Override
 	public void msgAnimationFinishedGoToSeat(int table) {
 		
@@ -398,6 +422,26 @@ public class WaiterAgent extends Agent implements Waiter {
 //				}
 //			}
 //		}
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !((HostAgent)host).anyCustomer() && leave == true) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
 		try{
 			
 		
@@ -585,6 +629,34 @@ public class WaiterAgent extends Agent implements Waiter {
 		//and wait.
 	}
 	
+	private void enterRestaurant() {
+		if (closingState == ClosingState.Closed) {
+			closingState = ClosingState.None;
+		}
+		waiterGui.DoEnterRestaurant();
+		
+		enter = false;
+	}
+	
+	private void leaveRestaurant() {
+		if (closingState == ClosingState.None)
+			((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		waiterGui.DoLeaveRestaurant();
+		
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("Waiter");
+	}
+	
+	private void prepareToClose() {
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		closingState = ClosingState.Preparing;
+	}
+	
+	private void shutDown() {
+		closingState = ClosingState.Closed;
+	}
+	
 	private void DoGoToHomePosition() {
 		// TODO Auto-generated method stub
 		waiterGui.DoGoToHomePosition();
@@ -700,15 +772,12 @@ public class WaiterAgent extends Agent implements Waiter {
 		stateChanged();
 	}
 
-	private void HandleOrder(Choice o,Table table) {
-		// TODO Auto-generated method stub
-		//waiterState = State.busy;
-		Do("Giving order to the cook"+table.tableNumber);
-		
-		//cook.msgHereIsOrder(this,o,table);
-		((CookAgent) cook).msgHereIsOrder(new Order(this,o,table));
-		//waiterState = State.doingNothing;
-	}
+	protected void HandleOrder(Choice o,Table table) {
+//		// TODO Auto-generated method stub
+//		Do("Giving order to the cook"+table.tableNumber);
+//		
+//		((CookAgent) cook).msgHereIsOrder(new Order(this,o,table));
+}
 
 	private void GoToCustomersTable(MyCust cust) {
 		// TODO Auto-generated method stub
@@ -866,6 +935,11 @@ public class WaiterAgent extends Agent implements Waiter {
 	public void setBreak(boolean b) {
 		// TODO Auto-generated method stub
 		isOnBreak = b;
+	}
+	
+	public void setRevolvingStand(RevolvingStand stand)
+	{
+		this.revolvingStand = stand;
 	}
 
 	
