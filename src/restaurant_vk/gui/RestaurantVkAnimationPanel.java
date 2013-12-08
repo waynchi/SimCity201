@@ -40,7 +40,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 
     private List<VkGui> guis = new ArrayList<VkGui>();
 
-    public RestaurantVkAnimationPanel() {
+    public RestaurantVkAnimationPanel(Timer timer) {
     	setSize(WINDOWX, WINDOWY);
     	this.setSize(WINDOWX, WINDOWY);
 		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
@@ -51,8 +51,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         bufferSize = this.getSize();
         
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
- 
-    	Timer timer = new Timer(20, this );
+
     	try {
 			cookingGrill = ImageIO.read(new File("res/restaurant_vk/cookingGrill.jpg"));
 		} catch (IOException e) {
