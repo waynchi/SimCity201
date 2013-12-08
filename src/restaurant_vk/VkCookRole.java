@@ -417,6 +417,7 @@ public class VkCookRole extends Role implements Cook {
 	
 	public void setHost(VkHostRole h) {
 		this.host = h;
+		setCashier(h.getCashier());
 	}
 	
 	public void addMarket(MarketEmployee m) {
@@ -426,7 +427,11 @@ public class VkCookRole extends Role implements Cook {
 	@Override
 	public int getRestaurantIndex() {
 		return 1;
-	};
+	}
+	
+	public void setCashier(Cashier c) {
+		this.cashier = c;
+	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/

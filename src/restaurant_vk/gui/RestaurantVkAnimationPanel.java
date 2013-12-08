@@ -37,6 +37,10 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 
     public RestaurantVkAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
+    	this.setSize(WINDOWX, WINDOWY);
+		this.setPreferredSize(new Dimension(WINDOWX, WINDOWY));
+		this.setMaximumSize(new Dimension(WINDOWX, WINDOWY));
+		this.setMinimumSize(new Dimension(WINDOWX, WINDOWY));
         setVisible(true);
         
         bufferSize = this.getSize();

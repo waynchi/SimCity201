@@ -796,14 +796,14 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Restaurant 1");
+						((CarPassengerRole)r.role).setDestination("Restaurant 2");
 						r.role.msgIsActive();
 					}
 				}
 			}
 			else
 			{
-				personGui.setDestination("Restaurant 1");
+				personGui.setDestination("Restaurant 2");
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -817,9 +817,16 @@ public class PeopleAgent extends Agent implements People{
 		print("Walking to Restaurant");
 		hunger = HungerState.Eating;
 		//Semaphore
+//		for(MyRole r: roles)
+//		{
+//			if(r.description.equals("RestaurantCustomer"))
+//			{
+//				r.role.msgIsActive();
+//			}
+//		}
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("RestaurantCustomer"))
+			if(r.description.equals("RestaurantCustomerVk"))
 			{
 				r.role.msgIsActive();
 			}

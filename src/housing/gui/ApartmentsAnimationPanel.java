@@ -28,6 +28,10 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 		this.ag = ag;
 		apartmentsPrefix = ag.a.name;
 		this.setSize(500, 570);
+		this.setSize(500, 570);
+		this.setPreferredSize(new Dimension(500,570));
+		this.setMaximumSize(new Dimension(500,570));
+		this.setMinimumSize(new Dimension(500,570));
 		this.addMouseListener(new MouseListener() {
 
 			@Override
