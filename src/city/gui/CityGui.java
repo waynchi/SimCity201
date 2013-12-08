@@ -111,7 +111,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	private int count = 0;
 
-	public int time;
+	public int time = 6000;
 
 	public CityGui() {
 		apartment1.gui.ap.setCityGui(this);
