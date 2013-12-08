@@ -27,7 +27,7 @@ public class CookGui implements Gui{
 	int[] xGrill = new int[3]; //3 grills
 	int[] yGrill = new int[3];
 	//private HostAgent host;
-	public RestaurantGui gui;
+	public RestaurantGuiPS gui;
 	
 	public boolean isHomePositionPresent = false;
 
@@ -64,7 +64,7 @@ public class CookGui implements Gui{
     Order foodInHand = null;
     public List<FoodOnGrill> myFoodOnGrill = Collections.synchronizedList(new ArrayList<FoodOnGrill>());
     public List<Order> platedFood = Collections.synchronizedList(new ArrayList<Order>());
-	public CookGui(CookAgent c, RestaurantGui gui){ //HostAgent m) {
+	public CookGui(CookAgent c, RestaurantGuiPS gui){ //HostAgent m) {
 		agent = c;
 		xPos = -20;
 		yPos = -20;

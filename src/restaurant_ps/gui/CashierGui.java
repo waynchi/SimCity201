@@ -18,13 +18,13 @@ public class CashierGui implements Gui {
     private int guiWidth = 70, guiHeight = 70;
     int[] xTable = new int[3]; //3 tables
     int[] yTable = new int[3]; //3 tables
-    private RestaurantGui restGui;
+    private RestaurantGuiPS restGui;
     
     public enum Command {leaving,entering,none};
     Command command;
     
    
-    public CashierGui(Cashier cashier, RestaurantGui restG) {
+    public CashierGui(Cashier cashier, RestaurantGuiPS restG) {
         this.agent = cashier;
         this.restGui = restG;
         xTable[0] = 250;

@@ -28,6 +28,8 @@ import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
 import restaurant.gui.RestaurantPanel;
 import restaurant.gui.WaiterGui;
 
+import restaurant_ps.HostAgent;
+import restaurant_ps.gui.RestaurantGuiPS;
 //vk
 import restaurant_vk.gui.*;
 import restaurant_vk.*;
@@ -64,6 +66,7 @@ public class CityGui extends JFrame implements ActionListener {
 			.synchronizedList(new ArrayList<String>());
 	RestaurantGui restaurantGuiYc;
 	RestaurantGuiZt restaurantGuiZt;
+	RestaurantGuiPS restaurantGuiPS;
 	
 	RestaurantVkAnimationPanel vkAnimationPanel;
 	
@@ -87,7 +90,7 @@ public class CityGui extends JFrame implements ActionListener {
 	HostRole RestaurantHostRoleYc = new HostRole();
 	HostRoleZt RestaurantHostRoleZt = new HostRoleZt();
 	VkHostRole RestaurantHostRoleVk;
-	
+	HostAgent RestaurantHostRolePS = new HostAgent("deletethislater");
 
 
 
@@ -96,7 +99,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1",1);
 	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2",2);
 	Restaurant restaurant3 = new Restaurant(RestaurantHostRoleZt, new Dimension(100,100), "Restaurant 3",3);
-
+	Restaurant restaurant4 = new Restaurant(RestaurantHostRolePS, new Dimension(100,100), "Restaurant 4",4);
 	
 
 
@@ -127,9 +130,10 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui = new BankGui(timer);
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
+		restaurantGuiPS = new RestaurantGuiPS(timer);
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
-
+		
 		
 		marketGui = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);

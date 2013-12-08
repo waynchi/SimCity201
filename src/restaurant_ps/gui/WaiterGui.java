@@ -16,7 +16,7 @@ public class WaiterGui implements Gui{
 	int waiterHomeX ;
 	int waiterHomeY ;
 	//private HostAgent host;
-	public RestaurantGui gui;
+	public RestaurantGuiPS gui;
 	
 	public boolean isHomePositionPresent = false;
 
@@ -41,7 +41,7 @@ public class WaiterGui implements Gui{
     boolean holdingCheck = false;
 	private boolean isAtHomePosition = true;
 
-	public WaiterGui(Waiter w, RestaurantGui gui, int waiterHomeX, int waiterHomeY){ //HostAgent m) {
+	public WaiterGui(Waiter w, RestaurantGuiPS gui, int waiterHomeX, int waiterHomeY){ //HostAgent m) {
 		agent = w;
 		xPos = -20;
 		yPos = -20;

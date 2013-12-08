@@ -14,7 +14,7 @@ public class CustomerGui implements Gui{
 	Choice foodOnTable = null;
 
 	//private HostAgent host;
-	public RestaurantGui gui;
+	public RestaurantGuiPS gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -26,7 +26,7 @@ public class CustomerGui implements Gui{
     
     boolean holdingCheck = false;
 
-	public CustomerGui(Customer c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(Customer c, RestaurantGuiPS gui){ //HostAgent m) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;

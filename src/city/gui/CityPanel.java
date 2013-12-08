@@ -703,10 +703,10 @@ public class CityPanel extends JPanel implements MouseListener {
 //		buildings.add(restaurant7);
 //		
 //	
-//		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
-//		buildings.add(restaurant4);		
-//		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
-//		buildings.add(restaurant5);
+		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
+		buildings.add(restaurant4);		
+		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
+		buildings.add(restaurant5);
 //		
 		
 		BusAgent busAgent = new BusAgent();
@@ -911,7 +911,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.fill(bs);
 		}
 		
-		g.drawImage(background.getImage(), 0, 0, null);
+		//g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
 			VehicleGui v = vehicles.get(i);

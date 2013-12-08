@@ -14,7 +14,7 @@ import java.awt.event.*;
  * Contains the main frame and subsequent panels
  */
 @SuppressWarnings("serial")
-public class RestaurantGui extends JFrame implements ActionListener {
+public class RestaurantGuiPS extends JFrame implements ActionListener {
     /* The GUI has two frames, the control frame (in variable gui) 
      * and the animation frame, (in variable animationFrame within gui)
      */
@@ -39,15 +39,16 @@ public class RestaurantGui extends JFrame implements ActionListener {
     private JLabel text = new JLabel();
     private Object currentPerson;/* Holds the agent that the info is about.
     								Seems like a hack */
-
+    public Timer timer;
     /**
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
+     * @param timer 
      */
-    public RestaurantGui() {
+    public RestaurantGuiPS(Timer timer) {
         int WINDOWX = 450;
         int WINDOWY = 350;
-
+        this.timer = timer;
         animationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         animationFrame.setBounds(100+WINDOWX, 50 , WINDOWX+100, WINDOWY+100);
         //animationFrame.setVisible(true);
@@ -211,28 +212,28 @@ public class RestaurantGui extends JFrame implements ActionListener {
     /**
      * Main routine to get gui started
      */
-    public static void main(String[] args) {
-        RestaurantGui gui = new RestaurantGui();
-          gui.setTitle("csci201 Restaurant");
-//        gui.setVisible(true);
-//        gui.setResizable(false);
-//        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JFrame mainGui = new JFrame();
-        mainGui.setLayout(new BorderLayout());
-        mainGui.add(gui.getContentPane(),BorderLayout.WEST);
-        mainGui.add(animationPanel,BorderLayout.CENTER);
-        mainGui.setVisible(true);
-        mainGui.setResizable(false);
-        mainGui.setBounds(50,50,1050,670);
-        mainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       // mainGui.add(gui.restPanel,BorderLayout.SOUTH);
-        
-        
-    }
+//    public static void main(String[] args) {
+//        RestaurantGuiPS gui = new RestaurantGuiPS();
+//          gui.setTitle("csci201 Restaurant");
+////        gui.setVisible(true);
+////        gui.setResizable(false);
+////        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        JFrame mainGui = new JFrame();
+//        mainGui.setLayout(new BorderLayout());
+//        mainGui.add(gui.getContentPane(),BorderLayout.WEST);
+//        mainGui.add(animationPanel,BorderLayout.CENTER);
+//        mainGui.setVisible(true);
+//        mainGui.setResizable(false);
+//        mainGui.setBounds(50,50,1050,670);
+//        mainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//       // mainGui.add(gui.restPanel,BorderLayout.SOUTH);
+//        
+//        
+//    }
 	public AnimationPanel getAnimationPanel() {
 		return animationPanel;
 	}
 	public static void setAnimationPanel(AnimationPanel animationPanel) {
-		RestaurantGui.animationPanel = animationPanel;
+		RestaurantGuiPS.animationPanel = animationPanel;
 	}
 }
