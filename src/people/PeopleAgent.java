@@ -10,6 +10,7 @@ import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
 import restaurant.HostRole;
+import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -390,6 +391,10 @@ public class PeopleAgent extends Agent implements People{
 					if(r.description.equals("RestaurantHost"))
 					{	
 						((HostRole) r.role).msgSetClose();
+					}
+					if(r.description.equals("MarketEmployee"))
+					{
+						((MarketEmployeeRole) r.role).msgSetClose();
 					}
 				}
 			}
