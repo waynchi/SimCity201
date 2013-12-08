@@ -1,11 +1,11 @@
-package restaurant_zt;
+package restaurant_wc;
 
-import restaurant_zt.gui.CashierGuiZt;
-import restaurant_zt.gui.RestaurantGuiZt;
+import restaurant_wc.gui.RestaurantCashierGui;
+import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant.interfaces.Cashier;
-import restaurant_zt.interfaces.Customer;
-import restaurant_zt.interfaces.Host;
-import restaurant_zt.interfaces.Waiter;
+import restaurant_wc.interfaces.Customer;
+import restaurant_wc.interfaces.Host;
+import restaurant_wc.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
@@ -25,7 +25,7 @@ import people.Role;
 // waiter needs to go to cashier to take the bill
 // customer needs to go to cashier to pay
 
-public class CashierRoleZt extends Role implements Cashier {
+public class CashierRoleWc extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
@@ -43,8 +43,8 @@ public class CashierRoleZt extends Role implements Cashier {
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
 	public bankActivityEvent bankEvent;
 
-	RestaurantGuiZt restGui;
-	CashierGuiZt cashierGui;
+	RestaurantGuiWc restGui;
+	RestaurantCashierGui cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
 
@@ -110,9 +110,9 @@ public class CashierRoleZt extends Role implements Cashier {
 	}
 
 
-	public CashierRoleZt(RestaurantGuiZt gui) {
+	public CashierRoleWc(RestaurantGuiWc gui) {
 		if (!inTest) {
-			cashierGui = new CashierGuiZt(this);
+			cashierGui = new RestaurantCashierGui(this);
 			restGui = gui;
 			restGui.getAnimationPanel().addGui(cashierGui);
 			cashierGui.setPresent(false);
@@ -378,8 +378,8 @@ public class CashierRoleZt extends Role implements Cashier {
 	// Actions
 	private void clockIn() {
 		log.add(new LoggedEvent("in clock in"));
-		host = (Host) getPersonAgent().getHost(2);
-		teller = (Teller) getPersonAgent().getTeller();
+		host = (Host) getPersonAgent().getHost(3);
+		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
 			host.setCashier(this);
 			cashierGui.setPresent(true);
@@ -492,7 +492,7 @@ public class CashierRoleZt extends Role implements Cashier {
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		for (People p : ((HostRoleZt)host).getWorkers()) {
+		for (People p : ((HostRoleWc)host).getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
 			p.setMoney(money);
@@ -522,7 +522,7 @@ public class CashierRoleZt extends Role implements Cashier {
 
 	private double getTotalSalary() {
 		print ("in action getTotalSalary, calculating total salary for workeres");
-		return (((HostRoleZt)host).getWorkers().size() * salary);
+		return (((HostRoleWc)host).getWorkers().size() * salary);
 	}
 
 	private void depositExcessMoney() {

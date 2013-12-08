@@ -9,6 +9,7 @@ import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import people.People;
 import people.Role;
+import restaurant.CashierRole.bankActivityEvent;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -33,7 +34,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE}
 	public bankActivityState bankState;
-	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
+	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL, BANK_CLOSED}
 	public bankActivityEvent bankEvent;
 	
 	private Teller teller;
@@ -196,7 +197,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPersonAgent().CallstateChanged();
 	}
 
-
+		public void msgGetOut() {
+			log.add(new LoggedEvent("received msgGetOut from teller"));
+			bankEvent = bankActivityEvent.BANK_CLOSED;
+			getPersonAgent().CallstateChanged();
+		}
+		
+	
 
 	// scheduler
 	public boolean pickAndExecuteAnAction(){
@@ -245,6 +252,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			return true;
 		} 
 
+		if (bankEvent == bankActivityEvent.BANK_CLOSED) {
+			closeMarket();
+			return true;
+		}
+		
 		if (leaveWork) {
 			if (getPersonAgent().getMarket(0).isClosed && checks.isEmpty()) prepareToClose();
 			else if (!getPersonAgent().getMarket(0).isClosed) leaveWork();
@@ -410,5 +422,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void setMarketEmployee(MarketEmployee me) {
 		this.marketEmployee = me;
 	}
+
+
 
 }

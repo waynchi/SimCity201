@@ -101,6 +101,12 @@ public class RobberRole extends Role implements Robber {
 		stateChanged();
 	}
 	
+	public void msgGetOut() {
+		print("Teller asked me to leave");
+		state = CustomerState.done;
+		stateChanged();
+	}
+	
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.

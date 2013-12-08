@@ -1,13 +1,13 @@
-package restaurant_zt;
+package restaurant_wc;
 
-import restaurant_zt.gui.RestaurantGuiZt;
-import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
-import restaurant_zt.gui.WaiterGuiZt;
+import restaurant_wc.gui.RestaurantGuiWc;
+import restaurant_wc.gui.RestaurantPanelWc.CookWaiterMonitorWc;
+import restaurant_wc.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant_zt.interfaces.Customer;
-import restaurant_zt.interfaces.Host;
-import restaurant_zt.interfaces.Waiter;
+import restaurant_wc.interfaces.Customer;
+import restaurant_wc.interfaces.Host;
+import restaurant_wc.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -48,7 +48,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
 	protected agentState state;
-	protected CookWaiterMonitorZt theMonitor;
+	protected CookWaiterMonitorWc theMonitor;
 	
 	public class FoodOnMenu {
 		String type;
@@ -61,8 +61,8 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	
-	public WaiterGuiZt waiterGui = null;
-	protected RestaurantGuiZt restGui = null;
+	public WaiterGui waiterGui = null;
+	protected RestaurantGuiWc restGui = null;
 
 	/*public BaseWaiterRole(String name, CookWaiterMonitor monitor) {
 		super();
@@ -333,8 +333,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		
-		host = (Host) getPersonAgent().getHost(2);
+		host = (Host) getPersonAgent().getHost(3);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
 		waiterGui.setPresent(true);
@@ -417,7 +416,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		((CookRoleZt) cook).getGui().foodPickedUp(customer.tableNumber);
+		((CookRoleWc) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
 		print ("Bringing food to table " + customer.tableNumber);
 		try {
@@ -429,8 +428,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
-		System.out.println("CASHIER:" + cashier);
-		((CashierRoleZt) cashier).msgHereIsBill(customer.c, customer.choice, this);
+		((CashierRoleWc) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	
@@ -462,26 +460,26 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void UpdateTableInfo(Customer c) {
 		currentCustomerNum--;
-		host.msgTableIsFree(((RestaurantCustomerRoleZt) c).getTableNumber());
+		host.msgTableIsFree(((RestaurantCustomerRoleWc) c).getTableNumber());
 	}
 	
 	public abstract void done();
 
 	//utilities
 
-	public void setGui(WaiterGuiZt gui) {
+	public void setGui(WaiterGui gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGuiZt getGui() {
+	public WaiterGui getGui() {
 		return waiterGui;
 	}
 	
-	public void setHost (HostRoleZt h) {
+	public void setHost (HostRoleWc h) {
 		host = h;
 	}
 	
-	public void setCook (CookRoleZt k) {
+	public void setCook (CookRoleWc k) {
 		cook = k;
 	}
 	

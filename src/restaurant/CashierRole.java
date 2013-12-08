@@ -33,9 +33,9 @@ public class CashierRole extends Role implements Cashier {
 	private Map<Customer, Double> balance = Collections.synchronizedMap(new HashMap<Customer, Double>());
 	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
 
-	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE}
+	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE};
 	public bankActivityState bankState;
-	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
+	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL, BANK_CLOSED};
 	public bankActivityEvent bankEvent;
 
 	RestaurantGui restGui;
@@ -263,6 +263,12 @@ public class CashierRole extends Role implements Cashier {
 		getPersonAgent().CallstateChanged();
 	}
 	
+	public void msgGetOut() {
+		log.add(new LoggedEvent("received msgGetOut from teller"));
+		bankEvent = bankActivityEvent.BANK_CLOSED;
+		getPersonAgent().CallstateChanged();
+	}
+	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
@@ -330,6 +336,12 @@ public class CashierRole extends Role implements Cashier {
 			closeRestaurant();
 			return true;
 		} 
+		
+		if (bankEvent == bankActivityEvent.BANK_CLOSED) {
+			closeRestaurant();
+			return true;
+		}
+		
 		if (leaveWork) 	{
 			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) prepareToClose();
 			else if (!getPersonAgent().getRestaurant(0).isClosed) leaveWork();
@@ -486,6 +498,8 @@ public class CashierRole extends Role implements Cashier {
 				e.printStackTrace();
 			}
 			leaveWork = false;
+			bankEvent = bankActivityEvent.NONE;
+			bankState = bankActivityState.NONE;
 			cashierGui.setPresent(false);
 			cashierGui.setDefaultDestination();
 			getPersonAgent().msgDone("RestaurantCashierRole");
@@ -564,6 +578,5 @@ public class CashierRole extends Role implements Cashier {
 	public String getName() {
 		return getPersonAgent().getName();
 	}
-
 
 }
