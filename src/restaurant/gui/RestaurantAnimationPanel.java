@@ -29,14 +29,12 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 
 
 
-    public RestaurantAnimationPanel() {
+    public RestaurantAnimationPanel(Timer timer) {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
- 
-    	Timer timer = new Timer(20, this );
-    	timer.start();
+     	Timer t = timer;
     }
 
 	public void actionPerformed(ActionEvent e) {

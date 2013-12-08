@@ -10,11 +10,13 @@ public class Restaurant {
 	public String n;
 	public Integer bankAccountID;
 	public boolean isClosed;
-	public Restaurant(Role host, Dimension loc, String name) {
+	public int restaurantIndex;
+	public Restaurant(Role host, Dimension loc, String name, int Index) {
 		this.h = host;
 		this.l = loc;
 		this.n = name;
-		this.isClosed = false;
+		this.isClosed = true;
+		this.restaurantIndex = Index;
 	}
 	
 	

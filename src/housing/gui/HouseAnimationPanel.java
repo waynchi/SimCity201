@@ -39,7 +39,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
 							s = "13";
 						else if (gui.h.a.name.equals("a2"))
 							s = "12";
-//						g.displayBuildingPanel(s);
+						g.displayBuildingPanel(s);
 					}
 				}
 			}

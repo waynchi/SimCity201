@@ -1,10 +1,12 @@
 package city.gui;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.*;
 import java.util.*;
 
 
-public class Lane {
+public class Lane implements MouseListener{
 	Rectangle2D.Double rectangle;
 	ArrayList<Line2D.Double> sides;
 	public int xVelocity;
@@ -71,5 +73,30 @@ public class Lane {
 	}
 	public boolean isHorizontal() {
 		return isHorizontal;
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg) {
+		// TODO Auto-generated method stub
+		System.out.println("testetsetes");
+	}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

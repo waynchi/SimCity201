@@ -3,8 +3,8 @@ package restaurant_vk.test;
 import static org.junit.Assert.*;
 import java.util.List;
 import org.junit.Test;
-import restaurant_vk.CashierAgent;
-import restaurant_vk.CashierAgent.Bill;
+import restaurant_vk.VkCashierRole;
+import restaurant_vk.VkCashierRole.Bill;
 import restaurant_vk.CustomerRestaurantCheck;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Market;
@@ -14,7 +14,7 @@ import restaurant_vk.test.mock.MockMarket;
 import restaurant_vk.test.mock.MockWaiter;
 
 public class CashierTest {
-	CashierAgent cashier;
+	VkCashierRole cashier;
 	Market m1;
 	Market m2;
 	Customer c1;
@@ -373,7 +373,7 @@ public class CashierTest {
 	
 	public void setUp() {
 		cashier = null;
-		cashier = new CashierAgent();
+		cashier = new VkCashierRole();
 		
 		m1 = null;
 		m1 = new MockMarket("Market1");

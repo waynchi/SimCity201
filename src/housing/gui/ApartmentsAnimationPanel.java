@@ -19,14 +19,19 @@ import city.gui.CityGui;
 
 public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	List<HGui> humanGuis = new ArrayList<HGui>();
-	List<HGui> nonLivingGuis = new ArrayList<HGui>();
 	CityGui g;
 	public ApartmentsGui ag;
+	public final String apartmentsPrefix;
 	
 	public ApartmentsAnimationPanel(ApartmentsGui ag) {
 		super();
 		this.ag = ag;
+		apartmentsPrefix = ag.a.name;
 		this.setSize(500, 570);
+		this.setSize(500, 570);
+		this.setPreferredSize(new Dimension(500,570));
+		this.setMaximumSize(new Dimension(500,570));
+		this.setMinimumSize(new Dimension(500,570));
 		this.addMouseListener(new MouseListener() {
 
 			@Override
@@ -41,7 +46,7 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 5; j++) {
 						if (xPos >= x && xPos <= (x + houseWidth) && yPos >= y && yPos <= (y + houseHeight)) {
-//							g.displayBuildingPanel(ag.a.name + k);
+							g.displayBuildingPanel(apartmentsPrefix + k);
 							return;
 						}
 						y += (houseHeight + 30);
@@ -78,22 +83,18 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		for (HGui gui : humanGuis) {
-			if (gui.isPresent())
+			if (gui instanceof ResidentGui && ((ResidentGui)gui).isPresentInComplex()) {
+				
 				gui.draw(g);
+			}
 		}
-		for (HGui gui : nonLivingGuis) {
-			if (gui.isPresent())
-				gui.draw(g);
-		}
+		ag.updatePosition();
 		ag.draw(g);
 	}
 	
 	public void addGui(HGui gui) {
 		if (!(gui instanceof ApartmentsGui))
 			humanGuis.add(gui);
-		else {
-			nonLivingGuis.add(gui);
-		}
 	}
 	
 	public void setCityGui(CityGui g) {
@@ -106,9 +107,6 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 	
 	public void updatePosition() {
 		for (HGui gui : humanGuis) {
-			gui.updatePosition();
-		}
-		for (HGui gui : nonLivingGuis) {
 			gui.updatePosition();
 		}
 		ag.updatePosition();

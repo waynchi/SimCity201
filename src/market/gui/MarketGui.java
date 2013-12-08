@@ -8,17 +8,19 @@ import java.awt.event.*;
  * Contains the main frame and subsequent panels
  */
 public class MarketGui extends JPanel implements ActionListener {
-    
-	AnimationPanel animationPanel = new AnimationPanel();
+    AnimationPanel animationPanel;
 
-    public MarketGui() {
+    public MarketGui(Timer timer) {
         int WINDOWX = 500;
         int WINDOWY = 400;
         
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
+    	animationPanel = new AnimationPanel(timer);
+
         animationPanel.setPreferredSize(animationDim);
         animationPanel.setMinimumSize(animationDim);
         animationPanel.setMaximumSize(animationDim);
+
 
     	setBounds(50, 50, WINDOWX, WINDOWY);
         add(animationPanel);
