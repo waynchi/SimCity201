@@ -164,7 +164,7 @@ public class VkHostRole extends Role implements Host{
 		stateChanged();
 	}
 	
-	public void closeRestaurant() {
+	public void msgSetClose() {
 		closingState = ClosingState.ToBeClosed;
 		stateChanged();
 	}
