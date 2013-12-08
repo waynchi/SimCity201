@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import restaurant.CookRole;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -88,7 +87,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 					e.printStackTrace();
 				}
 				*/
-				if (!((CookRole) order.cook).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
 					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
