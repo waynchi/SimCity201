@@ -87,11 +87,6 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         
         g.drawImage(cookingGrill, GRILL_LEFT_X, GRILL_TOP_Y, null);
         
-        g2.setColor(Color.BLUE);
-        g2.fillRect(PLATE_LEFT_X, PLATE_TOP_Y, PLATE_WIDTH, PLATE_HEIGHT);
-        g2.setColor(Color.WHITE);
-        g2.drawString("PLATING AREA", PLATE_LEFT_X + 160, PLATE_TOP_Y + 15);
-        
         g.drawImage(platingArea, PLATE_LEFT_X, PLATE_TOP_Y, null);
         
         g2.setColor(Color.GRAY);
