@@ -1,12 +1,13 @@
 package market;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
+import people.People;
 import people.Role;
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketGui;
@@ -15,6 +16,7 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 import market.test.MockPeople;
+import restaurant.BaseWaiterRole;
 import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -27,6 +29,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public boolean inTest = true;
 	private boolean turnActive = false;
 	private boolean setClose = false;
+	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
+
 
 	public int restaurantOrderNumber;
 
@@ -119,6 +123,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgIsActive() {
 		log.add(new LoggedEvent("received msgActive"));
+		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		if (!inTest) {
 			getPersonAgent().getMarket(0).isClosed = false;
 		}
@@ -353,6 +358,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	private void closeMarket() {
+		setClose = false;
 		getPersonAgent().getMarket(0).isClosed = true;
 	}
 	//utilities
@@ -364,6 +370,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		cashier = c;
 		if (!inTest){
 			getPersonAgent().CallstateChanged();
+			if(!workers.contains(((MarketCashierRole)c).getPersonAgent())) {
+				workers.add(((MarketCashierRole)c).getPersonAgent());
+			}
 		}
 	}
 
@@ -382,5 +391,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void addTruck (MarketTruck truck) {
 		trucks.add(truck);
 	}
+	
+	public List<People> getWorkers () {
+		return workers;
+	}
+	
 
 }

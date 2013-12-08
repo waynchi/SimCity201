@@ -22,7 +22,7 @@ public class HostRole extends Role implements Host{
 	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
 	
 	private boolean leaveWork = false;
-	private boolean closeRestaurant = false;
+	private boolean setClose = false;
 
 	public HostGui hostGui = null;
 	private Cashier cashier;
@@ -126,7 +126,7 @@ public class HostRole extends Role implements Host{
 	}
 
 	public void msgSetClose() {
-		closeRestaurant = true;
+		setClose = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -315,7 +315,7 @@ public class HostRole extends Role implements Host{
 			return true;
 		}
 		
-		if(closeRestaurant) {
+		if(setClose) {
 			closeRestaurant();
 			return true;
 		}
@@ -373,7 +373,7 @@ public class HostRole extends Role implements Host{
 	
 	private void closeRestaurant() {
 		getPersonAgent().getRestaurant(0).isClosed = true;
-		closeRestaurant = false;
+		setClose = false;
 	}
 
 	//utilities
