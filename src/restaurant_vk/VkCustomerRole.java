@@ -1,6 +1,6 @@
 package restaurant_vk;
 
-import restaurant_vk.gui.CustomerGui;
+import restaurant_vk.gui.VkCustomerGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.interfaces.Customer;
@@ -9,6 +9,7 @@ import restaurant_vk.interfaces.Waiter;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -23,7 +24,7 @@ import people.Role;
 public class VkCustomerRole extends Role implements Customer{
 	private int hungerLevel = 5; // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	private VkCustomerGui customerGui;
 	private String choice = new String("");
 	private Menu menu;
 	private CustomerRestaurantCheck currentCheck = null;
@@ -38,7 +39,7 @@ public class VkCustomerRole extends Role implements Customer{
 
 	public VkCustomerRole(RestaurantVkAnimationPanel p) {
 		super();
-		customerGui = new CustomerGui(this);
+		customerGui = new VkCustomerGui(this);
 		customerGui.setAnimationPanel(p);
 	}
 
@@ -338,6 +339,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * sitting.
 	 */
 	private void seated() {
+		print("I'm sitting.");
 		customerGui.setMenuCopy();
 		List<String> menuItems = menu.getAllFoodNames();
 		List<String> affordableItems = new ArrayList<String>();
@@ -348,7 +350,21 @@ public class VkCustomerRole extends Role implements Customer{
 				affordableItems.add(s);
 			}
 		}
-		print("I'm sitting.");
+		if (affordableItems.isEmpty()) {
+			print("Screw it. I'm leaving!");
+			event = AgentEvent.abruptlyLeaving;
+			leaveOption = false;
+			customerGui.setLeaveOption(leaveOption);
+		}
+		else {
+			Random generator = new Random();
+			int num = generator.nextInt(affordableItems.size());
+			choice = affordableItems.get(num);
+			event = AgentEvent.orderDecided;
+			print("My choice is " + choice);
+			leaveOption = false;
+			customerGui.setLeaveOption(leaveOption);
+		}
 	}
 	
 	/*
@@ -465,11 +481,11 @@ public class VkCustomerRole extends Role implements Customer{
 		return "customer " + ((PeopleAgent)myPerson).name;
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(VkCustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public VkCustomerGui getGui() {
 		return customerGui;
 	}
 

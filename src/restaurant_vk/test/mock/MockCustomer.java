@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import restaurant_vk.CustomerRestaurantCheck;
 import restaurant_vk.Menu;
-import restaurant_vk.gui.CustomerGui;
+import restaurant_vk.gui.VkCustomerGui;
 import restaurant_vk.interfaces.Customer;
 import restaurant_vk.interfaces.Waiter;
 
@@ -82,7 +82,7 @@ public class MockCustomer extends Mock implements Customer{
 	}
 
 	@Override
-	public CustomerGui getGui() {
+	public VkCustomerGui getGui() {
 		return null;
 	}
 	

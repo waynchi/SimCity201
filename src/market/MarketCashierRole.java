@@ -1,13 +1,10 @@
 package market;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
-
-import javax.smartcardio.ATR;
 
 import bank.interfaces.Teller;
 import people.Role;
@@ -16,7 +13,6 @@ import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import market.gui.MarketCashierGui;
-import market.gui.MarketEmployeeGui;
 import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
@@ -25,11 +21,13 @@ import market.interfaces.MarketEmployee;
 public class MarketCashierRole extends Role implements MarketCashier{
 
 	// data
+	
+	public EventLog log = new EventLog();
+	public boolean inTest = false;
+	
 	public boolean turnActive = false;
 	public boolean leaveWork = false;
 	private MarketEmployee marketEmployee;
-	public EventLog log = new EventLog();
-	public boolean inTest = false;
 	MarketGui marketGui = null;
 	MarketCashierGui marketCashierGui = null;
 

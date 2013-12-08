@@ -1,4 +1,4 @@
-package restaurant_vk.gui;
+package restaurant_wc.gui;
 
 import java.awt.*;
 

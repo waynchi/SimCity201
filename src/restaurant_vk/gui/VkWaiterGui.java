@@ -9,7 +9,7 @@ import restaurant_vk.VkCustomerRole;
 import restaurant_vk.VkWaiterBaseRole;
 import restaurant_vk.VkWaiterNormalRole;
 
-public class WaiterGui implements Gui{
+public class VkWaiterGui implements VkGui{
 	private VkWaiterBaseRole agent = null;
     private int xPos = 40, yPos = 40;//default waiter position
     private int xDestination = 40, yDestination = 40;//default start positio
@@ -22,7 +22,7 @@ public class WaiterGui implements Gui{
 	private int homePosX;
 	private int homePosY;
 	private int destinationTable = 0;
-	private CustomerGui customerGui;
+	private VkCustomerGui customerGui;
 	private String thingInHand = "";
 	private Map<String, String> symbols = new HashMap<String, String>();
 	private TableCoordinates[] tables = new TableCoordinates[4];
@@ -36,7 +36,7 @@ public class WaiterGui implements Gui{
      */
     enum MyState {None, NotMoving, EscortingCustomer, MovingToTable, GoingToRevolvingStand, Entering, Exiting};
 
-    public WaiterGui(VkWaiterBaseRole agent, Dimension homePos) {
+    public VkWaiterGui(VkWaiterBaseRole agent, Dimension homePos) {
         this.agent = agent;
         
         homePosX = homePos.width;
@@ -178,7 +178,7 @@ public class WaiterGui implements Gui{
     	yDestination = 200;
     }
     
-    public void setCustomerGui(CustomerGui gui) {
+    public void setCustomerGui(VkCustomerGui gui) {
     	customerGui = gui;
     }
     

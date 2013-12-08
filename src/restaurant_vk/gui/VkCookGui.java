@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 import restaurant_vk.VkCookRole;
-import restaurant_vk.gui.WaiterGui.MyState;
+import restaurant_vk.gui.VkWaiterGui.MyState;
 
-public class CookGui implements Gui{
+public class VkCookGui implements VkGui{
 	private int xPos;
 	private int yPos;
 	private int homePosX;
@@ -29,7 +29,7 @@ public class CookGui implements Gui{
 	
 	enum MyState {None, Inactive, Cooking, Plating, Entering, Exiting};
 	
-	public CookGui(VkCookRole c) {
+	public VkCookGui(VkCookRole c) {
 		agent = c;
 		homePosX = 140;
 		homePosY = 90;

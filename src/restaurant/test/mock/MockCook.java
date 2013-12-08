@@ -50,4 +50,10 @@ public class MockCook extends Mock implements Cook{
 		log.add(new LoggedEvent("order confirmed, get order number " + orderNumber));
 		
 	}
+
+	@Override
+	public int getRestaurantIndex() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -20,11 +20,14 @@ public class ApartmentsGui implements HGui{
 	public ApartmentsGui(Apartments a) {
 		this.a = a;
 		ap = new ApartmentsAnimationPanel(this);
+		setExternalCoordinatesOfHouses();
 	}
 
 	@Override
 	public void updatePosition() {
-		// TODO Auto-generated method stub
+		for (HGui g : guis) {
+			g.updatePosition();
+		}
 	}
 
 	@Override
@@ -32,13 +35,32 @@ public class ApartmentsGui implements HGui{
 		int x = 0;
 		int y = 0;
 		g.setColor(Color.BLUE);
-		int k = 0;
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				g.fillRect(x, y, houseWidth, houseHeight);
-				House h = a.houses.get(k);
-				h.gui.setExternalCoordinates(new Dimension(x + (houseWidth / 2), y + houseHeight));
 				y += (houseHeight + 30);
+			}
+			y = 0;
+			x += (houseHeight + 30);
+		}
+		for (HGui g1 : guis) {
+			if (g1 instanceof ResidentGui && ((ResidentGui)g1).isPresentInComplex())
+				g1.draw(g);
+		}
+	}
+
+	@Override
+	public boolean isPresent() {
+		return true;
+	}
+	
+	private void setExternalCoordinatesOfHouses() {
+		int x = 0;
+		int y = 0;
+		int k = 0;
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				House h = a.houses.get(k);
 				k++;
 				if (i == 4) {
 					h.gui.setExternalCoordinates(new Dimension(x, y + houseHeight));
@@ -46,18 +68,11 @@ public class ApartmentsGui implements HGui{
 				else {
 					h.gui.setExternalCoordinates(new Dimension(x + houseWidth, y + houseHeight));
 				}
+				y += (houseHeight + 30);
 			}
 			y = 0;
 			x += (houseHeight + 30);
 		}
-		for (HGui g1 : guis) {
-			g1.draw(g);
-		}
-	}
-
-	@Override
-	public boolean isPresent() {
-		return true;
 	}
 	
 	public void add(HGui g) {

@@ -42,10 +42,10 @@ public class CookRole extends Role implements Cook{
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
 	protected Semaphore atFridge = new Semaphore (0,true);
-
 	
 	private CookGui cookGui = null;
 	private RestaurantGui restGui = null;
+	public int restaurantIndex = 0;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
@@ -196,7 +196,6 @@ public class CookRole extends Role implements Cook{
 	public boolean pickAndExecuteAnAction() {
 		if (turnActive) {
 			clockIn();
-			orderFoodThatIsLow();
 			return true;
 		}
 
@@ -322,6 +321,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void orderFoodThatIsLow(){
+		log.add(new LoggedEvent("order food that is low"));
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
 			for (Food f: foods.values()){
@@ -332,7 +332,6 @@ public class CookRole extends Role implements Cook{
 			}
 		}
 		marketOrders.add(new MarketOrder(marketOrder));
-		log.add(new LoggedEvent("ordering food from market "));
 		marketEmployee.msgOrder(marketOrder,this, cashier);	
 	}
 	
@@ -393,8 +392,6 @@ public class CookRole extends Role implements Cook{
 	private void clockIn() {
 		log.add(new LoggedEvent("clock in"));
 		cookGui.setPresent(true);
-		cookGui.setXDest(70);
-		cookGui.setYDest(270);
 		cookGui.DoGoToCookingPlace();
 		try {
 			atGrill.acquire();
@@ -407,6 +404,7 @@ public class CookRole extends Role implements Cook{
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
+		orderFoodThatIsLow();
 	}
 
 	public void done() {
@@ -510,5 +508,12 @@ public class CookRole extends Role implements Cook{
 		return getPersonAgent();
 	}
 
+
+	@Override
+	public int getRestaurantIndex() {
+		// TODO Auto-generated method stub
+		return restaurantIndex;
+	}
+	
 }
 

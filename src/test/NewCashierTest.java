@@ -2,6 +2,9 @@ package test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.Timer;
+
 import market.test.MockMarketCashier;
 import market.test.MockMarketEmployee;
 import junit.framework.TestCase;
@@ -38,7 +41,8 @@ public class NewCashierTest extends TestCase{
 
 	public void setUp() throws Exception{
 		super.setUp();          
-		gui = new RestaurantGui();
+		Timer timer = new Timer(20, null);
+		gui = new RestaurantGui(timer);
 		cashier = new CashierRole(gui);
 		cashier.inTest = true;
 		host = new MockHost("host");

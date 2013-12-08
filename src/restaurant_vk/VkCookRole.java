@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.gui.CookGui;
+import restaurant_vk.gui.VkCookGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -32,7 +32,7 @@ public class VkCookRole extends Role implements Cook {
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	private Timer timer;
-	private CookGui gui = null;
+	private VkCookGui gui = null;
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
@@ -48,7 +48,7 @@ public class VkCookRole extends Role implements Cook {
 		timer = new Timer();
 		standTimer = new Timer();
 		this.stand = s;
-		gui = new CookGui(this);
+		gui = new VkCookGui(this);
 		gui.setAnimationPanel(p);
 		initializeInventory();
 	}
@@ -145,7 +145,8 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -156,6 +157,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Cook");
 		closingState = ClosingState.Preparing;
 	}
 	
@@ -397,7 +399,7 @@ public class VkCookRole extends Role implements Cook {
 		return "Cook";
 	}
 	
-	public void setGui(CookGui g) {
+	public void setGui(VkCookGui g) {
 		gui = g;
 	}
 	
@@ -415,10 +417,20 @@ public class VkCookRole extends Role implements Cook {
 	
 	public void setHost(VkHostRole h) {
 		this.host = h;
+		setCashier(h.getCashier());
 	}
 	
 	public void addMarket(MarketEmployee m) {
 		this.market = m;
+	}
+	
+	@Override
+	public int getRestaurantIndex() {
+		return 1;
+	}
+	
+	public void setCashier(Cashier c) {
+		this.cashier = c;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -502,5 +514,5 @@ public class VkCookRole extends Role implements Cook {
 		}
 	}
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Closed};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed}
 }

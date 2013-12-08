@@ -100,8 +100,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	//}
 	
 	public void msgIsActive() {
-		print ("received msgIsActive, position is " + waiterGui.getX() + " " + waiterGui.getY() + " and destination"
-				+ " is " + waiterGui.getXDest() + " " + waiterGui.getYDest());
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();

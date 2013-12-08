@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerGui implements Gui{
+public class VkCustomerGui implements VkGui{
 
 	private VkCustomerRole agent = null;
 	private boolean isPresent = false;
@@ -25,7 +25,7 @@ public class CustomerGui implements Gui{
 	private final int CUST_HEIGHT = 20;
 	RestaurantVkAnimationPanel ap;
 
-	public CustomerGui(VkCustomerRole c) {
+	public VkCustomerGui(VkCustomerRole c) {
 		agent = c;
 		xPos = -20;
 		yPos = 300;

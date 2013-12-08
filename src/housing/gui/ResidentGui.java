@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import people.PeopleAgent;
 
 public class ResidentGui implements HGui{
 	private int xDestination;
@@ -174,6 +175,12 @@ public class ResidentGui implements HGui{
 	@Override
 	public boolean isPresent() {
 		if (location == Location.Home)
+			return true;
+		return false;
+	}
+	
+	public boolean isPresentInComplex() {
+		if (location == Location.Apartments)
 			return true;
 		return false;
 	}

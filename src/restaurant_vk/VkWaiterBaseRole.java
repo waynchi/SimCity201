@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.gui.WaiterGui;
+import restaurant.interfaces.Cashier;
+import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.VkCookRole;
 import restaurant_vk.interfaces.Customer;
@@ -21,11 +22,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	protected List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	protected Semaphore waitingForOrder = new Semaphore(0, true);
 	protected Semaphore movingAround = new Semaphore(0, true);
-	public WaiterGui gui = null;
+	public VkWaiterGui gui = null;
 	protected Host host;
 	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
-	protected VkCashierRole cashier = null;
+	protected Cashier cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
 	private ClosingState closingState = ClosingState.Closed;
@@ -33,6 +34,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	public VkWaiterBaseRole(Host host) {
 		super();
 		this.host = host;
+		setCashier(((VkHostRole)host).getCashier());
 	}
 		
 	/**--------------------------------------------------------------------------------------------------------------
@@ -169,7 +171,6 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOffBreak();
-//		gui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -184,7 +185,6 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			print("Exception caught.");
 		}
 		gui.setOnBreak();
-//		gui.autoUpdate();
 		stateChanged();
 	}
 	
@@ -328,7 +328,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	 */
 	private void serve(MyCustomer mc) {
 		print("Serving " + mc.c);
-		cashier.computeBill(mc.c, mc.choice, this);
+		((VkCashierRole)cashier).computeBill(mc.c, mc.choice, this);
 		gui.setFoodServed(mc.choice);
 		
 		DoGoToTable(mc.table);
@@ -448,7 +448,8 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void leaveRestaurant() {
-		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		gui.DoLeaveRestaurant();
 		try {
 			movingAround.acquire();
@@ -459,6 +460,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	private void prepareToClose() {
+		((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
 		closingState = ClosingState.Preparing;
 	}
 	
@@ -629,15 +631,15 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		this.cook = cook;
 	}
 	
-	public void setGui(WaiterGui gui) {
+	public void setGui(VkWaiterGui gui) {
 		this.gui = gui;
 	}
 	
-	public WaiterGui getGui() {
+	public VkWaiterGui getGui() {
 		return gui;
 	}
 	
-	public void setCashier(VkCashierRole c) {
+	public void setCashier(Cashier c) {
 		cashier = c;
 	}
 	

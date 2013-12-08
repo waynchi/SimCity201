@@ -16,7 +16,7 @@ public class RestaurantGui extends JPanel implements ActionListener {
     /* The GUI has only one frame and two panels within, the control panel 
      * and the animation panel
      */
-	public static RestaurantAnimationPanel animationPanel = new RestaurantAnimationPanel();
+	public static RestaurantAnimationPanel animationPanel;
     
     public static List<CustomerGui> customers = new ArrayList<CustomerGui>();
     
@@ -26,12 +26,13 @@ public class RestaurantGui extends JPanel implements ActionListener {
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
-    public RestaurantGui() {
+    public RestaurantGui(Timer timer) {
     	 
     	int WINDOWX = 500;
         int WINDOWY = 400;
 
         Dimension animationDim = new Dimension(WINDOWX, WINDOWY);
+        animationPanel = new RestaurantAnimationPanel(timer);
         animationPanel.setPreferredSize(animationDim);
         animationPanel.setMinimumSize(animationDim);
         animationPanel.setMaximumSize(animationDim);
