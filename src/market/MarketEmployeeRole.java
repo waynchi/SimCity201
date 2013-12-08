@@ -1,12 +1,13 @@
 package market;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
+import people.People;
 import people.Role;
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketGui;
@@ -24,9 +25,11 @@ import restaurant.test.mock.LoggedEvent;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// data
 	public EventLog log = new EventLog();
-	public boolean inTest = true;
+	public boolean inTest = false;
 	private boolean turnActive = false;
 	private boolean setClose = false;
+	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
+
 
 	public int restaurantOrderNumber;
 
@@ -119,12 +122,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgIsActive() {
 		log.add(new LoggedEvent("received msgActive"));
+		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		if (!inTest) {
 			getPersonAgent().getMarket(0).isClosed = false;
 		}
 		isActive = true;
 		turnActive = true;
-		inTest = false;
 		employeeGui.setPresent(true);
 		getPersonAgent().CallstateChanged();
 	}
@@ -167,7 +170,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from restaurant cook
 	public void msgHereIsAnOrder(Map<String, Integer> chosenItems, Cook cook, Cashier cashier) {
 		if(!inTest){
-			log.add(new LoggedEvent("received an order from restaurant cook " + ((CookRole) cook).getPerson().getName()));
+			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getName()));
 		}
 		orders.add(new Order (cook, cashier, chosenItems));
 		getPersonAgent().CallstateChanged();
@@ -252,6 +255,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
+		if (order.cook!=null) employeeGui.showGotOrderFromRestaurant();
+
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
@@ -263,6 +268,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				items.get(entry.getKey()).inventory = 0;
 			}
 		}
+		//gui text
+		
 		order.supply = supply;
 
 		if(!inTest)		getOrder(supply);
@@ -345,6 +352,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		workers = Collections.synchronizedList(new ArrayList<People>());
 		isActive = false;
 		leaveWork = false;
 		employeeGui.setPresent(false);
@@ -353,6 +361,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	private void closeMarket() {
+		setClose = false;
 		getPersonAgent().getMarket(0).isClosed = true;
 	}
 	//utilities
@@ -364,6 +373,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		cashier = c;
 		if (!inTest){
 			getPersonAgent().CallstateChanged();
+			if(!workers.contains(((MarketCashierRole)c).getPersonAgent())) {
+				workers.add(((MarketCashierRole)c).getPersonAgent());
+			}
 		}
 	}
 
@@ -381,6 +393,10 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void addTruck (MarketTruck truck) {
 		trucks.add(truck);
+	}
+	
+	public List<People> getWorkers () {
+		return workers;
 	}
 
 }

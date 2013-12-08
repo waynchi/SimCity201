@@ -80,13 +80,14 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	private void deliverOrder(final Order order) {
 		//if(!inTest){
-				gui.doDeliver(this, order.cook, order.orderNumber);
+/*				gui.doDeliver(this, order.cook, order.orderNumber);
 				try {
 					atRestaurant.acquire();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				*/
 				if (!((CookRole) order.cook).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
 					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
@@ -98,13 +99,13 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 				}
 				orders.remove(order);
 				
-				gui.doGoBackToMarket();
+				/*gui.doGoBackToMarket();
 				try {
 					atMarket.acquire();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 	}
 
 

@@ -129,6 +129,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiZt = new RestaurantGuiZt(timer);
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
+		restaurant2.h = RestaurantHostRoleVk;
 
 		
 		marketGui = new MarketGui(timer);
@@ -317,6 +318,7 @@ public class CityGui extends JFrame implements ActionListener {
 						
 						RestaurantCookRoleVK.setTag(AlertTag.RESTAURANT1);
 						RestaurantCookRoleVK.setHost(RestaurantHostRoleVk);
+						RestaurantHostRoleVk.setCook(RestaurantCookRoleVK);
 						
 						person.addJob("RestaurantCookVk", start, end);
 						person.addRole(RestaurantCookRoleVK, "RestaurantCookVk");

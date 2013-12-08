@@ -65,6 +65,7 @@ public class VkHostRole extends Role implements Host{
 		synchronized (customers) {
 			customers.add(cust);
 		}
+		print("Customer is hungry.");
 		stateChanged();
 	}
 	
