@@ -25,6 +25,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public EventLog log = new EventLog();
 	public boolean inTest = true;
 	private boolean turnActive = false;
+	private boolean setClose = false;
 	
 	public int restaurantOrderNumber = 1;
 	
@@ -108,6 +109,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public void msgIsActive() {
 		log.add(new LoggedEvent("received msgActive"));
+		getPersonAgent().getMarket(0).isClosed = false;
 		isActive = true;
 		turnActive = true;
 		inTest = false;
@@ -118,6 +120,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public void msgIsInActive() {
 		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
+		getPersonAgent().CallstateChanged();
+	}
+	
+	public void msgSetClose() {
+		setClose = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -181,6 +188,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			return true;
 		}
 		
+		if (setClose) {
+			closeMarket();
+			return true;
+		}
+		
 		if (!orders.isEmpty()) {
 			for (Order o : orders) {
 				if (o.state ==orderState.PENDING) {
@@ -194,6 +206,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		if (leaveWork) {
 			done();
+			return true;
 		}
 		
 		return false;
@@ -245,7 +258,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber);
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
 			if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
-				getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+				//getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+				order.cook.msgHereIsYourOrder(order.supply, order.orderNumber);	
 				order.state = orderState.IN_DELIVERY;
 			}
 			//order.cook.msgHereIsYourOrder(supply, order.orderNumber);	
@@ -301,6 +315,9 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPersonAgent().msgDone("MarketEmployeeRole");
 	}
 
+	private void closeMarket() {
+		getPersonAgent().getMarket(0).isClosed = true;
+	}
 	//utilities
 	public Boolean isActive() {
 		return isActive;

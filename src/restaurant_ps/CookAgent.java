@@ -32,6 +32,7 @@ public class CookAgent extends Role implements Cook {
 	public enum ClosingState {None, ToBeClosed, Preparing, Closed};
 	Random generator = new Random();
 	Timer timer = new Timer();
+	private final int period = 5000;
 	
 	enum MarketOrderState {Requested, Supplied, InformedCashier};
 
@@ -79,6 +80,7 @@ public class CookAgent extends Role implements Cook {
 //	public List<MyFoodsToRestock> myFoodsToRestock = Collections.synchronizedList(new ArrayList<MyFoodsToRestock>());
 	public List<MarketOrder> myMarketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
 	public Map<String,Food> foods = new HashMap<String,Food>();
+	private Timer standTimer;
 	
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
@@ -91,7 +93,7 @@ public class CookAgent extends Role implements Cook {
 	boolean enter = false;
 	boolean leave = false;
 	public ClosingState closingState = ClosingState.Closed;
-
+	public RevolvingStand revolvingStand;
 
 //	private Market market;
 //	public List<MarketAgent> markets = new ArrayList<MarketAgent>();
@@ -434,6 +436,11 @@ public class CookAgent extends Role implements Cook {
 //		myPerson.msgDone("Cook");
 	}
 
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
+	
 	private void prepareToClose() {
 		// TODO Auto-generated method stub
 		closingState = ClosingState.Preparing;
@@ -454,7 +461,21 @@ public class CookAgent extends Role implements Cook {
 
 	private void startStandTimer() {
 		// TODO Auto-generated method stub
-		
+		standTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				checkStand();
+			}
+		}, period, period);
+	}
+
+	protected void checkStand() {
+		// TODO Auto-generated method stub
+		if (revolvingStand.size() > 0) {
+			synchronized(myOrders) {
+				myOrders.add(new MyOrder(revolvingStand.removeOrder()));
+			}
+			stateChanged();
+		}
 	}
 
 	private void InformCashier(MarketOrder order) {
@@ -751,7 +772,16 @@ public class CookAgent extends Role implements Cook {
 		return this.name;
 	}
 
-	
+	@Override
+	public int getRestaurantIndex() {
+		// TODO Auto-generated method stub
+		return 2;
+	}
+
+	public void setRevolvingStand(RevolvingStand stand)
+	{
+		this.revolvingStand = stand;
+	}
 
 
 	

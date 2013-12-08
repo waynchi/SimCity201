@@ -1,14 +1,18 @@
 package restaurant_ps;
 
 import agent.Agent;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 import restaurant_ps.gui.HostGui;
 import restaurant_ps.interfaces.Customer;
 import restaurant_ps.interfaces.Host;
 import restaurant_ps.interfaces.Waiter;
 
+import city.Restaurant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -23,6 +27,8 @@ public class HostAgent extends Role implements Host {
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
 	public enum State {nothing, atWaitingArea, beingToldThatCustomerTablesAreFull, toldThatCustomerTablesAreFull};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed};
+	ClosingState closingState = ClosingState.Closed;
 	class WaitingCustomer{
 		Customer c;
 		State st;
@@ -44,8 +50,12 @@ public class HostAgent extends Role implements Host {
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
-
+	Restaurant restaurant;
 	public HostGui hostGui = null;
+	private boolean leave = false;
+	private boolean enter = false;
+	public Cashier cashier;
+	public Cook cook;
 
 	Waiter waiterRejectedToSetOnBreak;;
 	Waiter waiterAllowedToSetOnBreak;
@@ -69,6 +79,26 @@ public class HostAgent extends Role implements Host {
 		return name;
 	}
 
+	public void msgIsActive() {
+		if (closingState == ClosingState.Closed) {
+			restaurant.isClosed = false;
+			closingState = ClosingState.None;
+		}
+		isActive = true;
+		enter = true;
+		stateChanged();
+		
+	}
+	
+	public void msgIsInActive() {
+		leave = true;
+		stateChanged();
+	}
+	
+	public void closeRestaurant() {
+		closingState = ClosingState.ToBeClosed;
+		stateChanged();
+	}
 	/* (non-Javadoc)
 	 * @see restaurant.Host#getName()
 	 */
@@ -205,6 +235,26 @@ public class HostAgent extends Role implements Host {
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */
+		if (enter == true) {
+			enterRestaurant();
+			return true;
+		}
+		
+		if (closingState == ClosingState.ToBeClosed) {
+			prepareToClose();
+			return true;
+		}
+		
+		if (closingState == ClosingState.Preparing && !anyCustomer() && leave == true) {
+			shutDown();
+			leaveRestaurant();
+			return true;
+		}
+		
+		if (leave == true && closingState == ClosingState.None) {
+			leaveRestaurant();
+			return true;
+		}
 		if(waiterAllowedToSetOnBreak != null)
 		{
 			AllowWaiterToGoOnBreak(waiterAllowedToSetOnBreak);
@@ -246,6 +296,40 @@ public class HostAgent extends Role implements Host {
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
+	}
+
+	private void enterRestaurant() {
+		// TODO Auto-generated method stub
+		if (closingState == ClosingState.Closed) {
+			closingState = ClosingState.None;
+			if (restaurant == null) {
+				restaurant = myPerson.getRestaurant(1);
+			}
+			restaurant.isClosed = false;
+		}
+		hostGui.DoEnterRestaurant();
+		enter = false;
+	}
+
+	private void prepareToClose() {
+		// TODO Auto-generated method stub
+		((CashierAgent) cashier).recordShift((PeopleAgent)myPerson, "Host");
+		((CookAgent)cook).closeRestaurant();
+		for (Waiter w : waiters) {
+			((WaiterAgent) w).closeRestaurant();
+		}
+		((CashierAgent)cashier).closeRestaurant();
+		closingState = ClosingState.Preparing;
+	}
+
+	private void shutDown() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void leaveRestaurant() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void TellCustomerTablesAreFull(WaitingCustomer wc) {

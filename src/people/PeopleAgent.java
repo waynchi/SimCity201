@@ -9,6 +9,8 @@ import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
+import restaurant.HostRole;
+import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
 import city.Restaurant;
@@ -380,6 +382,23 @@ public class PeopleAgent extends Agent implements People{
 			stateChanged();
 			return;
 		}
+		if(job.job.contains("RestaurantHost"))
+		{
+			if(Time == 1830)
+			{
+				for(MyRole r: roles)
+				{	
+					if(r.description.equals("RestaurantHost"))
+					{	
+						((HostRole) r.role).msgSetClose();
+					}
+					if(r.description.equals("MarketEmployee"))
+					{
+						((MarketEmployeeRole) r.role).msgSetClose();
+					}
+				}
+			}
+		}
 		lastTime = job.end;
 		}
 		if(state == AgentState.Idle)
@@ -450,7 +469,8 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				//change this for restaurant
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) <2)
 					{
@@ -470,7 +490,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.GoingHome;
-					print("Going Home To Eat");
+					print("Eating at Home because no restaurants are open.");
 					stateChanged();				
 					return;
 				}	
@@ -480,7 +500,8 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				//change this for restaurant
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) < 2)
 					{
@@ -500,7 +521,7 @@ public class PeopleAgent extends Agent implements People{
 				else
 				{
 					event = AgentEvent.EatingAtHome;
-					print("Going Home To Eat");
+					print("Eating at Home because no restaurants are open.");
 					stateChanged();
 					return;
 				}
@@ -563,10 +584,10 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
-		print("My Type is: " + type);
+//		print("My Current State is: " + state.toString());
+//		print("My Current Event is: " + event.toString());
+//		print("My Current Hunger is : " + hunger.toString());
+//		print("My Type is: " + type);
 		boolean Roles = false, Person = false;
 		if(type.equals("default"))
 		{
@@ -801,14 +822,16 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Restaurant 1");
+						//change this for restaurant
+						((CarPassengerRole)r.role).setDestination("Restaurant 2");
 						r.role.msgIsActive();
 					}
 				}
 			}
 			else
 			{
-				personGui.setDestination("Restaurant 1");
+				//change this for restaurant
+				personGui.setDestination("Restaurant 2");
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -831,10 +854,15 @@ public class PeopleAgent extends Agent implements People{
 //		}
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("RestaurantCustomer"))
+			//change this for restaurant
+			if(r.description.equals("RestaurantCustomerVk"))
 			{
 				r.role.msgIsActive();
 			}
+//			if(r.description.equals("RestaurantCustomer"))
+//			{
+//				r.role.msgIsActive();
+//			}
 		}
 	}
 		
@@ -1126,8 +1154,7 @@ public class PeopleAgent extends Agent implements People{
 		if(jobs.get(i).job.equals("RestaurantHost"))
 		{
 			for(MyRole r: roles)
-			{
-				
+			{	
 				if(r.description.equals("RestaurantHost"))
 				{	
 					location = AgentLocation.Road;
