@@ -165,6 +165,8 @@ public class VkHostRole extends Role implements Host{
 	}
 	
 	public void msgSetClose() {
+		print("Received msgSetClosed(). I'm VkHostRole.");
+		restaurant.isClosed = true;
 		closingState = ClosingState.ToBeClosed;
 		stateChanged();
 	}

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -287,8 +288,8 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to verify a bill before paying it.
 	 */
 	public void verifyBill(Bill b) {
-		List<Map.Entry<String, Integer>> cookItems = (List<Entry<String, Integer>>) b.itemsFromCook.entrySet();
-		List<Map.Entry<String, Integer>> marketItems = (List<Entry<String, Integer>>) b.itemsFromMarket.entrySet();
+		Set<Map.Entry<String, Integer>> cookItems = b.itemsFromCook.entrySet();
+		Set<Map.Entry<String, Integer>> marketItems = b.itemsFromMarket.entrySet();
 		for (Map.Entry<String, Integer> ci : cookItems) {
 			boolean found = false;
 			for (Map.Entry<String, Integer> mi : marketItems) {

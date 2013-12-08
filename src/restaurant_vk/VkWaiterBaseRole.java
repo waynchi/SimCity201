@@ -103,6 +103,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 				}
 			}
 			stateChanged();
+			print("Received orderIsReady() for table " + table + " of" + choice);
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
