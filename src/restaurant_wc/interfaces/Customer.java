@@ -1,55 +1,49 @@
 package restaurant_wc.interfaces;
 
-import java.util.concurrent.Semaphore;
+import java.util.List;
 
-import restaurant_wc.Menu;
+import restaurant_wc.BaseWaiterRole.FoodOnMenu;
 import restaurant_wc.gui.CustomerGui;
-import restaurant_wc.gui.Gui;
+import restaurant.interfaces.Cashier;
 
-/**
- * A sample Customer interface built to unit test a WcCashierRole.
- *
- * @author Monroe Ekilah
- *
- */
 public interface Customer {
+	public abstract void gotHungry();
 
-	/**
-	 * @param total The cost according to the cashier
-	 *
-	 * Sent by the cashier prompting the customer's money after the customer has approached the cashier.
-	 */
-	public abstract void msgHereIsYourTotal(double total);
+	public abstract void msgRestaurantIsFull();
+	
+	// handles waiter follow me message and eventually sits down at the correct table
+	public abstract void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m);
 
-	/**
-	 * @param total change (if any) due to the customer
-	 *
-	 * Sent by the cashier to end the transaction between him and the customer. total will be >= 0 .
-	 */
-	public abstract void msgHereIsYourChange(double total);
+	// from animation, when customer has arrived at the table
+	public abstract void msgAtTable();
+	
+	public abstract void msgAtCashier();
+	
+	//from animation, when customer has made the choice on pop up list
+	public abstract void msgAnimationChoiceMade();
+	
+	//from waiter agent
+	public abstract void msgWhatWouldYouLike();
+	
+	//from waiter agent
+	public abstract void msgReorder(List<FoodOnMenu> newMenu);
+	
+	//from waiter agent
+	public abstract void msgHereIsYourFood();
+	
+	public abstract void msgHereIsCheck (Double d, Cashier cashier);
+	
+	public abstract void msgHereIsYourChange (Double change);
 
-	public abstract void msgYouNeedToWait(int customerNum);
+	//from animation
 
-	public abstract String getName();
+	public abstract String getChoice();
 
 	public abstract CustomerGui getGui();
 
-	public abstract Semaphore getFollowing();
+	public abstract String getName();
 
-	public abstract void msgHereIsYourFood();
+	public abstract void msgAtExit();
 
-	public abstract void msgWhatWouldYouLike(Menu menu);
-
-	public abstract void msgWhatElseWouldYouLike(String outOfChoice);
-
-	public abstract void msgSitAtTable(Waiter waiterAgent);
-
-
-
-	/**
-	 * @param remaining_cost how much money is owed
-	 * Sent by the cashier if the customer does not pay enough for the bill (in lieu of sending {@link #HereIsYourChange(double)}
-	 */
-	//public abstract void YouOweUs(double remaining_cost);
-
+	public abstract String getState();
 }
