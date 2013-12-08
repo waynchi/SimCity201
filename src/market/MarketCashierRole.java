@@ -9,7 +9,6 @@ import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import people.People;
 import people.Role;
-import restaurant.CashierRole;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -130,7 +129,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// for restaurant Cashier
 	public void msgHereIsACheck(Cashier restCashier, Map<String, Integer> items, int orderNumber) {
-		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + ((CashierRole) restCashier).getName()));
+		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + restCashier.getName()));
 		checks.add(new Check(restCashier, items, orderNumber));
 		getPersonAgent().CallstateChanged();
 
@@ -154,7 +153,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	// from restaurant cashier
 	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
-		log.add(new LoggedEvent("restaurant cashier " + ((CashierRole) cashier).getName() + " is paying " + amount));
+		log.add(new LoggedEvent("restaurant cashier " + cashier.getName() + " is paying " + amount));
 		for (Check c : checks) {
 			if (c.restaurantCashier == cashier && c.items == items) {
 				c.state = checkState.PAID;
@@ -284,7 +283,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		// if check is for restaurant
 		if (check.restaurantCashier != null) {
-			log.add(new LoggedEvent("sending check to restaurant cashier " + ((CashierRole) check.restaurantCashier).getName() + " and total due is " + check.totalDue));
+			log.add(new LoggedEvent("sending check to restaurant cashier " + check.restaurantCashier.getName() + " and total due is " + check.totalDue));
 			check.restaurantCashier.msgHereIsWhatIsDue( check.totalDue, check.items, check.orderNumber);
 		}
 
