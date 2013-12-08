@@ -313,6 +313,7 @@ public class CityGui extends JFrame implements ActionListener {
 						VkCookRole RestaurantCookRoleVK = new VkCookRole(revolvingStand, vkAnimationPanel);
 						
 						RestaurantCookRoleVK.setTag(AlertTag.RESTAURANT1);
+						RestaurantCookRoleVK.setHost(RestaurantHostRoleVk);
 						
 						person.addJob("RestaurantCookVk", start, end);
 						person.addRole(RestaurantCookRoleVK, "RestaurantCookVk");
@@ -357,7 +358,7 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantCashierVk")) {
 						VkCashierRole RestaurantCashierRoleVK = new VkCashierRole(vkAnimationPanel);
-						
+						RestaurantCashierRoleVK.setHost(RestaurantHostRoleVk);
 						RestaurantCashierRoleVK.setTag(AlertTag.RESTAURANT1);
 						
 						person.addJob("RestaurantCashier", start, end);
