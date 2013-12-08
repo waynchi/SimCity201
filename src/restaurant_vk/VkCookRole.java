@@ -257,6 +257,9 @@ public class VkCookRole extends Role implements Cook {
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}
+		if (market == null) {
+			this.market = (MarketEmployee) myPerson.getMarketEmployee(0);
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();

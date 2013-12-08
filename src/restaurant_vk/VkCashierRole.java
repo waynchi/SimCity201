@@ -203,6 +203,9 @@ public class VkCashierRole extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
+		if (mCashier == null) {
+			this.mCashier = ((MarketEmployee)myPerson.getMarketEmployee(0)).getCashier();
+		}
 		enter = true;
 		isActive = true;
 		stateChanged();
