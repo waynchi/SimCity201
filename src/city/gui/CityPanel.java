@@ -689,7 +689,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		Building restaurant1 = new Building( hozX + 460, hozY + 30, 40, 40, 810, 132, "Restaurant 1" );
 		buildings.add(restaurant1);
 		
-		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 570, 60, "Restaurant 2" );
+		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 580, 42, "Restaurant 2" );
 		buildings.add(restaurant2);
 		
 		Building restaurant3 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 3" );
@@ -740,12 +740,12 @@ public class CityPanel extends JPanel implements MouseListener {
 //		bpr.setDestinationBusStop(busStops.get(0));
 //		bpr.msgIsActive();
 		
-//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-//		CarAgent carAgent = new CarAgent();
-//		carAgent.setGui(cg);
-//		carAgent.startThread();
-//		cg.msgGoToThisPlace(carAgent, "Market");
-//		vehicles.add(cg);
+		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		CarAgent carAgent = new CarAgent();
+		carAgent.setGui(cg);
+		carAgent.startThread();
+		cg.msgGoToThisPlace(carAgent, "Home 1");
+		vehicles.add(cg);
 		
 //		
 		addMouseListener( this );
@@ -911,7 +911,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.fill(bs);
 		}
 		
-		g.drawImage(background.getImage(), 0, 0, null);
+		//g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
 			VehicleGui v = vehicles.get(i);
@@ -953,6 +953,17 @@ public class CityPanel extends JPanel implements MouseListener {
 			if(bus.contains(me.getX(), me.getY() ) ) {
 				System.out.println("Clicked Bus: " + (i+1));
 				bus.displayBuilding();
+			}
+		}
+		for( int i = 0; i<allRoads.size(); i++) {
+			ArrayList<Lane> list = allRoads.get(i);
+			for(int k = 0; k < list.size(); k++)
+			{
+				Lane l = list.get(k);
+				if(l.rectangle.contains(me.getX(), me.getY() ) ){
+					System.out.println("clicked lane: " + i);
+			}
+			
 			}
 		}
 		
