@@ -16,7 +16,6 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
 import market.interfaces.MarketTruck;
 import market.test.MockPeople;
-import restaurant.BaseWaiterRole;
 import restaurant.CookRole;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -350,6 +349,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		workers = Collections.synchronizedList(new ArrayList<People>());
 		isActive = false;
 		leaveWork = false;
 		employeeGui.setPresent(false);

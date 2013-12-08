@@ -8,12 +8,8 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
-
 import java.util.*;
 import java.util.concurrent.Semaphore;
-
-import com.sun.xml.internal.bind.marshaller.MinimumEscapeHandler;
-
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
 import people.People;
