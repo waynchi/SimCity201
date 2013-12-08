@@ -110,5 +110,6 @@ public class ApartmentsAnimationPanel extends JPanel implements ActionListener {
 			gui.updatePosition();
 		}
 		ag.updatePosition();
+		repaint();
 	}
 }

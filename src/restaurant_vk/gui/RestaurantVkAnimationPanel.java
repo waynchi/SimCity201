@@ -133,5 +133,6 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		for (VkGui gui : guis) {
 			gui.updatePosition();
 		}
+		repaint();
 	}
 }
