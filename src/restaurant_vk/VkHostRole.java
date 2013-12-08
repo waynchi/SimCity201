@@ -146,6 +146,10 @@ public class VkHostRole extends Role implements Host{
 	}
 	
 	public void msgIsActive() {
+		if (closingState == ClosingState.Closed) {
+			restaurant.isClosed = false;
+			closingState = ClosingState.None;
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();
