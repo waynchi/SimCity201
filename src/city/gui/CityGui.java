@@ -613,18 +613,15 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		int x = 10;
 		time++;
-		if(time % x == 0)
+		if(time%(x) == 0)
 		{
-			if(time%(x) == 0)
-			{
-				//System.out.println(time/(x));
-			}
-			for (PeopleAgent p : people) {
-				p.msgTimeIs(time/x);
-			}
+			System.out.println(time/x);
 		}
-		if(time % 100 == 60) {
-			time += 39;
+		for (PeopleAgent p : people) {
+			p.msgTimeIs(time/x);
+		}
+		if((time % (100*x)+x) == 60*x) {
+			time += 40*x;
 		}
 		if(time == 2400*x) {
 			time=0;
