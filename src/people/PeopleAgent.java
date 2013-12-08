@@ -1034,7 +1034,7 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(int i = 0; i <jobs.size(); i++)
 		{
-			print("I am going to work now!");
+			print("I am leaving the house now");
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Resident"))
