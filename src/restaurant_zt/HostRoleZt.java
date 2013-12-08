@@ -30,14 +30,14 @@ public class HostRoleZt extends Role implements Host{
 	
 	public Collection<Table> tables;
 	public class Table {
-		RestaurantCustomerRole occupiedBy;
+		RestaurantCustomerRoleZt occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(RestaurantCustomerRole cust) {
+		void setOccupant(RestaurantCustomerRoleZt cust) {
 			occupiedBy = cust;
 		}
 
@@ -45,7 +45,7 @@ public class HostRoleZt extends Role implements Host{
 			occupiedBy = null;
 		}
 
-		RestaurantCustomerRole getOccupant() {
+		RestaurantCustomerRoleZt getOccupant() {
 			return occupiedBy;
 		}
 
@@ -83,10 +83,10 @@ public class HostRoleZt extends Role implements Host{
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	public class MyCustomer {
-		RestaurantCustomerRole customer;
+		RestaurantCustomerRoleZt customer;
 		customerState state;
 
-		public MyCustomer (RestaurantCustomerRole cust) {
+		public MyCustomer (RestaurantCustomerRoleZt cust) {
 			customer = cust;
 			if (customerCount >= NTABLES){
 				state = customerState.PENDING;
@@ -113,6 +113,7 @@ public class HostRoleZt extends Role implements Host{
 	
 	// Messages
 	public void msgIsActive() {
+		getPersonAgent().getRestaurant(2).isClosed = false;
 		isActive = true;
 		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		getPersonAgent().CallstateChanged();
@@ -125,6 +126,7 @@ public class HostRoleZt extends Role implements Host{
 	}
 
 	public void msgSetClose() {
+		System.out.println("CLOSING THE MOTHAFUCKIN RESTAURANT");
 		closeRestaurant = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -164,7 +166,7 @@ public class HostRoleZt extends Role implements Host{
 	}
 
 	// from hungry CustomerAgent, add to the list
-	public void IWantToEat(RestaurantCustomerRole cust) {
+	public void IWantToEat(RestaurantCustomerRoleZt cust) {
 
 		customers.add(new MyCustomer(cust));
 		System.out.println("got message i want to eat from customer");
@@ -172,7 +174,7 @@ public class HostRoleZt extends Role implements Host{
 
 	}
 
-	public void leaveRestaurant(RestaurantCustomerRole cust){
+	public void leaveRestaurant(RestaurantCustomerRoleZt cust){
 		synchronized(customers){
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
@@ -184,7 +186,7 @@ public class HostRoleZt extends Role implements Host{
 		}
 	}
 
-	public void waitInRestaurant(RestaurantCustomerRole cust){
+	public void waitInRestaurant(RestaurantCustomerRoleZt cust){
 		synchronized(customers){
 
 			for (MyCustomer mc : customers){
