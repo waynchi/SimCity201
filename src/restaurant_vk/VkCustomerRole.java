@@ -316,7 +316,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * restaurant. It informs the host that the customer has to be seated.
 	 */
 	private void goToRestaurant() {
-		Do("Going to restaurant");
+		Do("Going to host.");
 		customerGui.DoGoToRestaurant();
 		try {
 			movingAround.acquire();
