@@ -2,7 +2,7 @@
 1,Teller,teller,1000,1930
 1,RestaurantNormalWaiterVk,John,1000,1900
 1,RestaurantNormalWaiterVk,Joey,1000,1900
-1,RestaurantNormalWaiteVk,Judah,1000,1900
+1,RestaurantNormalWaiterVk,Judah,1000,1900
 1,RestaurantCookVk,James,1000,1900
 1,RestaurantHostVk,Billy,900,1930
 1,RestaurantCashierVk,Zack,930,1900
