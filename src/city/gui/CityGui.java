@@ -216,7 +216,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
 					
-					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT2);
+					RestaurantCustomerRoleVk.setTag(AlertTag.RESTAURANT2);
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
