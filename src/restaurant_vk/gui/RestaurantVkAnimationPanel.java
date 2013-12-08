@@ -37,6 +37,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private Image bufferImage;
     private Dimension bufferSize;
     public Image cookingGrill = new BufferedImage(100, 20, BufferedImage.TYPE_INT_BGR);
+    private Timer timer;
 
     private List<VkGui> guis = new ArrayList<VkGui>();
 
@@ -57,7 +58,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
-    	timer.start();
+    	this.timer = timer;
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -132,5 +133,6 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		for (VkGui gui : guis) {
 			gui.updatePosition();
 		}
+		repaint();
 	}
 }
