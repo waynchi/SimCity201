@@ -37,7 +37,7 @@ public class VkHostRole extends Role implements Host{
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
 	public RestaurantVkAnimationPanel ap;
-	public Restaurant restaurant;
+	public Restaurant restaurant = null;
 
 	public VkHostRole(RestaurantVkAnimationPanel p) {
 		super();
@@ -147,6 +147,9 @@ public class VkHostRole extends Role implements Host{
 	
 	public void msgIsActive() {
 		if (closingState == ClosingState.Closed) {
+			if (restaurant == null) {
+				restaurant = myPerson.getRestaurant(1);
+			}
 			restaurant.isClosed = false;
 			closingState = ClosingState.None;
 		}

@@ -5,6 +5,7 @@ import junit.framework.*;
 //import restaurant_wc.WaiterAgent.Bill;
 import restaurant_wc.WcCashierRole;
 import restaurant_wc.MBill;
+import restaurant.interfaces.*;
 import restaurant_wc.WcCashierRole.Check;
 import restaurant_wc.WcCashierRole.Debt;
 import restaurant_wc.test.mock.EventLog;
@@ -36,7 +37,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new WcCashierRole("cashier");		
+		cashier = new WcCashierRole();		
 		customer = new MockCustomer("mockcustomer");		
 		waiter = new MockWaiter("mockwaiter");
 		market = new MockMarket("mockmarket");

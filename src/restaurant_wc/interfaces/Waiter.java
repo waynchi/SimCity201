@@ -2,6 +2,7 @@ package restaurant_wc.interfaces;
 
 import java.util.concurrent.Semaphore;
 
+import restaurant.interfaces.Cashier;
 import restaurant_wc.WcCookRole;
 import restaurant_wc.WcHostAgent;
 import restaurant_wc.Order;

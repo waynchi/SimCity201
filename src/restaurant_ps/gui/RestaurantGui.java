@@ -1,5 +1,6 @@
 package restaurant_ps.gui;
 import restaurant_ps.CustomerAgent;
+import restaurant_ps.HostAgent;
 import restaurant_ps.WaiterAgent;
 import restaurant_ps.interfaces.Customer;
 import restaurant_ps.interfaces.Waiter;
@@ -27,7 +28,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
      *    in RestaurantPanel()
      * 2) the infoPanel about the clicked Customer (created just below)
      */    
-    private RestaurantPanel restPanel = new RestaurantPanel(this);
+  //  private RestaurantPanel restPanel = new RestaurantPanel(this);
     
     /* infoPanel holds information about the clicked customer, if there is one*/
     private JPanel infoPanel;
@@ -56,10 +57,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
         setLayout(new BoxLayout((Container) getContentPane(), 
         		BoxLayout.Y_AXIS));
 
-        Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .6));
-        restPanel.setPreferredSize(restDim);
-        restPanel.setMinimumSize(restDim);
-        restPanel.setMaximumSize(restDim);
+//        Dimension restDim = new Dimension(WINDOWX, (int) (WINDOWY * .6));
+//        restPanel.setPreferredSize(restDim);
+//        restPanel.setMinimumSize(restDim);
+//        restPanel.setMaximumSize(restDim);
         //add(restPanel);
         
         // Now, setup the info panel
@@ -85,10 +86,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
         infoPanel.add(infoLabel);
         infoPanel.add(stateCB);
         infoPanel.add(requestBreak);
-        add(infoPanel);
+       // add(infoPanel);
         
         
-        text.setText("<html>Name: Peppy Sisay<br/>Restaurant Money: " + this.restPanel.getRestaurantMoney() + "</html>");
+       // text.setText("<html>Name: Peppy Sisay<br/>Restaurant Money: " + this.restPanel.getRestaurantMoney() + "</html>");
         
         
         
@@ -102,6 +103,10 @@ public class RestaurantGui extends JFrame implements ActionListener {
         
         //add(animationPanel);
         //add(animationFrame.getContentPane());
+        HostAgent host = new HostAgent("test");
+        HostGui hgui = new HostGui(host);
+        host.msgIsActive();
+        
         
     }
     /**
@@ -220,7 +225,7 @@ public class RestaurantGui extends JFrame implements ActionListener {
         mainGui.setResizable(false);
         mainGui.setBounds(50,50,1050,670);
         mainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainGui.add(gui.restPanel,BorderLayout.SOUTH);
+       // mainGui.add(gui.restPanel,BorderLayout.SOUTH);
         
         
     }

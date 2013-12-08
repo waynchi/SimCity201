@@ -469,6 +469,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
+				//change this for restaurant
 				if(!Restaurants.get(2).isClosed)
 				{
 					if(rand.nextInt(2) <2)
@@ -499,6 +500,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
+				//change this for restaurant
 				if(!Restaurants.get(2).isClosed)
 				{
 					if(rand.nextInt(2) < 2)
@@ -816,6 +818,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
+						//change this for restaurant
 						((CarPassengerRole)r.role).setDestination("Restaurant 3");
 						r.role.msgIsActive();
 					}
@@ -823,6 +826,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				//change this for restaurant
 				personGui.setDestination("Restaurant 3");
 				print("Do Not Have Car");
 			}
@@ -846,10 +850,15 @@ public class PeopleAgent extends Agent implements People{
 //		}
 		for(MyRole r: roles)
 		{
+			//change this for restaurant
 			if(r.description.equals("RestaurantCustomerZt"))
 			{
 				r.role.msgIsActive();
 			}
+//			if(r.description.equals("RestaurantCustomer"))
+//			{
+//				r.role.msgIsActive();
+//			}
 		}
 	}
 		
