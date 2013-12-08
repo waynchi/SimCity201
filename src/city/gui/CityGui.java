@@ -178,6 +178,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Banks.add(bank);
 					person.Markets.add(market);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGuiYc);
+					VkCustomerRole RestaurantCustomerRoleVk = new VkCustomerRole(vkAnimationPanel);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
 					person.addRole(marketCustomerRole, "MarketCustomer");
 					marketCustomerRole.setPerson(person);
@@ -193,9 +194,14 @@ public class CityGui extends JFrame implements ActionListener {
 					carPassengerRole.setCar(carAgent);
 					
 					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
-					
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
 					RestaurantCustomerRole.setPerson(person);
+					
+					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT2);
+					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
+					RestaurantCustomerRoleVk.setPerson(person);
+					
+					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
 					
 					

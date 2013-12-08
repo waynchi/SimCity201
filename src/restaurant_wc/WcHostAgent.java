@@ -9,6 +9,8 @@ import restaurant_wc.interfaces.Waiter;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import people.Role;
+
 /**
  * Restaurant Host Agent
  */
@@ -16,7 +18,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the WcHostAgent. A Host is the manager of a restaurant_wc who sees that all
 //is proceeded as he wishes.
-public class WcHostAgent extends Agent {
+public class WcHostAgent extends Role {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -52,6 +54,11 @@ public class WcHostAgent extends Agent {
 		return tables;
 	}*/
 	// Messages
+	
+	public void msgIsActive()
+	{
+		this.isActive = true;
+	}
 
 	public void msgIWantFood(Customer cust) {
 		waitingCustomers.add(new MyCustomer(cust));

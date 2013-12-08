@@ -19,8 +19,7 @@ import market.interfaces.MarketEmployee;
 import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant_vk.VkCookRole.Food;
-import restaurant_vk.VkCookRole.FoodState;
+import restaurant_vk.VkCookRole.MarketOrder;
 import restaurant_wc.gui.CookGui;
 //import restaurant_wc.WcCustomerRole.AgentEvent;
 //aurant.WaiterAgent.AgentState;
@@ -38,7 +37,7 @@ public class WcCookRole extends Role implements Cook{
 	private CookGui cookGui;
 //	private Semaphore Waiting = new Semaphore(0,true);
 	public enum OrderState 
-	{pending,cooking,cooked, tempNull	};
+	{pending,cooking,cooked, tempNull};
 	Food SteakDish;
 	Food SaladDish;
 	Food ChickenDish;
@@ -67,10 +66,14 @@ public class WcCookRole extends Role implements Cook{
 		/*Markets.add(new MarketAgent("First", 0));
 		Markets.add(new MarketAgent("Second", 1));
 		Markets.add(new MarketAgent("Third", 2));*/
-		
-		
 	}
 
+	//TODO Change Pending Market Orders
+	public void msgIsActive()
+	{
+		this.isActive = true;
+	}
+	
 	public void addMarket(MarketEmployee m){
 		Markets.add(m);
 		//m.setCook(this);
@@ -163,16 +166,18 @@ public class WcCookRole extends Role implements Cook{
 		stateChanged();
 	}
 	
-	public void msgOrderFulFillment(String choice, int i) {
-		if(i != 0)
-		{
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
 		print("Recieving Orders!");
-		print("Inventory Level now: " + (i +FoodTypes.get(choice).InventoryLevel));
+		for (Map.Entry<String, Integer> e : items.entrySet()) {
+			print("Inventory Level now: " + (e.getValue() + FoodTypes.get(e.getKey()).InventoryLevel));
+			FoodTypes.get(e.getKey()).InventoryLevel += e.getValue();
+			FoodTypes.get(e.getKey()).BeingOrdered = false;
 		}
-		FoodTypes.get(choice).InventoryLevel += i;
-		FoodTypes.get(choice).BeingOrdered = false;
+		cashier.msgGotMarketOrder(items, orderNumber);
 		//Waiting.release();
 	}
+	
 	
 	public void msgPartialFulfillment(String choice, int i,
 			int MarketNum) {
@@ -180,6 +185,19 @@ public class WcCookRole extends Role implements Cook{
 		temp.put(choice, i);
 		pendingMOrders.add(new MarketOrder(temp, MarketNum + 1));
 		stateChanged();
+		
+	}
+	
+	@Override
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items,
+			int orderNumber) {
+		for (MarketOrder mo : pendingMOrders) {
+			if (mo.itemsRequested == items) {
+				mo.orderNumber = orderNumber;
+//				return;
+			}
+		}
+//		stateChanged();
 		
 	}
 	
@@ -193,13 +211,17 @@ public class WcCookRole extends Role implements Cook{
 		for (Map.Entry<String, Food> e : FoodTypes.entrySet()) {
 			if (e.getValue().InventoryLevel <= MaxLevel) {
 				Food f = e.getValue();
-				f.BeingOrdered = true;
-				int qty = MaxLevel - f.InventoryLevel;
-				temp.put(f.Choice, qty);
+				if(!FoodTypes.get(f.Choice).BeingOrdered)
+				{
+					f.BeingOrdered = true;
+					int qty = MaxLevel - f.InventoryLevel;
+					temp.put(f.Choice, qty);
+					FoodTypes.get(f.Choice).BeingOrdered = true;
+				}
 			}
 		}
 		pendingMOrders.add(new MarketOrder(temp, 0));
-		FoodTypes.get(food.Choice).BeingOrdered = true;
+		
 		stateChanged();
 		
 	}
@@ -354,19 +376,6 @@ public class WcCookRole extends Role implements Cook{
 		}
 		}
 		stateChanged();
-		
-	}
-
-	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
-		// TODO
-		
-	}
-
-	@Override
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items,
-			int orderNumber) {
-		// TODO Auto-generated method stub
 		
 	}
 

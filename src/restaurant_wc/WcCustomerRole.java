@@ -94,30 +94,11 @@ public class WcCustomerRole extends Role implements Customer{
 	}
 	// Messages
 
-	public void gotHungry() {//from animation
+	public void msgIsActive()
+	{
 		print("I'm hungry");
 		event = AgentEvent.gotHungry;
-		//
-//		if(name.contains("Five") || name.contains("five"))
-//		{
-//			Wallet = 5;
-//		}
-//		else if(name.contains("Ten") || name.contains("ten"))
-//		{
-//			Wallet = 10;
-//		}
-//		else if(name.contains("Hundred") || name.contains ("hundred"))
-//		{
-//			Wallet = 100;
-//		}
-//		else
-//		{
-//		Random RandomNum = new Random();
-//		Wallet = WalletMin + (WalletMax - WalletMin) * RandomNum.nextDouble();
-//		}
-//		nf.setMaximumFractionDigits(2);            
-//		nf.setGroupingUsed(false);
-//		print("Amount of Money: " + nf.format(Wallet));
+		this.isActive = true;
 		stateChanged();
 	}
 

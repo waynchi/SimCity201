@@ -86,7 +86,10 @@ public class WcCashierRole extends Role implements Cashier{
 	
 	//messages
 
-
+	public void msgIsActive()
+	{
+		this.isActive = true;
+	}
 	@Override
 	public void msgHereIsMarketBill(MBill bill, Market market) {
 		print("Recieved message from Market " + market + " asking for check");
