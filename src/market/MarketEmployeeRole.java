@@ -190,6 +190,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		if (setClose) {
 			closeMarket();
+			return true;
 		}
 		
 		if (!orders.isEmpty()) {
@@ -205,6 +206,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		if (leaveWork) {
 			done();
+			return true;
 		}
 		
 		return false;
