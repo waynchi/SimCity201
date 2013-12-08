@@ -3,12 +3,11 @@ package market.test;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Timer;
+
 import market.MarketCashierRole;
 import market.gui.MarketGui;
-import market.interfaces.MarketCashier;
-import market.interfaces.MarketCustomer;
 import people.PeopleAgent;
-import restaurant.test.mock.LoggedEvent;
 import restaurant.test.mock.MockCashier;
 import restaurant.test.mock.MockCook;
 import junit.framework.TestCase;
@@ -22,6 +21,8 @@ public class MarketCashierTest extends TestCase{
 	MockCook mcook;
 	MockCashier mcashier ;
 	Map<String, Integer> items = new HashMap<String, Integer>();
+	Timer timer;
+	MarketGui gui;
 	
 	
 	public static void main(String args[]) {
@@ -34,7 +35,8 @@ public class MarketCashierTest extends TestCase{
 
 	public void setUp() throws Exception{
 		super.setUp();  
-		MarketGui gui = new MarketGui();
+		timer = new Timer(20,null);
+		gui = new MarketGui(timer);
 		people = new PeopleAgent("people", 0.0, false);
 		cashier = new MarketCashierRole(gui);
 		people.addRole(cashier, "MarketCashierRole");
@@ -65,7 +67,7 @@ public class MarketCashierTest extends TestCase{
 	}
 	
 	
-	public void testOneEmployeeOneCustomer (){
+	public void testOneCustomer (){
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
 		
@@ -74,21 +76,20 @@ public class MarketCashierTest extends TestCase{
 		assertEquals(cashier.checks.size(),1);
 		
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("sending check to customer and total due is 100000.0"));
-		assertEquals(cashier.checks.get(0).totalDue, 100000.0);
+		assertTrue("cahsier should be sending a check to customer but it's not. log reads " + cashier.log.toString(),
+				cashier.log.containsString("sending check to customer and total due is 20000.0"));
+		assertEquals(cashier.checks.get(0).totalDue, 20000.0);
 		
 		//check if message is sent to mock customer
 		assertTrue(mmc.log.containsString("received msgHereIsWhatIsDue from market cashier"));
 		
 		//make customer send message
-		assertEquals(cashier.marketMoney,10000.0);
-		cashier.msgHereIsPayment(mmc, 100050.0);
+		assertEquals(cashier.working_capital,10000.0);
+		cashier.msgHereIsPayment(mmc, 100000.0);
 		cashier.pickAndExecuteAnAction();
 		assertTrue("cashier log reads: " + cashier.log.toString(),
-				cashier.log.containsString("giving change to customer and the amount is 50"));
-		assertEquals(cashier.marketMoney,110000.0);
-		
-		
+				cashier.log.containsString("giving change to customer and the amount is 80000"));
+		assertEquals(cashier.working_capital,30000.0);
 	}
 		
 	

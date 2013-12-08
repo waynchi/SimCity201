@@ -18,7 +18,8 @@ public class MarketEmployeeGui implements Gui{
 	boolean isPresent = false;
 	boolean leaving = false;
     private ImageIcon market_employee = new ImageIcon("res/market/marketEmployee.jpeg");
-
+    private enum guiCommand {GOT_ORDER_FROM_RESTAURANT, NONE};
+    guiCommand command;
 	
 	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
@@ -70,9 +71,16 @@ public class MarketEmployeeGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
+		
 		g.setColor(Color.blue);
 		g.drawRect(xPos-2, yPos-2, 34, 34);
         g.drawImage(market_employee.getImage(), xPos, yPos, 30, 30, null);
+      
+        if (command == guiCommand.GOT_ORDER_FROM_RESTAURANT) {
+        	g.fillRect(xPos+30, yPos-30, 100, 20);
+        	g.setColor(Color.black);
+        	g.drawString("got order from cook", xPos+30, yPos-20);
+        }
 
 	}
 
@@ -113,5 +121,10 @@ public class MarketEmployeeGui implements Gui{
 		xDestination = xCounter;
 		yDestination = yCounter;
 		goToCounter = true;
+	}
+
+	public void showGotOrderFromRestaurant() {
+		// TODO Auto-generated method stub
+		command = guiCommand.GOT_ORDER_FROM_RESTAURANT;
 	}
 }

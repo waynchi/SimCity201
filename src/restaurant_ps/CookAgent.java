@@ -655,7 +655,7 @@ public class CookAgent extends Role implements Cook {
 				marketOrder.put(f.foodname, f.capacity-f.amount);
 		}
 		myMarketOrders.add(new MarketOrder(marketOrder));
-		this.marketEmployee.msgOrder(marketOrder, this, cashier);
+		this.marketEmployee.msgHereIsAnOrder(marketOrder, this, cashier);
 	}
 
 	private void OutOfFood(Order o) {

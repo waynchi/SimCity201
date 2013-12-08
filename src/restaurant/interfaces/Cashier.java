@@ -20,6 +20,8 @@ public interface Cashier {
 
 	// from market cashier
 	public abstract void msgHereIsChange(double change);
+	
+	public abstract void msgGetOut();
 
 	// from bank teller
 	public void msgReadyToHelp(Teller teller);
@@ -29,6 +31,8 @@ public interface Cashier {
 	public void msgWithdrawSuccessful(double funds, double amount);
 
 	public void msgDepositSuccessful(double funds);
+
+	public abstract String getName();
 
 
 }

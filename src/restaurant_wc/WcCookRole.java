@@ -233,7 +233,7 @@ public class WcCookRole extends Role implements Cook{
 		//TODO
 		if(m < Markets.size())
 		{
-			Markets.get(m).msgOrder(order, this, cashier);
+			Markets.get(m).msgHereIsAnOrder(order, this, cashier);
 		}
 		else
 		{

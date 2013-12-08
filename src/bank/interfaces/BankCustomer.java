@@ -7,6 +7,8 @@ public interface BankCustomer {
 	
 	public abstract void msgReadyToHelp(Teller t);
 	
+	public abstract void msgGetOut();
+	
 	public abstract void msgAccountBalance(int accountID, double balance);
 	
 	public abstract void msgAccountAndLoan(int accountID, double balance, double money);

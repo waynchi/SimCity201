@@ -130,6 +130,7 @@ public class VkCustomerGui implements VkGui{
 		yDestination = -20;
 		command = Command.LeaveRestaurant;
 		caption = "";
+		isPresent = false;
 	}
 	
 	public void DoGoAway() {
@@ -141,12 +142,14 @@ public class VkCustomerGui implements VkGui{
 		xDestination = 500;
 		yDestination = 460;
 		caption = "";
+		isPresent = false;
 	}
 	
 	public void DoGoToRestaurant() {
 		command = Command.GoToRestaurant;
 		xDestination = 20;
 		yDestination = 150;
+		isPresent = true;
 	}
 	
 	/*

@@ -1,5 +1,6 @@
 package market.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bank.interfaces.Teller;
@@ -12,7 +13,15 @@ import people.People;
 import people.Role;
 
 public class MockPeople extends Mock implements People{
-
+	public class MyRestaurant {
+		public boolean isClosed = false;
+	}
+	
+	List<MyRestaurant> restaurants = new ArrayList<MyRestaurant>();
+	public void addResetaurant(MyRestaurant r) {
+		restaurants.add(r);
+	}
+	
 	public MockPeople(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -181,10 +190,9 @@ public class MockPeople extends Mock implements People{
 		return null;
 	}
 
-	@Override
-	public Restaurant getRestaurant(int i) {
+	public MyRestaurant getMyRestaurant(int i) {
 		// TODO Auto-generated method stub
-		return null;
+		return restaurants.get(i);
 	}
 
 	@Override
@@ -209,6 +217,12 @@ public class MockPeople extends Mock implements People{
 	public void setType(String t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Restaurant getRestaurant(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

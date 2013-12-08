@@ -297,7 +297,7 @@ public class CookRoleZt extends Role implements Cook{
 			}
 		}
 		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgOrder(marketOrder,this, cashier);	
+		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
 	}
 	
 	
