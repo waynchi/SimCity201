@@ -65,7 +65,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGui restaurantGuiYc;
 	RestaurantGuiZt restaurantGuiZt;
 	
-	RestaurantVkAnimationPanel vkAnimationPanel = new RestaurantVkAnimationPanel();
+	RestaurantVkAnimationPanel vkAnimationPanel;
 	
 	
 	
@@ -86,7 +86,7 @@ public class CityGui extends JFrame implements ActionListener {
 	ArrayList<House> availableApartments = new ArrayList<House>();
 	HostRole RestaurantHostRoleYc = new HostRole();
 	HostRoleZt RestaurantHostRoleZt = new HostRoleZt();
-	VkHostRole RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
+	VkHostRole RestaurantHostRoleVk;
 	
 
 
@@ -127,6 +127,9 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui = new BankGui(timer);
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
+		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
+		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
+
 		
 		marketGui = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
