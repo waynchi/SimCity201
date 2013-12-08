@@ -40,7 +40,6 @@ public class WcCustomerRole extends Role implements Customer{
 	private Waiter waiter;
 	private Menu MyMenu;
 	private Cashier cashier;
-	private double Wallet;
 	private double Check;
 	//    private boolean isHungry = false; //hack for gui
 	public enum AgentState
@@ -57,9 +56,8 @@ public class WcCustomerRole extends Role implements Customer{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public WcCustomerRole(String name){
+	public WcCustomerRole(){
 		super();
-		this.name = name;
 		
 		/*Random RandomNum = new Random();
 		Wallet = WalletMin + (WalletMax - WalletMin) * RandomNum.nextDouble();
@@ -96,30 +94,11 @@ public class WcCustomerRole extends Role implements Customer{
 	}
 	// Messages
 
-	public void gotHungry() {//from animation
+	public void msgIsActive()
+	{
 		print("I'm hungry");
 		event = AgentEvent.gotHungry;
-		//
-		if(name.contains("Five") || name.contains("five"))
-		{
-			Wallet = 5;
-		}
-		else if(name.contains("Ten") || name.contains("ten"))
-		{
-			Wallet = 10;
-		}
-		else if(name.contains("Hundred") || name.contains ("hundred"))
-		{
-			Wallet = 100;
-		}
-		else
-		{
-		Random RandomNum = new Random();
-		Wallet = WalletMin + (WalletMax - WalletMin) * RandomNum.nextDouble();
-		}
-		nf.setMaximumFractionDigits(2);            
-		nf.setGroupingUsed(false);
-		print("Amount of Money: " + nf.format(Wallet));
+		this.isActive = true;
 		stateChanged();
 	}
 
@@ -299,15 +278,15 @@ public class WcCustomerRole extends Role implements Customer{
 
 	private void PayCheck() {
 		Do("Paying Cashier");
-		if(Wallet >= Check)
+		if( getPersonAgent().getMoney() >= Check)
 		{
-		Wallet = Wallet - Check;
-		cashier.msgHereIsMyPayment(Check, Check, this);
+			 getPersonAgent().setMoney(getPersonAgent().getMoney() - Check);
+			 cashier.msgHereIsMyPayment(Check, Check, this);
 		}
 		else
 		{
-			cashier.msgHereIsMyPayment(Check, Wallet, this);
-			Wallet = 0;
+			cashier.msgHereIsMyPayment(Check, getPersonAgent().getMoney(), this);
+			getPersonAgent().setMoney(0);
 		}
 		
 		
@@ -329,7 +308,7 @@ public class WcCustomerRole extends Role implements Customer{
 		{
 		for(int j = 0; j < tempMenu.FoodCosts.size(); j++)
 		{
-			if(MyMenu.FoodCosts.get(MyMenu.Choices.get(j)) > Wallet)
+			if(MyMenu.FoodCosts.get(MyMenu.Choices.get(j)) > getPersonAgent().getMoney())
 			{
 				print("Unable to purchase " + MyMenu.Choices.get(j) + " so I am not going to order it");
 				//tempMenu.FoodCosts.remove(MyMenu.Choices.get(j));
