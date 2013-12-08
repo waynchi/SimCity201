@@ -4,7 +4,7 @@ package restaurant_zt.gui;
 import java.util.*;
 
 import restaurant_zt.BaseWaiterRole;
-import restaurant_zt.RestaurantCustomerRole;
+import restaurant_zt.RestaurantCustomerRoleZt;
 import restaurant_zt.interfaces.Customer;
 
 import java.awt.*;
@@ -123,7 +123,7 @@ public class WaiterGuiZt implements Gui {
 
     public void DoApproachCustomer(Customer c) {
     	currentCustomer = c;
-    	Dimension dm = tableMap.get(((RestaurantCustomerRole) c).getTableNumber());
+    	Dimension dm = tableMap.get(((RestaurantCustomerRoleZt) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());

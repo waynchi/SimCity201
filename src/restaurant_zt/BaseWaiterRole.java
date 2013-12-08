@@ -461,7 +461,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void UpdateTableInfo(Customer c) {
 		currentCustomerNum--;
-		host.msgTableIsFree(((RestaurantCustomerRole) c).getTableNumber());
+		host.msgTableIsFree(((RestaurantCustomerRoleZt) c).getTableNumber());
 	}
 	
 	public abstract void done();

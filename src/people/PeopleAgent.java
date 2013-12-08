@@ -469,7 +469,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				if(!Restaurants.get(2).isClosed)
 				{
 					if(rand.nextInt(2) <2)
 					{
@@ -499,7 +499,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(!Restaurants.get(0).isClosed)
+				if(!Restaurants.get(2).isClosed)
 				{
 					if(rand.nextInt(2) < 2)
 					{
@@ -582,10 +582,6 @@ public class PeopleAgent extends Agent implements People{
 	//scheduler
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("My Current State is: " + state.toString());
-		print("My Current Event is: " + event.toString());
-		print("My Current Hunger is : " + hunger.toString());
-		print("My Type is: " + type);
 		boolean Roles = false, Person = false;
 		if(type.equals("default"))
 		{
@@ -820,14 +816,14 @@ public class PeopleAgent extends Agent implements People{
 				{
 					if(r.description == "CarPassenger")
 					{
-						((CarPassengerRole)r.role).setDestination("Restaurant 1");
+						((CarPassengerRole)r.role).setDestination("Restaurant 3");
 						r.role.msgIsActive();
 					}
 				}
 			}
 			else
 			{
-				personGui.setDestination("Restaurant 1");
+				personGui.setDestination("Restaurant 3");
 				print("Do Not Have Car");
 			}
 		//personGui.GoToRestaurantOne();
@@ -850,7 +846,7 @@ public class PeopleAgent extends Agent implements People{
 //		}
 		for(MyRole r: roles)
 		{
-			if(r.description.equals("RestaurantCustomer"))
+			if(r.description.equals("RestaurantCustomerZt"))
 			{
 				r.role.msgIsActive();
 			}

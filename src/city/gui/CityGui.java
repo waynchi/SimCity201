@@ -35,6 +35,7 @@ import restaurant_zt.CashierRoleZt;
 import restaurant_zt.CookRoleZt;
 import restaurant_zt.HostRoleZt;
 import restaurant_zt.NormalWaiterRoleZt;
+import restaurant_zt.RestaurantCustomerRoleZt;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
@@ -222,6 +223,11 @@ public class CityGui extends JFrame implements ActionListener {
 					RestaurantCustomerRoleVk.setTag(AlertTag.RESTAURANT2);
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
+					
+					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
+					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerRoleZt");
+					RestaurantCustomerRoleZt.setPerson(person);
+					
 					
 					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);

@@ -21,7 +21,7 @@ import people.Role;
 // Customers are created by user, and could be set hungry when created.
 // Customers behave differently upon situations, which depends on the name they have
 
-public class RestaurantCustomerRole extends Role implements Customer{
+public class RestaurantCustomerRoleZt extends Role implements Customer{
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGuiZt customerGui;
@@ -62,7 +62,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 *
 	 * @param name name of the customer
 	 */
-	public RestaurantCustomerRole(RestaurantGuiZt gui){
+	public RestaurantCustomerRoleZt(RestaurantGuiZt gui){
 		super();
 		this.restGui = gui;
 		customerGui = new CustomerGuiZt(this);
