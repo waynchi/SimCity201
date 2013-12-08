@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
-import restaurant_vk.VkHostRole.ClosingState;
 import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.VkCookRole;
