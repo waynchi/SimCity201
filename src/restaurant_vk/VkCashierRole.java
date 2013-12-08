@@ -220,6 +220,12 @@ public class VkCashierRole extends Role implements Cashier {
 		movingAround.release();
 	}
 	
+	@Override
+	public void msgGetOut() {
+		bankActivity = BankActivity.Robbed;
+		stateChanged();
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -349,15 +355,17 @@ public class VkCashierRole extends Role implements Cashier {
 	 * Preparing to close down.
 	 */
 	public void prepareToClose() {
-		if (workingCapital > minCapital && shiftRecord.isEmpty()) {
-			teller.msgNeedHelp(this, "blah");
-			bankActivity = BankActivity.HelpRequested;
-			deposit = true;
-		}
-		else {
-			teller.msgNeedHelp(this, "blah");
-			bankActivity = BankActivity.HelpRequested;
-			withdraw = true;
+		if (myPerson.getBank(0).isClosed == false) {
+			if (workingCapital > minCapital && shiftRecord.isEmpty()) {
+				teller.msgNeedHelp(this, "blah");
+				bankActivity = BankActivity.HelpRequested;
+				deposit = true;
+			}
+			else {
+				teller.msgNeedHelp(this, "blah");
+				bankActivity = BankActivity.HelpRequested;
+				withdraw = true;
+			}
 		}
 		closingState = ClosingState.Preparing;
 	}
@@ -438,12 +446,12 @@ public class VkCashierRole extends Role implements Cashier {
 		// If there is no customer in the restaurant and preparation is complete, then
 		// check if there is anybody left to be paid. If there isn't, and there is excess
 		// money, then deposit it. Else, shut down the restaurant..
-		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
-			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
+		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && (bankActivity == BankActivity.None || bankActivity == BankActivity.Robbed)) {
+			if (shiftRecord.isEmpty() && workingCapital > minCapital && bankActivity != BankActivity.Robbed) {
 				prepareToClose();
 				return true;
 			}
-			else if (workingCapital < computeRequiredMoney()) {
+			else if (workingCapital < computeRequiredMoney() && bankActivity != BankActivity.Robbed) {
 				prepareToClose();
 				return true;
 			}
@@ -658,7 +666,7 @@ public class VkCashierRole extends Role implements Cashier {
 		}
 	}
 	
-	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
+	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested, Robbed};
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Closed};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed}
 }
