@@ -127,6 +127,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgGetOut() {
+		
+	}
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
