@@ -152,7 +152,6 @@ public class RobberRole extends Role implements Robber {
 
 	private void LeaveBank(){
 		if (!isTest) gui.DoLeaveBank();
-		teller.msgDoneAndLeaving();
 		myPerson.msgDone("RobberRole");
 		isActive = false;
 	}

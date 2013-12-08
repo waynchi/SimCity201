@@ -20,6 +20,8 @@ public interface Cashier {
 
 	// from market cashier
 	public abstract void msgHereIsChange(double change);
+	
+	public abstract void msgGetOut();
 
 	// from bank teller
 	public void msgReadyToHelp(Teller teller);

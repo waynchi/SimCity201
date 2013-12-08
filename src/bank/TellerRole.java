@@ -249,6 +249,13 @@ public class TellerRole extends Role implements Teller {
 	private void giveMoney(myBankCustomer customer) {
 		customer.state = CustomerState.beingHelped;
 		customer.robber.msgPleaseDontHurtMe(1000000);
+		waitingCustomers.remove(customer);
+		for(myBankCustomer cust:waitingCustomers){
+			if (customer.type.equals("customer")) customer.customer.msgGetOut();
+			if (customer.type.equals("mcashier")) customer.mcashier.msgGetOut();
+			if (customer.type.equals("cashier")) customer.cashier.msgGetOut();
+			if (customer.type.equals("robber")) customer.robber.msgGetOut();
+		}
 	}
 	
 	private void withdrawMoney(myBankCustomer customer) {
