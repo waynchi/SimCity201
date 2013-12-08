@@ -824,6 +824,13 @@ public class PeopleAgent extends Agent implements People{
 //				r.role.msgIsActive();
 //			}
 //		}
+		for(MyRole r: roles)
+		{
+			if(r.description.equals("RestaurantCustomerVk"))
+			{
+				r.role.msgIsActive();
+			}
+		}
 	}
 		
 
