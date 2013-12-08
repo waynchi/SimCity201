@@ -198,6 +198,7 @@ public class VkCashierRole extends Role implements Cashier {
 	
 	public void closeRestaurant() {
 		closingState = ClosingState.ToBeClosed;
+		this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		stateChanged();
 	}
 	
@@ -209,7 +210,6 @@ public class VkCashierRole extends Role implements Cashier {
 	
 	public void msgIsInActive() {
 		leave = true;
-		this.recordShift(((PeopleAgent)myPerson), "Cashier");
 		stateChanged();
 	}
 	
