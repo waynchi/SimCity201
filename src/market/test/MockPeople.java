@@ -11,16 +11,10 @@ import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.People;
 import people.Role;
-import restaurant.interfaces.Cook;
 
 public class MockPeople extends Mock implements People{
 	public class MyRestaurant {
-		//public Cook cook;
 		public boolean isClosed = false;
-		
-		//public Restaurant(Cook c) {
-		//	cook = c;
-		//}
 	}
 	
 	List<MyRestaurant> restaurants = new ArrayList<MyRestaurant>();
