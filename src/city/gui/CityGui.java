@@ -361,6 +361,9 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCashierRoleVK.setHost(RestaurantHostRoleVk);
 						RestaurantCashierRoleVK.setTag(AlertTag.RESTAURANT1);
 						
+						RestaurantHostRoleVk.setCashier(RestaurantCashierRoleVK);
+
+						
 						person.addJob("RestaurantCashier", start, end);
 						person.addRole(RestaurantCashierRoleVK,"RestaurantCashier");
 						RestaurantCashierRoleVK.setPerson(person);
@@ -417,7 +420,6 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(40000);
 						person.hasCar = false;
 					}
-					
 				
 					people.add(person);
 					

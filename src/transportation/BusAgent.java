@@ -46,7 +46,7 @@ myBusPassengers.add(new Passenger(p));
 boardingPassengers--;
 	if(boardingPassengers == 0)
 	{
-		System.out.println("Bus recieved last passenger, and is now ready to leave");
+		//System.out.println("Bus recieved last passenger, and is now ready to leave");
 		busState = BusState.readyToLeave;
 		stateChanged();
 	}
@@ -81,7 +81,7 @@ stateChanged();
  */
 @Override
 public void msgAllBusStopPassengersNotified(){
-System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
+//System.out.println("Bus recieved message that all BusStop Passengers have been notified, and is now ready to leave");
 busState = BusState.readyToLeave;
 stateChanged();
 }
