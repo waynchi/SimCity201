@@ -10,6 +10,8 @@ import restaurant_vk.interfaces.Waiter;
 import java.awt.Dimension;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import city.Restaurant;
 import people.PeopleAgent;
 import people.Role;
 
@@ -35,6 +37,7 @@ public class VkHostRole extends Role implements Host{
 	private Dimension waiterHomePos = new Dimension(110, 130);
 	private ClosingState closingState = ClosingState.Closed;
 	public RestaurantVkAnimationPanel ap;
+	public Restaurant restaurant;
 
 	public VkHostRole(RestaurantVkAnimationPanel p) {
 		super();
@@ -283,6 +286,10 @@ public class VkHostRole extends Role implements Host{
 	private void enterRestaurant() {
 		if (closingState == ClosingState.Closed) {
 			closingState = ClosingState.None;
+			if (restaurant == null) {
+				restaurant = myPerson.getRestaurant(1);
+			}
+			restaurant.isClosed = false;
 		}
 		gui.DoEnterRestaurant();
 		try {
@@ -315,6 +322,7 @@ public class VkHostRole extends Role implements Host{
 	
 	private void shutDown() {
 		closingState = ClosingState.Closed;
+		restaurant.isClosed = true;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
