@@ -967,6 +967,18 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
+		for( int i = 0; i<allSidewalks.size(); i++) {
+			ArrayList<Sidewalk> list = allSidewalks.get(i);
+			for(int k = 0; k < list.size(); k++)
+			{
+				Sidewalk l = list.get(k);
+				if(l.rectangle.contains(me.getX(), me.getY() ) ){
+					System.out.println("clicked lane: " + i);
+			}
+			
+			}
+		}
+		
 	}
 
 	public void mouseEntered(MouseEvent arg0) {

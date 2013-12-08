@@ -126,6 +126,7 @@ public class HostRoleZt extends Role implements Host{
 	}
 
 	public void msgSetClose() {
+		System.out.println("CLOSING THE MOTHAFUCKIN RESTAURANT");
 		closeRestaurant = true;
 		getPersonAgent().CallstateChanged();
 	}

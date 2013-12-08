@@ -49,9 +49,9 @@ public class WaiterGuiZt implements Gui {
         } catch (IOException e) {}
         
         this.role = role;
-        tableMap.put (1,new Dimension(100,100));
-        tableMap.put (2,new Dimension(200,100));
-        tableMap.put (3,new Dimension(300,100));  
+        tableMap.put (1,new Dimension(120,100));
+        tableMap.put (2,new Dimension(220,100));
+        tableMap.put (3,new Dimension(320,100));  
     }
 
     public void setHomePosition(int x) {

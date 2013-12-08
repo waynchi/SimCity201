@@ -10,6 +10,7 @@ import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
 import restaurant.HostRole;
+import restaurant_zt.HostRoleZt;
 import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
@@ -395,6 +396,11 @@ public class PeopleAgent extends Agent implements People{
 					if(r.description.equals("MarketEmployee"))
 					{
 						((MarketEmployeeRole) r.role).msgSetClose();
+					}
+					
+					if(r.description.equals("RestaurantHostZt"))
+					{	
+						((HostRoleZt) r.role).msgSetClose();
 					}
 				}
 			}
@@ -850,9 +856,11 @@ public class PeopleAgent extends Agent implements People{
 //		}
 		for(MyRole r: roles)
 		{
+			print("Role is: " + r.description);
 			//change this for restaurant
 			if(r.description.equals("RestaurantCustomerZt"))
 			{
+				System.out.println("Sending MSGISACTIVE to RESTAURANTCUSTOMERZT");
 				r.role.msgIsActive();
 			}
 //			if(r.description.equals("RestaurantCustomer"))

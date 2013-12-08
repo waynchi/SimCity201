@@ -225,7 +225,7 @@ public class CityGui extends JFrame implements ActionListener {
 					RestaurantCustomerRoleVk.setPerson(person);
 					
 					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
-					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerRoleZt");
+					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 					RestaurantCustomerRoleZt.setPerson(person);
 					
 					
@@ -313,8 +313,8 @@ public class CityGui extends JFrame implements ActionListener {
 						
 						RestaurantCookRoleZT.setTag(AlertTag.RESTAURANT1);
 						
-						person.addJob("RestaurantCook", start, end);
-						person.addRole(RestaurantCookRoleZT, "RestaurantCook");
+						person.addJob("RestaurantCookZt", start, end);
+						person.addRole(RestaurantCookRoleZT, "RestaurantCookZt");
 						RestaurantCookRoleZT.setPerson(person);
 						person.hasCar = false;
 					}
@@ -617,6 +617,7 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui.updatePosition();
 		marketGui.updatePosition();
 		restaurantGuiYc.updatePosition();
+		restaurantGuiZt.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
@@ -628,7 +629,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%(x) == 0)
 			{
-				//System.out.println(time/x);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);

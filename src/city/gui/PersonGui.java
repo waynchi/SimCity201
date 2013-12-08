@@ -270,7 +270,12 @@ public class PersonGui extends Rectangle2D.Double {
 				cityPanel.removePerson(this);
 				person.msgDone("PersonGui");
 				this.destination = null;
-				
+			}
+			if(getCurrentLane().equals("7_16")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "down";
+				sidewalkSegment = allSidewalks.get(17);
+				currentCell = sidewalkSegment.get(0);
 			}
 			if (getCurrentLane().equals("8_0")) {
 				this.currentCell.hasPerson = false;

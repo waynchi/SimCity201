@@ -88,6 +88,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 	// from animation. Eventually messages the Host about wanting food...
 
 	public void msgIsActive() {
+		System.out.println("I'm alive");
 		customerGui.setPresent(true);
 		host = (HostRoleZt) myPerson.getHost(2);
 		print("I'm hungry");
