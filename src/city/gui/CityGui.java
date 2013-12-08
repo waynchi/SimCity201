@@ -274,11 +274,11 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantNormalWaiterVK")) {
+					if (job.equals("RestaurantNormalWaiterVk")) {
 						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRoleVk);
 						RestaurantHostRoleVk.addWaiter(RestaurantNormalWaiterRoleVK);						
-						person.addJob("RestaurantNormalWaiterVK", start, end);
-						person.addRole(RestaurantNormalWaiterRoleVK,"RestaurantNormalWaiterVK");
+						person.addJob("RestaurantNormalWaiterVk", start, end);
+						person.addRole(RestaurantNormalWaiterRoleVK,"RestaurantNormalWaiterVk");
 						RestaurantNormalWaiterRoleVK.setPerson(person);
 						person.hasCar = false;
 					}
@@ -309,13 +309,13 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCookRoleZT.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantCookVK")) {
+					if (job.equals("RestaurantCookVk")) {
 						VkCookRole RestaurantCookRoleVK = new VkCookRole(revolvingStand, vkAnimationPanel);
 						
 						RestaurantCookRoleVK.setTag(AlertTag.RESTAURANT1);
 						
-						person.addJob("RestaurantCookVK", start, end);
-						person.addRole(RestaurantCookRoleVK, "RestaurantCookVK");
+						person.addJob("RestaurantCookVk", start, end);
+						person.addRole(RestaurantCookRoleVK, "RestaurantCookVk");
 						RestaurantCookRoleVK.setPerson(person);
 						person.hasCar = false;
 					}
@@ -331,9 +331,9 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRoleZt.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantHostVK")) {
-						person.addJob("RestaurantHostVK", start, end);
-						person.addRole(RestaurantHostRoleVk, "RestaurantHostVK");
+					if (job.equals("RestaurantHostVk")) {
+						person.addJob("RestaurantHostVk", start, end);
+						person.addRole(RestaurantHostRoleVk, "RestaurantHostVk");
 						RestaurantHostRoleYc.setPerson(person);
 						person.hasCar = false;
 					}
@@ -355,7 +355,7 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCashierRoleZT.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantCashierVK")) {
+					if (job.equals("RestaurantCashierVk")) {
 						VkCashierRole RestaurantCashierRoleVK = new VkCashierRole(vkAnimationPanel);
 						
 						RestaurantCashierRoleVK.setTag(AlertTag.RESTAURANT1);
