@@ -30,5 +30,7 @@ public interface Cashier {
 
 	public void msgDepositSuccessful(double funds);
 
+	public abstract String getName();
+
 
 }
