@@ -167,7 +167,8 @@ public class VkCustomerRole extends Role implements Customer{
 		print("I have to decide again! Fuck it!");
 		customerGui.setCaption("");
 		this.menu = m;
-		state = AgentState.DecidingOrder;
+		state = AgentState.BeingSeated;
+		event = AgentEvent.seated;
 		leaveOption = true;
 		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
@@ -348,7 +349,6 @@ public class VkCustomerRole extends Role implements Customer{
 	 * sitting.
 	 */
 	private void seated() {
-		print("I'm sitting.");
 		customerGui.setMenuCopy();
 		List<String> menuItems = menu.getAllFoodNames();
 		List<String> affordableItems = new ArrayList<String>();
