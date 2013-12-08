@@ -1,7 +1,6 @@
 package restaurant_vk;
 
 import restaurant.interfaces.Cashier;
-import restaurant_vk.VkCookRole.ClosingState;
 import restaurant_vk.gui.VkHostGui;
 import restaurant_vk.gui.RestaurantVkAnimationPanel;
 import restaurant_vk.gui.VkWaiterGui;
