@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import people.PeopleAgent;
 import people.Role;
+import restaurant.interfaces.Cashier;
 import restaurant_vk.gui.VkWaiterGui;
 import restaurant_vk.VkCashierRole;
 import restaurant_vk.VkCookRole;
@@ -25,7 +26,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	protected Host host;
 	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
-	protected VkCashierRole cashier = null;
+	protected Cashier cashier = null;
 	private boolean leave = false;
 	private boolean enter = false;
 	private ClosingState closingState = ClosingState.Closed;
@@ -33,6 +34,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	public VkWaiterBaseRole(Host host) {
 		super();
 		this.host = host;
+		setCashier(((VkHostRole)host).getCashier());
 	}
 		
 	/**--------------------------------------------------------------------------------------------------------------
@@ -326,7 +328,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	 */
 	private void serve(MyCustomer mc) {
 		print("Serving " + mc.c);
-		cashier.computeBill(mc.c, mc.choice, this);
+		((VkCashierRole)cashier).computeBill(mc.c, mc.choice, this);
 		gui.setFoodServed(mc.choice);
 		
 		DoGoToTable(mc.table);
@@ -637,7 +639,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		return gui;
 	}
 	
-	public void setCashier(VkCashierRole c) {
+	public void setCashier(Cashier c) {
 		cashier = c;
 	}
 	
