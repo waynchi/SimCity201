@@ -346,6 +346,10 @@ public class VkHostRole extends Role implements Host{
 		return customers;
 	}
 	
+	public Cashier getCashier() {
+		return cashier;
+	}
+	
 	/*
 	 * A method to select a waiter from the list of waiters via a
 	 * round-robin scheme.
