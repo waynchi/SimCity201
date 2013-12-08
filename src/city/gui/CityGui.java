@@ -111,7 +111,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	private int count = 0;
 
-	public int time;
+	public int time = 6000;
 
 	public CityGui() {
 		apartment1.gui.ap.setCityGui(this);
@@ -335,7 +335,7 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("RestaurantHostVk")) {
 						person.addJob("RestaurantHostVk", start, end);
 						person.addRole(RestaurantHostRoleVk, "RestaurantHostVk");
-						RestaurantHostRoleYc.setPerson(person);
+						RestaurantHostRoleVk.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCashier")) {
@@ -377,14 +377,14 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
 						BankTellerRole.setPerson(person);	
-						person.hasCar = true;
+//						person.hasCar = true;
 					}
 					if(job.equals("Nobody")) {
 						person.addJob("MarketEmployee", start, end);
 						person.addRole(MarketEmployeeRole,"MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
 						person.setMoney(1000000);
-						person.hasCar = true;
+//						person.hasCar = true;
 					}
 					if(job.equals("RepairMan"))
 					{
@@ -392,7 +392,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(repairManRole,"RepairMan");
 						repairManRole.setPerson(person);
 						person.setMoney(1000000);
-						person.hasCar = true;
+//						person.hasCar = true;
 					}
 					if(job.equals("MarketEmployee"))
 					{
@@ -400,7 +400,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(MarketEmployeeRole, "MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
 						person.setMoney(10000);
-						person.hasCar = true;
+//						person.hasCar = true;
 					}
 					if(job.equals("MarketCashier"))
 					{
@@ -409,7 +409,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
 						person.setMoney(1000);
-						person.hasCar = true;
+//						person.hasCar = true;
 					}
 					if(job.equals("MarketCustomer"))
 					{

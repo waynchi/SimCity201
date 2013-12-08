@@ -14,7 +14,7 @@ public class Bank {
 		this.t = host;
 		this.l = loc;
 		this.n = name;
-		this.isClosed = false;
+		this.isClosed = true;
 		
 	}
 	

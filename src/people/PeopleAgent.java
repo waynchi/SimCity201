@@ -364,7 +364,7 @@ public class PeopleAgent extends Agent implements People{
 		if(Time == job.start)
 		{
 			event = AgentEvent.GoingToWork;
-			print("Going To Work");
+			print("Going To Work from time is");
 			log.add(new LoggedEvent("Going To Work"));
 			stateChanged();
 			return;
@@ -446,9 +446,9 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(Time <= 1830)
+				if(!Restaurants.get(1).isClosed)
 				{
-					if(rand.nextInt(1) <21)
+					if(rand.nextInt(2) <1)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
@@ -479,9 +479,9 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				if(Time <= 1830)
+				if(!Restaurants.get(1).isClosed)
 				{
-					if(rand.nextInt(1) < 2)
+					if(rand.nextInt(2) < 1)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
@@ -1034,7 +1034,7 @@ public class PeopleAgent extends Agent implements People{
 	{
 		for(int i = 0; i <jobs.size(); i++)
 		{
-			print("I am going to work now!");
+			print("I am leaving the house now");
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("Resident"))
