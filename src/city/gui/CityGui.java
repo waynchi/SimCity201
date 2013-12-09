@@ -36,8 +36,8 @@ import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
-
 import restaurant_ps.HostRolePS;
+import restaurant_ps.RestaurantCustomerRolePS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
@@ -447,6 +447,7 @@ public class CityGui extends JFrame implements ActionListener {
 					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
 					RestaurantCustomerRoleWc RestaurantCustomerRoleWc = new RestaurantCustomerRoleWc(restaurantGuiWc);
 					RestaurantCustomerRoleEs RestaurantCustomerRoleEs = new RestaurantCustomerRoleEs(restaurantGuiEs);
+					RestaurantCustomerRolePS RestaurantCustomerRolePs = new RestaurantCustomerRolePS(restaurantGuiPS);
 
 					VkCustomerRole RestaurantCustomerRoleVk = new VkCustomerRole(vkAnimationPanel);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
@@ -476,6 +477,14 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT4);
 					person.addRole(RestaurantCustomerRoleWc, "RestaurantCustomerWc");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
 					RestaurantCustomerRoleWc.setPerson(person);
 										
 					

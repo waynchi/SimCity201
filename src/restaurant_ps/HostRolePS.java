@@ -30,14 +30,14 @@ public class HostRolePS extends Role implements Host{
 	
 	public Collection<Table> tables;
 	public class Table {
-		RestaurantCustomerRole occupiedBy;
+		RestaurantCustomerRolePS occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(RestaurantCustomerRole cust) {
+		void setOccupant(RestaurantCustomerRolePS cust) {
 			occupiedBy = cust;
 		}
 
@@ -45,7 +45,7 @@ public class HostRolePS extends Role implements Host{
 			occupiedBy = null;
 		}
 
-		RestaurantCustomerRole getOccupant() {
+		RestaurantCustomerRolePS getOccupant() {
 			return occupiedBy;
 		}
 
@@ -83,10 +83,10 @@ public class HostRolePS extends Role implements Host{
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
 	public class MyCustomer {
-		RestaurantCustomerRole customer;
+		RestaurantCustomerRolePS customer;
 		customerState state;
 
-		public MyCustomer (RestaurantCustomerRole cust) {
+		public MyCustomer (RestaurantCustomerRolePS cust) {
 			customer = cust;
 			if (customerCount >= NTABLES){
 				state = customerState.PENDING;
@@ -165,7 +165,7 @@ public class HostRolePS extends Role implements Host{
 	}
 
 	// from hungry CustomerAgent, add to the list
-	public void IWantToEat(RestaurantCustomerRole cust) {
+	public void IWantToEat(RestaurantCustomerRolePS cust) {
 
 		customers.add(new MyCustomer(cust));
 		System.out.println("got message i want to eat from customer");
@@ -173,7 +173,7 @@ public class HostRolePS extends Role implements Host{
 
 	}
 
-	public void leaveRestaurant(RestaurantCustomerRole cust){
+	public void leaveRestaurant(RestaurantCustomerRolePS cust){
 		synchronized(customers){
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
@@ -185,7 +185,7 @@ public class HostRolePS extends Role implements Host{
 		}
 	}
 
-	public void waitInRestaurant(RestaurantCustomerRole cust){
+	public void waitInRestaurant(RestaurantCustomerRolePS cust){
 		synchronized(customers){
 
 			for (MyCustomer mc : customers){
