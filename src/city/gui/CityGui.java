@@ -389,6 +389,7 @@ public class CityGui extends JFrame implements ActionListener {
 		for(BusAgent bus : buses) {
 			bus.stopThread();
 		}
+		buses.clear();
 		houses.clear();
 		cityPanel.vehicles.clear();
 		cityPanel.people.clear();
