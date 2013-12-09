@@ -399,7 +399,7 @@ public class CookRolePS extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(5);
 		host.setCook(this);
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created

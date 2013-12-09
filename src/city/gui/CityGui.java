@@ -869,7 +869,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			apartment1HouseAnimationPanels.get(k).gui.updatePosition();
 		}
-		int x = 10;
+		int x = 20;
 		time++;
 		if(time%x == 0)
 		{
