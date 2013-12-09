@@ -570,16 +570,16 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(restaurantContainer, "" + 16);
         buildingPanels.add(restaurantContainerVK, "" + 17);
         buildingPanels.add(restaurantContainerZT, "" + 18);
-        buildingPanels.add(restaurantContainerWc, "" + 18);
+        buildingPanels.add(restaurantContainerWc, "" + 19);
 
         buildingPanels.add(bankContainer, "" + 15);
         
         buildingPanels.add(marketContainer,"" + 14);
         
-        buildingPanels.add(busStop1Container,"" + 19);
-        buildingPanels.add(busStop2Container,"" + 20);
-        buildingPanels.add(busStop3Container,"" + 21);
-        buildingPanels.add(busStop4Container,"" + 22);
+        buildingPanels.add(busStop1Container,"" + 20);
+        buildingPanels.add(busStop2Container,"" + 21);
+        buildingPanels.add(busStop3Container,"" + 22);
+        buildingPanels.add(busStop4Container,"" + 23);
         
         
 
