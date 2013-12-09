@@ -51,6 +51,9 @@ public class CityPanel extends JPanel implements MouseListener {
 	static final int hozHeight = 20;
 	static final int sidewalkHeight = 10;
 	static final int laneWidth = 20;
+	public String time;
+	JLabel clock;
+	
 	
 	public ImageIcon background = new ImageIcon("res/background.png");
 	
@@ -59,6 +62,8 @@ public class CityPanel extends JPanel implements MouseListener {
 
 
 	public CityPanel(CityGui city) {
+		clock = new JLabel(time);
+		this.add(clock);
 		buildings = new ArrayList<Building>();
 		lanes = new ArrayList<Lane>();
 		sidewalks = new ArrayList<Sidewalk>();
@@ -772,6 +777,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 	
 	public void paintComponent( Graphics g ) {
+		clock.setText(time);
 		count++;
 		
 		if(count % 100 == 0) {
@@ -998,5 +1004,10 @@ public class CityPanel extends JPanel implements MouseListener {
 	}
 
 	public void mouseReleased(MouseEvent arg0) {
+	}
+	
+	public void setTime(int time) {
+		this.time = Integer.toString(time);
+		
 	}
 }

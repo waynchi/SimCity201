@@ -881,7 +881,7 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			if(time%(x) == 0)
 			{
-				System.out.println(time/x);
+				cityPanel.setTime(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);
