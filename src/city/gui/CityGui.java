@@ -54,10 +54,14 @@ import restaurant_zt.RestaurantCustomerRoleZt;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
+import transportation.BusAgent;
 import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
 import transportation.CarPassengerRole;
+import transportation.gui.BusGui;
+import transportation.gui.BusStopGui;
+import transportation.gui.InsideBusGui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -89,6 +93,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketGui marketGui;
+	List<House> houses = new ArrayList<House>();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	List<HouseAnimationPanel> apartment1HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	List<HouseAnimationPanel> apartment2HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
@@ -134,6 +139,11 @@ public class CityGui extends JFrame implements ActionListener {
 	private int count = 0;
 
 	public int time = 0000;
+	CookWaiterMonitor RestaurantCookWaiterMonitor;
+	CookWaiterMonitorZt RestaurantCookWaiterMonitorZT;
+	CookWaiterMonitorWc RestaurantCookWaiterMonitorWc;
+	CookWaiterMonitorEs RestaurantCookWaiterMonitorEs;
+	RevolvingStand revolvingStand;
 
 	public CityGui() {
 		apartment1.gui.ap.setCityGui(this);
@@ -178,7 +188,7 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantPanelEs restPanel4 = new RestaurantPanelEs(restaurantGuiEs);
 		
 		//vk revolving stand
-		RevolvingStand revolvingStand = new RevolvingStand();
+		revolvingStand = new RevolvingStand();
 		
 		
 		
@@ -186,12 +196,170 @@ public class CityGui extends JFrame implements ActionListener {
 		restPanel2.setHost(RestaurantHostRoleZt);
 		restPanel3.setHost(RestaurantHostRoleWc);
 		restPanel4.setHost(RestaurantHostRoleEs);
-		CookWaiterMonitor RestaurantCookWaiterMonitor = restPanel1.theMonitor;
-		CookWaiterMonitorZt RestaurantCookWaiterMonitorZT = restPanel2.theMonitor;
-		CookWaiterMonitorWc RestaurantCookWaiterMonitorWc = restPanel3.theMonitor;
-		CookWaiterMonitorEs RestaurantCookWaiterMonitorEs = restPanel4.theMonitor;
+		RestaurantCookWaiterMonitor = restPanel1.theMonitor;
+		RestaurantCookWaiterMonitorZT = restPanel2.theMonitor;
+		RestaurantCookWaiterMonitorWc = restPanel3.theMonitor;
+		RestaurantCookWaiterMonitorEs = restPanel4.theMonitor;
+
+		CreateWorld(RestaurantCookWaiterMonitor,RestaurantCookWaiterMonitorZT,RestaurantCookWaiterMonitorWc,RestaurantCookWaiterMonitorEs, revolvingStand);
+		
+		setVisible(true);
+		setSize(1024, 768);
+
+		getContentPane().setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		cityControls = new CityControls(cityPanel, this);
+		cityControls.setPreferredSize(new Dimension(500, 268));
+		cityControls.setMaximumSize(new Dimension(500, 268));
+		cityControls.setMinimumSize(new Dimension(500, 268));
+		
+		cardLayout = new CardLayout();
+
+		buildingPanels = new JPanel();
+		buildingPanels.setLayout(cardLayout);
+		buildingPanels.setPreferredSize(new Dimension(500, 268));
+		buildingPanels.setMaximumSize(new Dimension(500, 268));
+		buildingPanels.setMinimumSize(new Dimension(500, 268));
+		buildingPanels.setBackground(Color.yellow);
 
 
+		// Create the BuildingPanel for each Building object
+		ArrayList<Building> buildings = cityPanel.getBuildings();
+
+		for (int i = 0; i < buildings.size(); i++) {
+            Building b = buildings.get(i);
+            BuildingPanel bp = new BuildingPanel(b, i, this);
+            b.setBuildingPanel(bp);
+		}
+		for(int i = 0; i < cityPanel.busStops.size(); i++) {
+			BusStop bs = cityPanel.busStops.get(i);
+			BuildingPanel bp = new BuildingPanel(bs,i+buildings.size(),this);
+			bs.setBuildingPanel(bp);
+		}
+			
+		for(House h : apartment1.houses) {
+			apartment1HouseAnimationPanels.add(h.gui.hp);
+		}
+		for(House h : apartment2.houses) {
+			apartment2HouseAnimationPanels.add(h.gui.hp);
+
+		}
+			
+		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
+		apartment1Container.setOpaque(true);
+		JScrollPane apartment2Container = new JScrollPane(apartment2.gui.ap);
+		apartment2Container.setOpaque(true);
+		JScrollPane marketContainer = new JScrollPane(marketGui);
+		marketContainer.setOpaque(true);
+		JScrollPane restaurantContainer = new JScrollPane(restaurantGuiYc);
+		restaurantContainer.setOpaque(true);
+		JScrollPane restaurantContainerZT = new JScrollPane(restaurantGuiZt);
+		restaurantContainerZT.setOpaque(true);
+		JScrollPane restaurantContainerWc = new JScrollPane(restaurantGuiWc);
+		restaurantContainerWc.setOpaque(true);
+		JScrollPane restaurantContainerEs = new JScrollPane(restaurantGuiEs);
+		restaurantContainerEs.setOpaque(true);
+		JScrollPane restaurantContainerVK = new JScrollPane(vkAnimationPanel);
+		restaurantContainerVK.setOpaque(true);
+		JScrollPane bankContainer = new JScrollPane(bankGui);
+		bankContainer.setOpaque(true);
+		JScrollPane busStop1Container = new JScrollPane(this.cityPanel.busStops.get(0).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop2Container = new JScrollPane(this.cityPanel.busStops.get(1).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop3Container = new JScrollPane(this.cityPanel.busStops.get(2).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane busStop4Container = new JScrollPane(this.cityPanel.busStops.get(3).getGui());
+		busStop1Container.setOpaque(true);
+		JScrollPane bus1Container = new JScrollPane(this.cityPanel.buses.get(0).getGui());
+		bus1Container.setOpaque(true);
+		
+		
+		buildingPanels.add(apartment1Container,"" + 13);
+		buildingPanels.add(apartment2Container,"" + 12);
+
+        buildingPanels.add(restaurantContainer, "" + 16);
+        buildingPanels.add(restaurantContainerVK, "" + 17);
+        buildingPanels.add(restaurantContainerZT, "" + 18);
+        buildingPanels.add(restaurantContainerWc, "" + 19);
+        buildingPanels.add(restaurantContainerEs, "" + 20);
+
+
+        buildingPanels.add(bankContainer, "" + 15);
+        
+        buildingPanels.add(marketContainer,"" + 14);
+        
+        buildingPanels.add(busStop1Container,"" + 21);
+        buildingPanels.add(busStop2Container,"" + 22);
+        buildingPanels.add(busStop3Container,"" + 23);
+        buildingPanels.add(busStop4Container,"" + 24);
+        
+        
+
+        
+        for(int j = 0; j < houseAnimationPanels.size(); j++)
+        {
+        	if(j != 12) { //This handles outside houses ONLY
+	        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
+	    		houseContainer.setOpaque(true);
+	    	
+	    		buildingPanels.add(houseContainer, "" + j);
+        	}
+        }
+        for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++) {
+        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment1HouseAnimationPanels.get(j));
+        	buildingPanels.add(apartmentHouseContainer, "a1" + j);
+
+        }
+        for(int j = 0; j < apartment2HouseAnimationPanels.size(); j++) {
+        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment2HouseAnimationPanels.get(j));
+        	buildingPanels.add(apartmentHouseContainer, "a2" + j);
+
+        }
+
+        
+        buildingPanels.setOpaque(true);
+        cityControls.setOpaque(true);
+        cityPanel.setOpaque(true);
+		
+	    c.gridx = 0; c.gridy = 0;
+	    c.gridwidth = 2; c.gridheight = 1;
+	    this.add(cityPanel, c);
+
+	    c.gridx = 0; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(buildingPanels, c);
+
+	    c.gridx = 1; c.gridy = 1;
+	    c.gridwidth = 1; c.gridheight = 1;
+	    this.add(cityControls, c);
+	    
+	    this.pack();
+		
+		timer.start();
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+	}
+	
+	public void ClearWorld() {
+		for(PeopleAgent person : people) {
+			person.roles.clear();
+			person.Arrived();
+			person.stopThread();
+			
+		}
+		for(House house : houses) {
+			house.gui.guis.clear();
+		}
+		cityPanel.vehicles.clear();
+		cityPanel.people.clear();
+		timer.restart();
+		time = 0;
+	}
+	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, RevolvingStand revolvingStand) {
+		ClearWorld();
 		FileReader input = null;
 		try {
 			if(System.getProperty("file.separator").equals("/"))
@@ -283,6 +451,7 @@ public class CityGui extends JFrame implements ActionListener {
 					HousingResidentRole residentRole = new HousingResidentRole();
 					if(count <= 11) {
 						House house = new House("House", 1, HouseType.Villa);
+						houses.add(house);
 						HouseGui houseGui = new HouseGui(house);
 						house.setGui(houseGui);
 						house.setItems();
@@ -294,6 +463,7 @@ public class CityGui extends JFrame implements ActionListener {
 						extraPeople++;
 						for(int i=0;i < extraPeople;  i++) {
 							House apartmentHouse = apartment1.getAvailableApartment();
+							houses.add(apartmentHouse);
 							apartmentHouse.setOccupant(residentRole);
 							residentRole.setHouse(apartmentHouse);
 						}
@@ -540,157 +710,23 @@ public class CityGui extends JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		setVisible(true);
-		setSize(1024, 768);
-
-		getContentPane().setLayout(new GridBagLayout());
+		BusAgent busAgent = new BusAgent();
+		BusStopGui busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322, "BusStop2"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132, "BusStop3"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
 		
-		GridBagConstraints c = new GridBagConstraints();
-		
-		cityControls = new CityControls(cityPanel, this);
-		cityControls.setPreferredSize(new Dimension(500, 268));
-		cityControls.setMaximumSize(new Dimension(500, 268));
-		cityControls.setMinimumSize(new Dimension(500, 268));
-		
-		cardLayout = new CardLayout();
-
-		buildingPanels = new JPanel();
-		buildingPanels.setLayout(cardLayout);
-		buildingPanels.setPreferredSize(new Dimension(500, 268));
-		buildingPanels.setMaximumSize(new Dimension(500, 268));
-		buildingPanels.setMinimumSize(new Dimension(500, 268));
-		buildingPanels.setBackground(Color.yellow);
-
-
-		// Create the BuildingPanel for each Building object
-		ArrayList<Building> buildings = cityPanel.getBuildings();
-
-		for (int i = 0; i < buildings.size(); i++) {
-            Building b = buildings.get(i);
-            BuildingPanel bp = new BuildingPanel(b, i, this);
-            b.setBuildingPanel(bp);
-		}
-		for(int i = 0; i < cityPanel.busStops.size(); i++) {
-			BusStop bs = cityPanel.busStops.get(i);
-			BuildingPanel bp = new BuildingPanel(bs,i+buildings.size(),this);
-			bs.setBuildingPanel(bp);
-		}
-			
-		for(House h : apartment1.houses) {
-			apartment1HouseAnimationPanels.add(h.gui.hp);
-		}
-		for(House h : apartment2.houses) {
-			apartment2HouseAnimationPanels.add(h.gui.hp);
-
-		}
-			
-		JScrollPane apartment1Container = new JScrollPane(apartment1.gui.ap);
-		apartment1Container.setOpaque(true);
-		JScrollPane apartment2Container = new JScrollPane(apartment2.gui.ap);
-		apartment2Container.setOpaque(true);
-		JScrollPane marketContainer = new JScrollPane(marketGui);
-		marketContainer.setOpaque(true);
-		JScrollPane restaurantContainer = new JScrollPane(restaurantGuiYc);
-		restaurantContainer.setOpaque(true);
-		JScrollPane restaurantContainerZT = new JScrollPane(restaurantGuiZt);
-		restaurantContainerZT.setOpaque(true);
-		JScrollPane restaurantContainerWc = new JScrollPane(restaurantGuiWc);
-		restaurantContainerWc.setOpaque(true);
-		JScrollPane restaurantContainerEs = new JScrollPane(restaurantGuiEs);
-		restaurantContainerEs.setOpaque(true);
-		JScrollPane restaurantContainerVK = new JScrollPane(vkAnimationPanel);
-		restaurantContainerVK.setOpaque(true);
-		JScrollPane bankContainer = new JScrollPane(bankGui);
-		bankContainer.setOpaque(true);
-		JScrollPane busStop1Container = new JScrollPane(this.cityPanel.busStops.get(0).getGui());
-		busStop1Container.setOpaque(true);
-		JScrollPane busStop2Container = new JScrollPane(this.cityPanel.busStops.get(1).getGui());
-		busStop1Container.setOpaque(true);
-		JScrollPane busStop3Container = new JScrollPane(this.cityPanel.busStops.get(2).getGui());
-		busStop1Container.setOpaque(true);
-		JScrollPane busStop4Container = new JScrollPane(this.cityPanel.busStops.get(3).getGui());
-		busStop1Container.setOpaque(true);
-		JScrollPane bus1Container = new JScrollPane(this.cityPanel.buses.get(0).getGui());
-		bus1Container.setOpaque(true);
-		
-		
-		buildingPanels.add(apartment1Container,"" + 13);
-		buildingPanels.add(apartment2Container,"" + 12);
-
-        buildingPanels.add(restaurantContainer, "" + 16);
-        buildingPanels.add(restaurantContainerVK, "" + 17);
-        buildingPanels.add(restaurantContainerZT, "" + 18);
-        buildingPanels.add(restaurantContainerWc, "" + 19);
-        buildingPanels.add(restaurantContainerEs, "" + 20);
-
-
-        buildingPanels.add(bankContainer, "" + 15);
-        
-        buildingPanels.add(marketContainer,"" + 14);
-        
-        buildingPanels.add(busStop1Container,"" + 21);
-        buildingPanels.add(busStop2Container,"" + 22);
-        buildingPanels.add(busStop3Container,"" + 23);
-        buildingPanels.add(busStop4Container,"" + 24);
-        
-        
-
-        
-        for(int j = 0; j < houseAnimationPanels.size(); j++)
-        {
-        	if(j != 12) { //This handles outside houses ONLY
-	        	JScrollPane houseContainer = new JScrollPane(houseAnimationPanels.get(j));
-	    		houseContainer.setOpaque(true);
-	    	
-	    		buildingPanels.add(houseContainer, "" + j);
-        	}
-        }
-        for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++) {
-        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment1HouseAnimationPanels.get(j));
-        	buildingPanels.add(apartmentHouseContainer, "a1" + j);
-
-        }
-        for(int j = 0; j < apartment2HouseAnimationPanels.size(); j++) {
-        	JScrollPane apartmentHouseContainer = new JScrollPane(apartment2HouseAnimationPanels.get(j));
-        	buildingPanels.add(apartmentHouseContainer, "a2" + j);
-
-        }
-
-        
-        buildingPanels.setOpaque(true);
-        cityControls.setOpaque(true);
-        cityPanel.setOpaque(true);
-		
-	    c.gridx = 0; c.gridy = 0;
-	    c.gridwidth = 2; c.gridheight = 1;
-	    this.add(cityPanel, c);
-
-	    c.gridx = 0; c.gridy = 1;
-	    c.gridwidth = 1; c.gridheight = 1;
-	    this.add(buildingPanels, c);
-
-	    c.gridx = 1; c.gridy = 1;
-	    c.gridwidth = 1; c.gridheight = 1;
-	    this.add(cityControls, c);
-	    
-	    this.pack();
-		
-		timer.start();
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-	}
-	
-	public void ClearWorld() {
-		for(PeopleAgent person : people) {
-			person.Arrived();
-			person.stopThread();
-			
-		}
-		cityPanel.vehicles.clear();
-		cityPanel.people.clear();
-	}
-	public void CreateWorld() {
-		
+		InsideBusGui igb = new InsideBusGui();
+		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+		cityPanel.buses.add(bg);
+		busAgent.setGui(bg);
+		busAgent.startThread();
+		bg.msgGoToNextStop(busAgent, cityPanel.busStops.get(cityPanel.busStops.size()-1));
+		cityPanel.vehicles.add(bg);
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
