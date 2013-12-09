@@ -58,7 +58,7 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void move(double xVelocity, double yVelocity) {
-		System.out.println(this.direction);
+//		System.out.println(this.direction);
 		Sidewalk nextCell;
 		if (this.direction.equals("right")) {
 			nextCell = sidewalkSegment.get(sidewalkSegment
@@ -269,7 +269,7 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void draw(Graphics2D g2) {
-		System.out.println(getCurrentLane());
+//		System.out.println(getCurrentLane());
 		if (xDestination > 0 && yDestination > 0) {
 			time++;
 			g2.setColor(Color.red);

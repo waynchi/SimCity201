@@ -1,5 +1,5 @@
 1,RepairMan,BobTheBuilder,50000,50000
-1,Teller,teller,1000,1930
+1,Teller,teller,1000,2100
 1,RestaurantNormalWaiter,John,1000,1900
 1,RestaurantNormalWaiter,Joey,1000,1900
 1,RestaurantNormalWaiter,Judah,1000,1900
