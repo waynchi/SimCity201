@@ -421,7 +421,7 @@ public class CashierRoleEs extends Role implements Cashier {
 		//if (working_capital > bill.amount) {
 		//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
 		if (!inTest) {
-		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.orderNumber, this);
 		}
 		setMyMoney(0);
 

@@ -128,7 +128,8 @@ public class CookRole extends Role implements Cook{
 		atFridge.release();
 		myPerson.CallstateChanged();
 	}
-
+	
+	
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
 		log.add(new LoggedEvent("received an order for table " + tableNum));
 		orders.add( new MyOrder(food, w, tableNum));
@@ -470,20 +471,20 @@ public class CookRole extends Role implements Cook{
 			capacity = 5;
 			isOrdered = false;
 			if (type.equals("Steak")) {
-				cookingTime = 5000;
-				amount = 3;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Chicken")) {
-				cookingTime = 3000;
-				amount = 3;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Salad")) {
-				cookingTime = 3000;
-				amount = 5;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Pizza")) {
-				cookingTime = 4000;
-				amount = 5;
+				cookingTime = 1000;
+				amount = 100;
 			}
 		}
 	}
@@ -513,6 +514,17 @@ public class CookRole extends Role implements Cook{
 	public int getRestaurantIndex() {
 		// TODO Auto-generated method stub
 		return restaurantIndex;
+	}
+
+	//for normative scenario C
+
+	@Override
+	public void setLow() {
+		for (Map.Entry<String, Food> entry : foods.entrySet()) {
+			entry.getValue().amount = 4;
+		}
+		orderFoodThatIsLow();
+		getPersonAgent().CallstateChanged();
 	}
 	
 }

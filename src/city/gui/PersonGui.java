@@ -293,6 +293,10 @@ public class PersonGui extends Rectangle2D.Double {
 				person.msgDone("PersonGui");
 				this.destination = null;
 			}
+			if(getCurrentLane().equals("12_15")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "up";
+			}
 			if(getCurrentLane().equals("6_16")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
@@ -349,7 +353,7 @@ public class PersonGui extends Rectangle2D.Double {
 						// We need to cross
 						this.direction = "up";
 						sidewalkSegment = allSidewalks.get(16);
-						currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+						currentCell = sidewalkSegment.get(12);
 					}
 					if (yDestination == 152) {
 						this.direction = "right";
@@ -371,7 +375,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = false;
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(10);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+				currentCell = sidewalkSegment.get(0);
 			}
 			if (getCurrentLane().equals("10_27")) {
 				this.currentCell.hasPerson = false;
@@ -390,7 +394,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
 				sidewalkSegment = allSidewalks.get(23);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+				currentCell = sidewalkSegment.get(28);
 			}
 			if (getCurrentLane().equals("23_0")) {
 				this.currentCell.hasPerson = false;
@@ -415,20 +419,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(24);
 				currentCell = sidewalkSegment.get(0);
-			}
-			if (getCurrentLane().equals("24_4")) {
-				this.currentCell.hasPerson = false;
-				if (xDestination > x) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(24);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				} else {
-					this.direction = "up";
-					sidewalkSegment = allSidewalks.get(20);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				}
-
-			}
+			}			
 			if (getCurrentLane().equals("24_24")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "up";

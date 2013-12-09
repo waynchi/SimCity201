@@ -25,25 +25,30 @@ public class RestaurantCashierGui implements Gui{
 	@Override
 	public void updatePosition() {
 		// TODO Auto-generated method stub
-		 if (xPos < xDestination)
-	            xPos++;
-	        else if (xPos > xDestination)
-	            xPos--;
+		if (xPos < xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos += 2;
+		else if (xPos > xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos -= 2;
+		
+		if (yPos < yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos += 2;
+		else if (yPos > yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos -= 2;
 
-	        if (yPos < yDestination)
-	            yPos++;
-	        else if (yPos > yDestination)
-	            yPos--;
-	        if (xPos == xDestination && yPos == yDestination && goingToWorkPlace){
+		if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
+			xPos = xDestination;
+			yPos = yDestination;
+	        if (goingToWorkPlace){
 	        	cashier.msgAtPosition();
 	        	goingToWorkPlace = false;
 	        }
-	        if (xPos == xExit && yPos == yExit && leaving){
+	        if (leaving){
 	        	cashier.msgAtExit();
 	        	xDestination = 250;
 	        	yDestination = 250;
 	        	leaving = false;
 	        }
+		}
 	}
 
 	@Override
