@@ -3,6 +3,7 @@ package restaurant.test.mock;
 import market.interfaces.MarketCashier;
 import restaurant.interfaces.Cashier;
 import bank.interfaces.BankCustomer;
+import bank.interfaces.Robber;
 import bank.interfaces.Teller;
 
 public class MockTeller extends Mock implements Teller{
@@ -71,6 +72,24 @@ public class MockTeller extends Mock implements Teller{
 
 	@Override
 	public void msgWithdraw(double moneyNeeded) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void msgGiveMoney() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void msgHere(Robber robber, String name) {
 		// TODO Auto-generated method stub
 		
 	}
