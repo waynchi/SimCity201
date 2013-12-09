@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import people.People;
-import restaurant.test.mock.LoggedEvent;
 import market.gui.AnimationPanel;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;

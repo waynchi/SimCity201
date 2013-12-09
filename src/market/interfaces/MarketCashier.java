@@ -2,6 +2,7 @@ package market.interfaces;
 
 import java.util.Map;
 
+import people.People;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
 
@@ -30,4 +31,6 @@ public interface MarketCashier {
 	public abstract void msgWithdrawSuccessful(double funds, double amount);
 	
 	public abstract void msgDepositSuccessful(double funds);
+
+	public abstract People getPersonAgent();
 }

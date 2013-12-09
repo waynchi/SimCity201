@@ -49,6 +49,7 @@ public class MarketCashierTest extends TestCase{
 		mme = new MockMarketEmployee("mme");
 		cashier.setMarketEmployee(mme);
 		cashier.setTeller(teller);
+		mme.setCashier(cashier);
 
 		mmc = new MockMarketCustomer("mmc");
 		restaurantCashier = new MockCashier("mcashier");
@@ -58,7 +59,8 @@ public class MarketCashierTest extends TestCase{
 		cashier.inTest = true;
 	}
 	
-	public void testOpeningAndClosing (){
+	// market is still open when market cashier leaves work
+	public void testOpeningAndLeavingWork (){
 		//check precondition
 		assertFalse(cashier.isActive());
 		cashier.msgIsActive();
@@ -73,11 +75,43 @@ public class MarketCashierTest extends TestCase{
 		assertFalse(cashier.leaveWork);
 	}
 	
+	// market is closed but bank is open when market cashier leaves work
+	public void testCloseMarketWithBank () {
+		//check precondition
+				assertFalse(cashier.isActive());
+				cashier.msgIsActive();
+				cashier.pickAndExecuteAnAction();
+				assertTrue(cashier.log.containsString("clock in"));
+				assertFalse(cashier.turnActive);
+				assertTrue("market cashier should be added to the workers list of employee, and the size of list shoud be 1 now but "
+						+ "instead it's " + mme.getWorkers().size(),
+						mme.getWorkers().size()==1);
+				
+				cashier.msgIsInActive();
+				people.getMyMarket(0).isClosed = true;
+				cashier.pickAndExecuteAnAction();
+				assertTrue("market cashier shoule be in action prepare to close but it's not. the log reads " + cashier.log.toString(),
+						cashier.log.containsString("In action prepareToClose"));
+				assertEquals("total salary for workers should be 200.0, but instead it's " + cashier.getTotalSalary(),
+						cashier.getTotalSalary(),200.0);
+				assertTrue("cashier has enough money to pay everyone and should be paying, but it's not",
+						cashier.log.containsString("paying everybody"));
+				assertEquals("working capital should be 10000-200 = 9800 but it's not. Instead it's " + cashier.working_capital,
+						cashier.working_capital, 9800.0);
+				assertEquals("the mock people of cahsier should now get paid and have 1200 in total but it doesn't",
+						people.getMoney(), 1200.0);
+				
+				//check if mock teller has received the correct message
+				assertTrue("teller should have received message need help from market cashier, but it doesn't. The log reads " + teller.log.toString(),
+						teller.log.containsString("received message need help from cashier people"));
+				
+	}
+	
 	public void testBankInteraction() {
 		
 	}
 	
-	public void testBankClosing (){
+	public void testBankClosed (){
 		
 	}
 	
@@ -124,8 +158,15 @@ public class MarketCashierTest extends TestCase{
 		
 		cashier.msgHereIsPayment(100.0, items2, restaurantCashier);
 		assertTrue("check state should now be paid but it's not.",
-				cashier.checks.get(0).getState())
+				cashier.checks.get(0).getState().equals("PAID"));
 		
+		cashier.pickAndExecuteAnAction();
+		assertTrue("cashier should be giving change to restaurant cashier but it's not",
+				cashier.log.containsString("giving change to restaurant cashier and the amount is 61.08"));
+		
+		//check if restaurant cashier has got the correct message
+		assertTrue("restaurant cashier should have got the change but it hasn't. log reads " + restaurantCashier.log.toString(),
+				restaurantCashier.log.containsString("Received msgHereIsChange, change is 61.08"));
 	}
 	
 }
