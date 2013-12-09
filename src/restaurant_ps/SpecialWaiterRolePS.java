@@ -1,12 +1,12 @@
 package restaurant_ps;
 
 import restaurant_ps.gui.RestaurantGuiPS;
-import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitor;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
 import restaurant_ps.gui.WaiterGuiPS;
 import restaurant_ps.interfaces.Waiter;
 
 public class SpecialWaiterRolePS extends BaseWaiterRole implements Waiter{
-	public SpecialWaiterRolePS(CookWaiterMonitor monitor, RestaurantGuiPS gui) {
+	public SpecialWaiterRolePS(CookWaiterMonitorPS monitor, RestaurantGuiPS gui) {
 		super();
 		restGui = gui;
 		waiterGui = new WaiterGuiPS(this);

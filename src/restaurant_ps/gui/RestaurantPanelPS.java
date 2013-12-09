@@ -23,7 +23,7 @@ import java.util.Vector;
 public class RestaurantPanelPS extends JPanel implements ActionListener{
 
     //Host, cook, waiters and customers
-	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
+	public CookWaiterMonitorPS theMonitor = new CookWaiterMonitorPS();
 
     private HostRolePS host;
     //private HostGui hostGui = new HostGui(host);
@@ -50,7 +50,7 @@ public class RestaurantPanelPS extends JPanel implements ActionListener{
         }
     }*/
 
-    public class CookWaiterMonitor extends Object {
+    public class CookWaiterMonitorPS extends Object {
         private List<MyOrder> orders = new ArrayList<MyOrder>();
         synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
                 orders.add (cook.new MyOrder (food, waiter,table));
