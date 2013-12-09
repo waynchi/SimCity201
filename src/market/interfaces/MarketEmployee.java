@@ -1,9 +1,12 @@
 package market.interfaces;
 
+import java.util.List;
 import java.util.Map;
 
+import people.People;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
+import restaurant.test.mock.EventLog;
 
 public interface MarketEmployee {
 
@@ -32,6 +35,8 @@ public interface MarketEmployee {
 	public abstract void msgOrderDelivered(int orderNumber);
 
 	public abstract void msgOrderNotDelivered(int orderNumber);
+
+	public abstract List<People> getWorkers();
 
 
 }

@@ -77,6 +77,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			totalPaid = totalDue = 0.0;
 			orderNumber = _orderNumber;
 		}
+
+		public String getState() {
+			// TODO Auto-generated method stub
+			return state.toString();
+		}
 	}
 
 	public MarketCashierRole(MarketGui gui) {
@@ -344,6 +349,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		double total = getTotalSalary() + min_working_capital;
 		if (working_capital >= total) {
 			payWorkers(); 	
+			print("in prepareToClose, about to message teller for help");
 			teller.msgNeedHelp(this, "blah");
 			bankState = bankActivityState.ASKED_FOR_HELP;	
 			deposit = true;
@@ -356,15 +362,15 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 	}
 
-	private double getTotalSalary() {
+	public double getTotalSalary() {
 		log.add(new LoggedEvent("in action getTotalSalary, calculating total salary for workeres"));
-		return (((MarketEmployeeRole)marketEmployee).getWorkers().size() * salary);
+		return (marketEmployee.getWorkers().size() * salary);
 	}
 
 	private void payWorkers() {
-		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
+		log.add(new LoggedEvent("paying everybody"));
 		working_capital -= getTotalSalary();
-		for (People p : ((MarketEmployeeRole)marketEmployee).getWorkers()) {
+		for (People p : marketEmployee.getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
 			p.setMoney(money);
