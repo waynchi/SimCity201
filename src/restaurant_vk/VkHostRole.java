@@ -138,7 +138,7 @@ public class VkHostRole extends Role implements Host{
 		}
 		Table t = ((ArrayList<Table>) tables).get(table - 1);
 		t.setUnoccupied();
-		System.out.println("Table " + table + " is free.");
+		print("Table " + table + " is free.");
 		stateChanged();
 	}
 	
@@ -164,7 +164,9 @@ public class VkHostRole extends Role implements Host{
 		stateChanged();
 	}
 	
-	public void closeRestaurant() {
+	public void msgSetClose() {
+		print("Received msgSetClosed(). I'm VkHostRole.");
+		restaurant.isClosed = true;
 		closingState = ClosingState.ToBeClosed;
 		stateChanged();
 	}

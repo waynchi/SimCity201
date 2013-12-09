@@ -73,6 +73,7 @@ public class VkCustomerGui implements VkGui{
 				yPos = 300;
 				xDestination = -20;
 				yDestination = 300;
+				isPresent = false;
 				agent.msgAnimationFinishedLeaveRestaurant();
 			}
 			command=Command.noCommand;
@@ -142,7 +143,6 @@ public class VkCustomerGui implements VkGui{
 		xDestination = 500;
 		yDestination = 460;
 		caption = "";
-		isPresent = false;
 	}
 	
 	public void DoGoToRestaurant() {

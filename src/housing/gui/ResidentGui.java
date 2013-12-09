@@ -22,7 +22,6 @@ public class ResidentGui implements HGui{
 	private Timer cellPhoneTimer = new Timer();
 	private final int CELLPHONE_TIME = 1000;
 	private final int POOPING_TIME = 1000;
-	private final int PEEING_TIME = 1000;
 	private final int BATHING_TIME = 1000;
 	private final int PREPING_TIME = 1000;
 	private final int COOKING_TIME = 1000;
@@ -34,7 +33,7 @@ public class ResidentGui implements HGui{
 	public HouseGui hGui;
 	public ApartmentsGui aGui;
 	
-	private enum State {Idle, Pooping, Peeing, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading,
+	private enum State {Idle, Pooping, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading,
 		WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, PlayingFussball, Leaving, Entering};
 	private enum Location {Home, Apartments, Outside};
 	
@@ -86,10 +85,6 @@ public class ResidentGui implements HGui{
 			}
 			else if (state == State.Pooping) {
 				timer.schedule(getTimerTask(state), POOPING_TIME);
-				state = State.Idle;
-			}
-			else if (state == State.Peeing) {
-				timer.schedule(getTimerTask(state), PEEING_TIME);
 				state = State.Idle;
 			}
 			else if (state == State.Bathing) {
@@ -202,12 +197,6 @@ public class ResidentGui implements HGui{
 	public void DoBathe() {
 		state = State.Bathing;
 		Dimension d = hGui.getPosition("BathTub");
-		goToLocation(d);
-	}
-
-	public void DoPee() {
-		state = State.Peeing;
-		Dimension d = hGui.getPosition("Toilet");
 		goToLocation(d);
 	}
 	

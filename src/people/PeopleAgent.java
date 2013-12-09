@@ -399,6 +399,10 @@ public class PeopleAgent extends Agent implements People{
 					{	
 						((HostRole) r.role).msgSetClose();
 					}
+					if(r.description.equals("RestaurantHostVk"))
+					{	
+						((VkHostRole) r.role).msgSetClose();
+					}
 //					if(r.description.equals("RestaurantHostVk"))
 //					{
 //						((VkHostRole) r.role).msgSetClose();
@@ -497,7 +501,7 @@ public class PeopleAgent extends Agent implements People{
 			if(hunger == HungerState.Hungry)
 			{
 				//change this for restaurant
-				if(!Restaurants.get(3).isClosed)
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) <2)
 					{
@@ -528,7 +532,7 @@ public class PeopleAgent extends Agent implements People{
 			if(hunger == HungerState.Hungry)
 			{
 				//change this for restaurant
-				if(!Restaurants.get(3).isClosed)
+				if(!Restaurants.get(1).isClosed)
 				{
 					if(rand.nextInt(2) < 2)
 					{
@@ -870,6 +874,9 @@ public class PeopleAgent extends Agent implements People{
 				{
 					for(MyRole r: roles)
 					{
+						//change this for restaurant
+						((CarPassengerRole)r.role).setDestination("Restaurant 2");
+						r.role.msgIsActive();
 						if(r.description == "CarPassenger")
 						{
 							//change this for restaurant
@@ -897,6 +904,8 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
+				personGui.setDestination("Restaurant 2");
+				print("Do Not Have Car");
 				if(r.description.equals("RestaurantCustomerVk"))
 				{
 					r.role.msgIsActive();
@@ -1094,6 +1103,15 @@ public class PeopleAgent extends Agent implements People{
 //				e.printStackTrace();
 //			}
 //		}
+		for(MyRole r: roles)
+		{
+			//change this for restaurant
+			if(r.description.equals("RestaurantCustomerVk"))
+			{
+				r.role.msgIsActive();
+			}
+			
+//			if(r.description.equals("RestaurantCustomer"))
 //		location = AgentLocation.Restaurant;
 //		print("Walking to Restaurant");
 //		hunger = HungerState.Eating;
@@ -1117,7 +1135,7 @@ public class PeopleAgent extends Agent implements People{
 ////			{
 ////				r.role.msgIsActive();
 ////			}
-//		}
+		}
 	}
 		
 

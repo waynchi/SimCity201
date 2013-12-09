@@ -382,7 +382,10 @@ public class CityGui extends JFrame implements ActionListener {
 		people.clear();
 		for(House house : houses) {
 			house.gui.guis.clear();
+			house.removeOccupant();
 		}
+		apartment1.gui.guis.clear();
+		apartment2.gui.guis.clear();
 		for(BusAgent bus : buses) {
 			bus.stopThread();
 		}
@@ -393,6 +396,8 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.buses.clear();
 		time = 0;
 		timer.stop();
+		count = 0;
+		System.out.println("Clearing. Number of houses = " + apartment1.availableApartments());
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
 		FileReader input = null;
@@ -483,7 +488,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					
-					int extraPeople = 0;
+//					int extraPeople = 0;
 					HousingResidentRole residentRole = new HousingResidentRole();
 					if(count <= 11) {
 						House house = new House("House", 1, HouseType.Villa);
@@ -494,15 +499,21 @@ public class CityGui extends JFrame implements ActionListener {
 						houseAnimationPanels.add(house.gui.hp);
 						house.setOccupant(residentRole);
 						residentRole.setHouse(house);
+						System.out.println("Person added to villa");
 					}
 					else {
-						extraPeople++;
-						for(int i=0;i < extraPeople;  i++) {
-							House apartmentHouse = apartment1.getAvailableApartment();
-							houses.add(apartmentHouse);
-							apartmentHouse.setOccupant(residentRole);
-							residentRole.setHouse(apartmentHouse);
+//						extraPeople++;
+						House apartmentHouse = apartment1.getAvailableApartment();
+						if (apartment1.houses.isEmpty()) {
+							System.out.println("Apartment complex is empty!");
 						}
+						if (apartmentHouse == null) {
+							System.out.println("House is null");
+						}
+						System.out.println("Creating. Number of houses = " + apartment1.availableApartments());
+						houses.add(apartmentHouse);
+						apartmentHouse.setOccupant(residentRole);
+						residentRole.setHouse(apartmentHouse);
 					}
 					
 					
