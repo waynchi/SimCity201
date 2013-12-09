@@ -139,6 +139,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Restaurant restaurant6 = new Restaurant(RestaurantHostRolePS, new Dimension(100,100), "Restaurant 6",6);
 	
 
+	List<House> myHouses = new ArrayList<House>();
 
 
 	
@@ -229,7 +230,20 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantCookWaiterMonitorEs = restPanel4.theMonitor;
 		RestaurantCookWaiterMonitorPS = restPanel6.theMonitor;
 
+		for (int i=0; i<=11;i++) {
+			House house = new House("House", 1, HouseType.Villa);
+			myHouses.add(house);
+			HouseGui houseGui = new HouseGui(house);
+			house.setGui(houseGui);
+			house.setItems();
+			houseAnimationPanels.add(house.gui.hp);
+		}
+		
+		
 		CreateWorld(RestaurantCookWaiterMonitor,RestaurantCookWaiterMonitorZT,RestaurantCookWaiterMonitorWc,RestaurantCookWaiterMonitorEs, RestaurantCookWaiterMonitorPS, revolvingStand);
+		
+		
+		
 		
 		setVisible(true);
 		setSize(1024, 768);
@@ -511,12 +525,8 @@ public class CityGui extends JFrame implements ActionListener {
 //					int extraPeople = 0;
 					HousingResidentRole residentRole = new HousingResidentRole();
 					if(count <= 11) {
-						House house = new House("House", 1, HouseType.Villa);
+						House house = myHouses.get(count);
 						houses.add(house);
-						HouseGui houseGui = new HouseGui(house);
-						house.setGui(houseGui);
-						house.setItems();
-						houseAnimationPanels.add(house.gui.hp);
 						house.setOccupant(residentRole);
 						residentRole.setHouse(house);
 						System.out.println("Person added to villa");
