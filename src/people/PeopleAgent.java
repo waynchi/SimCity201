@@ -1163,7 +1163,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Home " + HomeNum); //TODO this is guess
+				personGui.setDestination("Home 1"); //TODO this is guess
 				print("Do Not Have Car");
 			}
 			
