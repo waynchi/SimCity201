@@ -398,6 +398,12 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.people.clear();
 		cityPanel.busStops.clear();
 		cityPanel.buses.clear();
+		for(Lane lane : cityPanel.lanes) {
+			lane.hasCar = false;
+		}
+		for(Sidewalk sidewalk : cityPanel.sidewalks) {
+			sidewalk.hasPerson = false;
+		}
 		time = 0;
 		timer.stop();
 		count = 0;
