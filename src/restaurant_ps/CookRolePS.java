@@ -332,7 +332,7 @@ public class CookRolePS extends Role implements Cook{
 			}
 		}
 		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgOrder(marketOrder,this, cashier);	
+		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
 	}
 	
 	
@@ -496,7 +496,7 @@ public class CookRolePS extends Role implements Cook{
 		return cookGui;
 	}
 
-	public void setHost(Host h) {
+	public void setHost(HostRolePS h) {
 		host = h;
 	}
 
