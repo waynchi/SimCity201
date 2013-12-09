@@ -50,6 +50,7 @@ public class MarketEmployeeTest extends TestCase{
 		cashier = new MockMarketCashier("marketCashier");
 		employee = new MarketEmployeeRole(gui);
 		employee.inTest = true;
+		employee.getTrucks().clear();
 		employee.setPerson(people);
 		restaurant = people.new MyRestaurant();
 		people.addResetaurant(restaurant);

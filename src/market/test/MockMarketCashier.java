@@ -82,6 +82,12 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 		
 	}
 
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 

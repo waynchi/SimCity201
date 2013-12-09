@@ -257,7 +257,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
-			System.out.print(entry.getKey());
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
 				supply.put(entry.getKey(), entry.getValue());
 				items.get(entry.getKey()).inventory -= entry.getValue();
