@@ -127,7 +127,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	
 	Market market;
-	TellerRole BankTellerRole = new TellerRole(bankGui); 
+	TellerRole BankTellerRole;
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
@@ -156,6 +156,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer = new Timer(5, this);
 		
 		bankGui = new BankGui(timer);
+		BankTellerRole = new TellerRole(bankGui); 
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
 		restaurantGuiWc = new RestaurantGuiWc(timer);
