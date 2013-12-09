@@ -160,7 +160,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * A message used by the waiter to tell that the order can't be made.
 	 */
 	public void outOfChoice(Menu m, String choice) {
-		print("I have to decide again! Fuck it!");
+		print("I have to decide again! Screw it!");
 		customerGui.setCaption("");
 		this.menu = m;
 		state = AgentState.BeingSeated;

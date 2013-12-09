@@ -98,7 +98,6 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         g.drawImage(floor, 0, 0, null);
 
         // Here are the tables.
-        g2.setColor(Color.ORANGE);
         g.drawImage(table, TABLE_LEFT_X, TABLE_TOP_Y, null);
         g.drawImage(table, TABLE_LEFT_X + (TABLE_WIDTH + 10), TABLE_TOP_Y, null);
         g.drawImage(table, TABLE_LEFT_X + (2 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, null);

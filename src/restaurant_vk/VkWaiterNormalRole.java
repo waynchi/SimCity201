@@ -33,8 +33,8 @@ public class VkWaiterNormalRole extends VkWaiterBaseRole implements Waiter {
 	 */
 	protected void passOrderToCook(MyCustomer mc) {
 		mc.os = OrderStatus.GivenToCook;
-		cook.hereIsOrder(this, mc.choice, mc.table);
 		print("Order has been given to cook.");
+		cook.hereIsOrder(this, mc.choice, mc.table);
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------

@@ -99,6 +99,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			for (MyCustomer mc : customers) {
 				if (mc.table == table && mc.s == CustomerState.Ordered) {
 					mc.os = OrderStatus.ReadyToServe;
+					print("Inside if block");
 					break;
 				}
 			}
@@ -305,9 +306,9 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			e.printStackTrace();
 		}
 		
-		mc.c.whatWouldYouLike();
 		print("What would you like?");
 		mc.s = CustomerState.AskedToOrder;
+		mc.c.whatWouldYouLike();
 		
 		try {
 			waitingForOrder.acquire();
