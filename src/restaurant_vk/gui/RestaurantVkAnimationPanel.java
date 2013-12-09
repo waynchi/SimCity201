@@ -38,6 +38,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private Dimension bufferSize;
     public Image cookingGrill = new BufferedImage(100, 20, BufferedImage.TYPE_INT_BGR);
     public Image platingArea = new BufferedImage(400, 20, BufferedImage.TYPE_INT_BGR);
+    public Image fridge = new BufferedImage(20, 240, BufferedImage.TYPE_INT_BGR);
     private Timer timer;
 
     private List<VkGui> guis = new ArrayList<VkGui>();
@@ -61,6 +62,11 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		}
     	try {
 			platingArea = ImageIO.read(new File("res/restaurant_vk/platingArea.jpg"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+    	try {
+			fridge = ImageIO.read(new File("res/restaurant_vk/fridge.jpg"));
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
@@ -89,10 +95,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         
         g.drawImage(platingArea, PLATE_LEFT_X, PLATE_TOP_Y, null);
         
-        g2.setColor(Color.GRAY);
-        g2.fillRect(FRIDGE_LEFT_X, FRIDGE_TOP_Y, FRIDGE_WIDTH, FRIDGE_HEIGHT);
-        g2.setColor(Color.BLACK);
-        g2.drawString("REFRIGERATOR", FRIDGE_LEFT_X + 20, FRIDGE_TOP_Y + 25);
+        g.drawImage(fridge, FRIDGE_LEFT_X, FRIDGE_TOP_Y, null);
         
         g2.setColor(Color.ORANGE);
         g2.fillOval(STAND_LEFT_X, STAND_TOP_Y, STAND_DIAMETER, STAND_DIAMETER);
