@@ -739,7 +739,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 //		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
-//		personGui.setDestination("Bus Stop 1");
+//		personGui.setDestination("Restaurant 4");
 //		this.people.add(personGui); 
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
@@ -974,7 +974,17 @@ public class CityPanel extends JPanel implements MouseListener {
 			
 			}
 		}
-		
+		for( int i = 0; i<allSidewalks.size(); i++) {
+			ArrayList<Sidewalk> list = allSidewalks.get(i);
+			for(int k = 0; k < list.size(); k++)
+			{
+				Sidewalk l = list.get(k);
+				if(l.rectangle.contains(me.getX(), me.getY() ) ){
+					System.out.println("clicked sidewalk: " + i);
+			}
+			
+			}
+		}
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
