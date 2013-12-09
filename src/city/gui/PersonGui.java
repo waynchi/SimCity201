@@ -215,6 +215,10 @@ public class PersonGui extends Rectangle2D.Double {
 			xDestination = 720;
 			yDestination = 42;
 		}
+		else if(destination.equals("Restaurant 6")) {
+			xDestination = 1002;
+			yDestination = 343;
+		}
 		else if(destination.equals("Market")) {
 			xDestination = 580;
 			yDestination = 322;
@@ -279,6 +283,14 @@ public class PersonGui extends Rectangle2D.Double {
 				this.destination = null;
 				
 			}
+			else if (x == 1002.0 && y == 210.0 && called == true) { //hack for peppy
+				this.reachedDestination(this.destination);
+				this.currentCell.hasPerson = false;
+				called = false;
+				cityPanel.removePerson(this);
+				person.msgDone("PersonGui");
+				this.destination = null;
+			}
 			if(getCurrentLane().equals("7_16")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
@@ -286,6 +298,7 @@ public class PersonGui extends Rectangle2D.Double {
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
 			if(getCurrentLane().equals("26_0")) {
+				System.out.println(yDestination + " " + y);
 				this.currentCell.hasPerson = false;
 				if(yDestination < y) {
 					this.direction = "up";
