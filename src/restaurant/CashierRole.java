@@ -343,7 +343,15 @@ public class CashierRole extends Role implements Cashier {
 		}
 		
 		if (leaveWork) 	{
-			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) prepareToClose();
+			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) {
+				if (!getPersonAgent().getBank(0).isClosed) {
+					prepareToClose();
+				}
+				else {
+					payWorkers();
+					closeRestaurant();
+				}
+			}
 			else if (!getPersonAgent().getRestaurant(0).isClosed) leaveWork();
 			return true;
 		}

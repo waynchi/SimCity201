@@ -4,7 +4,7 @@ package restaurant_ps.gui;
 import java.util.*;
 
 import restaurant_ps.BaseWaiterRole;
-import restaurant_ps.RestaurantCustomerRole;
+import restaurant_ps.RestaurantCustomerRolePS;
 import restaurant_ps.interfaces.Customer;
 
 import java.awt.*;
@@ -123,7 +123,7 @@ public class WaiterGuiPS implements Gui {
 
     public void DoApproachCustomer(Customer c) {
     	currentCustomer = c;
-    	Dimension dm = tableMap.get(((RestaurantCustomerRole) c).getTableNumber());
+    	Dimension dm = tableMap.get(((RestaurantCustomerRolePS) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());

@@ -4,7 +4,7 @@ import restaurant_ps.BaseWaiterRole;
 import restaurant_ps.CookRolePS;
 import restaurant_ps.HostRolePS;
 import restaurant_ps.NormalWaiterRolePS;
-import restaurant_ps.RestaurantCustomerRole;
+import restaurant_ps.RestaurantCustomerRolePS;
 import restaurant_ps.SpecialWaiterRolePS;
 import restaurant_ps.CookRolePS.MyOrder;
 
@@ -28,7 +28,7 @@ public class RestaurantPanelPS extends JPanel implements ActionListener{
     private HostRolePS host;
     //private HostGui hostGui = new HostGui(host);
 	private CookRolePS cook;
-    private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
+    private Vector<RestaurantCustomerRolePS> customers = new Vector<RestaurantCustomerRolePS>();
     private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
 
 	//private CashierRole cashier = new CashierRole("Cashier", this);
@@ -82,7 +82,7 @@ public class RestaurantPanelPS extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		RestaurantCustomerRolePS c = new RestaurantCustomerRolePS(gui);	
     		CustomerGuiPS g = new CustomerGuiPS(c);
 
     		gui.animationPanel.addGui(g);// dw

@@ -65,7 +65,7 @@ public class CustomerGuiPS implements Gui{
 				customer.msgAtExit();
 				isHungry = false;
 				leaving = false;
-				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
+				//gui.setCustomerEnabled((RestaurantCustomerRolePS) customer);
 			}
 			command=Command.noCommand;
 		}

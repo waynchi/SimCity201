@@ -36,10 +36,10 @@ import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
-
+import restaurant_ps.HostRolePS;
+import restaurant_ps.RestaurantCustomerRolePS;
 import restaurant_ps.CashierRolePS;
 import restaurant_ps.CookRolePS;
-import restaurant_ps.HostRolePS;
 import restaurant_ps.NormalWaiterRolePS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS;
@@ -165,7 +165,7 @@ public class CityGui extends JFrame implements ActionListener {
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 5);
 		yelp.addRestaurant(restaurant5, 3);
-		yelp.addRestaurant(restaurant6, 6);
+		yelp.addRestaurant(restaurant6, 4);
 		
 		
 		apartment1.gui.ap.setCityGui(this);
@@ -446,12 +446,14 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Restaurants.add(restaurant3);
 					person.Restaurants.add(restaurant4);
 					person.Restaurants.add(restaurant5);
+					person.Restaurants.add(restaurant6);
 					person.Banks.add(bank);
 					person.Markets.add(market);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGuiYc);
 					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
 					RestaurantCustomerRoleWc RestaurantCustomerRoleWc = new RestaurantCustomerRoleWc(restaurantGuiWc);
 					RestaurantCustomerRoleEs RestaurantCustomerRoleEs = new RestaurantCustomerRoleEs(restaurantGuiEs);
+					RestaurantCustomerRolePS RestaurantCustomerRolePs = new RestaurantCustomerRolePS(restaurantGuiPS);
 
 					VkCustomerRole RestaurantCustomerRoleVk = new VkCustomerRole(vkAnimationPanel);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
@@ -481,6 +483,14 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT4);
 					person.addRole(RestaurantCustomerRoleWc, "RestaurantCustomerWc");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
 					RestaurantCustomerRoleWc.setPerson(person);
 										
 					
