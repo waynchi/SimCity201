@@ -10,7 +10,7 @@ public class RestaurantCashierGui implements Gui{
 	CashierRoleWc cashier;
 	RestaurantGuiWc gui;
 	
-	int xDestination = 250, yDestination = 250;
+	int xDestination = 350, yDestination = 250;
 	int xPos = 0, yPos = 0;
 	int xExit = 0, yExit = 0;
 	boolean goingToWorkPlace= false;
@@ -70,7 +70,7 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
-		xDestination = 250;
+		xDestination = 350;
 		yDestination = 250;
 		goingToWorkPlace = true;
 		
@@ -109,7 +109,7 @@ public class RestaurantCashierGui implements Gui{
 
 	public void setDefaultDestination() {
 		// TODO Auto-generated method stub
-		xDestination = 250;
+		xDestination = 350;
 		yDestination = 250;
 		goingToWorkPlace = true;
 	}

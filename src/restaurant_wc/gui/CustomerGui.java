@@ -18,7 +18,7 @@ public class CustomerGui implements Gui{
 
 	private int xPos, yPos;
 	private int xExit = 0, yExit = 0;
-	private int xDestination, yDestination;//??
+	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, WaitingForFood, Eating};
 	private Command command=Command.noCommand;
 	private String choice = new String("");
@@ -56,7 +56,7 @@ public class CustomerGui implements Gui{
 
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.GoToSeat) customer.msgAtTable();
-			else if (xDestination == 250 && yDestination == 230 && goingToCashier) {
+			else if (xDestination == 350 && yDestination == 230 && goingToCashier) {
 				goingToCashier = false;
 				customer.msgAtCashier();
 				
@@ -109,10 +109,9 @@ public class CustomerGui implements Gui{
 	}
 	
 	public void DoGoToCashier() {
-		// how could customer know where cashier is? I don't know...
 		command = Command.noCommand;
 		goingToCashier = true;
-		xDestination = 250;
+		xDestination = 350;
 		yDestination = 230;
 		
 	}
