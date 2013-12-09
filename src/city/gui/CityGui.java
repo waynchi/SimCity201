@@ -1207,14 +1207,14 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if(job.equals("NormativeB1"))
 					{
-						person.addJob("MarketEmployee", 5000, 50000);
+						person.addJob("MarketEmployee", start, end);
 						person.setMoney(100000);
 						((PeopleAgent)person).setType(job);
 						person.hasCar = false;
 					}
 					if(job.equals("NormativeB2"))
 					{
-						person.addJob("MarketCashier", 5000, 50000);
+						person.addJob("MarketCashier", start, end);
 						person.setMoney(100000);
 						((PeopleAgent)person).setType(job);
 						person.hasCar = false;
