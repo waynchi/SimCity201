@@ -373,7 +373,6 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.people.clear();
 		cityPanel.busStops.clear();
 		cityPanel.buses.clear();
-		timer.restart();
 		time = 0;
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, RevolvingStand revolvingStand) {
