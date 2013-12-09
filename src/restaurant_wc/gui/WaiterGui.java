@@ -25,9 +25,9 @@ public class WaiterGui implements Gui {
     private int homeIndex;
     
     private int cookX = 110;
-    private int cookY = 200;
+    private int cookY = 230;
     
-    private int cashierX = 250;
+    private int cashierX = 350;
     private int cashierY = 250;
     
     private int revolvingStandX = 350;
@@ -49,9 +49,9 @@ public class WaiterGui implements Gui {
         } catch (IOException e) {}
         
         this.role = role;
-        tableMap.put (1,new Dimension(100,100));
-        tableMap.put (2,new Dimension(200,100));
-        tableMap.put (3,new Dimension(300,100));  
+        tableMap.put (1,new Dimension(150,150));
+        tableMap.put (2,new Dimension(250,100));
+        tableMap.put (3,new Dimension(350,50));  
     }
 
     public void setHomePosition(int x) {

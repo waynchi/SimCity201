@@ -14,13 +14,13 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWY = 400;
     private final int xIncrement = 100;
     private final int yIncrement = -50;
-    public int KitchenX = 300;
+    public int KitchenX = 100;
     public int KitchenY = 250;
     public int KitchenSize = 150;
-    public int GrillX = 425;
+    public int GrillX = 225;
     public int GrillY = 250;
     public int GrillSize = 25;
-    public int FridgeX = 375;
+    public int FridgeX = 175;
     public int FridgeY = 375;
     public int tableNum = 0;
     private int xPos = 100;
@@ -83,10 +83,14 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         	g2.fillRect(KitchenX, KitchenY, GrillSize, KitchenSize);
         	g2.setColor(Color.BLACK);
         	g2.fillRect(FridgeX, FridgeY, GrillSize, GrillSize);
+        	//Revolving stand
+        	g2.fillOval(250, 330, 70, 70);
       //  add(t1Label);
       //  System.out.println(this.getSize().height + "," + this.getSize().width);
         //drawForMe(xPos, yPos, Sides );
         //test.paintIcon(this, g2, 500, 500);
+        	
+        	
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {
