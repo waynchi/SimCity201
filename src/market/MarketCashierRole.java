@@ -9,7 +9,6 @@ import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import people.People;
 import people.Role;
-import restaurant.CashierRole.bankActivityEvent;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
