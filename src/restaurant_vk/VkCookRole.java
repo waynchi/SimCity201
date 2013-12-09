@@ -356,6 +356,28 @@ public class VkCookRole extends Role implements Cook {
 		return false;
 	}
 	
+	public void setLow() {
+		Food f1 = inventory.get("Steak");
+		f1.low = 2;
+		f1.amount = 1;
+		f1.s = FoodState.Low;
+		
+		Food f2 = inventory.get("Chicken");
+		f2.low = 2;
+		f2.amount = 1;
+		f2.s = FoodState.Low;
+		
+		Food f3 = inventory.get("Salad");
+		f3.low = 2;
+		f3.amount = 1;
+		f3.s = FoodState.Low;
+		
+		Food f4 = inventory.get("Pizza");
+		f4.low = 2;
+		f4.amount = 1;
+		f4.s = FoodState.Low;
+	}
+	
 	/*
 	 * Finds the first order in the list of orders which has the specified
 	 * state.
