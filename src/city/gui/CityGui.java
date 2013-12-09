@@ -36,6 +36,7 @@ import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
+
 //vk
 import restaurant_vk.gui.*;
 import restaurant_vk.*;
@@ -87,6 +88,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGuiZt restaurantGuiZt;
 	RestaurantGuiWc restaurantGuiWc;
 	RestaurantGuiEs restaurantGuiEs;
+
 	RestaurantVkAnimationPanel vkAnimationPanel;
 	Yelp yelp = new Yelp();
 	
@@ -114,8 +116,7 @@ public class CityGui extends JFrame implements ActionListener {
 	HostRoleWc RestaurantHostRoleWc = new HostRoleWc();
 	HostRoleEs RestaurantHostRoleEs = new HostRoleEs();
 	VkHostRole RestaurantHostRoleVk;
-	
-	
+
 
 
 
@@ -175,6 +176,7 @@ public class CityGui extends JFrame implements ActionListener {
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
 		restaurant2.h = RestaurantHostRoleVk;
+
 
 		
 		marketGui = new MarketGui(timer);
