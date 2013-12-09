@@ -621,7 +621,7 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantHostEs")) {
 						person.addJob("RestaurantHostEs", start, end);
-						person.addRole(RestaurantHostRoleZt, "RestaurantHostEs");
+						person.addRole(RestaurantHostRoleEs, "RestaurantHostEs");
 						RestaurantHostRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
@@ -798,6 +798,8 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiYc.updatePosition();
 		restaurantGuiZt.updatePosition();
 		restaurantGuiWc.updatePosition();
+		restaurantGuiEs.updatePosition();
+		vkAnimationPanel.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
