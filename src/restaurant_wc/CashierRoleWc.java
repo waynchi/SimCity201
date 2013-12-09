@@ -595,5 +595,11 @@ public class CashierRoleWc extends Role implements Cashier {
 		return getPersonAgent().getName();
 	}
 
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

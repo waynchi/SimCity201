@@ -332,9 +332,8 @@ public class CookRoleWc extends Role implements Cook{
 			}
 		}
 		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgOrder(marketOrder,this, cashier);	
+		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
 	}
-	
 	
 	public void getOrderFromRevolvingStand() {
 		print ("going to revolving stand");

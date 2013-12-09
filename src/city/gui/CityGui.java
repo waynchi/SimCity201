@@ -671,6 +671,7 @@ public class CityGui extends JFrame implements ActionListener {
 		marketGui.updatePosition();
 		restaurantGuiYc.updatePosition();
 		restaurantGuiZt.updatePosition();
+		restaurantGuiWc.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
