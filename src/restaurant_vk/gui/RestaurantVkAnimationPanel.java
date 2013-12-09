@@ -36,9 +36,10 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     private final int STAND_DIAMETER = 20;
     private Image bufferImage;
     private Dimension bufferSize;
-    public Image cookingGrill = new BufferedImage(100, 20, BufferedImage.TYPE_INT_BGR);
-    public Image platingArea = new BufferedImage(400, 20, BufferedImage.TYPE_INT_BGR);
-    public Image fridge = new BufferedImage(20, 240, BufferedImage.TYPE_INT_BGR);
+    public Image cookingGrill = new BufferedImage(GRILL_WIDTH, GRILL_HEIGHT, BufferedImage.TYPE_INT_BGR);
+    public Image platingArea = new BufferedImage(PLATE_WIDTH, PLATE_HEIGHT, BufferedImage.TYPE_INT_BGR);
+    public Image fridge = new BufferedImage(FRIDGE_WIDTH, FRIDGE_HEIGHT, BufferedImage.TYPE_INT_BGR);
+    public Image table = new BufferedImage(TABLE_WIDTH, TABLE_HEIGHT, BufferedImage.TYPE_INT_BGR);
     public Image floor = new BufferedImage(680, 480, BufferedImage.TYPE_INT_BGR);
     private Timer timer;
 
@@ -76,6 +77,11 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
+    	try {
+			table = ImageIO.read(new File("res/restaurant_vk/diningTable.jpg"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
     	this.timer = timer;
     }
 
@@ -93,10 +99,10 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 
         // Here are the tables.
         g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLE_LEFT_X, TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
-        g2.fillRect(TABLE_LEFT_X + (TABLE_WIDTH + 10), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
-        g2.fillRect(TABLE_LEFT_X + (2 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
-        g2.fillRect(TABLE_LEFT_X + (3 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
+        g.drawImage(table, TABLE_LEFT_X, TABLE_TOP_Y, null);
+        g.drawImage(table, TABLE_LEFT_X + (TABLE_WIDTH + 10), TABLE_TOP_Y, null);
+        g.drawImage(table, TABLE_LEFT_X + (2 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, null);
+        g.drawImage(table, TABLE_LEFT_X + (3 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, null);
         
         g.drawImage(cookingGrill, GRILL_LEFT_X, GRILL_TOP_Y, null);
         g.setColor(Color.BLACK);
