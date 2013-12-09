@@ -1,43 +1,36 @@
 package restaurant_ps.interfaces;
 
-import java.util.Collection;
+import java.util.List;
 
-import restaurant_ps.Table;
-import restaurant_ps.WaiterAgent;
-import restaurant_ps.gui.HostGui;
+import people.People;
+import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
+import restaurant_zt.BaseWaiterRole;
 
 public interface Host {
 
-	public abstract String getMaitreDName();
+	public abstract void setCashier(Cashier cashierRole);
 
-	public abstract String getName();
+	public abstract List<Waiter> getWaiters();
 
-	public abstract void addWaiter(WaiterAgent w);
+	public abstract Cook getCook();
 
-	public abstract Collection<Table> getTables();
+	public abstract People getPerson();
 
-	// Messages
+	public abstract Cashier getCashier();
 
-	public abstract void msgIWantFood(Customer cust);
+	public abstract void msgTableIsFree(int tableNumber);
 
-	public abstract void msgImLeaving(Customer customerAgent);
+	public abstract void IWantABreak(Waiter w);
 
-	public abstract void msgLeavingTable(Customer cust);
+	public abstract List<Waiter> getAvailableWaiters();
 
-	public abstract void msgAtTable();
+	public abstract void IAmOffBreak(Waiter w);
 
-	public abstract void msgTableIsFree(Table t);
+	public abstract void addWaiter(Waiter Waiter);
 
-	public abstract void msgWantsToGoOnBreak(Waiter waiterAgent);
+	public abstract void setCook(Cook cookRole);
 
-	public abstract void setGui(HostGui gui);
-
-	public abstract HostGui getGui();
-
-	public abstract void pauseWaitersAndTheirCustomers();
-
-	public abstract void restartWaiters();
-
-	public abstract void newWaiter();
+	public abstract int getCustomerSize();
 
 }

@@ -1,46 +1,41 @@
-package restaurant_wc.gui;
+package restaurant_ps.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
-import restaurant_wc.CookRoleWc;
+import restaurant_ps.CookRolePS;
 
 
+public class CookGuiPS implements Gui {
 
-public class CookGui implements Gui {
-
-	private CookRoleWc role = null;
+	private CookRolePS role = null;
 	Boolean isCooking;
 	boolean goingBack = false;
 	boolean leavingWork = false;
 	boolean goingToFridge = false;
-	List<String> foodsBeingCooked = new ArrayList<String>();
 	String foodBeingCooked = null;
-	RestaurantGuiWc gui;
+	RestaurantGuiPS gui;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination = 150, 
+    private int xDestination = 70, 
     		xPos = 0;
     private int yDestination = 270,
     		yPos = 0;
     
-    private int cookX = 150;
+    private int cookX = 70;
     private int cookY = 270;
     
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 175, fridgeY = 350;
+    private int fridgeX = 150, fridgeY = 300;
     
     boolean isPresent;
 	
 	
-	public CookGui (CookRoleWc cook) {
+	public CookGuiPS (CookRolePS cook) {
 		isCooking = false;
 		role = cook;
 		for (int i=0;i<3;i++) {
@@ -94,14 +89,11 @@ public class CookGui implements Gui {
         g.setColor(Color.black);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
-        	for (int j=0; j<foodsBeingCooked.size(); j++) {
-        		g.drawString(foodsBeingCooked.get(j), 225, 255+(j*35));
-            }
-//        	g.drawString(foodBeingCooked, 225, 252);
+        	g.drawString(foodBeingCooked, 50, 265);
         }
         else g.drawString("", 50, 265);
-        for (int i=0; i<foodPlated.size(); i++) {
-        	g.drawString(foodPlated.get(i), 110, 250+(i*35));
+        for (int i=0; i<3;i++) {
+        	g.drawString(foodPlated.get(i), 50+45*i, 225);
         }
 	}
 
@@ -113,7 +105,6 @@ public class CookGui implements Gui {
 	public void cookFood (String food) {
 		isCooking = true;
 		foodBeingCooked = food;
-		foodsBeingCooked.add(food);
 	}
 	
 	public void plateFood (String food, int i){
@@ -125,16 +116,13 @@ public class CookGui implements Gui {
 	}
 	
 	public void finishCooking () {
-		foodsBeingCooked.remove(0);
-		if(foodsBeingCooked.isEmpty())
-		{
-			isCooking = false;
-		}
+		isCooking = false;
 	}
 
 	public void DoGoToRevolvingStand() {
 		xDestination = revolvingStandX;
 		yDestination = revolvingStandY;
+		
 	}
 	
 	public void setPresent(boolean b) {

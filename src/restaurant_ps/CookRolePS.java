@@ -1,12 +1,12 @@
-package restaurant_es;
+package restaurant_ps;
 
-import restaurant_es.gui.CookGui;
-import restaurant_es.gui.RestaurantGuiEs;
-import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
+import restaurant_ps.gui.CookGuiPS;
+import restaurant_ps.gui.RestaurantGuiPS;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant_es.interfaces.Host;
-import restaurant_es.interfaces.Waiter;
+import restaurant_ps.interfaces.Host;
+import restaurant_ps.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 
@@ -29,12 +29,12 @@ import people.Role;
 //has not been ordered for now.
 
 
-public class CookRoleEs extends Role implements Cook{
+public class CookRolePS extends Role implements Cook{
 	public EventLog log = new EventLog();
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
 	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
-	private CookWaiterMonitorEs theMonitor = null;
+	private CookWaiterMonitorPS theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
@@ -43,8 +43,8 @@ public class CookRoleEs extends Role implements Cook{
 	protected Semaphore atExit= new Semaphore (0,true);
 	protected Semaphore atFridge = new Semaphore (0,true);
 	
-	private CookGui cookGui = null;
-	private RestaurantGuiEs restGui = null;
+	private CookGuiPS cookGui = null;
+	private RestaurantGuiPS restGui = null;
 	public int restaurantIndex = 0;
 
 	private Boolean turnActive = false;
@@ -77,9 +77,9 @@ public class CookRoleEs extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRoleEs(CookWaiterMonitorEs monitor, RestaurantGuiEs gui) {
+	public CookRolePS(CookWaiterMonitorPS monitor, RestaurantGuiPS gui) {
 		this.restGui = gui;
-		cookGui = new CookGui(this);
+		cookGui = new CookGuiPS(this);
 		restGui.getAnimationPanel().addGui(cookGui);
 		cookGui.setPresent(false);
 		foods.put("Steak", new Food("Steak"));
@@ -399,7 +399,7 @@ public class CookRoleEs extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(4);
+		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
@@ -488,15 +488,15 @@ public class CookRoleEs extends Role implements Cook{
 		}
 	}
 
-	public void setGui(CookGui _cookGui) {
+	public void setGui(CookGuiPS _cookGui) {
 		cookGui = _cookGui;
 	}
 
-	public CookGui getGui() {
+	public CookGuiPS getGui() {
 		return cookGui;
 	}
 
-	public void setHost(HostRoleEs h) {
+	public void setHost(HostRolePS h) {
 		host = h;
 	}
 

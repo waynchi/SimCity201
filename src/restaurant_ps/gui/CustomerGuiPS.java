@@ -1,24 +1,24 @@
-package restaurant_wc.gui;
+package restaurant_ps.gui;
 
-import restaurant_wc.interfaces.Customer;
+import restaurant_ps.interfaces.Customer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class CustomerGui implements Gui{
+public class CustomerGuiPS implements Gui{
 
 	private Customer customer = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
 
 	//private HostAgent host;
-	RestaurantGuiWc gui;
+	RestaurantGuiPS gui;
 
 	private int xPos, yPos;
 	private int xExit = 0, yExit = 0;
-	private int xDestination, yDestination;
+	private int xDestination, yDestination;//??
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, WaitingForFood, Eating};
 	private Command command=Command.noCommand;
 	private String choice = new String("");
@@ -31,7 +31,7 @@ public class CustomerGui implements Gui{
 	
 	
 	// set the initial position of customer
-	public CustomerGui(Customer c){ //HostAgent m) {
+	public CustomerGuiPS(Customer c){ //HostAgent m) {
 		customer = c;
 		xPos = yPos = 0;
 		xDestination = 20;
@@ -56,7 +56,7 @@ public class CustomerGui implements Gui{
 
 		if (xPos == xDestination && yPos == yDestination) {
 			if (command==Command.GoToSeat) customer.msgAtTable();
-			else if (xDestination == 350 && yDestination == 230 && goingToCashier) {
+			else if (xDestination == 250 && yDestination == 230 && goingToCashier) {
 				goingToCashier = false;
 				customer.msgAtCashier();
 				
@@ -65,7 +65,7 @@ public class CustomerGui implements Gui{
 				customer.msgAtExit();
 				isHungry = false;
 				leaving = false;
-				//gui.setCustomerEnabled((RestaurantCustomerRoleWc) customer);
+				//gui.setCustomerEnabled((RestaurantCustomerRolePS) customer);
 			}
 			command=Command.noCommand;
 		}
@@ -109,9 +109,10 @@ public class CustomerGui implements Gui{
 	}
 	
 	public void DoGoToCashier() {
+		// how could customer know where cashier is? I don't know...
 		command = Command.noCommand;
 		goingToCashier = true;
-		xDestination = 350;
+		xDestination = 250;
 		yDestination = 230;
 		
 	}

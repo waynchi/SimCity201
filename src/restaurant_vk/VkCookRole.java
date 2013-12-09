@@ -102,12 +102,14 @@ public class VkCookRole extends Role implements Cook {
 	 * An action to plate the order once it has been cooked.
 	 */
 	private void plateIt(Order o) {
+		print("Plating " + o.choice);
 		DoPlateIt(o.choice);
 		try {
 			movingAround.acquire();
 		} catch (InterruptedException e) {}
 		o.w.orderIsReady(o.choice, o.table);
 		o.s = State.Finished;
+		print("Done plating " + o.choice);
 	}
 	
 	public void orderFromMarket() {
@@ -257,6 +259,9 @@ public class VkCookRole extends Role implements Cook {
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}
+		if (market == null) {
+			this.market = (MarketEmployee) myPerson.getMarketEmployee(0);
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();
@@ -387,10 +392,10 @@ public class VkCookRole extends Role implements Cook {
 	 * This is to initialize the inventory of food materials of the cook.
 	 */
 	private void initializeInventory() {
-		Food f1 = new Food("Steak", 1000, 1, 1, 5);
-		Food f2 = new Food("Chicken", 1000, 1, 2, 5);
-		Food f3 = new Food("Salad", 1000, 1, 2, 5);
-		Food f4 = new Food("Pizza", 1000, 1, 2, 5);
+		Food f1 = new Food("Steak", 500, 2, 2, 10);
+		Food f2 = new Food("Chicken", 500, 2, 2, 10);
+		Food f3 = new Food("Salad", 500, 2, 2, 10);
+		Food f4 = new Food("Pizza", 500, 2, 2, 10);
 		inventory.put("Steak", f1);
 		inventory.put("Chicken", f2);
 		inventory.put("Salad", f3);
@@ -434,6 +439,10 @@ public class VkCookRole extends Role implements Cook {
 	
 	public void setCashier(Cashier c) {
 		this.cashier = c;
+	}
+	
+	public String getName() {
+		return myPerson.getName();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------

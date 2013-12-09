@@ -1,13 +1,13 @@
-package restaurant_es;
+package restaurant_ps;
 
-import restaurant_es.gui.RestaurantGuiEs;
-import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
-import restaurant_es.gui.WaiterGui;
+import restaurant_ps.gui.RestaurantGuiPS;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
+import restaurant_ps.gui.WaiterGuiPS;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant_es.interfaces.Customer;
-import restaurant_es.interfaces.Host;
-import restaurant_es.interfaces.Waiter;
+import restaurant_ps.interfaces.Customer;
+import restaurant_ps.interfaces.Host;
+import restaurant_ps.interfaces.Waiter;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -22,7 +22,7 @@ import people.Role;
 
 // waiter can go on break if the gui button is pushed (as long as there are more than one waiter available)
 // that's why customer must negotiate with host and host might deny his request.
-public abstract class BaseWaiterRoleEs extends Role implements Waiter {
+public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
@@ -48,11 +48,11 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
 	protected agentState state;
-	protected CookWaiterMonitorEs theMonitor;
+	protected CookWaiterMonitorPS theMonitor;
 	
 	public class FoodOnMenu {
-		String type;
-		Double price;
+		public String type;
+		public Double price;
 		
 		public FoodOnMenu (String t, Double p) {
 			type = t;
@@ -61,8 +61,8 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 	
 	
-	public WaiterGui waiterGui = null;
-	protected RestaurantGuiEs restGui = null;
+	public WaiterGuiPS waiterGui = null;
+	protected RestaurantGuiPS restGui = null;
 
 	/*public BaseWaiterRole(String name, CookWaiterMonitor monitor) {
 		super();
@@ -334,7 +334,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 
 	private void clockIn() {
 		
-		host = (Host) getPersonAgent().getHost(4);
+		host = (Host) getPersonAgent().getHost(0);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
 		waiterGui.setPresent(true);
@@ -417,7 +417,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		((CookRoleEs) cook).getGui().foodPickedUp(customer.tableNumber);
+		((CookRolePS) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
 		print ("Bringing food to table " + customer.tableNumber);
 		try {
@@ -429,7 +429,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
-		((CashierRoleEs) cashier).msgHereIsBill(customer.c, customer.choice, this);
+		((CashierRolePS) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	
@@ -461,26 +461,26 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	
 	public void UpdateTableInfo(Customer c) {
 		currentCustomerNum--;
-		host.msgTableIsFree(((RestaurantCustomerRoleEs) c).getTableNumber());
+		host.msgTableIsFree(((RestaurantCustomerRolePS) c).getTableNumber());
 	}
 	
 	public abstract void done();
 
 	//utilities
 
-	public void setGui(WaiterGui gui) {
+	public void setGui(WaiterGuiPS gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGui getGui() {
+	public WaiterGuiPS getGui() {
 		return waiterGui;
 	}
 	
-	public void setHost (HostRoleEs h) {
+	public void setHost (Host h) {
 		host = h;
 	}
 	
-	public void setCook (CookRoleEs k) {
+	public void setCook (CookRolePS k) {
 		cook = k;
 	}
 	

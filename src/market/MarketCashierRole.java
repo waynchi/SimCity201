@@ -133,10 +133,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		if (!inTest)	log.add(new LoggedEvent("got a check for restaurant cashier " + restCashier.getName()));
 		checks.add(new Check(restCashier, items, orderNumber));
 		getPersonAgent().CallstateChanged();
-
 	}
-
-
 
 	// from regular market customer
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
@@ -164,10 +161,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			}
 		}
 		getPersonAgent().CallstateChanged();
-
 	}
-
-
 
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
@@ -202,7 +196,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		bankEvent = bankActivityEvent.BANK_CLOSED;
 		getPersonAgent().CallstateChanged();
 	}
-
 
 
 	// scheduler
@@ -261,6 +254,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			if (!inTest) {
 				if (getPersonAgent().getMarket(0).isClosed && checks.isEmpty()) {
 					if (getPersonAgent().getBank(0).isClosed) {
+						payWorkers();
 						closeMarket();
 					}
 					else {

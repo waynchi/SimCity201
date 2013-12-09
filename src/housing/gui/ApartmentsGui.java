@@ -14,7 +14,7 @@ public class ApartmentsGui implements HGui{
 	public int houseWidth = 76;
 	public int houseHeight = 76;
 	public Dimension entranceCoordinates = new Dimension(197, 520);
-	List<HGui> guis = new ArrayList<HGui>();
+	public List<HGui> guis = new ArrayList<HGui>();
 	public ApartmentsAnimationPanel ap;
 
 	public ApartmentsGui(Apartments a) {

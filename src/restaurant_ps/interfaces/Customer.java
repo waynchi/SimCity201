@@ -1,75 +1,49 @@
 package restaurant_ps.interfaces;
 
+import java.util.List;
+
 import restaurant.interfaces.Cashier;
-import restaurant_ps.Check;
-import restaurant_ps.Choice;
-import restaurant_ps.HostAgent;
-import restaurant_ps.Menu;
-import restaurant_ps.gui.CustomerGui;
+import restaurant_ps.BaseWaiterRole.FoodOnMenu;
+import restaurant_ps.gui.CustomerGuiPS;
 
 public interface Customer {
-
-	/**
-	 * hack to establish connection to Host agent.
-	 */
-	public abstract void setHost(HostAgent host);
-
-	public abstract void setWaiter(Waiter waiter);
-
-	public abstract String getCustomerName();
-
 	public abstract void gotHungry();
 
-	public abstract void msgAllTablesAreOccupied();
+	public abstract void msgRestaurantIsFull();
+	
+	// handles waiter follow me message and eventually sits down at the correct table
+	public abstract void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m);
 
-	public abstract void msgAnimationFinishedGoToHost();
+	// from animation, when customer has arrived at the table
+	public abstract void msgAtTable();
+	
+	public abstract void msgAtCashier();
+	
+	//from animation, when customer has made the choice on pop up list
+	public abstract void msgAnimationChoiceMade();
+	
+	//from waiter agent
+	public abstract void msgWhatWouldYouLike();
+	
+	//from waiter agent
+	public abstract void msgReorder(List<FoodOnMenu> newMenu);
+	
+	//from waiter agent
+	public abstract void msgHereIsYourFood();
+	
+	public abstract void msgHereIsCheck (Double d, Cashier cashier);
+	
+	public abstract void msgHereIsYourChange (Double change);
 
-	public abstract void msgFollowMe(Menu m, int table);
+	//from animation
 
-	public abstract void msgWhatWouldYouLikeToOrder();
+	public abstract String getChoice();
 
-	public abstract void msgOutOfFoodPleaseReOrder(Menu menu);
-
-	public abstract void msgHereIsYourFood(Choice o);
-
-	public abstract void msgWhatDoYouNeed();
-
-	public abstract void msgHereIsYourCheck(Check bill);
-
-	public abstract void msgPayNextTime();
-
-	public abstract void msgAcceptedPayment();
-
-	public abstract void msgAnimationFinishedGoToSeat();
-
-	public abstract void msgAnimationFinishedGoToCashier();
-
-	public abstract void msgAnimationFinishedLeaveRestaurant();
+	public abstract CustomerGuiPS getGui();
 
 	public abstract String getName();
 
-	public abstract int getHungerLevel();
+	public abstract void msgAtExit();
 
-	public abstract void setHungerLevel(int hungerLevel);
-
-	public abstract String toString();
-
-	public abstract void setGui(CustomerGui g);
-
-	public abstract CustomerGui getGui();
-
-	public abstract void setCashier(Cashier c);
-
-	public abstract Waiter getWaiter();
-
-	public abstract int getMoney();
-
-	public abstract void msgAnimationFinishedGoToWaiting();
-
-	public abstract void restartAgent();
-
-	public abstract void pauseAgent();
-
-	
-
+	public abstract String getState();
 }

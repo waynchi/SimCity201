@@ -1,11 +1,11 @@
-package restaurant_wc.gui;
+package restaurant_ps.gui;
 
 
 import java.util.*;
 
-import restaurant_wc.BaseWaiterRole;
-import restaurant_wc.RestaurantCustomerRoleWc;
-import restaurant_wc.interfaces.Customer;
+import restaurant_ps.BaseWaiterRole;
+import restaurant_ps.RestaurantCustomerRolePS;
+import restaurant_ps.interfaces.Customer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class WaiterGui implements Gui {
+public class WaiterGuiPS implements Gui {
 
     private BaseWaiterRole role = null;
     private boolean isPresent = false;
@@ -25,9 +25,9 @@ public class WaiterGui implements Gui {
     private int homeIndex;
     
     private int cookX = 110;
-    private int cookY = 230;
+    private int cookY = 200;
     
-    private int cashierX = 350;
+    private int cashierX = 250;
     private int cashierY = 250;
     
     private int revolvingStandX = 350;
@@ -43,15 +43,15 @@ public class WaiterGui implements Gui {
     
     private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
     
-    public WaiterGui(BaseWaiterRole role) {
+    public WaiterGuiPS(BaseWaiterRole role) {
         try {
             img = ImageIO.read(getClass().getResource("waiter.png"));
         } catch (IOException e) {}
         
         this.role = role;
-        tableMap.put (1,new Dimension(150,150));
-        tableMap.put (2,new Dimension(250,100));
-        tableMap.put (3,new Dimension(350,50));  
+        tableMap.put (1,new Dimension(100,100));
+        tableMap.put (2,new Dimension(200,100));
+        tableMap.put (3,new Dimension(300,100));  
     }
 
     public void setHomePosition(int x) {
@@ -123,7 +123,7 @@ public class WaiterGui implements Gui {
 
     public void DoApproachCustomer(Customer c) {
     	currentCustomer = c;
-    	Dimension dm = tableMap.get(((RestaurantCustomerRoleWc) c).getTableNumber());
+    	Dimension dm = tableMap.get(((RestaurantCustomerRolePS) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());

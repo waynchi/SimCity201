@@ -1,11 +1,11 @@
-package restaurant_es;
+package restaurant_ps;
 
-import restaurant_es.gui.RestaurantCashierGui;
-import restaurant_es.gui.RestaurantGuiEs;
+import restaurant_ps.gui.RestaurantCashierGuiPS;
+import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant.interfaces.Cashier;
-import restaurant_es.interfaces.Customer;
-import restaurant_es.interfaces.Host;
-import restaurant_es.interfaces.Waiter;
+import restaurant_ps.interfaces.Customer;
+import restaurant_ps.interfaces.Host;
+import restaurant_ps.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import java.util.*;
@@ -21,7 +21,7 @@ import people.Role;
 // waiter needs to go to cashier to take the bill
 // customer needs to go to cashier to pay
 
-public class CashierRoleEs extends Role implements Cashier {
+public class CashierRolePS extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
@@ -38,8 +38,8 @@ public class CashierRoleEs extends Role implements Cashier {
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL, BANK_CLOSED};
 	public bankActivityEvent bankEvent;
 
-	RestaurantGuiEs restGui;
-	RestaurantCashierGui cashierGui;
+	RestaurantGuiPS restGui;
+	RestaurantCashierGuiPS cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
 
@@ -105,9 +105,9 @@ public class CashierRoleEs extends Role implements Cashier {
 	}
 
 
-	public CashierRoleEs(RestaurantGuiEs gui) {
+	public CashierRolePS(RestaurantGuiPS gui) {
 		if (!inTest) {
-			cashierGui = new RestaurantCashierGui(this);
+			cashierGui = new RestaurantCashierGuiPS(this);
 			restGui = gui;
 			restGui.getAnimationPanel().addGui(cashierGui);
 			cashierGui.setPresent(false);
@@ -362,7 +362,7 @@ public class CashierRoleEs extends Role implements Cashier {
 	// Actions
 	private void clockIn() {
 		log.add(new LoggedEvent("in clock in"));
-		host = (Host) getPersonAgent().getHost(4);
+		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
 			host.setCashier(this);
@@ -476,7 +476,7 @@ public class CashierRoleEs extends Role implements Cashier {
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		for (People p : ((HostRoleEs)host).getWorkers()) {
+		for (People p : ((HostRolePS)host).getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
 			p.setMoney(money);
@@ -508,7 +508,7 @@ public class CashierRoleEs extends Role implements Cashier {
 
 	private double getTotalSalary() {
 		log.add(new LoggedEvent("in action getTotalSalary, calculating total salary for workeres"));
-		return (((HostRoleEs)host).getWorkers().size() * salary);
+		return (((HostRolePS)host).getWorkers().size() * salary);
 	}
 
 	private void depositExcessMoney() {

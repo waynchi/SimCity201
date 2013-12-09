@@ -1,25 +1,25 @@
-package restaurant_wc.gui;
+package restaurant_ps.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import restaurant_wc.CashierRoleWc;
+import restaurant_ps.CashierRolePS;
 
-public class RestaurantCashierGui implements Gui{
+public class RestaurantCashierGuiPS implements Gui{
 	boolean isPresent;
-	CashierRoleWc cashier;
-	RestaurantGuiWc gui;
+	CashierRolePS cashier;
+	RestaurantGuiPS gui;
 	
-	int xDestination = 350, yDestination = 250;
+	int xDestination = 250, yDestination = 250;
 	int xPos = 0, yPos = 0;
 	int xExit = 0, yExit = 0;
 	boolean goingToWorkPlace= false;
 	boolean leaving = false;
 	
 	
-	public RestaurantCashierGui(CashierRoleWc cashierRoleWc) {
+	public RestaurantCashierGuiPS(CashierRolePS cashierRole) {
 		// TODO Auto-generated constructor stub
-		cashier = cashierRoleWc;
+		cashier = cashierRole;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
-		xDestination = 350;
+		xDestination = 250;
 		yDestination = 250;
 		goingToWorkPlace = true;
 		
@@ -109,7 +109,7 @@ public class RestaurantCashierGui implements Gui{
 
 	public void setDefaultDestination() {
 		// TODO Auto-generated method stub
-		xDestination = 350;
+		xDestination = 250;
 		yDestination = 250;
 		goingToWorkPlace = true;
 	}

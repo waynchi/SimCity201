@@ -7,7 +7,7 @@ import city.Restaurant;
 
 public class Yelp {
 	
-	public Map<String, Integer> Ratings = new HashMap<String, Integer>();
+	public Map<Restaurant, Integer> Ratings = new HashMap<Restaurant, Integer>();
 
 	public Yelp() {
 		// TODO Auto-generated constructor stub
@@ -16,7 +16,7 @@ public class Yelp {
 	
 	public void addRestaurant(Restaurant r , Integer rating)
 	{
-		Ratings.put(r.n, rating);
+		Ratings.put(r, rating);
 	}
 
 }
