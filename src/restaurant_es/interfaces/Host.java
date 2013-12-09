@@ -3,7 +3,7 @@ package restaurant_es.interfaces;
 import java.util.List;
 
 import people.People;
-import restaurant_es.BaseWaiterRole;
+import restaurant_es.BaseWaiterRoleEs;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 

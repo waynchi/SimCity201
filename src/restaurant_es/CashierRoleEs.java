@@ -1,7 +1,7 @@
 package restaurant_es;
 
 import restaurant_es.gui.RestaurantCashierGui;
-import restaurant_es.gui.RestaurantGui;
+import restaurant_es.gui.RestaurantGuiEs;
 import restaurant.interfaces.Cashier;
 import restaurant_es.interfaces.Customer;
 import restaurant_es.interfaces.Host;
@@ -21,7 +21,7 @@ import people.Role;
 // waiter needs to go to cashier to take the bill
 // customer needs to go to cashier to pay
 
-public class CashierRole extends Role implements Cashier {
+public class CashierRoleEs extends Role implements Cashier {
 
 	public EventLog log = new EventLog();
 	public boolean inTest = false;
@@ -38,7 +38,7 @@ public class CashierRole extends Role implements Cashier {
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL, BANK_CLOSED};
 	public bankActivityEvent bankEvent;
 
-	RestaurantGui restGui;
+	RestaurantGuiEs restGui;
 	RestaurantCashierGui cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
@@ -105,7 +105,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 
-	public CashierRole(RestaurantGui gui) {
+	public CashierRoleEs(RestaurantGuiEs gui) {
 		if (!inTest) {
 			cashierGui = new RestaurantCashierGui(this);
 			restGui = gui;
@@ -476,7 +476,7 @@ public class CashierRole extends Role implements Cashier {
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
-		for (People p : ((HostRole)host).getWorkers()) {
+		for (People p : ((HostRoleEs)host).getWorkers()) {
 			double money = p.getMoney();
 			money += salary;
 			p.setMoney(money);
@@ -508,7 +508,7 @@ public class CashierRole extends Role implements Cashier {
 
 	private double getTotalSalary() {
 		log.add(new LoggedEvent("in action getTotalSalary, calculating total salary for workeres"));
-		return (((HostRole)host).getWorkers().size() * salary);
+		return (((HostRoleEs)host).getWorkers().size() * salary);
 	}
 
 	private void depositExcessMoney() {

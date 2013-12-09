@@ -2,7 +2,7 @@ package restaurant_es.interfaces;
 
 import java.util.List;
 
-import restaurant_es.BaseWaiterRole.FoodOnMenu;
+import restaurant_es.BaseWaiterRoleEs.FoodOnMenu;
 import restaurant_es.gui.CustomerGui;
 import restaurant.interfaces.Cashier;
 

@@ -14,7 +14,7 @@ public class CustomerGui implements Gui{
 	private boolean isHungry = false;
 
 	//private HostAgent host;
-	RestaurantGui gui;
+	RestaurantGuiEs gui;
 
 	private int xPos, yPos;
 	private int xExit = 0, yExit = 0;

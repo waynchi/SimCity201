@@ -1,12 +1,12 @@
 package restaurant_es;
 
-import restaurant_es.gui.RestaurantGui;
-import restaurant_es.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant_es.gui.RestaurantGuiEs;
+import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
 import restaurant_es.gui.WaiterGui;
 import restaurant_es.interfaces.Waiter;
 
-public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
-	public SpecialWaiterRole(CookWaiterMonitor monitor, RestaurantGui gui) {
+public class SpecialWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
+	public SpecialWaiterRoleEs(CookWaiterMonitorEs monitor, RestaurantGuiEs gui) {
 		super();
 		restGui = gui;
 		waiterGui = new WaiterGui(this);

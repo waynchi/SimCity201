@@ -1,12 +1,12 @@
 package restaurant_es.gui;
 
-import restaurant_es.BaseWaiterRole;
-import restaurant_es.CookRole;
-import restaurant_es.HostRole;
-import restaurant_es.NormalWaiterRole;
-import restaurant_es.RestaurantCustomerRole;
-import restaurant_es.SpecialWaiterRole;
-import restaurant_es.CookRole.MyOrder;
+import restaurant_es.BaseWaiterRoleEs;
+import restaurant_es.CookRoleEs;
+import restaurant_es.HostRoleEs;
+import restaurant_es.NormalWaiterRoleEs;
+import restaurant_es.RestaurantCustomerRoleEs;
+import restaurant_es.SpecialWaiterRoleEs;
+import restaurant_es.CookRoleEs.MyOrder;
 
 import javax.swing.*;
 
@@ -20,20 +20,20 @@ import java.util.Vector;
  * Panel in frame that contains all the restaurant information,
  * including host, cook, waiters, and customers.
  */
-public class RestaurantPanel extends JPanel implements ActionListener{
+public class RestaurantPanelEs extends JPanel implements ActionListener{
 
     //Host, cook, waiters and customers
-	public CookWaiterMonitor theMonitor = new CookWaiterMonitor();
+	public CookWaiterMonitorEs theMonitor = new CookWaiterMonitorEs();
 
-    private HostRole host;
+    private HostRoleEs host;
     //private HostGui hostGui = new HostGui(host);
-	private CookRole cook;
-    private Vector<RestaurantCustomerRole> customers = new Vector<RestaurantCustomerRole>();
-    private Vector<BaseWaiterRole> waiters = new Vector<BaseWaiterRole>();
+	private CookRoleEs cook;
+    private Vector<RestaurantCustomerRoleEs> customers = new Vector<RestaurantCustomerRoleEs>();
+    private Vector<BaseWaiterRoleEs> waiters = new Vector<BaseWaiterRoleEs>();
 
 	//private CashierRole cashier = new CashierRole("Cashier", this);
 
-    private RestaurantGui gui; //reference to main gui
+    private RestaurantGuiEs gui; //reference to main gui
     
     private JButton pauseButton = new JButton ("Pause/Resume");
 	private JPanel imagePanel = new JPanel();
@@ -50,9 +50,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
         }
     }*/
 
-    public class CookWaiterMonitor extends Object {
+    public class CookWaiterMonitorEs extends Object {
         private List<MyOrder> orders = new ArrayList<MyOrder>();
-        synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
+        synchronized public void addOrder (int table, String food, BaseWaiterRoleEs waiter) {
                 orders.add (cook.new MyOrder (food, waiter,table));
         }
         synchronized public MyOrder removeOrder () {
@@ -67,12 +67,12 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     }
 
     
-    public RestaurantPanel(RestaurantGui gui, HostRole h) {
+    public RestaurantPanelEs(RestaurantGuiEs gui, HostRoleEs h) {
     	host = h;
         this.gui = gui;
     }
     
-    public RestaurantPanel(RestaurantGui gui) {
+    public RestaurantPanelEs(RestaurantGuiEs gui) {
         this.gui = gui;
     }
 
@@ -82,7 +82,7 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     public void addPerson(String type, String name) {
 
     	if (type.equals("Customers")) {
-    		RestaurantCustomerRole c = new RestaurantCustomerRole(gui);	
+    		RestaurantCustomerRoleEs c = new RestaurantCustomerRoleEs(gui);	
     		CustomerGui g = new CustomerGui(c);
 
     		gui.animationPanel.addGui(g);// dw
@@ -94,9 +94,9 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     	
     	if (type.equals("Waiters")) {
     		//if (name.equalsIgnoreCase("special")){
-    			BaseWaiterRole w = new NormalWaiterRole(gui);
+    			BaseWaiterRoleEs w = new NormalWaiterRoleEs(gui);
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(theMonitor,gui);
+        			w = new SpecialWaiterRoleEs(theMonitor,gui);
     			}
     			WaiterGui g = new WaiterGui(w);
         		g.setHomePosition(waiters.size());
@@ -117,23 +117,23 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     
    
 
-    public Vector<BaseWaiterRole> getWaiters () {
+    public Vector<BaseWaiterRoleEs> getWaiters () {
     	return waiters;
     }
     
-    public void setCook (CookRole c) {
+    public void setCook (CookRoleEs c) {
     	cook = c;
     }
     
-    public void setHost (HostRole h) {
+    public void setHost (HostRoleEs h) {
     	host = h;
     }
     
-    public CookRole getCook() {
+    public CookRoleEs getCook() {
     	return cook;
     }
 
-    public HostRole getHost() {
+    public HostRoleEs getHost() {
     	return host;
     }
 

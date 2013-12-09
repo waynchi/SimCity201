@@ -1,11 +1,11 @@
 package restaurant_es;
 
-import restaurant_es.gui.RestaurantGui;
+import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.WaiterGui;
 import restaurant_es.interfaces.Waiter;
 
-public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
-	public NormalWaiterRole(RestaurantGui gui) {
+public class NormalWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
+	public NormalWaiterRoleEs(RestaurantGuiEs gui) {
 		super();
 		restGui = gui;
 		waiterGui = new WaiterGui(this);
@@ -23,7 +23,7 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	public void goPlaceOrder(MyCustomer customer) {
 		cook = host.getCook();
 		print ("Here's an order for table " + customer.tableNumber);
-		((CookRole) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
+		((CookRoleEs) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
 	}
 	

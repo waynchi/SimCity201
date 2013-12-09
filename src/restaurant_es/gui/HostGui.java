@@ -1,14 +1,14 @@
 package restaurant_es.gui;
 
 
-import restaurant_es.HostRole;
-import restaurant_es.RestaurantCustomerRole;
+import restaurant_es.HostRoleEs;
+import restaurant_es.RestaurantCustomerRoleEs;
 
 import java.awt.*;
 
 public class HostGui implements Gui {
 
-    private HostRole agent = null;
+    private HostRoleEs agent = null;
 
     private int xPos = -20, yPos = -20;//default waiter position
     private int currentTableX, currentTableY; // position of current table
@@ -18,7 +18,7 @@ public class HostGui implements Gui {
     //public static final int xTable = 200;
     //public static final int yTable = 250;
 
-    public HostGui(HostRole agent) {
+    public HostGui(HostRoleEs agent) {
         this.agent = agent;
     }
 
@@ -35,7 +35,7 @@ public class HostGui implements Gui {
         return true;
     }
 
-    public void DoBringToTable(RestaurantCustomerRole customer, int tableX, int tableY) {
+    public void DoBringToTable(RestaurantCustomerRoleEs customer, int tableX, int tableY) {
         xDestination = tableX + 20;
         yDestination = tableY - 20;
         currentTableX = tableX;

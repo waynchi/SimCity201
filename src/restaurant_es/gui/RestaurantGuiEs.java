@@ -12,7 +12,7 @@ import java.util.List;
  * Main GUI class.
  * Contains the main frame and subsequent panels
  */
-public class RestaurantGui extends JPanel implements ActionListener {
+public class RestaurantGuiEs extends JPanel implements ActionListener {
     /* The GUI has only one frame and two panels within, the control panel 
      * and the animation panel
      */
@@ -26,7 +26,7 @@ public class RestaurantGui extends JPanel implements ActionListener {
      * Constructor for RestaurantGui class.
      * Sets up all the gui components.
      */
-    public RestaurantGui(Timer timer) {
+    public RestaurantGuiEs(Timer timer) {
     	 
     	int WINDOWX = 500;
         int WINDOWY = 400;

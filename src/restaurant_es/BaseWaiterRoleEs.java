@@ -1,7 +1,7 @@
 package restaurant_es;
 
-import restaurant_es.gui.RestaurantGui;
-import restaurant_es.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant_es.gui.RestaurantGuiEs;
+import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
 import restaurant_es.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -22,7 +22,7 @@ import people.Role;
 
 // waiter can go on break if the gui button is pushed (as long as there are more than one waiter available)
 // that's why customer must negotiate with host and host might deny his request.
-public abstract class BaseWaiterRole extends Role implements Waiter {
+public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
 	protected List<FoodOnMenu> menu = new ArrayList<FoodOnMenu>();
@@ -48,7 +48,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
 	protected agentState state;
-	protected CookWaiterMonitor theMonitor;
+	protected CookWaiterMonitorEs theMonitor;
 	
 	public class FoodOnMenu {
 		String type;
@@ -62,7 +62,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	
 	public WaiterGui waiterGui = null;
-	protected RestaurantGui restGui = null;
+	protected RestaurantGuiEs restGui = null;
 
 	/*public BaseWaiterRole(String name, CookWaiterMonitor monitor) {
 		super();
@@ -417,7 +417,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		((CookRole) cook).getGui().foodPickedUp(customer.tableNumber);
+		((CookRoleEs) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
 		print ("Bringing food to table " + customer.tableNumber);
 		try {
@@ -429,7 +429,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		customer.c.msgHereIsYourFood();
 		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
-		((CashierRole) cashier).msgHereIsBill(customer.c, customer.choice, this);
+		((CashierRoleEs) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	
@@ -461,7 +461,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void UpdateTableInfo(Customer c) {
 		currentCustomerNum--;
-		host.msgTableIsFree(((RestaurantCustomerRole) c).getTableNumber());
+		host.msgTableIsFree(((RestaurantCustomerRoleEs) c).getTableNumber());
 	}
 	
 	public abstract void done();
@@ -476,11 +476,11 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		return waiterGui;
 	}
 	
-	public void setHost (HostRole h) {
+	public void setHost (HostRoleEs h) {
 		host = h;
 	}
 	
-	public void setCook (CookRole k) {
+	public void setCook (CookRoleEs k) {
 		cook = k;
 	}
 	

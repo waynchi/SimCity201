@@ -3,8 +3,8 @@ package restaurant_es.gui;
 
 import java.util.*;
 
-import restaurant_es.BaseWaiterRole;
-import restaurant_es.RestaurantCustomerRole;
+import restaurant_es.BaseWaiterRoleEs;
+import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.interfaces.Customer;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 
 public class WaiterGui implements Gui {
 
-    private BaseWaiterRole role = null;
+    private BaseWaiterRoleEs role = null;
     private boolean isPresent = false;
 
     private int xPos = 0, yPos = 0;//default waiter position
@@ -43,7 +43,7 @@ public class WaiterGui implements Gui {
     
     private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
     
-    public WaiterGui(BaseWaiterRole role) {
+    public WaiterGui(BaseWaiterRoleEs role) {
         try {
             img = ImageIO.read(getClass().getResource("waiter.png"));
         } catch (IOException e) {}
@@ -123,7 +123,7 @@ public class WaiterGui implements Gui {
 
     public void DoApproachCustomer(Customer c) {
     	currentCustomer = c;
-    	Dimension dm = tableMap.get(((RestaurantCustomerRole) c).getTableNumber());
+    	Dimension dm = tableMap.get(((RestaurantCustomerRoleEs) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());
