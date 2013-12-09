@@ -407,7 +407,6 @@ public class CityGui extends JFrame implements ActionListener {
 		time = 0;
 		timer.stop();
 		count = 0;
-		System.out.println("Clearing. Number of houses = " + apartment1.availableApartments());
 		configParams.clear();
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
@@ -525,13 +524,6 @@ public class CityGui extends JFrame implements ActionListener {
 					else if(count <= 36){
 //						extraPeople++;
 						House apartmentHouse = apartment1.getAvailableApartment();
-						if (apartment1.houses.isEmpty()) {
-							System.out.println("Apartment complex is empty!");
-						}
-						if (apartmentHouse == null) {
-							System.out.println("House is null");
-						}
-						System.out.println("Creating. Number of houses = " + apartment1.availableApartments());
 						houses.add(apartmentHouse);
 						apartmentHouse.setOccupant(residentRole);
 						residentRole.setHouse(apartmentHouse);
@@ -539,13 +531,6 @@ public class CityGui extends JFrame implements ActionListener {
 					else
 					{
 						House apartmentHouse2 = apartment2.getAvailableApartment();
-						if (apartment1.houses.isEmpty()) {
-							System.out.println("Apartment complex is empty!");
-						}
-						if (apartmentHouse2 == null) {
-							System.out.println("House is null");
-						}
-						System.out.println("Creating. Number of houses = " + apartment2.availableApartments());
 						houses.add(apartmentHouse2);
 						apartmentHouse2.setOccupant(residentRole);
 						residentRole.setHouse(apartmentHouse2);
