@@ -775,7 +775,14 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			houseAnimationPanels.get(i).updatePosition();
 		}
-		
+		for(int j = 0; j < apartment1HouseAnimationPanels.size(); j++)
+		{
+			apartment1HouseAnimationPanels.get(j).gui.updatePosition();
+		}
+		for(int k = 0; k < apartment1HouseAnimationPanels.size(); k++)
+		{
+			apartment1HouseAnimationPanels.get(k).gui.updatePosition();
+		}
 		int x = 10;
 		time++;
 		if(time%x == 0)
