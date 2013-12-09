@@ -36,6 +36,7 @@ import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
+
 //vk
 import restaurant_vk.gui.*;
 import restaurant_vk.*;
@@ -87,6 +88,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGuiZt restaurantGuiZt;
 	RestaurantGuiWc restaurantGuiWc;
 	RestaurantGuiEs restaurantGuiEs;
+
 	RestaurantVkAnimationPanel vkAnimationPanel;
 	Yelp yelp = new Yelp();
 	
@@ -114,8 +116,7 @@ public class CityGui extends JFrame implements ActionListener {
 	HostRoleWc RestaurantHostRoleWc = new HostRoleWc();
 	HostRoleEs RestaurantHostRoleEs = new HostRoleEs();
 	VkHostRole RestaurantHostRoleVk;
-	
-	
+
 
 
 
@@ -175,6 +176,7 @@ public class CityGui extends JFrame implements ActionListener {
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
 		restaurant2.h = RestaurantHostRoleVk;
+
 
 		
 		marketGui = new MarketGui(timer);
@@ -246,6 +248,7 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		for(int i = 0; i < cityPanel.busStops.size(); i++) {
 			BusStop bs = cityPanel.busStops.get(i);
+			bs.setBuildingNumber(i+buildings.size());
 			BuildingPanel bp = new BuildingPanel(bs,i+buildings.size(),this);
 			bs.setBuildingPanel(bp);
 		}
@@ -302,10 +305,10 @@ public class CityGui extends JFrame implements ActionListener {
         
         buildingPanels.add(marketContainer,"" + 14);
         
-        buildingPanels.add(busStop1Container,"" + 21);
-        buildingPanels.add(busStop2Container,"" + 22);
-        buildingPanels.add(busStop3Container,"" + 23);
-        buildingPanels.add(busStop4Container,"" + 24);
+        buildingPanels.add(busStop1Container,"" + cityPanel.busStops.get(0).getBuildingNumber());
+        buildingPanels.add(busStop2Container,"" + cityPanel.busStops.get(1).getBuildingNumber());
+        buildingPanels.add(busStop3Container,"" + cityPanel.busStops.get(2).getBuildingNumber());
+        buildingPanels.add(busStop4Container,"" + cityPanel.busStops.get(3).getBuildingNumber());
         
         
 

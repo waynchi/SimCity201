@@ -27,6 +27,7 @@ public int yLocation;
 public String name;
 public BusStopGui myGui;
 public BuildingPanel bp;
+public int buildingNumber;
 
 public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, String name){
 	super(x,y,width,height);
@@ -137,7 +138,13 @@ public void setBuildingPanel(BuildingPanel bp) {
 	// TODO Auto-generated method stub
 	this.bp = bp;
 }
-
+public void setBuildingNumber(int n)
+{
+	this.buildingNumber = n;
+}
+public int getBuildingNumber(){
+	return buildingNumber;
+}
 }
 
 
