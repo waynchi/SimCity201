@@ -275,6 +275,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		order.supply = supply;
 		if(!inTest)		getOrder(supply);
 
+		employeeGui.noCommand();
+		
 		// if order is from restaurant
 		if (order.cook != null) {
 			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
