@@ -9,7 +9,6 @@ import java.util.concurrent.Semaphore;
 import bank.interfaces.Teller;
 import people.People;
 import people.Role;
-import restaurant.CashierRole.bankActivityEvent;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -18,6 +17,7 @@ import market.gui.MarketGui;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
+import market.test.MockPeople;
 
 public class MarketCashierRole extends Role implements MarketCashier{
 
@@ -31,12 +31,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private MarketEmployee marketEmployee;
 	MarketGui marketGui = null;
 	MarketCashierGui marketCashierGui = null;
-	
+
 	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE}
 	public bankActivityState bankState;
 	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL, BANK_CLOSED}
 	public bankActivityEvent bankEvent;
-	
+
 	private Teller teller;
 	private Boolean deposit = false;
 	private Boolean withdraw = false;
@@ -135,8 +135,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPersonAgent().CallstateChanged();
 
 	}
-	
-	
+
+
 
 	// from regular market customer
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
@@ -167,8 +167,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	}
 
-	
-	
+
+
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
 		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
@@ -197,13 +197,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPersonAgent().CallstateChanged();
 	}
 
-		public void msgGetOut() {
-			log.add(new LoggedEvent("received msgGetOut from teller"));
-			bankEvent = bankActivityEvent.BANK_CLOSED;
-			getPersonAgent().CallstateChanged();
-		}
-		
-	
+	public void msgGetOut() {
+		log.add(new LoggedEvent("received msgGetOut from teller"));
+		bankEvent = bankActivityEvent.BANK_CLOSED;
+		getPersonAgent().CallstateChanged();
+	}
+
+
 
 	// scheduler
 	public boolean pickAndExecuteAnAction(){
@@ -225,7 +225,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 				return true;
 			}
 		}
-		
+
 		if (bankState == bankActivityState.ASKED_FOR_HELP && bankEvent == bankActivityEvent.READY_TO_HELP) {
 			if (deposit) {
 				depositExcessMoney();
@@ -256,10 +256,30 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			closeMarket();
 			return true;
 		}
-		
+
 		if (leaveWork) {
-			if (getPersonAgent().getMarket(0).isClosed && checks.isEmpty()) prepareToClose();
-			else if (!getPersonAgent().getMarket(0).isClosed) leaveWork();
+			if (!inTest) {
+				if (getPersonAgent().getMarket(0).isClosed && checks.isEmpty()) {
+					if (getPersonAgent().getBank(0).isClosed) {
+						closeMarket();
+					}
+					else {
+						prepareToClose();
+					}
+				}
+				else if (!getPersonAgent().getMarket(0).isClosed) {
+					leaveWork();
+				}
+			}
+
+			else {
+				if (((MockPeople)getPersonAgent()).getMyMarket(0).isClosed && checks.isEmpty()) {
+					prepareToClose();
+				}
+				else if (!((MockPeople)getPersonAgent()).getMyMarket(0).isClosed) {
+					leaveWork();
+				}
+			}
 			return true;
 		}
 
@@ -273,6 +293,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void clockIn() {
 		log.add(new LoggedEvent("clock in"));
 		if (!inTest){
+			teller = (Teller) getPersonAgent().getTeller(0);
 			marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 			marketEmployee.setCashier(this);
 			marketCashierGui.setPresent(true);
@@ -290,7 +311,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void computeAndSendCheck(Check check) {
 		//compute the total amount
 		for (Map.Entry<String,Integer> entry : check.items.entrySet()) {
-			check.totalDue += priceList.get(entry.getKey());
+			check.totalDue += priceList.get(entry.getKey()) * entry.getValue();
 		}
 
 		// if check is for restaurant
@@ -340,12 +361,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			withdraw = true;
 		}
 	}
-	
+
 	private double getTotalSalary() {
 		log.add(new LoggedEvent("in action getTotalSalary, calculating total salary for workeres"));
 		return (((MarketEmployeeRole)marketEmployee).getWorkers().size() * salary);
 	}
-	
+
 	private void payWorkers() {
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
@@ -355,30 +376,32 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			p.setMoney(money);
 		}
 	}
-	
+
 	private void closeMarket() {
-			log.add(new LoggedEvent("in action closeMarket, goint to the exit"));
+		log.add(new LoggedEvent("in action closeMarket, goint to the exit"));
+		if (!getPersonAgent().getBank(0).isClosed) {
 			teller.msgDoneAndLeaving();
-			deposit = withdraw = false;
-			isActive = false;
-			if (!inTest){
-				marketCashierGui.DoLeaveWork();
-				try {
-					atExit.acquire();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				leaveWork = false;
-				marketCashierGui.setPresent(false);
-				marketCashierGui.setDefaultDestination();
-				getPersonAgent().msgDone("MarketCashierRole");
+		}
+		deposit = withdraw = false;
+		isActive = false;
+		if (!inTest){
+			marketCashierGui.DoLeaveWork();
+			try {
+				atExit.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		
+			leaveWork = false;
+			marketCashierGui.setPresent(false);
+			marketCashierGui.setDefaultDestination();
+			getPersonAgent().msgDone("MarketCashierRole");
+		}
+
 	}
-	
+
 	private void leaveWork() {
-		log.add(new LoggedEvent("in action done"));
+		log.add(new LoggedEvent("in action leave work"));
 		isActive = false;
 		leaveWork = false;
 		if (!inTest) {
@@ -408,8 +431,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		teller.msgWithdraw(getPersonAgent().getMarket(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
 		bankState = bankActivityState.ASKED_WITHDRAW;
 	}
-	
-	
+
+
 	//utilities
 	public Boolean isActive() {
 		return isActive;
@@ -423,6 +446,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		this.marketEmployee = me;
 	}
 
+	public void setTeller(Teller t) {
+		this.teller = t;
+	}
 
 
 }

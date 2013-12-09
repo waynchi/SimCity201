@@ -79,6 +79,13 @@ public class MockCashier extends Mock implements Cashier {
 	@Override
 	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,
 			int orderNumber) {
+		log.add(new LoggedEvent("got a market bill with price " + price + " and order number " + orderNumber));
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGetOut() {
 		// TODO Auto-generated method stub
 		
 	}
