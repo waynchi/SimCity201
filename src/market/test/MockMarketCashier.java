@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import bank.interfaces.Teller;
-import people.Role;
 import restaurant.interfaces.Cashier;
 import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
@@ -18,7 +17,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgHereIsACheck(MarketCustomer customer,Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsACheck from employee for customer"));		
+		log.add(new LoggedEvent("received msgHereIsACheck for customer"));		
 		
 	}
 
@@ -79,6 +78,12 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 
 	@Override
 	public void msgDepositSuccessful(double funds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGetOut() {
 		// TODO Auto-generated method stub
 		
 	}

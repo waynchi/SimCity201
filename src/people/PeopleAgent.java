@@ -2,6 +2,8 @@ package people;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
@@ -11,6 +13,8 @@ import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
 import restaurant.HostRole;
 import restaurant_zt.HostRoleZt;
+import restaurant_wc.HostRoleWc;
+import restaurant_vk.VkHostRole;
 import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
@@ -26,6 +30,7 @@ public class PeopleAgent extends Agent implements People{
 	public List<Market> Markets = Collections.synchronizedList(new ArrayList<Market>());
 	public List<Bank> Banks = Collections.synchronizedList(new ArrayList<Bank>());
 	public List<Job> jobs = Collections.synchronizedList(new ArrayList<Job>());
+	private Yelp yelp;
 	public Double Money;
 	public Double Balance;
 	private int Hunger = 1300;
@@ -46,7 +51,7 @@ public class PeopleAgent extends Agent implements People{
 
 	public enum BuyState{GoingToBuy, NotBuying, NextDay}
 	public enum AgentState 
-	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome}
+	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome, GoingHome}
 	public enum AgentEvent 
 	{Waiting, GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
 		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
@@ -393,6 +398,26 @@ public class PeopleAgent extends Agent implements People{
 					{	
 						((HostRole) r.role).msgSetClose();
 					}
+//					if(r.description.equals("RestaurantHostVk"))
+//					{
+//						((VkHostRole) r.role).msgSetClose();
+//					}
+					if(r.description.equals("RestaurantHostZt"))
+					{	
+						((HostRoleZt) r.role).msgSetClose();
+					}
+					if(r.description.equals("RestaurantHostWc"))
+					{	
+						((HostRoleWc) r.role).msgSetClose();
+					}
+//					if(r.description.equals("RestaurantHostPs"))
+//					{	
+//						((HostRolePs) r.role).msgSetClose();
+//					}
+//					if(r.description.equals("RestaurantHostEs"))
+//					{	
+//						((HostRoleEs) r.role).msgSetClose();
+//					}
 					if(r.description.equals("MarketEmployee"))
 					{
 						((MarketEmployeeRole) r.role).msgSetClose();
@@ -463,12 +488,12 @@ public class PeopleAgent extends Agent implements People{
 					return;
 				}
 			}
-//			if(location != AgentLocation.Home)
-//			{
-//				event = AgentEvent.GoingHome;
-//				stateChanged();
-//				return;
-//			}
+			if(location != AgentLocation.Home)
+			{
+				event = AgentEvent.GoingHome;
+				stateChanged();
+				return;
+			}
 		}
 		//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
 		if(state == AgentState.Idle)
@@ -556,6 +581,7 @@ public class PeopleAgent extends Agent implements People{
 								if(Money >= 20000)
 								{
 									event = AgentEvent.GoingToBuyCar;
+									buy = BuyState.NotBuying;
 									stateChanged();
 									return;
 								}
@@ -580,6 +606,12 @@ public class PeopleAgent extends Agent implements People{
 						}
 						//event = AgentEvent.GoingHome;
 					}
+				}
+				if(location != AgentLocation.Home)
+				{
+					event = AgentEvent.GoingHome;
+					stateChanged();
+					return;
 				}
 			}
 		}
@@ -668,7 +700,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-			state = AgentState.IdleAtHome;
+			state = AgentState.GoingHome;
 			hunger = HungerState.NotHungry;
 			}
 			if(location != AgentLocation.Home)
@@ -762,112 +794,320 @@ public class PeopleAgent extends Agent implements People{
 
 	public void GoToRestaurant()
 	{
-//		boolean temp = true;
-		//roles.RestaurantCustomerAgent.msg(this);
-//		if(hasCar)
-//		{
-//			hunger = HungerState.Eating;
-//		for(MyRole r: roles)
-//		{
-//			if(r.description.equals("carPassenger"))
-//			{
-//				r.role.msgIsActive();
-//			}
-//			//Guifor Car Animation
-//			
-//			/*if(r.description.equals("CustomerAgent"))
-//			{			
-//				r.role.msgIsActive();
-//			}*/
-//		}
-//		}
-//		else
-//		{
-			//TODO
-			/*if(rand.nextInt(1) == 1)
+		location = AgentLocation.Road;
+		int totaltemp = 0;
+		int totalscore = 0;
+		String restaurant = null;
+		for (Entry<String, Integer> e : yelp.Ratings.entrySet()) {
+			totalscore += e.getValue();
+		}
+		int tempNum = rand.nextInt(totalscore);
+		for (Entry<String, Integer> e : yelp.Ratings.entrySet()) {
+			if(tempNum < (totaltemp + e.getValue()))
 			{
-				for(MyRole r: roles)
+				restaurant = e.getKey();
+				break;
+			}
+			totaltemp += e.getValue();
+			
+		}
+		if(restaurant.equals("restaurant"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
 				{
-					if(r.description.equals("busPassenger"))
+					for(MyRole r: roles)
 					{
-						r.role.msgIsActive();
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 1");
+							r.role.msgIsActive();
+						}
 					}
 				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 1");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			else*/
-//			for(MyRole r: roles)
+			location = AgentLocation.Restaurant;
+			print("Going to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomer"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+		if(restaurant.equals("restaurant2"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
+				{
+					for(MyRole r: roles)
+					{
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 2");
+							r.role.msgIsActive();
+						}
+					}
+				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 2");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			location = AgentLocation.Restaurant;
+			print("Going to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomerVk"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+		if(restaurant.equals("restaurant3"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
+				{
+					for(MyRole r: roles)
+					{
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 3");
+							r.role.msgIsActive();
+						}
+					}
+				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 3");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			location = AgentLocation.Restaurant;
+			print("Going to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomerZt"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+		if(restaurant.equals("restaurant4"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
+				{
+					for(MyRole r: roles)
+					{
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 4");
+							r.role.msgIsActive();
+						}
+					}
+				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 4");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			location = AgentLocation.Restaurant;
+			print("Going to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomerWc"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+		if(restaurant.equals("restaurant5"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
+				{
+					for(MyRole r: roles)
+					{
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 5");
+							r.role.msgIsActive();
+						}
+					}
+				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 5");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			location = AgentLocation.Restaurant;
+			print("Going to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomerEs"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+		if(restaurant.equals("restaurant6"))
+		{
+			if(!testmode)
+			{
+				if(hasCar)
+				{
+					for(MyRole r: roles)
+					{
+						if(r.description == "CarPassenger")
+						{
+							//change this for restaurant
+							((CarPassengerRole)r.role).setDestination("Restaurant 6");
+							r.role.msgIsActive();
+						}
+					}
+				}
+				else
+				{
+					//change this for restaurant
+					personGui.setDestination("Restaurant 6");
+					print("Do Not Have Car");
+				}
+			//personGui.GoToRestaurantOne();
+			try {
+				moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			location = AgentLocation.Restaurant;
+			print("Walking to Restaurant");
+			hunger = HungerState.Eating;
+			for(MyRole r: roles)
+			{
+				//change this for restaurant
+				if(r.description.equals("RestaurantCustomerPs"))
+				{
+					r.role.msgIsActive();
+				}
+			}
+		}
+//		if(!testmode)
+//		{
+//			if(hasCar)
 //			{
-//				if(r.description.equals("Resident"))
+//				for(MyRole r: roles)
 //				{
-//					if(r.role.isActive)
+//					if(r.description == "CarPassenger")
 //					{
-//						r.role.msgIsInActive();
-////						temp = false;
+//						//change this for restaurant
+//						((CarPassengerRole)r.role).setDestination("Restaurant 3");
+//						r.role.msgIsActive();
 //					}
 //				}
 //			}
+//			else
+//			{
+//				//change this for restaurant
+//				personGui.setDestination("Restaurant 3");
+//				print("Do Not Have Car");
+//			}
+//		//personGui.GoToRestaurantOne();
+//		try {
+//			moving.acquire();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 //		}
-//		if(temp)
-//		{
-//			GoToRestaurantTwo();
-//		}
-//	}
-//	public void GoToRestaurantTwo()
-//	{
-		//GUI WALK
-		location = AgentLocation.Road;
-		if(!testmode)
-		{
-			if(hasCar)
-			{
-				for(MyRole r: roles)
-				{
-					if(r.description == "CarPassenger")
-					{
-						//change this for restaurant
-						((CarPassengerRole)r.role).setDestination("Restaurant 3");
-						r.role.msgIsActive();
-					}
-				}
-			}
-			else
-			{
-				//change this for restaurant
-				personGui.setDestination("Restaurant 3");
-				print("Do Not Have Car");
-			}
-		//personGui.GoToRestaurantOne();
-		try {
-			moving.acquire();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		location = AgentLocation.Restaurant;
-		print("Walking to Restaurant");
-		hunger = HungerState.Eating;
-		//Semaphore
+//		location = AgentLocation.Restaurant;
+//		print("Walking to Restaurant");
+//		hunger = HungerState.Eating;
+//		//Semaphore
+////		for(MyRole r: roles)
+////		{
+////			if(r.description.equals("RestaurantCustomer"))
+////			{
+////				r.role.msgIsActive();
+////			}
+////		}
 //		for(MyRole r: roles)
 //		{
-//			if(r.description.equals("RestaurantCustomer"))
+//			//change this for restaurant
+//			if(r.description.equals("RestaurantCustomerWc"))
 //			{
 //				r.role.msgIsActive();
 //			}
+//			
+////			if(r.description.equals("RestaurantCustomer"))
+////			{
+////				r.role.msgIsActive();
+////			}
 //		}
-		for(MyRole r: roles)
-		{
-			print("Role is: " + r.description);
-			//change this for restaurant
-			if(r.description.equals("RestaurantCustomerZt"))
-			{
-				System.out.println("Sending MSGISACTIVE to RESTAURANTCUSTOMERZT");
-				r.role.msgIsActive();
-			}
-//			if(r.description.equals("RestaurantCustomer"))
-//			{
-//				r.role.msgIsActive();
-//			}
-		}
 	}
 		
 
@@ -916,7 +1156,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state != AgentState.EatingAtHome && state != AgentState.IdleAtHome)
 		{
-		state = AgentState.Idle;
+			state = AgentState.Idle;
 		}
 	}
 
@@ -1114,8 +1354,8 @@ public class PeopleAgent extends Agent implements People{
 //		
 //	public void GoToWorkTwo(){
 		//Release the Gui from msgDone
-		for(int i = 0; i <jobs.size(); i++)
-		{
+	for(int i = 0; i <jobs.size(); i++)
+	{
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
@@ -1589,6 +1829,322 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.RepairRole.msgIsActive();
 		}
+		if(jobs.get(i).job.equals("RestaurantNormalWaiterWc"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantNormalWaiterWc"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+						// TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantNormalWaiter");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.WaiterRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantHostWc"))
+		{
+			for(MyRole r: roles)
+			{
+				
+				if(r.description.equals("RestaurantHostWc"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantHost");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.HostRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCookWc"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCookWc"))
+				{			
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCook");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.CookRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCashierWc"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCashierWc"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCashier");
+					r.role.msgIsActive();
+					
+				}
+			}
+			//roles.RepairRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantNormalWaiterEs"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantNormalWaiterEs"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+						// TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantNormalWaiter");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.WaiterRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantHostEs"))
+		{
+			for(MyRole r: roles)
+			{
+				
+				if(r.description.equals("RestaurantHostEs"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantHost");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.HostRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCookEs"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCookEs"))
+				{			
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCook");
+					r.role.msgIsActive();
+				}
+			}
+			//roles.CookRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("RestaurantCashierEs"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("RestaurantCashierEs"))
+				{	
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Restaurant 3");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToRestaurantOne();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Restaurant;
+					print("I am now a RestaurantCashier");
+					r.role.msgIsActive();
+					
+				}
+			}
+			//roles.RepairRole.msgIsActive();
+		}
 		if(jobs.get(i).job.equals("Teller"))
 		{
 			for(MyRole r: roles)
@@ -1761,6 +2317,9 @@ public class PeopleAgent extends Agent implements People{
 	public Teller getTeller() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public void addYelp(Yelp yelp) {
+		this.yelp = yelp;
 	}
 }
 

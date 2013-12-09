@@ -236,6 +236,12 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	public void msgIsActive() {
+		if (cashier == null) {
+			this.cashier = ((VkHostRole)host).cashier;
+		}
+		if (cook == null) {
+			this.cook = ((VkHostRole)host).cook;
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();

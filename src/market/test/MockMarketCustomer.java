@@ -17,7 +17,7 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 
 	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsYourOrder"));				
+		log.add(new LoggedEvent("received my items"));				
 	}
 
 	@Override

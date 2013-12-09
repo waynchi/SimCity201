@@ -695,6 +695,15 @@ public class CityPanel extends JPanel implements MouseListener {
 		Building restaurant3 = new Building( hozX + 460, hozY + 140, 20, 20, 810, 152, "Restaurant 3" );
 		buildings.add(restaurant3);
 		
+		Building restaurant4 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 4" );
+		buildings.add(restaurant4);
+		
+		Building restaurant5 = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Restaurant 5" );
+		buildings.add(restaurant5);
+		
+//		Building restaurant5 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 5" );
+//		buildings.add(restaurant5);
+		
 //		Building bank2 = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
 //		buildings.add(bank2);
 //		Building restaurant6 = new Building( hozX + 460, hozY + 140, 20, 20, 770, 150, "Restaurant 6" );
@@ -703,35 +712,18 @@ public class CityPanel extends JPanel implements MouseListener {
 //		buildings.add(restaurant7);
 //		
 //	
-//		Building restaurant4 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 4" );
-//		buildings.add(restaurant4);		
+		
 //		Building restaurant5 = new Building( hozX + 660, hozY + 160, 20, 20, 990, 200, "Restaurant 5" );
 //		buildings.add(restaurant5);
 //		
 		
-		BusAgent busAgent = new BusAgent();
-		BusStopGui busStopGui = new BusStopGui();
-		busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
-		busStopGui = new BusStopGui();
-		busStops.add(new BusStop(busStopGui,680,350,30,30,680,322, "BusStop2"));
-		busStopGui = new BusStopGui();
-		busStops.add(new BusStop(busStopGui,880,90,30,30,870,132, "BusStop3"));
-		busStopGui = new BusStopGui();
-		busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
-		
-		InsideBusGui igb = new InsideBusGui();
-		BusGui bg = new BusGui(igb,5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		buses.add(bg);
-		busAgent.setGui(bg);
-		busAgent.startThread();
-		bg.msgGoToNextStop(busAgent, busStops.get(busStops.size()-1));
-		vehicles.add(bg);
+
 		
 		
 		
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 //		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
-//		personGui.setDestination("Bus Stop 1");
+//		personGui.setDestination("Restaurant 4");
 //		this.people.add(personGui); 
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
@@ -966,19 +958,29 @@ public class CityPanel extends JPanel implements MouseListener {
 			
 			}
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> staging
 		for( int i = 0; i<allSidewalks.size(); i++) {
 			ArrayList<Sidewalk> list = allSidewalks.get(i);
 			for(int k = 0; k < list.size(); k++)
 			{
 				Sidewalk l = list.get(k);
 				if(l.rectangle.contains(me.getX(), me.getY() ) ){
+<<<<<<< HEAD
 					System.out.println("clicked lane: " + i);
+=======
+					System.out.println("clicked sidewalk: " + i);
+>>>>>>> staging
 			}
 			
 			}
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> staging
 	}
 
 	public void mouseEntered(MouseEvent arg0) {

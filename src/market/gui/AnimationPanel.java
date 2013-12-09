@@ -18,6 +18,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private List<Gui> guis = new ArrayList<Gui>();
     public List<MarketCustomerGui> marketCustomerGui = new ArrayList<MarketCustomerGui>();
     private ImageIcon market_background = new ImageIcon("res/market/market_background.jpeg");
+    private ImageIcon cash_register = new ImageIcon("res/market/cash_register.png");
     
 
     public AnimationPanel(Timer t) {
@@ -51,9 +52,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(200, 120, 30, 100);//200 and 250 need to be table params
 
         // here is the register
-        g2.setColor(Color.orange);
-        g2.fillRect(350, 30, 100, 30);
-        
+        g2.drawImage(cash_register.getImage(), 380, 30, 40, 40, null);
+
         // here are the cabinets
         g2.setColor(Color.blue);
         g2.fillRect(50, 50, 100, 30);

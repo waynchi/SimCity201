@@ -207,6 +207,14 @@ public class PersonGui extends Rectangle2D.Double {
 			xDestination = 840;
 			yDestination = 152;
 		}
+		else if(destination.equals("Restaurant 4")) {
+			xDestination = 792;
+			yDestination = 200;
+		}
+		else if(destination.equals("Restaurant 5")) {
+			xDestination = 720;
+			yDestination = 42;
+		}
 		else if(destination.equals("Market")) {
 			xDestination = 580;
 			yDestination = 322;
@@ -263,7 +271,6 @@ public class PersonGui extends Rectangle2D.Double {
 			g2.draw(this);
 
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
-				System.out.println(this.destination +" REACHED");
 				this.reachedDestination(this.destination);
 				this.currentCell.hasPerson = false;
 				called = false;
@@ -279,6 +286,14 @@ public class PersonGui extends Rectangle2D.Double {
 					currentCell = sidewalkSegment.get(24);
 				}
 				
+			}
+			if(getCurrentLane().equals("26_0")) {
+				this.currentCell.hasPerson = false;
+				if(yDestination < y) {
+					this.direction = "up";
+					sidewalkSegment = allSidewalks.get(20);
+					currentCell = sidewalkSegment.get(9);
+				}
 			}
 			if (getCurrentLane().equals("8_0")) {
 				this.currentCell.hasPerson = false;
@@ -434,7 +449,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if (getCurrentLane().equals("23_27")) {
 				this.currentCell.hasPerson = false;
-				if (xDestination > x) {
+				if (yDestination < y) {
 					this.direction = "right";
 					sidewalkSegment = allSidewalks.get(6);
 					currentCell = sidewalkSegment.get(0);

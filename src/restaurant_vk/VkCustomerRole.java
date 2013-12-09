@@ -29,7 +29,7 @@ public class VkCustomerRole extends Role implements Customer{
 	private Menu menu;
 	private CustomerRestaurantCheck currentCheck = null;
 	private List<CustomerRestaurantCheck> checks = new ArrayList<CustomerRestaurantCheck>();
-	private Host host;
+	public Host host = null;
 	private Waiter waiter;
 	private VkCashierRole cashier = null;
 	private Semaphore movingAround = new Semaphore(0, true);
@@ -212,6 +212,15 @@ public class VkCustomerRole extends Role implements Customer{
 	
 	public void msgIsActive() {
 		isActive = true;
+		if (host == null) {
+			host = (VkHostRole)myPerson.getRestaurant(1).h;
+			if (cashier == null) {
+				this.cashier = (VkCashierRole) ((VkHostRole)host).cashier;
+			}
+		}
+		if (host == null) {
+			print("FUCK");
+		}
 		gotHungry();
 	}
 	
@@ -316,21 +325,21 @@ public class VkCustomerRole extends Role implements Customer{
 	 * restaurant. It informs the host that the customer has to be seated.
 	 */
 	private void goToRestaurant() {
-		Do("Going to host.");
+		print("Going to host.");
 		customerGui.DoGoToRestaurant();
 		try {
 			movingAround.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		host.IWantToEat(this);// send our instance, so he can respond to us
+		host.IWantToEat(this);
 	}
 
 	/*
 	 * An action that carries forward the process of sitting down.
 	 */
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		print("Being seated. Going to table");
 		customerGui.DoGoToSeat();
 	}
 	
@@ -391,7 +400,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * hunger level.
 	 */
 	private void EatFood() {
-		Do("Eating Food");
+		print("Eating Food");
 		customerGui.setCaption(choice);
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
@@ -409,7 +418,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * carry out the animation.
 	 */
 	private void leaveRestaurant() {
-		Do("Leaving.");
+		print("Leaving.");
 		waiter = null;
 		leaveOption = false;
 		customerGui.setLeaveOption(leaveOption);
@@ -491,13 +500,6 @@ public class VkCustomerRole extends Role implements Customer{
 
 	public AgentState getState() {
 		return state;
-	}
-	
-	/**
-	 * Hack to establish connection to Host agent.
-	 */
-	public void setHost(Host host) {
-		this.host = host;
 	}
 	
 	public void setWaiter(Waiter waiter) {
