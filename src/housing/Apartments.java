@@ -42,4 +42,13 @@ public class Apartments {
 		}
 		return null;
 	}
+	
+	public int availableApartments() {
+		int result = 0;
+		for (House h : houses) {
+			if (h.isOccupied())
+				result++;
+		}
+		return result;
+	}
 }

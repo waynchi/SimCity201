@@ -179,7 +179,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Create World From Config File")) {
 			System.out.println("Creating World From Config");
-			cityGui.CreateWorld(this.cityGui.RestaurantCookWaiterMonitor, this.cityGui.RestaurantCookWaiterMonitorZT, this.cityGui.RestaurantCookWaiterMonitorWc, this.cityGui.RestaurantCookWaiterMonitorEs, this.cityGui.revolvingStand);
+			cityGui.CreateWorld(this.cityGui.RestaurantCookWaiterMonitor, this.cityGui.RestaurantCookWaiterMonitorZT, this.cityGui.RestaurantCookWaiterMonitorWc, this.cityGui.RestaurantCookWaiterMonitorEs, this.cityGui.RestaurantCookWaiterMonitorPS, this.cityGui.revolvingStand);
 		}
 		else if(e.getActionCommand().equals("Clear World")) {
 			System.out.println("Clearing World");

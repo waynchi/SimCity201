@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -203,6 +204,9 @@ public class VkCashierRole extends Role implements Cashier {
 	}
 	
 	public void msgIsActive() {
+		if (mCashier == null) {
+			this.mCashier = ((MarketEmployee)myPerson.getMarketEmployee(0)).getCashier();
+		}
 		enter = true;
 		isActive = true;
 		stateChanged();
@@ -215,6 +219,12 @@ public class VkCashierRole extends Role implements Cashier {
 	
 	public void activityDone() {
 		movingAround.release();
+	}
+	
+	@Override
+	public void msgGetOut() {
+		bankActivity = BankActivity.Robbed;
+		stateChanged();
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -278,8 +288,9 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to verify a bill before paying it.
 	 */
 	public void verifyBill(Bill b) {
-		List<Map.Entry<String, Integer>> cookItems = (List<Entry<String, Integer>>) b.itemsFromCook.entrySet();
-		List<Map.Entry<String, Integer>> marketItems = (List<Entry<String, Integer>>) b.itemsFromMarket.entrySet();
+		print("Verifying market bill.");
+		Set<Map.Entry<String, Integer>> cookItems = b.itemsFromCook.entrySet();
+		Set<Map.Entry<String, Integer>> marketItems = b.itemsFromMarket.entrySet();
 		for (Map.Entry<String, Integer> ci : cookItems) {
 			boolean found = false;
 			for (Map.Entry<String, Integer> mi : marketItems) {
@@ -300,6 +311,7 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
+		print("Paying market bill.");
 		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
 		b.s = BillState.Paid;
 		workingCapital -= b.cost;
@@ -346,15 +358,17 @@ public class VkCashierRole extends Role implements Cashier {
 	 * Preparing to close down.
 	 */
 	public void prepareToClose() {
-		if (workingCapital > minCapital && shiftRecord.isEmpty()) {
-			teller.msgNeedHelp(this, "blah");
-			bankActivity = BankActivity.HelpRequested;
-			deposit = true;
-		}
-		else {
-			teller.msgNeedHelp(this, "blah");
-			bankActivity = BankActivity.HelpRequested;
-			withdraw = true;
+		if (myPerson.getBank(0).isClosed == false) {
+			if (workingCapital > minCapital && shiftRecord.isEmpty()) {
+				teller.msgNeedHelp(this, "blah");
+				bankActivity = BankActivity.HelpRequested;
+				deposit = true;
+			}
+			else {
+				teller.msgNeedHelp(this, "blah");
+				bankActivity = BankActivity.HelpRequested;
+				withdraw = true;
+			}
 		}
 		closingState = ClosingState.Preparing;
 	}
@@ -435,12 +449,12 @@ public class VkCashierRole extends Role implements Cashier {
 		// If there is no customer in the restaurant and preparation is complete, then
 		// check if there is anybody left to be paid. If there isn't, and there is excess
 		// money, then deposit it. Else, shut down the restaurant..
-		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && bankActivity == BankActivity.None) {
-			if (shiftRecord.isEmpty() && workingCapital > minCapital) {
+		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && (bankActivity == BankActivity.None || bankActivity == BankActivity.Robbed)) {
+			if (shiftRecord.isEmpty() && workingCapital > minCapital && bankActivity != BankActivity.Robbed) {
 				prepareToClose();
 				return true;
 			}
-			else if (workingCapital < computeRequiredMoney()) {
+			else if (workingCapital < computeRequiredMoney() && bankActivity != BankActivity.Robbed) {
 				prepareToClose();
 				return true;
 			}
@@ -599,6 +613,10 @@ public class VkCashierRole extends Role implements Cashier {
 		this.mCashier = c;
 	}
 	
+	public String getName() {
+		return myPerson.getName();
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 	
@@ -651,7 +669,7 @@ public class VkCashierRole extends Role implements Cashier {
 		}
 	}
 	
-	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested};
+	enum BankActivity {None, HelpRequested, ReadyToHelp, DepositRequested, WithdrawalRequested, Robbed};
 	
-	enum ClosingState {None, ToBeClosed, Preparing, Closed};
+	enum ClosingState {None, ToBeClosed, Preparing, Closed}
 }
