@@ -229,7 +229,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			sidewalkStrip2.add(s);
 		}
 		
-		for(int k = 0 ; k < (hozWidth - 150)/10;k++)
+		for(int k = 0 ; k < (hozWidth - 100)/10;k++)
 		{
 			s = new Sidewalk( hozX + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "2_" + k ); 
 			sidewalks.add(s);
