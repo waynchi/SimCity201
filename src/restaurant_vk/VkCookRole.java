@@ -392,10 +392,10 @@ public class VkCookRole extends Role implements Cook {
 	 * This is to initialize the inventory of food materials of the cook.
 	 */
 	private void initializeInventory() {
-		Food f1 = new Food("Steak", 500, 10, 2, 10);
-		Food f2 = new Food("Chicken", 500, 10, 2, 10);
-		Food f3 = new Food("Salad", 500, 10, 2, 10);
-		Food f4 = new Food("Pizza", 500, 10, 2, 10);
+		Food f1 = new Food("Steak", 500, 2, 2, 10);
+		Food f2 = new Food("Chicken", 500, 2, 2, 10);
+		Food f3 = new Food("Salad", 500, 2, 2, 10);
+		Food f4 = new Food("Pizza", 500, 2, 2, 10);
 		inventory.put("Steak", f1);
 		inventory.put("Chicken", f2);
 		inventory.put("Salad", f3);
