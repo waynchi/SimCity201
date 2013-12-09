@@ -22,6 +22,7 @@ import city.Market;
 import city.Restaurant;
 import city.gui.trace.AlertTag;
 import people.PeopleAgent;
+import people.Yelp;
 import restaurant.*;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
@@ -87,6 +88,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGuiWc restaurantGuiWc;
 	RestaurantGuiEs restaurantGuiEs;
 	RestaurantVkAnimationPanel vkAnimationPanel;
+	Yelp yelp = new Yelp();
 	
 	
 	
@@ -130,7 +132,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	
 	Market market;
-	TellerRole BankTellerRole = new TellerRole(bankGui); 
+	TellerRole BankTellerRole;
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
@@ -146,6 +148,13 @@ public class CityGui extends JFrame implements ActionListener {
 	RevolvingStand revolvingStand;
 
 	public CityGui() {
+		yelp.addRestaurant(restaurant, 5);
+		yelp.addRestaurant(restaurant2, 3);
+		yelp.addRestaurant(restaurant3, 4);
+		yelp.addRestaurant(restaurant4, 5);
+		yelp.addRestaurant(restaurant5, 3);
+		
+		
 		apartment1.gui.ap.setCityGui(this);
 		apartment2.gui.ap.setCityGui(this);
 
@@ -157,6 +166,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer = new Timer(5, this);
 		
 		bankGui = new BankGui(timer);
+		BankTellerRole = new TellerRole(bankGui); 
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
 		restaurantGuiWc = new RestaurantGuiWc(timer);
@@ -393,6 +403,7 @@ public class CityGui extends JFrame implements ActionListener {
 //						 person = new PeopleAgent(name, 1000.0, true );
 //					}//TODO
 					person.setCityGui(this);
+					person.addYelp(yelp);
 					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
