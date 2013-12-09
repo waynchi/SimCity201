@@ -1,6 +1,6 @@
-1,RestaurantNormalWaiterPs,John6,1000,1900
-1,RestaurantNormalWaiterPs,Joey6,1000,1900
-1,RestaurantNormalWaiterPs,Judah6,1000,1900
-1,RestaurantCookPs,James6,1000,1900
-1,RestaurantHostPs,Billy6,900,1930
-1,RestaurantCashierPs,Zack6,930,1900
+1,RestaurantNormalWaiterVk,John6,1000,1900
+1,RestaurantNormalWaiterVk,Joey6,1000,1900
+1,RestaurantNormalWaiterVk,Judah6,1000,1900
+1,RestaurantCookVk,James6,1000,1900
+1,RestaurantHostVk,Billy6,900,1930
+1,RestaurantCashierVk,Zack6,930,1900
