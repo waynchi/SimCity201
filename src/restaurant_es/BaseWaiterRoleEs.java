@@ -334,7 +334,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 
 	private void clockIn() {
 		
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(4);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
 		waiterGui.setPresent(true);
