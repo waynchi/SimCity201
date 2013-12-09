@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import restaurant.interfaces.Cook;
-import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketTruck;
 
 public class MockMarketTruck extends Mock implements MarketTruck{

@@ -1,10 +1,12 @@
 package market.test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import people.People;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
-import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -12,6 +14,8 @@ import market.interfaces.MarketEmployee;
 public class MockMarketEmployee extends Mock implements MarketEmployee{
 
 	MarketCashier cashier = null;
+	public List<People> workers = new ArrayList<People>();
+	
 	public MockMarketEmployee(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -31,6 +35,9 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 	@Override
 	public void setCashier(MarketCashier marketCashier) {
 		cashier =  marketCashier;
+		if (!workers.contains(marketCashier.getPersonAgent())){
+			workers.add(cashier.getPersonAgent());
+		}
 	}
 
 	@Override
@@ -85,6 +92,12 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 	public void msgOrderNotDelivered(int orderNumber) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<People> getWorkers() {
+		// TODO Auto-generated method stub
+		return workers;
 	}
 
 }

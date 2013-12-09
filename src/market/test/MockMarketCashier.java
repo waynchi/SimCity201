@@ -2,9 +2,9 @@ package market.test;
 
 import java.util.Map;
 
+import people.People;
 import bank.interfaces.Teller;
 import restaurant.interfaces.Cashier;
-import restaurant.test.mock.LoggedEvent;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
 
@@ -86,6 +86,12 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	public void msgGetOut() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public People getPersonAgent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

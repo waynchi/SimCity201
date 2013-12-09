@@ -130,7 +130,9 @@ public BusStopGui getGui(){
 
 public void displayBuilding() {
 	// TODO Auto-generated method stub
-	bp.displayBuildingPanel();
+	if(bp != null) {
+		bp.displayBuildingPanel();
+	}
 }
 
 

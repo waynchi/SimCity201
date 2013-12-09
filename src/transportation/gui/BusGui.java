@@ -15,7 +15,7 @@ public class BusGui extends VehicleGui{
 	 */
 	
 	List<BusStop> busStops;
-	Bus busAgent;
+	public Bus busAgent;
 	BusStop nextStop;
 	public enum State {idle,arrived,driving};
 	State busState;

@@ -21,15 +21,25 @@ public class MockPeople extends Mock implements People{
 		public boolean isClosed = false;
 	}
 	
+	public class MyBank {
+		public boolean isClosed = false;
+	}
+	
+	double myMoney = 1000;
 	List<MyRestaurant> restaurants = new ArrayList<MyRestaurant>();
 	List<MyMarket> markets = new ArrayList<MyMarket>();
-	
+	List<MyBank> banks = new ArrayList<MyBank>();
+
 	public void addResetaurant(MyRestaurant r) {
 		restaurants.add(r);
 	}
 	
 	public void addMarket(MyMarket m) {
 		markets.add(m);
+	}
+	
+	public void addBank(MyBank b) {
+		banks.add(b);
 	}
 	
 	public MockPeople(String name) {
@@ -40,12 +50,12 @@ public class MockPeople extends Mock implements People{
 	@Override
 	public double getMoney() {
 		// TODO Auto-generated method stub
-		return 0;
+		return myMoney;
 	}
 
 	@Override
 	public void setMoney(double Money) {
-		// TODO Auto-generated method stub
+		myMoney = Money;
 		
 	}
 
