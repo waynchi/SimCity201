@@ -293,6 +293,10 @@ public class PersonGui extends Rectangle2D.Double {
 				person.msgDone("PersonGui");
 				this.destination = null;
 			}
+			if(getCurrentLane().equals("12_15")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "up";
+			}
 			if(getCurrentLane().equals("6_16")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
@@ -390,7 +394,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
 				sidewalkSegment = allSidewalks.get(23);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+				currentCell = sidewalkSegment.get(28);
 			}
 			if (getCurrentLane().equals("23_0")) {
 				this.currentCell.hasPerson = false;

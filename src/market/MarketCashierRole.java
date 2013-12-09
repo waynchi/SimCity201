@@ -155,10 +155,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 
 	// from restaurant cashier
-	public void msgHereIsPayment(Double amount, Map<String, Integer> items, Cashier cashier) {
+	public void msgHereIsPayment(Double amount, int number, Cashier cashier) {
 		log.add(new LoggedEvent("restaurant cashier " + cashier.getName() + " is paying " + amount));
 		for (Check c : checks) {
-			if (c.restaurantCashier == cashier && c.items == items) {
+			if (c.orderNumber == number) {
 				c.state = checkState.PAID;
 				c.totalPaid = amount;
 				working_capital += c.totalPaid;
