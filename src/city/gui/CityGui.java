@@ -230,7 +230,6 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantCookWaiterMonitorPS = restPanel6.theMonitor;
 
 		CreateWorld(RestaurantCookWaiterMonitor,RestaurantCookWaiterMonitorZT,RestaurantCookWaiterMonitorWc,RestaurantCookWaiterMonitorEs, RestaurantCookWaiterMonitorPS, revolvingStand);
-		
 		setVisible(true);
 		setSize(1024, 768);
 
@@ -396,7 +395,6 @@ public class CityGui extends JFrame implements ActionListener {
 		houses.clear();
 		cityPanel.vehicles.clear();
 		cityPanel.people.clear();
-		cityPanel.busStops.clear();
 		cityPanel.buses.clear();
 		for(Lane lane : cityPanel.lanes) {
 			lane.hasCar = false;
