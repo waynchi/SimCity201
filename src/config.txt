@@ -30,6 +30,12 @@
 1,RestaurantCookWc,James5,1000,1900
 1,RestaurantHostWc,Billy5,900,1930
 1,RestaurantCashierWc,Zack5,930,1900
+1,RestaurantNormalWaiterPs,John5,1000,1900
+1,RestaurantNormalWaiterPs,Joey5,1000,1900
+1,RestaurantNormalWaiterPs,Judah5,1000,1900
+1,RestaurantCookWc,James5,1000,1900
+1,RestaurantHostWc,Billy5,900,1930
+1,RestaurantCashierWc,Zack5,930,1900
 1,RestaurantCustomer,customer,5000,50000
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800

@@ -38,6 +38,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
 	ArrayList<ArrayList<Sidewalk>> allSidewalks;
 	ArrayList<Lane> intersections;
+	ArrayList<Sidewalk> crosswalks;
 	CityGui city;
 	int count = 0;
 	static final int hozX = 350;
@@ -178,6 +179,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		allSidewalks.add(sidewalkStrip30);		
 		
 		intersections = new ArrayList<Lane>();
+		crosswalks = new ArrayList<Sidewalk>();
 		
 		
 		
@@ -227,7 +229,11 @@ public class CityPanel extends JPanel implements MouseListener {
 			s = new Sidewalk( hozX + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "3_" + k ); 
 			sidewalks.add(s);
 			sidewalkStrip3.add(s);
+			if(k==5) {
+				crosswalks.add(s);
+			}
 		}
+		
 		
 		for(int k = 0; k < (hozWidth-140)/10; k ++)
 		{
@@ -321,6 +327,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 110 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "11_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip11.add(s);
+		if(k==27) {
+			crosswalks.add(s);
+		}
 		}
 		
 		for(int k = 0; k < (hozWidth-50)/10; k++)
@@ -367,6 +376,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 110, hozY + 20 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "17_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip17.add(s);
+		if(k==12) {
+			crosswalks.add(s);
+		}
 		}
 		
 		
@@ -419,6 +431,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 120 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "23_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip23.add(s);
+		if(k==27) {
+			crosswalks.add(s);
+		}
 		}
 		
 		
@@ -725,7 +740,8 @@ public class CityPanel extends JPanel implements MouseListener {
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 //		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
 //		personGui.setDestination("Restaurant 4");
-//		this.people.add(personGui); 
+//		this.people.add(personGui);
+		
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
 //		bpr.setPerson(person);

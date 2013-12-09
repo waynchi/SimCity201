@@ -398,6 +398,12 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.people.clear();
 		cityPanel.busStops.clear();
 		cityPanel.buses.clear();
+		for(Lane lane : cityPanel.lanes) {
+			lane.hasCar = false;
+		}
+		for(Sidewalk sidewalk : cityPanel.sidewalks) {
+			sidewalk.hasPerson = false;
+		}
 		time = 0;
 		timer.stop();
 		count = 0;
@@ -516,7 +522,7 @@ public class CityGui extends JFrame implements ActionListener {
 						residentRole.setHouse(house);
 						System.out.println("Person added to villa");
 					}
-					else {
+					else if(count <= 36){
 //						extraPeople++;
 						House apartmentHouse = apartment1.getAvailableApartment();
 						if (apartment1.houses.isEmpty()) {
@@ -529,6 +535,20 @@ public class CityGui extends JFrame implements ActionListener {
 						houses.add(apartmentHouse);
 						apartmentHouse.setOccupant(residentRole);
 						residentRole.setHouse(apartmentHouse);
+					}
+					else
+					{
+						House apartmentHouse2 = apartment2.getAvailableApartment();
+						if (apartment1.houses.isEmpty()) {
+							System.out.println("Apartment complex is empty!");
+						}
+						if (apartmentHouse2 == null) {
+							System.out.println("House is null");
+						}
+						System.out.println("Creating. Number of houses = " + apartment2.availableApartments());
+						houses.add(apartmentHouse2);
+						apartmentHouse2.setOccupant(residentRole);
+						residentRole.setHouse(apartmentHouse2);
 					}
 					
 					
@@ -585,10 +605,10 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantNormalWaiterPS")) {
+					if (job.equals("RestaurantNormalWaiterPs")) {
 						NormalWaiterRolePS RestaurantNormalWaiterRolePS = new NormalWaiterRolePS(restaurantGuiPS);						
-						person.addJob("RestaurantNormalWaiterPS", start, end);
-						person.addRole(RestaurantNormalWaiterRolePS,"RestaurantNormalWaiterPS");
+						person.addJob("RestaurantNormalWaiterPs", start, end);
+						person.addRole(RestaurantNormalWaiterRolePS,"RestaurantNormalWaiterPs");
 						RestaurantNormalWaiterRolePS.setPerson(person);
 						person.hasCar = false;
 					}
@@ -630,13 +650,11 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCookRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantCookPS")) {
-						CookRolePS RestaurantCookRolePS = new CookRolePS(RestaurantCookWaiterMonitorPS, restaurantGuiPS);
-						
+					if (job.equals("RestaurantCookPs")) {
+						CookRolePS RestaurantCookRolePS = new CookRolePS(RestaurantCookWaiterMonitorPS, restaurantGuiPS);					
 						RestaurantCookRolePS.setTag(AlertTag.RESTAURANT1);
-						
-						person.addJob("RestaurantCookEs", start, end);
-						person.addRole(RestaurantCookRolePS, "RestaurantCookEs");
+						person.addJob("RestaurantCookPs", start, end);
+						person.addRole(RestaurantCookRolePS, "RestaurantCookPs");
 						RestaurantCookRolePS.setPerson(person);
 						person.hasCar = false;
 					}
@@ -668,9 +686,9 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantHostRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantHostPS")) {
-						person.addJob("RestaurantHostPS", start, end);
-						person.addRole(RestaurantHostRolePS, "RestaurantHostPS");
+					if (job.equals("RestaurantHostPs")) {
+						person.addJob("RestaurantHostPs", start, end);
+						person.addRole(RestaurantHostRolePS, "RestaurantHostPs");
 						RestaurantHostRolePS.setPerson(person);
 						person.hasCar = false;
 					}
@@ -717,10 +735,10 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCashierRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
-					if (job.equals("RestaurantCashierPS")) {
+					if (job.equals("RestaurantCashierPs")) {
 						CashierRolePS RestaurantCashierRolePS = new CashierRolePS(restaurantGuiPS);
-						person.addJob("RestaurantCashierPS", start, end);
-						person.addRole(RestaurantCashierRolePS,"RestaurantCashierPS");
+						person.addJob("RestaurantCashierPs", start, end);
+						person.addRole(RestaurantCashierRolePS,"RestaurantCashierPs");
 						RestaurantCashierRolePS.setPerson(person);
 						person.hasCar = false;
 					}
