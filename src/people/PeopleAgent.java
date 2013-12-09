@@ -2,6 +2,8 @@ package people;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
@@ -13,6 +15,8 @@ import restaurant.HostRole;
 import restaurant_zt.HostRoleZt;
 import restaurant_wc.HostRoleWc;
 import restaurant_vk.VkHostRole;
+import restaurant_vk.VkCookRole.Food;
+import restaurant_vk.VkCookRole.FoodState;
 import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
@@ -28,6 +32,7 @@ public class PeopleAgent extends Agent implements People{
 	public List<Market> Markets = Collections.synchronizedList(new ArrayList<Market>());
 	public List<Bank> Banks = Collections.synchronizedList(new ArrayList<Bank>());
 	public List<Job> jobs = Collections.synchronizedList(new ArrayList<Job>());
+	private Yelp yelp;
 	public Double Money;
 	public Double Balance;
 	private int Hunger = 1300;
@@ -844,6 +849,13 @@ public class PeopleAgent extends Agent implements People{
 //	{
 		//GUI WALK
 		location = AgentLocation.Road;
+		int totalscore = 0;
+		for (Entry<String, Integer> e : yelp.Ratings.entrySet()) {
+			totalscore += e.getValue();
+		}
+		int tempNum = rand.nextInt(totalscore);
+		
+		if(rand.nextInt(totalscore) <= 
 		if(!testmode)
 		{
 			if(hasCar)
@@ -2104,6 +2116,9 @@ public class PeopleAgent extends Agent implements People{
 	public Teller getTeller() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public void addYelp(Yelp yelp) {
+		this.yelp = yelp;
 	}
 }
 
