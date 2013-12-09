@@ -10,4 +10,6 @@ public interface Cook {
 	public abstract int getRestaurantIndex();
 
 	public abstract String getName();
+
+	public abstract void setLow();
 }

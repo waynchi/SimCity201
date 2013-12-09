@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+
 import restaurant.CookRole;
 
 
@@ -46,41 +47,41 @@ public class CookGui implements Gui {
 
 	@Override
 	public void updatePosition() {
-        if (xPos < xDestination)
-            xPos++;
-        else if (xPos > xDestination)
-            xPos--;
+		if (xPos < xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos += 2;
+		else if (xPos > xDestination && Math.abs(xDestination - xPos) > 1)
+			xPos -= 2;
+		
+		if (yPos < yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos += 2;
+		else if (yPos > yDestination && Math.abs(yDestination - yPos) > 1)
+			yPos -= 2;
 
-        if (yPos < yDestination)
-            yPos++;
-        else if (yPos > yDestination)
-            yPos--;
-
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
-        	xDestination = cookX;
-        	yDestination = cookY;
-           role.msgAtRevolvingStand();
-        }
+		if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
+			xPos = xDestination;
+			yPos = yDestination;
+	        if ((xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
+	        	xDestination = cookX;
+	        	yDestination = cookY;
+	        	role.msgAtRevolvingStand();
+	        }
         
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == cookX) && (yDestination == cookY) && goingBack) {
-        	goingBack = false;
-        	role.msgAtGrill();
-        }
+	        if ((xDestination == cookX) && (yDestination == cookY) && goingBack) {
+	        	goingBack = false;
+	        	role.msgAtGrill();
+	        }
         
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
-        	goingToFridge = false;
-        	role.msgAtFridge();
-        }
+	        if ((xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
+	        	goingToFridge = false;
+	        	role.msgAtFridge();
+	        }
         
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == exitX) && (yDestination == exitY) && leavingWork) {
-        	leavingWork = false;
-        	role.msgAtExit();
+	        if ((xDestination == exitX) && (yDestination == exitY) && leavingWork) {
+	        	leavingWork = false;
+	        	role.msgAtExit();
+	        }
         }
-        }
+	}
 
 	@Override
 	public void draw(Graphics2D g) {
