@@ -7,20 +7,23 @@ import javax.swing.Timer;
 
 import market.MarketCashierRole;
 import market.gui.MarketGui;
-import people.PeopleAgent;
+import market.test.MockPeople.MyMarket;
 import restaurant.test.mock.MockCashier;
 import restaurant.test.mock.MockCook;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 public class MarketCashierTest extends TestCase{
-	PeopleAgent people;
+	MockPeople people;
+	MyMarket market;
 	MarketCashierRole cashier;
+	MockTeller teller;
 	MockMarketEmployee mme;
 	MockMarketCustomer mmc;
 	MockCook mcook;
-	MockCashier mcashier ;
+	MockCashier restaurantCashier ;
 	Map<String, Integer> items = new HashMap<String, Integer>();
+	Map<String, Integer> items2 = new HashMap<String, Integer>();
 	Timer timer;
 	MarketGui gui;
 	
@@ -37,21 +40,25 @@ public class MarketCashierTest extends TestCase{
 		super.setUp();  
 		timer = new Timer(20,null);
 		gui = new MarketGui(timer);
-		people = new PeopleAgent("people", 0.0, false);
+		people = new MockPeople("people");
+		market = people.new MyMarket();
+		people.markets.add(market);
 		cashier = new MarketCashierRole(gui);
-		people.addRole(cashier, "MarketCashierRole");
 		cashier.setPerson(people);
+		teller = new MockTeller("teller");
 		mme = new MockMarketEmployee("mme");
 		cashier.setMarketEmployee(mme);
+		cashier.setTeller(teller);
 
 		mmc = new MockMarketCustomer("mmc");
-		mcook = new MockCook("mcook");
-		mcashier = new MockCashier("mcashier");
+		restaurantCashier = new MockCashier("mcashier");
 		items.put("Car", 1);
+		items2.put("Steak", 3);
+		items2.put("Salad", 5);
 		cashier.inTest = true;
 	}
 	
-	public void testPeopleMessage (){
+	public void testOpeningAndClosing (){
 		//check precondition
 		assertFalse(cashier.isActive());
 		cashier.msgIsActive();
@@ -61,13 +68,20 @@ public class MarketCashierTest extends TestCase{
 		
 		cashier.msgIsInActive();
 		cashier.pickAndExecuteAnAction();
-		assertTrue(cashier.log.containsString("in action done"));
+		assertTrue(cashier.log.containsString("in action leave work"));
 		assertFalse(cashier.isActive());
 		assertFalse(cashier.leaveWork);
 	}
 	
+	public void testBankInteraction() {
+		
+	}
 	
-	public void testOneCustomer (){
+	public void testBankClosing (){
+		
+	}
+	
+	public void testOneCustomerCheck (){
 		cashier.msgIsActive();
 		cashier.pickAndExecuteAnAction();
 		
@@ -92,6 +106,26 @@ public class MarketCashierTest extends TestCase{
 		assertEquals(cashier.working_capital,30000.0);
 	}
 		
-	
+	public void testOneRestaurantCheck() {
+		cashier.msgIsActive();
+		cashier.pickAndExecuteAnAction();
+		
+		assertEquals(cashier.checks.size(),0);
+		cashier.msgHereIsACheck(restaurantCashier, items2, 1);
+		assertEquals(cashier.checks.size(),1);
+		cashier.pickAndExecuteAnAction();
+		
+		assertTrue("cashier should be computing and sending bill to restaurant cashier, but it's not. log reads " + cashier.log.toString(),
+				cashier.log.containsString("sending check to restaurant cashier mcashier and total due is 38.92"));
+		
+		//verify the message sent
+		assertTrue("restaurant cashier should have received a bill from market cashier, but it's not. log reads " + restaurantCashier.log.toString(),
+				restaurantCashier.log.containsString("got a market bill with price 38.92 and order number 1"));
+		
+		cashier.msgHereIsPayment(100.0, items2, restaurantCashier);
+		assertTrue("check state should now be paid but it's not.",
+				cashier.checks.get(0).getState())
+		
+	}
 	
 }
