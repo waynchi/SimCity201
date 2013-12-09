@@ -362,7 +362,7 @@ public class CashierRolePS extends Role implements Cashier {
 	// Actions
 	private void clockIn() {
 		log.add(new LoggedEvent("in clock in"));
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(5);
 		teller = (Teller) getPersonAgent().getTeller(0);
 		if (!inTest){
 			host.setCashier(this);

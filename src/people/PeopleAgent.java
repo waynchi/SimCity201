@@ -2240,6 +2240,7 @@ public class PeopleAgent extends Agent implements People{
 							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
+						print("test");
 					//TODO personGui.GoToRestaurantOne();
 					try {
 						moving.acquire();
