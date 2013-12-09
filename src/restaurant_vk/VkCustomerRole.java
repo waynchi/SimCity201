@@ -65,7 +65,6 @@ public class VkCustomerRole extends Role implements Customer{
 		print("Received followMeToTable(Menu m).");
 		event = AgentEvent.followHost;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		this.menu = m;
 		stateChanged();
 	}
@@ -104,7 +103,6 @@ public class VkCustomerRole extends Role implements Customer{
 				leaveOption = true;
 			}
 		}
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 
@@ -145,7 +143,6 @@ public class VkCustomerRole extends Role implements Customer{
 		choice = order;
 		print("My choice is " + choice);
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -156,7 +153,6 @@ public class VkCustomerRole extends Role implements Customer{
 		print("Screw it. I'm leaving!");
 		event = AgentEvent.abruptlyLeaving;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -170,7 +166,6 @@ public class VkCustomerRole extends Role implements Customer{
 		state = AgentState.BeingSeated;
 		event = AgentEvent.seated;
 		leaveOption = true;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -207,7 +202,6 @@ public class VkCustomerRole extends Role implements Customer{
 	 */
 	public void tablesAreFull() {
 		leaveOption = true;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -359,11 +353,10 @@ public class VkCustomerRole extends Role implements Customer{
 				affordableItems.add(s);
 			}
 		}
-		if (affordableItems.isEmpty()) {
+		if (affordableItems.isEmpty() || menu.getAllFoodNames().isEmpty()) {
 			print("Screw it. I'm leaving!");
 			event = AgentEvent.abruptlyLeaving;
 			leaveOption = false;
-			customerGui.setLeaveOption(leaveOption);
 		}
 		else {
 			Random generator = new Random();
@@ -372,7 +365,6 @@ public class VkCustomerRole extends Role implements Customer{
 			event = AgentEvent.orderDecided;
 			print("My choice is " + choice);
 			leaveOption = false;
-			customerGui.setLeaveOption(leaveOption);
 		}
 	}
 	
@@ -410,7 +402,7 @@ public class VkCustomerRole extends Role implements Customer{
 				event = AgentEvent.doneEating;
 				stateChanged();
 			}
-		}, 5000);
+		}, 2000);
 	}
 
 	/*
@@ -421,7 +413,6 @@ public class VkCustomerRole extends Role implements Customer{
 		print("Leaving.");
 		waiter = null;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoExitRestaurant();
 		currentCheck = null;
 		isActive = false;
@@ -454,7 +445,6 @@ public class VkCustomerRole extends Role implements Customer{
 		waiter = null;
 		choice = "";
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
 		isActive = false;
 		myPerson.msgDone("Customer");
@@ -467,7 +457,6 @@ public class VkCustomerRole extends Role implements Customer{
 		host.ICantWait(this);
 		waiter = null;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
 		isActive = false;
 		myPerson.msgDone("Customer");

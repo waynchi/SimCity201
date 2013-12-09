@@ -1,11 +1,11 @@
 1,RepairMan,BobTheBuilder,50000,50000
 1,Teller,teller,1000,1930
-1,RestaurantNormalWaiterWc,John,1000,1900
-1,RestaurantNormalWaiterWc,Joey,1000,1900
-1,RestaurantNormalWaiterWc,Judah,1000,1900
-1,RestaurantCookWc,James,1000,1900
-1,RestaurantHostWc,Billy,900,1930
-1,RestaurantCashierWc,Zack,930,1900
+1,RestaurantNormalWaiterVk,John,1000,1900
+1,RestaurantNormalWaiterVk,Joey,1000,1900
+1,RestaurantNormalWaiterVk,Judah,1000,1900
+1,RestaurantCookVk,James,1000,1900
+1,RestaurantHostVk,Billy,900,1930
+1,RestaurantCashierVk,Zack,930,1900
 1,RestaurantCustomer,customer,5000,50000
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
