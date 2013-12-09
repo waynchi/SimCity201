@@ -1,7 +1,7 @@
 package restaurant_ps;
 
 import restaurant_ps.gui.RestaurantGuiPS;
-import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitor;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
 import restaurant_ps.gui.WaiterGuiPS;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -48,7 +48,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		waitingForFood, outOfChoice, foodIsReady, checkIsReady, needsToPay, eating, doneLeaving};
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
 	protected agentState state;
-	protected CookWaiterMonitor theMonitor;
+	protected CookWaiterMonitorPS theMonitor;
 	
 	public class FoodOnMenu {
 		public String type;

@@ -2,7 +2,7 @@ package restaurant_ps;
 
 import restaurant_ps.gui.CookGuiPS;
 import restaurant_ps.gui.RestaurantGuiPS;
-import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitor;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_ps.interfaces.Host;
@@ -34,7 +34,7 @@ public class CookRolePS extends Role implements Cook{
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
 	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
-	private CookWaiterMonitor theMonitor = null;
+	private CookWaiterMonitorPS theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer = new Timer();
@@ -77,7 +77,7 @@ public class CookRolePS extends Role implements Cook{
 	 *
 	 * @param name name of the cook
 	 */
-	public CookRolePS(CookWaiterMonitor monitor, RestaurantGuiPS gui) {
+	public CookRolePS(CookWaiterMonitorPS monitor, RestaurantGuiPS gui) {
 		this.restGui = gui;
 		cookGui = new CookGuiPS(this);
 		restGui.getAnimationPanel().addGui(cookGui);

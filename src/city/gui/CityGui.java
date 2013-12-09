@@ -37,6 +37,10 @@ import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
 
+import restaurant_ps.HostRolePS;
+import restaurant_ps.gui.RestaurantGuiPS;
+import restaurant_ps.gui.RestaurantPanelPS;
+import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
 //vk
 import restaurant_vk.gui.*;
 import restaurant_vk.*;
@@ -88,6 +92,7 @@ public class CityGui extends JFrame implements ActionListener {
 	RestaurantGuiZt restaurantGuiZt;
 	RestaurantGuiWc restaurantGuiWc;
 	RestaurantGuiEs restaurantGuiEs;
+	RestaurantGuiPS restaurantGuiPS;
 
 	RestaurantVkAnimationPanel vkAnimationPanel;
 	Yelp yelp = new Yelp();
@@ -115,6 +120,7 @@ public class CityGui extends JFrame implements ActionListener {
 	HostRoleZt RestaurantHostRoleZt = new HostRoleZt();
 	HostRoleWc RestaurantHostRoleWc = new HostRoleWc();
 	HostRoleEs RestaurantHostRoleEs = new HostRoleEs();
+	HostRolePS RestaurantHostRolePS = new HostRolePS();
 	VkHostRole RestaurantHostRoleVk;
 
 
@@ -127,7 +133,7 @@ public class CityGui extends JFrame implements ActionListener {
 	Restaurant restaurant3 = new Restaurant(RestaurantHostRoleZt, new Dimension(100,100), "Restaurant 3",3);
 	Restaurant restaurant4 = new Restaurant(RestaurantHostRoleWc, new Dimension(100,100), "Restaurant 4",4);
 	Restaurant restaurant5 = new Restaurant(RestaurantHostRoleEs, new Dimension(100,100), "Restaurant 5",5);
-
+	Restaurant restaurant6 = new Restaurant(RestaurantHostRolePS, new Dimension(100,100), "Restaurant 6",6);
 	
 
 
@@ -147,6 +153,7 @@ public class CityGui extends JFrame implements ActionListener {
 	CookWaiterMonitorZt RestaurantCookWaiterMonitorZT;
 	CookWaiterMonitorWc RestaurantCookWaiterMonitorWc;
 	CookWaiterMonitorEs RestaurantCookWaiterMonitorEs;
+	CookWaiterMonitorPS RestaurantCookWaiterMonitorPS;
 	RevolvingStand revolvingStand;
 
 	public CityGui() {
@@ -155,6 +162,7 @@ public class CityGui extends JFrame implements ActionListener {
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 5);
 		yelp.addRestaurant(restaurant5, 3);
+		yelp.addRestaurant(restaurant6, 6);
 		
 		
 		apartment1.gui.ap.setCityGui(this);
@@ -173,6 +181,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiZt = new RestaurantGuiZt(timer);
 		restaurantGuiWc = new RestaurantGuiWc(timer);
 		restaurantGuiEs = new RestaurantGuiEs(timer);
+		restaurantGuiPS = new RestaurantGuiPS(timer);
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
 		restaurant2.h = RestaurantHostRoleVk;
@@ -186,7 +195,7 @@ public class CityGui extends JFrame implements ActionListener {
 		//Set trace tags
 		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
 		RestaurantHostRoleWc.setTag(AlertTag.RESTAURANT4);
-
+		RestaurantHostRolePS.setTag(AlertTag.RESTAURANT6);
 
 
 		repairManRole.setTag(AlertTag.HOME);
@@ -199,6 +208,7 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantPanelZt restPanel2 = new RestaurantPanelZt(restaurantGuiZt);
 		RestaurantPanelWc restPanel3 = new RestaurantPanelWc(restaurantGuiWc);
 		RestaurantPanelEs restPanel4 = new RestaurantPanelEs(restaurantGuiEs);
+		RestaurantPanelPS restPanel6 = new RestaurantPanelPS(restaurantGuiPS);
 		
 		//vk revolving stand
 		revolvingStand = new RevolvingStand();
@@ -209,12 +219,14 @@ public class CityGui extends JFrame implements ActionListener {
 		restPanel2.setHost(RestaurantHostRoleZt);
 		restPanel3.setHost(RestaurantHostRoleWc);
 		restPanel4.setHost(RestaurantHostRoleEs);
+		restPanel6.setHost(RestaurantHostRolePS);
 		RestaurantCookWaiterMonitor = restPanel1.theMonitor;
 		RestaurantCookWaiterMonitorZT = restPanel2.theMonitor;
 		RestaurantCookWaiterMonitorWc = restPanel3.theMonitor;
 		RestaurantCookWaiterMonitorEs = restPanel4.theMonitor;
+		RestaurantCookWaiterMonitorPS = restPanel6.theMonitor;
 
-		CreateWorld(RestaurantCookWaiterMonitor,RestaurantCookWaiterMonitorZT,RestaurantCookWaiterMonitorWc,RestaurantCookWaiterMonitorEs, revolvingStand);
+		CreateWorld(RestaurantCookWaiterMonitor,RestaurantCookWaiterMonitorZT,RestaurantCookWaiterMonitorWc,RestaurantCookWaiterMonitorEs, RestaurantCookWaiterMonitorPS, revolvingStand);
 		
 		setVisible(true);
 		setSize(1024, 768);
@@ -275,6 +287,8 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantContainerWc.setOpaque(true);
 		JScrollPane restaurantContainerEs = new JScrollPane(restaurantGuiEs);
 		restaurantContainerEs.setOpaque(true);
+		JScrollPane restaurantContainerPS = new JScrollPane(restaurantGuiPS);
+		restaurantContainerPS.setOpaque(true);
 		JScrollPane restaurantContainerVK = new JScrollPane(vkAnimationPanel);
 		restaurantContainerVK.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
@@ -299,6 +313,7 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(restaurantContainerZT, "" + 18);
         buildingPanels.add(restaurantContainerWc, "" + 19);
         buildingPanels.add(restaurantContainerEs, "" + 20);
+        buildingPanels.add(restaurantContainerPS, "" + 21);
 
 
         buildingPanels.add(bankContainer, "" + 15);
@@ -379,7 +394,7 @@ public class CityGui extends JFrame implements ActionListener {
 		time = 0;
 		timer.stop();
 	}
-	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, RevolvingStand revolvingStand) {
+	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
 		FileReader input = null;
 		try {
 			if(System.getProperty("file.separator").equals("/"))
