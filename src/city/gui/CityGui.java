@@ -107,6 +107,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 	
 	ArrayList<PeopleAgent> people = new ArrayList<PeopleAgent>();
+	ArrayList<BusAgent> buses = new ArrayList<BusAgent>();
 	ArrayList<House> availableApartments = new ArrayList<House>();
 	HostRole RestaurantHostRoleYc = new HostRole();
 	HostRoleZt RestaurantHostRoleZt = new HostRoleZt();
@@ -360,16 +361,22 @@ public class CityGui extends JFrame implements ActionListener {
 			person.stopThread();
 			
 		}
+		people.clear();
 		for(House house : houses) {
 			house.gui.guis.clear();
 		}
+		for(BusAgent bus : buses) {
+			bus.stopThread();
+		}
+		houses.clear();
 		cityPanel.vehicles.clear();
 		cityPanel.people.clear();
+		cityPanel.busStops.clear();
+		cityPanel.buses.clear();
 		timer.restart();
 		time = 0;
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, RevolvingStand revolvingStand) {
-		ClearWorld();
 		FileReader input = null;
 		try {
 			if(System.getProperty("file.separator").equals("/"))
@@ -722,6 +729,7 @@ public class CityGui extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 		BusAgent busAgent = new BusAgent();
+		buses.add(busAgent);
 		BusStopGui busStopGui = new BusStopGui();
 		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
 		busStopGui = new BusStopGui();
