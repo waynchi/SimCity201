@@ -312,7 +312,7 @@ public class VkCashierRole extends Role implements Cashier {
 	 */
 	private void payBill(Bill b) {
 		print("Paying market bill.");
-		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
+		mCashier.msgHereIsPayment(b.cost, b.orderNumber, this);
 		b.s = BillState.Paid;
 		workingCapital -= b.cost;
 	}
