@@ -288,6 +288,7 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to verify a bill before paying it.
 	 */
 	public void verifyBill(Bill b) {
+		print("Verifying market bill.");
 		Set<Map.Entry<String, Integer>> cookItems = b.itemsFromCook.entrySet();
 		Set<Map.Entry<String, Integer>> marketItems = b.itemsFromMarket.entrySet();
 		for (Map.Entry<String, Integer> ci : cookItems) {
@@ -310,6 +311,7 @@ public class VkCashierRole extends Role implements Cashier {
 	 * An action to pay bill to a market.
 	 */
 	private void payBill(Bill b) {
+		print("Paying market bill.");
 		mCashier.msgHereIsPayment(b.cost, b.itemsFromMarket, this);
 		b.s = BillState.Paid;
 		workingCapital -= b.cost;

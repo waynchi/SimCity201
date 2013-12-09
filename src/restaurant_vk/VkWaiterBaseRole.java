@@ -99,11 +99,9 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			for (MyCustomer mc : customers) {
 				if (mc.table == table && mc.s == CustomerState.Ordered) {
 					mc.os = OrderStatus.ReadyToServe;
-					print("Inside if block");
 					break;
 				}
 			}
-			print("Received orderIsReady() for table " + table + " of " + choice);
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
@@ -202,7 +200,6 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 					break;
 				}
 			}
-			print("Received message outOf() for table " + table);
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
@@ -621,13 +618,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	 * specified Customer object in it.
 	 */
 	private MyCustomer find(Customer ca) {
-		MyCustomer mc = null;
-		synchronized (customers) {
-			for (MyCustomer o : customers) {
-				if (o.c == ca) {
-					mc = o;
-					break;
-				}
+	MyCustomer mc = null;
+		for (MyCustomer o : customers) {
+			if (o.c == ca) {
+				mc = o;
+				break;
 			}
 		}
 		return mc;
