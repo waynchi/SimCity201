@@ -470,19 +470,19 @@ public class CookRole extends Role implements Cook{
 			capacity = 5;
 			isOrdered = false;
 			if (type.equals("Steak")) {
-				cookingTime = 5000;
+				cookingTime = 1000;
 				amount = 3;
 			}
 			if (type.equals("Chicken")) {
-				cookingTime = 3000;
+				cookingTime = 1000;
 				amount = 3;
 			}
 			if (type.equals("Salad")) {
-				cookingTime = 3000;
+				cookingTime = 1000;
 				amount = 5;
 			}
 			if (type.equals("Pizza")) {
-				cookingTime = 4000;
+				cookingTime = 1000;
 				amount = 5;
 			}
 		}
