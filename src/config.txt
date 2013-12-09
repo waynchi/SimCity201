@@ -1,6 +1,5 @@
 1,RepairMan,BobTheBuilder,50000,50000
 1,Teller,teller,1000,1930
-<<<<<<< HEAD
 1,RestaurantNormalWaiter,John,1000,1900
 1,RestaurantNormalWaiter,Joey,1000,1900
 1,RestaurantNormalWaiter,Judah,1000,1900
@@ -31,14 +30,6 @@
 1,RestaurantCookWc,James5,1000,1900
 1,RestaurantHostWc,Billy5,900,1930
 1,RestaurantCashierWc,Zack5,930,1900
-=======
-1,RestaurantNormalWaiterVk,John,1000,1900
-1,RestaurantNormalWaiterVk,Joey,1000,1900
-1,RestaurantNormalWaiterVk,Judah,1000,1900
-1,RestaurantCookVk,James,1000,1900
-1,RestaurantHostVk,Billy,900,1930
-1,RestaurantCashierVk,Zack,930,1900
->>>>>>> vk
 1,RestaurantCustomer,customer,5000,50000
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
