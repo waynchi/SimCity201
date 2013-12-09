@@ -12,10 +12,10 @@ public class AnimationPanelZt extends JPanel implements ActionListener {
 	//static final int?
     private final int WINDOWX = 400;
     private final int WINDOWY = 200;
-	static final int TABLEFILLX = 100;
-	static final int TABLEFILLX2 = 200;
-	static final int TABLEFILLX3 = 300;
-	static final int TABLEFILLY = 50;
+	static final int TABLEFILLX = 80;
+	static final int TABLEFILLX2 = 180;
+	static final int TABLEFILLX3 = 280;
+	static final int TABLEFILLY = 100;
 	static final int TABLEWIDTH = 50;
 	static final int TABLEHEIGHT = 50;
 	static final int NULLX = 0;

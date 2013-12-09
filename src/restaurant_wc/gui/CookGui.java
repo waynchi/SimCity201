@@ -1,225 +1,187 @@
 package restaurant_wc.gui;
 
-import restaurant_wc.WcCookRole;
-import restaurant_wc.WcCustomerRole;
-import restaurant_wc.WcHostAgent;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Semaphore;
+import restaurant_wc.CookRoleWc;
 
-import javax.swing.ImageIcon;
 
-public class CookGui implements Gui{
+public class CookGui implements Gui {
 
-	private WcCookRole cook;
-	private int xPos, yPos;
-	private int xDestination, yDestination;
-	private int xHome, yHome;
-	private RestaurantGui gui;
-	private ImageIcon Blank = new ImageIcon("none");
-	private ImageIcon steak = new ImageIcon(this.getClass().getResource("steak.jpg"));
-	private ImageIcon chicken = new ImageIcon(this.getClass().getResource("chicken.jpg"));
-	private ImageIcon salad = new ImageIcon(this.getClass().getResource("salad.jpg"));
-	private ImageIcon pizza = new ImageIcon(this.getClass().getResource("pizza.jpg"));
-	private List<MyImageIcon> FoodList = Collections.synchronizedList(new ArrayList<MyImageIcon>());
+	private CookRoleWc role = null;
+	Boolean isCooking;
+	boolean goingBack = false;
+	boolean leavingWork = false;
+	boolean goingToFridge = false;
+	String foodBeingCooked = null;
+	RestaurantGuiWc gui;
+	private List<String> foodPlated = new ArrayList<String>();
+
+	 
+    private int xDestination = 70, 
+    		xPos = 0;
+    private int yDestination = 270,
+    		yPos = 0;
+    
+    private int cookX = 70;
+    private int cookY = 270;
+    
+    private int revolvingStandX = 350, revolvingStandY = 250;
+    
+    private int exitX = 0, exitY = 0;
+    private int fridgeX = 150, fridgeY = 300;
+    
+    boolean isPresent;
 	
-	public CookGui(RestaurantGui gui)
-	{
-		this.gui = gui;
-		xPos = 450;
-		yPos = 400;
-		xHome = 450;
-		yHome = 400;
-		xDestination = 450;
-		yDestination = 400;
-		FoodList.add(new MyImageIcon(Blank, "none"));
-		FoodList.add(new MyImageIcon(Blank, "none"));
-		FoodList.add(new MyImageIcon(Blank, "none"));
-	}
-	public void updatePosition() {
-		// TODO Auto-generated method stub
-		if (xPos < xDestination)
-			xPos++;
-		else if (xPos > xDestination)
-			xPos--;
-
-		if (yPos < yDestination)
-			yPos++;
-		else if (yPos > yDestination)
-			yPos--;
-		
-		for(int i = 0; i < FoodList.size(); i++)
-		{
-			if(xPos == xDestination && yPos == yDestination && FoodList.get(i).Status.equals("inFridge"))
-			{
-				FoodList.get(i).Status = "moving";
-				xDestination = gui.animationPanel.GrillX - 20;
-				yDestination = gui.animationPanel.GrillY + i*35;
-			}		
-			if(xPos == xDestination && yPos == yDestination && FoodList.get(i).Status.equals("moving"))
-			{
-				FoodList.get(i).Status = "cooking";
-				cook.msgDestinationArrival();
-				xDestination = xHome;
-				yDestination = yHome;
-			}
-			if(xPos == xDestination && yPos == yDestination && FoodList.get(i).Status.equals("readyToPlate"))
-			{
-				FoodList.get(i).Status = "plating";
-				xDestination = gui.animationPanel.KitchenX + 20;
-				yDestination = gui.animationPanel.GrillY + i*35;
-			}
-			if(xPos == xDestination && yPos == yDestination && FoodList.get(i).Status.equals("plating"))
-			{
-				FoodList.get(i).Status = "cooked";
-				cook.msgDonePlating();
-				xDestination = xHome;
-				yDestination = yHome;
-			}
+	
+	public CookGui (CookRoleWc cook) {
+		isCooking = false;
+		role = cook;
+		for (int i=0;i<3;i++) {
+			foodPlated.add("");
 		}
-		
 	}
+	
+
+	@Override
+	public void updatePosition() {
+        if (xPos < xDestination)
+            xPos++;
+        else if (xPos > xDestination)
+            xPos--;
+
+        if (yPos < yDestination)
+            yPos++;
+        else if (yPos > yDestination)
+            yPos--;
+
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == revolvingStandX) && (yDestination == revolvingStandY)) {
+        	xDestination = cookX;
+        	yDestination = cookY;
+           role.msgAtRevolvingStand();
+        }
+        
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == cookX) && (yDestination == cookY) && goingBack) {
+        	goingBack = false;
+        	role.msgAtGrill();
+        }
+        
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
+        	goingToFridge = false;
+        	role.msgAtFridge();
+        }
+        
+        if (xPos == xDestination && yPos == yDestination
+        		&& (xDestination == exitX) && (yDestination == exitY) && leavingWork) {
+        	leavingWork = false;
+        	role.msgAtExit();
+        }
+        }
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		try{
-		g.setColor(Color.RED);
-		g.fillRect(xPos, yPos, 20, 20);	
-		for(int i = 0; i < FoodList.size(); i++)
-		{
-			if(FoodList.get(i).Status.equals("moving") )
-			{
-				g.drawImage(FoodList.get(i).imageIcon.getImage(), xPos + 20, yPos+20, null);
-			}
-			if(FoodList.get(i).Status.equals("plating") )
-			{
-				g.drawImage(FoodList.get(i).imageIcon.getImage(), xPos + 20, yPos+20, null);
-			}
-			if(FoodList.get(i).Status.equals("cooking") || FoodList.get(i).Status.equals("readyToPlate"))
-			{
-				g.drawImage(FoodList.get(i).imageIcon.getImage(), gui.animationPanel.GrillX, gui.animationPanel.GrillY + i*35, null);
-			}
-			else if(FoodList.get(i).Status.equals("cooked"))
-			{
-				g.drawImage(FoodList.get(i).imageIcon.getImage(), gui.animationPanel.KitchenX, gui.animationPanel.GrillY + i*35, null);
-			}
-			}
-		}
-		catch(ConcurrentModificationException e)
-		{
-			return;
-		}
+        g.setColor(Color.blue);
+		g.fillRect(xPos, yPos, 20, 20);
+        g.setColor(Color.black);
+        g.drawString("Cook", xPos, yPos+20);
+        if (isCooking) {
+        	g.drawString(foodBeingCooked, 50, 265);
+        }
+        else g.drawString("", 50, 265);
+        for (int i=0; i<3;i++) {
+        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        }
 	}
 
 	@Override
 	public boolean isPresent() {
-		// TODO Auto-generated method stub
-		return true;
+		return isPresent;
 	}
 
-	public void setCook(WcCookRole cook) {
-		// TODO Auto-generated method stub
-		this.cook = cook;		
+	public void cookFood (String food) {
+		isCooking = true;
+		foodBeingCooked = food;
 	}
-
-	public void msgAddToGrill(String choice) {
-		// TODO Auto-generated method stub
-		if(choice == "Steak") {
-			for(int i = 0; i < FoodList.size(); i++)
-			{
-				if(FoodList.get(i).imageIcon.equals(Blank))
-				{
-					FoodList.remove(FoodList.get(i));
-					FoodList.add(i, new MyImageIcon(new ImageIcon(steak.getImage(), "Steak"), "inFridge"));	
-					break;
-				}
-			}
-		}
-		if(choice == "Chicken") {
-			for(int i = 0; i < FoodList.size(); i++)
-			{
-				if(FoodList.get(i).imageIcon.equals(Blank))
-				{
-					FoodList.remove(FoodList.get(i));
-					FoodList.add(i, new MyImageIcon(new ImageIcon(chicken.getImage(), "Chicken"), "inFridge"));		
-					break;
-				}
-			}
-		}
-		if(choice == "Pizza") {
-			for(int i = 0; i < FoodList.size(); i++)
-			{
-				if(FoodList.get(i).imageIcon.equals(Blank))
-				{
-					FoodList.remove(FoodList.get(i));
-					FoodList.add(i, new MyImageIcon(new ImageIcon(pizza.getImage(), "Pizza"), "inFridge"));		
-					break;
-				}
-			}
-		}
-		if(choice == "Salad") {
-			for(int i = 0; i < FoodList.size(); i++)
-			{
-				if(FoodList.get(i).imageIcon.equals(Blank))
-				{
-					FoodList.remove(FoodList.get(i));
-					FoodList.add(i, new MyImageIcon(new ImageIcon(salad.getImage(), "Salad"), "inFridge"));		
-					break;
-				}
-			}
-		}
-		xDestination = gui.animationPanel.FridgeX - 20;
-		yDestination = gui.animationPanel.FridgeY - 20;
-		}
 	
-	public void msgAddToPlating(String choice) {
-		int j = 0;
-		synchronized(FoodList){
-			for(MyImageIcon i: FoodList){
-				if(i.imageIcon.getDescription().equals(choice) && i.Status.equals("cooking"))
-				{
-					xDestination = gui.animationPanel.GrillX - 20;
-					yDestination = gui.animationPanel.GrillY + j*35;
-					i.Status = "readyToPlate";
-					return;
-				}
-				j++;
-			}
-		}
+	public void plateFood (String food, int i){
+		foodPlated.set(i-1, food);	
+	}
+	
+	public void foodPickedUp(int table) {
+		foodPlated.set((table-1),"");
+	}
+	
+	public void finishCooking () {
+		isCooking = false;
+	}
+
+	public void DoGoToRevolvingStand() {
+		xDestination = revolvingStandX;
+		yDestination = revolvingStandY;
 		
 	}
-	public void msgTakingPlate(String choice) {
-		synchronized(FoodList){
-			for(int i = 0 ; i < FoodList.size(); i++) {
-				if(FoodList.get(i).imageIcon.getDescription().equals(choice) && FoodList.get(i).Status.equals("cooked"))
-				{
-					
-					FoodList.remove(FoodList.get(i));
-					FoodList.add(i, new MyImageIcon(Blank, "none"));
-					return;
-				}
-			}
-		}
-	}
 	
-	public class MyImageIcon
-	{
-		public ImageIcon imageIcon;
-		public String Status;
-		public MyImageIcon(ImageIcon imageIcon, String status)
-		{
-			this.imageIcon = imageIcon;
-			this.Status = status;
-		}
+	public void setPresent(boolean b) {
+		isPresent = b;
 	}
 
+	public void DoGoToCookingPlace() {
+		goingBack = true;
+		xDestination = cookX;
+		yDestination = cookY;
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void DoLeaveWork() {
+		leavingWork = true;
+		xDestination = exitX;
+		yDestination = exitY;
+		
+	}
 	
+	public int getX() {
+		return xPos;
+	}
+	
+	public int getY() {
+		return yPos;
+	}
+	
+	public int getXDest() {
+		return xDestination;
+	}
+	
+	public int getYDest() {
+		return yDestination;
+	}
+	
+	public void setXDest(int x) {
+		xDestination = x;
+	}
+	
+	public void setYDest(int y) {
+		yDestination = y;
+	}
+
+
+	public void setDefaultDestination() {
+		// TODO Auto-generated method stub
+		goingBack = true;
+		xDestination = cookX;
+		yDestination = cookY;
+	}
+
+
+	public void goToFridge() {
+		// TODO Auto-generated method stub
+		xDestination = fridgeX;
+		yDestination = fridgeY;
+		goingToFridge = true;
+	}
 }
-
