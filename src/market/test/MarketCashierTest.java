@@ -156,7 +156,7 @@ public class MarketCashierTest extends TestCase{
 		assertTrue("restaurant cashier should have received a bill from market cashier, but it's not. log reads " + restaurantCashier.log.toString(),
 				restaurantCashier.log.containsString("got a market bill with price 38.92 and order number 1"));
 		
-		cashier.msgHereIsPayment(100.0, items2, restaurantCashier);
+		cashier.msgHereIsPayment(100.0, 1, restaurantCashier);
 		assertTrue("check state should now be paid but it's not.",
 				cashier.checks.get(0).getState().equals("PAID"));
 		
