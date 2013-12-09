@@ -39,6 +39,7 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
     public Image cookingGrill = new BufferedImage(100, 20, BufferedImage.TYPE_INT_BGR);
     public Image platingArea = new BufferedImage(400, 20, BufferedImage.TYPE_INT_BGR);
     public Image fridge = new BufferedImage(20, 240, BufferedImage.TYPE_INT_BGR);
+    public Image floor = new BufferedImage(680, 480, BufferedImage.TYPE_INT_BGR);
     private Timer timer;
 
     private List<VkGui> guis = new ArrayList<VkGui>();
@@ -70,6 +71,11 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 		} catch (IOException e) {
 			System.out.println("Image not found.");
 		}
+    	try {
+			floor = ImageIO.read(new File("res/restaurant_vk/floor.jpg"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
     	this.timer = timer;
     }
 
@@ -82,7 +88,8 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
 
         // Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
-        g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        g.drawImage(floor, 0, 0, null);
 
         // Here are the tables.
         g2.setColor(Color.ORANGE);
@@ -92,10 +99,14 @@ public class RestaurantVkAnimationPanel extends JPanel implements ActionListener
         g2.fillRect(TABLE_LEFT_X + (3 * (TABLE_WIDTH + 10)), TABLE_TOP_Y, TABLE_WIDTH, TABLE_HEIGHT);
         
         g.drawImage(cookingGrill, GRILL_LEFT_X, GRILL_TOP_Y, null);
+        g.setColor(Color.BLACK);
+        g.drawRect(GRILL_LEFT_X, GRILL_TOP_Y, 100, 20);
         
         g.drawImage(platingArea, PLATE_LEFT_X, PLATE_TOP_Y, null);
         
         g.drawImage(fridge, FRIDGE_LEFT_X, FRIDGE_TOP_Y, null);
+        g.setColor(Color.BLACK);
+        g.drawRect(FRIDGE_LEFT_X, FRIDGE_TOP_Y, 20, 40);
         
         g2.setColor(Color.ORANGE);
         g2.fillOval(STAND_LEFT_X, STAND_TOP_Y, STAND_DIAMETER, STAND_DIAMETER);
