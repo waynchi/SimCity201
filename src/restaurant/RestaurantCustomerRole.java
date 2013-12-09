@@ -457,7 +457,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 				getPersonAgent().CallstateChanged();
 			}
 		},
-		5000);//getHungerLevel() * 1000);//how long to wait before running task
+		2000);//getHungerLevel() * 1000);//how long to wait before running task
 	}
 
 	// customer must pay for his meal
