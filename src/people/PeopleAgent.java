@@ -1361,6 +1361,7 @@ public class PeopleAgent extends Agent implements People{
 	//Going to Work
 	public void GoToWork()
 	{
+		
 //		for(int i = 0; i <jobs.size(); i++)
 //		{
 //			print("I am going to work now!");
@@ -1384,6 +1385,7 @@ public class PeopleAgent extends Agent implements People{
 		//Release the Gui from msgDone
 	for(int i = 0; i <jobs.size(); i++)
 	{
+		print("My job is " + jobs.get(i).job);
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
 			for(MyRole r: roles)
@@ -2216,7 +2218,7 @@ public class PeopleAgent extends Agent implements People{
 		{
 			for(MyRole r: roles)
 			{
-				
+				print(r.description);
 				if(r.description.equals("RestaurantHostPs"))
 				{	
 					location = AgentLocation.Road;
@@ -2449,18 +2451,18 @@ public class PeopleAgent extends Agent implements People{
 			}
 			//roles.TellerRole.msgIsActive();
 		}
-		if(jobs.get(i).job.equals("RepairMan"))
-		{
-			for(MyRole r: roles)
+			if(jobs.get(i).job.equals("RepairMan"))
 			{
-				if(r.description.equals("RepairMan"))
-				{			
-					print("I am now a " + r.description);
-					r.role.msgIsActive();
+				for(MyRole r: roles)
+				{
+					if(r.description.equals("RepairMan"))
+					{			
+						print("I am now a " + r.description);
+						r.role.msgIsActive();
+					}
 				}
+				//roles.RepairRole.msgIsActive();
 			}
-			//roles.RepairRole.msgIsActive();
-		}
 		}
 		//roles.ResidentRole.msgIsInActive();
 	}

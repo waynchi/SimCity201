@@ -740,12 +740,9 @@ public class CityGui extends JFrame implements ActionListener {
 						VkCashierRole RestaurantCashierRoleVK = new VkCashierRole(vkAnimationPanel);
 						RestaurantCashierRoleVK.setHost(RestaurantHostRoleVk);
 						RestaurantCashierRoleVK.setTag(AlertTag.RESTAURANT1);
-						
-						RestaurantHostRoleVk.setCashier(RestaurantCashierRoleVK);
-
-						
-						person.addJob("RestaurantCashier", start, end);
-						person.addRole(RestaurantCashierRoleVK,"RestaurantCashier");
+						RestaurantHostRoleVk.setCashier(RestaurantCashierRoleVK);	
+						person.addJob("RestaurantCashierVk", start, end);
+						person.addRole(RestaurantCashierRoleVK,"RestaurantCashierVk");
 						RestaurantCashierRoleVK.setPerson(person);
 						person.hasCar = false;
 					}
@@ -867,6 +864,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiZt.updatePosition();
 		restaurantGuiWc.updatePosition();
 		restaurantGuiEs.updatePosition();
+		restaurantGuiPS.updatePosition();
 		vkAnimationPanel.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
