@@ -402,6 +402,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.stop();
 		count = 0;
 		System.out.println("Clearing. Number of houses = " + apartment1.availableApartments());
+		configParams.clear();
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
 		FileReader input = null;
