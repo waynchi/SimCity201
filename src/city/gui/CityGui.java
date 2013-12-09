@@ -469,7 +469,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
 					
-					int extraPeople = 0;
+//					int extraPeople = 0;
 					HousingResidentRole residentRole = new HousingResidentRole();
 					if(count <= 11) {
 						House house = new House("House", 1, HouseType.Villa);
@@ -483,7 +483,7 @@ public class CityGui extends JFrame implements ActionListener {
 						System.out.println("Person added to villa");
 					}
 					else {
-						extraPeople++;
+//						extraPeople++;
 						House apartmentHouse = apartment1.getAvailableApartment();
 						if (apartment1.houses.isEmpty()) {
 							System.out.println("Apartment complex is empty!");
