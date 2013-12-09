@@ -36,8 +36,11 @@ import restaurant_es.RestaurantCustomerRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
-
 import restaurant_ps.HostRolePS;
+import restaurant_ps.RestaurantCustomerRolePS;
+import restaurant_ps.CashierRolePS;
+import restaurant_ps.CookRolePS;
+import restaurant_ps.NormalWaiterRolePS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
@@ -162,7 +165,7 @@ public class CityGui extends JFrame implements ActionListener {
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 5);
 		yelp.addRestaurant(restaurant5, 3);
-		yelp.addRestaurant(restaurant6, 6);
+		yelp.addRestaurant(restaurant6, 4);
 		
 		
 		apartment1.gui.ap.setCityGui(this);
@@ -389,6 +392,7 @@ public class CityGui extends JFrame implements ActionListener {
 		for(BusAgent bus : buses) {
 			bus.stopThread();
 		}
+		buses.clear();
 		houses.clear();
 		cityPanel.vehicles.clear();
 		cityPanel.people.clear();
@@ -398,6 +402,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.stop();
 		count = 0;
 		System.out.println("Clearing. Number of houses = " + apartment1.availableApartments());
+		configParams.clear();
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
 		FileReader input = null;
@@ -441,12 +446,14 @@ public class CityGui extends JFrame implements ActionListener {
 					person.Restaurants.add(restaurant3);
 					person.Restaurants.add(restaurant4);
 					person.Restaurants.add(restaurant5);
+					person.Restaurants.add(restaurant6);
 					person.Banks.add(bank);
 					person.Markets.add(market);
 					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGuiYc);
 					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
 					RestaurantCustomerRoleWc RestaurantCustomerRoleWc = new RestaurantCustomerRoleWc(restaurantGuiWc);
 					RestaurantCustomerRoleEs RestaurantCustomerRoleEs = new RestaurantCustomerRoleEs(restaurantGuiEs);
+					RestaurantCustomerRolePS RestaurantCustomerRolePs = new RestaurantCustomerRolePS(restaurantGuiPS);
 
 					VkCustomerRole RestaurantCustomerRoleVk = new VkCustomerRole(vkAnimationPanel);
 					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
@@ -476,6 +483,14 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT4);
 					person.addRole(RestaurantCustomerRoleWc, "RestaurantCustomerWc");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
 					RestaurantCustomerRoleWc.setPerson(person);
 										
 					
@@ -570,6 +585,13 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
+					if (job.equals("RestaurantNormalWaiterPS")) {
+						NormalWaiterRolePS RestaurantNormalWaiterRolePS = new NormalWaiterRolePS(restaurantGuiPS);						
+						person.addJob("RestaurantNormalWaiterPS", start, end);
+						person.addRole(RestaurantNormalWaiterRolePS,"RestaurantNormalWaiterPS");
+						RestaurantNormalWaiterRolePS.setPerson(person);
+						person.hasCar = false;
+					}
 					if (job.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGuiYc);
 						
@@ -608,6 +630,16 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantCookRoleEs.setPerson(person);
 						person.hasCar = false;
 					}
+					if (job.equals("RestaurantCookPS")) {
+						CookRolePS RestaurantCookRolePS = new CookRolePS(RestaurantCookWaiterMonitorPS, restaurantGuiPS);
+						
+						RestaurantCookRolePS.setTag(AlertTag.RESTAURANT1);
+						
+						person.addJob("RestaurantCookEs", start, end);
+						person.addRole(RestaurantCookRolePS, "RestaurantCookEs");
+						RestaurantCookRolePS.setPerson(person);
+						person.hasCar = false;
+					}
 					if (job.equals("RestaurantCookVk")) {
 						VkCookRole RestaurantCookRoleVK = new VkCookRole(revolvingStand, vkAnimationPanel);
 						RestaurantCookRoleVK.setTag(AlertTag.RESTAURANT1);
@@ -632,8 +664,14 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					if (job.equals("RestaurantHostEs")) {
 						person.addJob("RestaurantHostEs", start, end);
-						person.addRole(RestaurantHostRoleZt, "RestaurantHostEs");
+						person.addRole(RestaurantHostRoleEs, "RestaurantHostEs");
 						RestaurantHostRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostPS")) {
+						person.addJob("RestaurantHostPS", start, end);
+						person.addRole(RestaurantHostRolePS, "RestaurantHostPS");
+						RestaurantHostRolePS.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantHostWc")) {
@@ -677,6 +715,13 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("RestaurantCashierEs", start, end);
 						person.addRole(RestaurantCashierRoleEs,"RestaurantCashierEs");
 						RestaurantCashierRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierPS")) {
+						CashierRolePS RestaurantCashierRolePS = new CashierRolePS(restaurantGuiPS);
+						person.addJob("RestaurantCashierPS", start, end);
+						person.addRole(RestaurantCashierRolePS,"RestaurantCashierPS");
+						RestaurantCashierRolePS.setPerson(person);
 						person.hasCar = false;
 					}
 					if (job.equals("RestaurantCashierVk")) {
@@ -809,6 +854,8 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiYc.updatePosition();
 		restaurantGuiZt.updatePosition();
 		restaurantGuiWc.updatePosition();
+		restaurantGuiEs.updatePosition();
+		vkAnimationPanel.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();

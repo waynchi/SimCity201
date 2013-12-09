@@ -21,7 +21,7 @@ import people.Role;
 // Customers are created by user, and could be set hungry when created.
 // Customers behave differently upon situations, which depends on the name they have
 
-public class RestaurantCustomerRole extends Role implements Customer{
+public class RestaurantCustomerRolePS extends Role implements Customer{
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	private CustomerGuiPS customerGui;
@@ -62,7 +62,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	 *
 	 * @param name name of the customer
 	 */
-	public RestaurantCustomerRole(RestaurantGuiPS gui){
+	public RestaurantCustomerRolePS(RestaurantGuiPS gui){
 		super();
 //		// parsing customer name string to get desirable customer behavior
 //		String delims = "[ ]+";
@@ -491,7 +491,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		// gui needs to walk to the exit
 		isActive = false;
 		customerGui.setPresent(false);
-		getPersonAgent().msgDone("RestaurantCustomerRole");
+		getPersonAgent().msgDone("RestaurantCustomerRolePS");
 	}
 
 	

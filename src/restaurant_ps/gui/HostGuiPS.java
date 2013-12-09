@@ -2,7 +2,7 @@ package restaurant_ps.gui;
 
 
 import restaurant_ps.HostRolePS;
-import restaurant_ps.RestaurantCustomerRole;
+import restaurant_ps.RestaurantCustomerRolePS;
 
 import java.awt.*;
 
@@ -35,7 +35,7 @@ public class HostGuiPS implements Gui {
         return true;
     }
 
-    public void DoBringToTable(RestaurantCustomerRole customer, int tableX, int tableY) {
+    public void DoBringToTable(RestaurantCustomerRolePS customer, int tableX, int tableY) {
         xDestination = tableX + 20;
         yDestination = tableY - 20;
         currentTableX = tableX;
