@@ -374,6 +374,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.busStops.clear();
 		cityPanel.buses.clear();
 		time = 0;
+		timer.stop();
 	}
 	public void CreateWorld(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, RevolvingStand revolvingStand) {
 		FileReader input = null;
@@ -745,6 +746,7 @@ public class CityGui extends JFrame implements ActionListener {
 		busAgent.startThread();
 		bg.msgGoToNextStop(busAgent, cityPanel.busStops.get(cityPanel.busStops.size()-1));
 		cityPanel.vehicles.add(bg);
+		timer.start();
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
