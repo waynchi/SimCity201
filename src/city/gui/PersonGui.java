@@ -298,7 +298,6 @@ public class PersonGui extends Rectangle2D.Double {
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
 			if(getCurrentLane().equals("26_0")) {
-				System.out.println(yDestination + " " + y);
 				this.currentCell.hasPerson = false;
 				if(yDestination < y) {
 					this.direction = "up";
