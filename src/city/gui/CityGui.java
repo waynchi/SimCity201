@@ -896,5 +896,12 @@ public class CityGui extends JFrame implements ActionListener {
 		repaint();
 
 	}
+
+	public void startNormalScenario3() {
+		RestaurantHostRoleVk.cook.msgSetLow();
+		
+	}
+	
+	
 }
 

@@ -186,10 +186,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			cityGui.ClearWorld();
 		}
 		else if(e.getActionCommand().equals("Normal Scenario 2")) {
-			
 		}
 		else if(e.getActionCommand().equals("Normal Scenario 3")) {
-			
+			System.out.println("Starting normative scenario: all restaurants order from markets");
+			cityGui.startNormalScenario3();
+
 		}
 		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
 			
