@@ -230,7 +230,6 @@ public class MockPeople extends Mock implements People{
 
 	@Override
 	public Restaurant getRestaurant(int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
