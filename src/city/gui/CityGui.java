@@ -1308,7 +1308,12 @@ public class CityGui extends JFrame implements ActionListener {
 	}
 
 	public void startNormalScenario3() {
-		RestaurantHostRoleVk.cook.msgSetLow();
+		RestaurantHostRoleVk.cook.setLow();
+		RestaurantHostRoleYc.getCook().setLow();
+		RestaurantHostRoleZt.getCook().setLow();
+		RestaurantHostRoleWc.getCook().setLow();
+		RestaurantHostRoleEs.getCook().setLow();
+		RestaurantHostRolePS.getCook().setLow();
 		
 	}
 	
