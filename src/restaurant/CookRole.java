@@ -361,6 +361,7 @@ public class CookRole extends Role implements Cook{
 	
 	public void getOrderFromRevolvingStand() {
 		print ("going to revolving stand");
+		orders.add (new MyOrder(theMonitor.removeOrder()));
 		cookGui.DoGoToRevolvingStand();
 		try {
 			atRevolvingStand.acquire();
@@ -368,7 +369,6 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		orders.add (new MyOrder(theMonitor.removeOrder()));
 
 		cookGui.DoGoToCookingPlace();
 		try {
@@ -378,6 +378,7 @@ public class CookRole extends Role implements Cook{
 			e.printStackTrace();
 		}
 		print("blah");
+		getPersonAgent().CallstateChanged();
 	}
 
 
@@ -479,7 +480,7 @@ public class CookRole extends Role implements Cook{
 			tableNumber = order.table;
 			food = order.food;
 			state = OrderState.PENDING;
-			getPersonAgent().CallstateChanged();
+//			getPersonAgent().CallstateChanged();
 		}
 	}
 
