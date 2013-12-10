@@ -37,7 +37,7 @@ public class VkCookRole extends Role implements Cook {
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
-	private final int period = 5000;
+	private final int period = 2000;
 	private List<MarketEmployee> markets = new ArrayList<MarketEmployee>();
 	private Cashier cashier;
 	private boolean leave = false;
