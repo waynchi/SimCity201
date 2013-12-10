@@ -47,4 +47,10 @@ public class MockBankCustomer extends Role implements BankCustomer{
 		
 	}
 
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
