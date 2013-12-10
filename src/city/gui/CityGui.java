@@ -221,6 +221,13 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
+		BankTellerRole.addAccount(restaurant2);
+		BankTellerRole.addAccount(restaurant3);
+		BankTellerRole.addAccount(restaurant4);
+		BankTellerRole.addAccount(restaurant5);
+		BankTellerRole.addAccount(restaurant6);
+		
+		
 		RestaurantPanel restPanel1 = new RestaurantPanel(restaurantGuiYc);
 		RestaurantPanelZt restPanel2 = new RestaurantPanelZt(restaurantGuiZt);
 		RestaurantPanelWc restPanel3 = new RestaurantPanelWc(restaurantGuiWc);

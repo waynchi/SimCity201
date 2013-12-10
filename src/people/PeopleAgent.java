@@ -354,157 +354,62 @@ public class PeopleAgent extends Agent implements People{
 				stateChanged();
 				return;
 			}
-			/*if(Time >= 2330 && state != AgentState.Sleeping)
+			if(state == AgentState.Idle)
 			{
-				state = AgentState.IdleAtHome;
-				event = AgentEvent.GoingToSleep;
-				buy = BuyState.NextDay;
-				//print("Sleeping because of a bug");
-				log.add(new LoggedEvent("Sleeping In Message"));
-				Hunger = 1215;
-				stateChanged();
-				return;
-			}*/
-			int lastTime = 100000;
-			for(Job job: jobs)
-			{
-			if(Time == job.start)
-			{
-				event = AgentEvent.GoingToWork;
-				print("Going To Work from time is");
-				log.add(new LoggedEvent("Going To Work"));
-				stateChanged();
-				return;
-			}
-			if(Time == job.end)
-			{
-				event = AgentEvent.LeavingWork;
-				log.add(new LoggedEvent("Leaving Work"));
-				stateChanged();
-				return;
-			}
-			if(job.job.contains("RestaurantHost"))
-			{
-				if(Time == 1830)
+				if(!Banks.get(0).isClosed)
 				{
-					for(MyRole r: roles)
-					{	
-						if(r.description.equals("RestaurantHost"))
-						{	
-							((HostRole) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostVk"))
-						{	
-							((VkHostRole) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostVk"))
-						{
-							((VkHostRole) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostZt"))
-						{	
-							((HostRoleZt) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostWc"))
-						{	
-							((HostRoleWc) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostPs"))
-						{	
-							((HostRolePS) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostEs"))
-						{	
-							((HostRoleEs) r.role).msgSetClose();
-						}
-						if(r.description.equals("MarketEmployee"))
-						{
-							((MarketEmployeeRole) r.role).msgSetClose();
-						}
-						//TODO fix this.
+					if(Money >= 1000000)
+					{
+						event = AgentEvent.GoingToDepositMoney;
+						log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+						stateChanged();
+						return;
 					}
 				}
 			}
-			lastTime = job.end;
-			}
-			if(state == AgentState.Idle)
+			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
 			{
-				if(!jobs.isEmpty())
+				if(!Markets.get(0).isClosed)
 				{
-					if(jobs.get(0).start - Time >= 200)
+					if(!hasCar)
 					{
-						if(!Banks.get(0).isClosed)
+						if(rand.nextInt(100) <= 100)
 						{
-							//System.out.println(Money);
-							if(Money >= 1000000)
+							buy = BuyState.GoingToBuy;
+						}
+						else
+						{
+							buy = BuyState.NotBuying;
+						}
+						if(buy == BuyState.GoingToBuy)
+						{
+							if(Money >= 20000)
 							{
-								event = AgentEvent.GoingToDepositMoney;
-								log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+								event = AgentEvent.GoingToBuyCar;
+								print("I am going to buy a car");
+								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+								buy = BuyState.NotBuying;
 								stateChanged();
 								return;
 							}
-						}
-						if(buy == BuyState.NextDay && Time <=2100)
-						{
-							if(!(Markets.get(0).isClosed))
-							{
-								if(!hasCar)
-								{
-									if(rand.nextInt(100) <= 100)
-									{
-										buy = BuyState.GoingToBuy;
-									}
-									else
-									{
-										buy = BuyState.NotBuying;
-									}
-									if(buy == BuyState.GoingToBuy)
-									{
-										if(Money >= 20000)
-										{
-											event = AgentEvent.GoingToBuyCar;
-											print("I am going to buy a car");
-											log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-											buy = BuyState.NotBuying;
-											stateChanged();
-											return;
-										}
-		//									else
-		//									{
-		//										event = AgentEvent.GoingToRetrieveMoney;
-		//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-		//										stateChanged();
-		//										buy = BuyState.NotBuying;
-		//										return;
-		//									}	
-									}
-								}			
-							}
+	//						else
+	//						{
+	//							event = AgentEvent.GoingToRetrieveMoney;
+	//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+	//							stateChanged();
+	//							buy = BuyState.NotBuying;
+	//							return;
+	//						}	
 						}
 					}
 				}
-				if(location != AgentLocation.Home)
-				{
-					event = AgentEvent.GoingHome;
-					stateChanged();
-					return;
-				}
 			}
-			//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
-			if(state == AgentState.Idle)
+			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
 			{
 				if(hunger == HungerState.Hungry)
 				{
 					//change this for restaurant
-					boolean closed = true;
-					for(int i = 0; i < Restaurants.size(); i++)
-					{
-						if(!Restaurants.get(i).isClosed)
-						{
-							closed = false;
-						}
-					}
-					if(!closed)
+					if(!Restaurants.get(1).isClosed)
 					{
 						if(rand.nextInt(2) <2)
 						{
@@ -528,101 +433,6 @@ public class PeopleAgent extends Agent implements People{
 						stateChanged();				
 						return;
 					}	
-				}
-			}
-			if(state == AgentState.IdleAtHome)
-			{
-				if(hunger == HungerState.Hungry)
-				{
-					boolean closed = true;
-					for(int i = 0; i < Restaurants.size(); i++)
-					{
-						if(!Restaurants.get(i).isClosed)
-						{
-							closed = false;
-						}
-					}
-					if(!closed)
-					{
-						if(rand.nextInt(2) < 2)
-						{
-							event = AgentEvent.GoingToRestaurant;
-							print("Going To Restaurant To Eat");
-							stateChanged();
-							return;
-						}
-						else
-						{
-							event = AgentEvent.GoingHome;
-							print("Going Home To Eat");
-							stateChanged();
-							return;
-						}
-					}
-					else
-					{
-						event = AgentEvent.EatingAtHome;
-						print("Eating at Home because no restaurants are open.");
-						stateChanged();
-						return;
-					}
-				}
-			}
-			if(Time >= lastTime)
-			{
-				if(state == AgentState.Idle)
-				{
-					if(!Markets.get(0).isClosed)
-					{
-						if(buy == BuyState.NextDay)
-						{
-							if(!hasCar)
-							{
-								if(rand.nextInt(100) <= 100)
-								{
-									buy = BuyState.GoingToBuy;
-								}
-								else
-								{
-									buy = BuyState.NotBuying;
-								}
-								if(buy == BuyState.GoingToBuy)
-								{
-									if(Money >= 20000)
-									{
-										event = AgentEvent.GoingToBuyCar;
-										buy = BuyState.NotBuying;
-										stateChanged();
-										return;
-									}
-				//					else if(!(Time>= 2100 && Money <= 30000))
-				//					{
-				//						event = AgentEvent.GoingToRetrieveMoney;
-				//						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-				//						stateChanged();
-				//						return;
-				//					}
-									buy = BuyState.NotBuying;
-								}
-							}				
-							else if(!Banks.get(0).isClosed)
-							{
-								if(Money >= 1000000)
-								{
-									event = AgentEvent.GoingToDepositMoney;
-									stateChanged();
-									return;
-								}
-							}
-							//event = AgentEvent.GoingHome;
-						}
-					}
-					if(location != AgentLocation.Home)
-					{
-						event = AgentEvent.GoingHome;
-						stateChanged();
-						return;
-					}
 				}
 			}
 		}
@@ -1101,7 +911,6 @@ public class PeopleAgent extends Agent implements People{
 		int totaltemp = 0;
 		int totalscore = 0;
 		String restaurant = null;
-		print("test1");
 		for (Entry<Restaurant, Integer> e : yelp.Ratings.entrySet()) {
 			if(!e.getKey().isClosed)
 			{
@@ -1109,7 +918,6 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		int tempNum = rand.nextInt(totalscore);
-		print("Test2");
 		for (Entry<Restaurant, Integer> e : yelp.Ratings.entrySet()) {
 			if(!e.getKey().isClosed)
 			{
@@ -1121,7 +929,6 @@ public class PeopleAgent extends Agent implements People{
 				totaltemp += e.getValue();
 			}
 		}
-		print("test3");
 		print(restaurant);
 		if(restaurant.equals("Restaurant 1"))
 		{
@@ -2516,7 +2323,6 @@ public class PeopleAgent extends Agent implements People{
 		{
 			for(MyRole r: roles)
 			{
-				print(r.description);
 				if(r.description.equals("RestaurantHostPs"))
 				{	
 					location = AgentLocation.Road;
