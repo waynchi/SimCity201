@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
+import bank.TellerRole;
+import market.MarketEmployeeRole;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
@@ -778,62 +780,91 @@ public class PeopleAgent extends Agent implements People{
 		int lastTime = 100000;
 		for(Job job: jobs)
 		{
-		if(Time == job.start)
-		{
-			event = AgentEvent.GoingToWork;
-			print("Going To Work from time is");
-			log.add(new LoggedEvent("Going To Work"));
-			stateChanged();
-			return;
-		}
-		if(Time == job.end)
-		{
-			event = AgentEvent.LeavingWork;
-			log.add(new LoggedEvent("Leaving Work"));
-			stateChanged();
-			return;
-		}
-		if(job.job.contains("RestaurantHost"))
-		{
-			if(Time == 1830)
+			if(job.job.equals("Teller") && cityGui.dayOfWeek >= 5)
 			{
-				for(MyRole r: roles)
-				{	
-					if(r.description.equals("RestaurantHost"))
+		
+			}
+			else 
+			{
+				if(Time == job.start)
+				{
+					event = AgentEvent.GoingToWork;
+					print("Going To Work from time is");
+					log.add(new LoggedEvent("Going To Work"));
+					stateChanged();
+					return;
+				}
+				if(Time == job.end)
+				{
+					event = AgentEvent.LeavingWork;
+					log.add(new LoggedEvent("Leaving Work"));
+					stateChanged();
+					return;
+				}
+			}
+			if(job.job.contains("RestaurantHost"))
+			{
+				if(Time == 1830)
+				{
+					for(MyRole r: roles)
 					{	
-						((HostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostVk"))
-					{	
-						((VkHostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostVk"))
-					{
-						((VkHostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostZt"))
-					{	
-						((HostRoleZt) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostWc"))
-					{	
-						((HostRoleWc) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostPs"))
-					{	
-						((HostRolePS) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostEs"))
-					{	
-						((HostRoleEs) r.role).msgSetClose();
-					}
-					if(r.description.equals("MarketEmployee"))
-					{
-						((MarketEmployeeRole) r.role).msgSetClose();
+						if(r.description.equals("RestaurantHost"))
+						{	
+							((HostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{	
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostZt"))
+						{	
+							((HostRoleZt) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostWc"))
+						{	
+							((HostRoleWc) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostPs"))
+						{	
+							((HostRolePS) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostEs"))
+						{	
+							((HostRoleEs) r.role).msgSetClose();
+						}
 					}
 				}
 			}
-		}
+			if(job.job.equals("Teller") && cityGui.dayOfWeek < 5)
+			{
+				if(Time == 1900)
+				{
+					for(MyRole r: roles)
+					{	
+						if(r.description.equals("Teller"))
+						{
+							((TellerRole) r.role).msgSetClose();
+						}
+					}
+				}
+			}
+			if(job.job.equals("MarketEmployee"))
+			{
+				if(Time == 1730)
+				{
+					for(MyRole r: roles)
+					{	
+						if(r.description.equals("MarketEmployee"))
+						{
+							((MarketEmployeeRole) r.role).msgSetClose();
+						}
+					}
+				}
+			}
 		lastTime = job.end;
 		}
 		if(state == AgentState.Idle)
@@ -1777,35 +1808,41 @@ public class PeopleAgent extends Agent implements People{
 				if(type.equals("NormativeB3"))
 				{
 					personGui.setDestination("BusStop 1");
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					for(MyRole r: roles)
+					{
+						if(r.description == "BusPassenger")
+						{
+							((BusPassengerRole)r.role).setDestinationPlace("Bank");
+							r.role.msgIsActive();
+						}
+					}
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						personGui.setDestination("Bank");
+					
 				}
 				else
 				{
 				//TODO Randomization
 				personGui.setDestination("Bank");
 				print("Do Not Have Car");
+				try {
+					moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				}
 			}
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		for(MyRole r: roles)
-		{
-			if(r.description == "BusPassenger")
-			{
-				((BusPassengerRole)r.role).setDestinationPlace("Bank");
-				r.role.msgIsActive();
-			}
-		}
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			personGui.setDestination("Bank");
-		
 		}
 		location = AgentLocation.Bank;
 		
