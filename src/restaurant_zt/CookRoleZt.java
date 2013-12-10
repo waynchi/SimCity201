@@ -300,11 +300,13 @@ public class CookRoleZt extends Role implements Cook{
 				}
 			}
 		}
-		int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
-		int marketNumber = (int)(Math.random() * marketSize);
-		marketOrders.add(new MarketOrder(marketOrder,marketNumber));
-		((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
-	}
+		if (marketOrder.size()!=0) {
+			int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
+			int marketNumber = (int)(Math.random() * marketSize);
+			marketOrders.add(new MarketOrder(marketOrder,marketNumber));
+			((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
+			}
+		}
 	
 	
 	public void getOrderFromRevolvingStand() {
