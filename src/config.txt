@@ -17,10 +17,10 @@
 1,RestaurantCookEs,James3,1000,1900
 1,RestaurantHostEs,Billy3,900,1930
 1,RestaurantCashierEs,Zack3,930,1900
+1,RestaurantSpecialWaiterVk,Joseph4,1000,1900
 1,RestaurantNormalWaiterVk,John4,1000,1900
 1,RestaurantNormalWaiterVk,Joey4,1000,1900
 1,RestaurantNormalWaiterVk,Judah4,1000,1900
-1,RestaurantSpecialWaiterVk,Joseph4,1000,1900
 1,RestaurantCookVk,James4,1000,1900
 1,RestaurantHostVk,Billy4,900,1930
 1,RestaurantCashierVk,Zack4,930,1900
