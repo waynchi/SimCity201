@@ -792,27 +792,27 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					else if(count == 4) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(5), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(3), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 5) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(7), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(5), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 6) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(8), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(4), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 7) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(12), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(6), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 8) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(14), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(8), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 9) {
@@ -822,12 +822,12 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					else if(count == 10) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(6), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(5), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 11) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(10), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(6), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 12) {
