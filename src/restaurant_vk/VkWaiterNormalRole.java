@@ -1,5 +1,7 @@
 package restaurant_vk;
 
+import people.PeopleAgent;
+import restaurant_vk.VkWaiterBaseRole.ClosingState;
 import restaurant_vk.interfaces.Host;
 import restaurant_vk.interfaces.Waiter;
 
@@ -35,6 +37,18 @@ public class VkWaiterNormalRole extends VkWaiterBaseRole implements Waiter {
 		mc.os = OrderStatus.GivenToCook;
 		print("Order has been given to cook.");
 		cook.hereIsOrder(this, mc.choice, mc.table);
+	}
+	
+	protected void leaveRestaurant() {
+		if (closingState == ClosingState.None)
+			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
+		gui.DoLeaveRestaurant();
+		try {
+			movingAround.acquire();
+		} catch (InterruptedException e) {}
+		isActive = false;
+		leave = false;
+		myPerson.msgDone("RestaurantNormalWaiterRole");
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
