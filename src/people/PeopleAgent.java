@@ -1291,7 +1291,6 @@ public class PeopleAgent extends Agent implements People{
 			{
 				//change this for restaurant
 				personGui.setDestination("Restaurant 2");
-				print("Do Not Have Car");
 				if(r.description.equals("RestaurantCustomerVk"))
 				{
 					r.role.msgIsActive();

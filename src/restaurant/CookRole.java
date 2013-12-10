@@ -3,6 +3,7 @@ package restaurant;
 import restaurant.gui.CookGui;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant.gui.RestaurantPanel.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
@@ -148,6 +149,7 @@ public class CookRole extends Role implements Cook{
 
 	// from market truck (market employee for now)
 	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+		print ("received items from market");
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
@@ -164,6 +166,7 @@ public class CookRole extends Role implements Cook{
 
 
 	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
+		print ("got order number from market");
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items && mo.marketNumber == market) {
 				mo.orderNumber = orderNumber;
@@ -248,7 +251,6 @@ public class CookRole extends Role implements Cook{
 					public void run(){
 						while (theMonitor.getOrderSize() != 0){
 							getOrderFromRevolvingStand();
-							orders.add (new MyOrder(theMonitor.removeOrder()));
 						}									
 					} 
 				},0,5000);
@@ -267,6 +269,7 @@ public class CookRole extends Role implements Cook{
 	// Actions
 
 	public void askCashierToPayForOrder(MarketOrder order) {
+		print ("notify restaurant cahsier that order's been delivered");
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
 		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, order.marketNumber);
@@ -351,6 +354,8 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		orders.add (new MyOrder(theMonitor.removeOrder()));
+
 		cookGui.DoGoToCookingPlace();
 			try {
 				atGrill.acquire();
@@ -452,13 +457,12 @@ public class CookRole extends Role implements Cook{
 			tableNumber = t;
 			state = OrderState.PENDING;
 		}
-		public MyOrder (MyOrder order) {
-			if (order != null) {
-				waiter = order.waiter;
-				tableNumber = order.tableNumber;
-				food = order.food;
-				state = OrderState.PENDING;
-			}
+		
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
 		}
 	}
 
@@ -526,7 +530,7 @@ public class CookRole extends Role implements Cook{
 	@Override
 	public void setLow() {
 		for (Map.Entry<String, Food> entry : foods.entrySet()) {
-			entry.getValue().amount = 4;
+			foods.get(entry.getKey()).amount = 2;
 		}
 		orderFoodThatIsLow();
 		getPersonAgent().CallstateChanged();

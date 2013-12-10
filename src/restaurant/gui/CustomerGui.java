@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class CustomerGui implements Gui{
 
@@ -27,7 +28,7 @@ public class CustomerGui implements Gui{
 	private Boolean MsgGoToSeatFromAgent = false;
 	private boolean leaving = false;
 	private boolean goingToCashier = false;
-    private BufferedImage img = null;
+    private ImageIcon restaurant_customer = new ImageIcon("res/custsprite_1.png");
 
 	
 	
@@ -37,10 +38,6 @@ public class CustomerGui implements Gui{
 		xPos = yPos = 0;
 		xDestination = 20;
 		yDestination = 20;
-		try {
-            img = ImageIO.read(getClass().getResource("customer.png"));
-        } catch (IOException e) {}
-        
 	}
 
 	
@@ -76,7 +73,7 @@ public class CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-    	g.drawImage(img,xPos,yPos,null);
+        g.drawImage(restaurant_customer.getImage(), xPos, yPos, 20, 30, null);
 
     	// Display customer's order with text
 		g.setColor(Color.black);
