@@ -53,7 +53,7 @@ public class CookRole extends Role implements Cook{
 
 	private Host host;
 	private Cashier cashier;
-	private MarketEmployee marketEmployee;
+	//private MarketEmployee marketEmployee;
 
 	//private MarketEmployeeRole marketEmployee = null;
 
@@ -407,7 +407,7 @@ public class CookRole extends Role implements Cook{
 		}
 		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
-		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
+		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
 		orderFoodThatIsLow();
