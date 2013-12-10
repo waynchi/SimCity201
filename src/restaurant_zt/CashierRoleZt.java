@@ -163,7 +163,7 @@ public class CashierRoleZt extends Role implements Cashier {
 	// market interaction
 	
 	// from cook
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
 		print("told by cook that market order is delivered, ready to pay");
 		boolean orderFound = false;
 		synchronized(marketBills){
@@ -181,7 +181,7 @@ public class CashierRoleZt extends Role implements Cashier {
 	}
 	
 	// from market cashier
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
 
 		boolean orderFound = false;

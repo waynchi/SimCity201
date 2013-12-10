@@ -143,7 +143,7 @@ public class CookRoleEs extends Role implements Cook{
 	}	
 
 	// from market truck (market employee for now)
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
@@ -159,7 +159,7 @@ public class CookRoleEs extends Role implements Cook{
 	}
 
 
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items) {
 				mo.orderNumber = orderNumber;
@@ -265,7 +265,8 @@ public class CookRoleEs extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber);
+		// PLEASE FIX THE LAST PARAMETER. EDIT BY VIKRANT TO MAKE YOUR STUFF COMPILE.
+		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, 0);
 		marketOrders.remove(order);
 	}
 	
