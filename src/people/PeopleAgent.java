@@ -354,7 +354,7 @@ public class PeopleAgent extends Agent implements People{
 	
 	public void msgTimeIs(int Time)
 	{
-		if(type.equals("NormativeB1"))
+		if(type.equals("NormativeA"))
 		{
 			Hunger-=2;
 			//print("Hunger is " + Hunger);
