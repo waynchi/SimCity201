@@ -697,7 +697,7 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("RestaurantSpecialWaiterVk")) {
 						VkWaiterSpecialRole RestaurantSpecialWaiterRoleVk = new VkWaiterSpecialRole(RestaurantHostRoleVk,revolvingStand);
 						RestaurantHostRoleVk.addWaiter(RestaurantSpecialWaiterRoleVk);						
-						person.addJob("RestaurantSpecialWaiterRoleVk", start, end);
+						person.addJob("RestaurantSpecialWaiterVk", start, end);
 						person.addRole(RestaurantSpecialWaiterRoleVk,"RestaurantSpecialWaiterVk");
 						RestaurantSpecialWaiterRoleVk.setPerson(person);
 						person.hasCar = false;
