@@ -580,7 +580,7 @@ public class PersonGui extends Rectangle2D.Double {
 				if(yDestination == 152) {
 					this.direction = "right";
 					sidewalkSegment = allSidewalks.get(22);
-					currentCell = sidewalkSegment.get(0);
+					currentCell = sidewalkSegment.get(4);
 					this.currentCell.hasPerson = true;
 
 				}
