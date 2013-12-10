@@ -159,6 +159,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
+		print("received order from market customer");
 		if (!inTest) {
 			log.add(new LoggedEvent("received an order from market customer " + customer.getPerson().getName()));
 		}
@@ -168,10 +169,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from restaurant cook
 	public void msgHereIsAnOrder(Map<String, Integer> chosenItems, Cook cook, Cashier cashier) {
+		print("received order from restaurant cook " + cook.getName());
 		if(!inTest){
 			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getName()));
 		}
-		orders.add(new Order (cook, cashier, chosenItems));
+		orders.add(new Order(cook, cashier, chosenItems));
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -232,6 +234,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// action
 	private void getOrder(Map<String, Integer> itemList) { //gui
+		print ("getting items");
+		print ("there are " + itemList.size() + " items to get");
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
 			employeeGui.doGetItem(entry.getKey());
 			try {
@@ -268,7 +272,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 		//gui show text
 		if (order.cook!=null) {
-		employeeGui.showGotOrderFromRestaurant();
+		employeeGui.showGotOrderFromRestaurant(order.cook);
 		}
 		
 		order.supply = supply;
@@ -278,6 +282,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		
 		// if order is from restaurant
 		if (order.cook != null) {
+			print ("sending confirmation to cook " + order.cook.getName());
 			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
 			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber, marketNumber);
 			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber, marketNumber);
@@ -306,6 +311,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//if order is from customer
 		else {
 			log.add(new LoggedEvent("giving items to customer"));
+			print ("giving items to customer");
 			order.customer.msgHereIsYourOrder(order.supply);
 			cashier.msgHereIsACheck(order.customer, order.itemsOrdered);
 			orders.remove(order);

@@ -59,6 +59,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number, int market) {
+		print ("got an order from employee and it is for cook " + cook.getName());
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
 		orders.add(new Order (cook, items, number, market));
 		stateChanged();
@@ -91,6 +92,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 				*/
 				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
+					print("order delivered to cook " + order.cook.getName());
 					order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
 				}

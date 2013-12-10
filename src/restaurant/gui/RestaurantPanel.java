@@ -38,25 +38,26 @@ public class RestaurantPanel extends JPanel implements ActionListener{
     private JButton pauseButton = new JButton ("Pause/Resume");
 	private JPanel imagePanel = new JPanel();
 	Boolean agentPaused = false;
+	
 
-	/*public class Order {
-        int table;
-        String food;
-        WaiterAgent waiter;
-        Order (int t, String f,WaiterAgent w) {
+	public class Order {
+       public int table;
+       public String food;
+       public  BaseWaiterRole waiter;
+        Order (String f,BaseWaiterRole w, int t) {
                 table  = t;
                 food = f;
                 waiter = w;
         }
-    }*/
+    }
 
     public class CookWaiterMonitor extends Object {
-        private List<MyOrder> orders = new ArrayList<MyOrder>();
+        private List<Order> orders = new ArrayList<Order>();
         synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
-                orders.add (cook.new MyOrder (food, waiter,table));
+                orders.add (new Order (food, waiter,table));
         }
-        synchronized public MyOrder removeOrder () {
-                MyOrder temp;
+        synchronized public Order removeOrder () {
+                Order temp;
                 temp = orders.get(0);
                 orders.remove(0);
                 return temp;

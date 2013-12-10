@@ -456,7 +456,7 @@ public class CookRoleZt extends Role implements Cook{
 	@Override
 	public void setLow() {
 		for (Map.Entry<String, Food> entry : foods.entrySet()) {
-			entry.getValue().amount = 4;
+			entry.getValue().amount = 2;
 		}
 		orderFoodThatIsLow();
 		getPersonAgent().CallstateChanged();
