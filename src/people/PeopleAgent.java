@@ -1492,39 +1492,6 @@ public class PeopleAgent extends Agent implements People{
 //				e.printStackTrace();
 //			}
 //		}
-		for(MyRole r: roles)
-		{
-			//change this for restaurant
-			if(r.description.equals("RestaurantCustomerVk"))
-			{
-				r.role.msgIsActive();
-			}
-			
-//			if(r.description.equals("RestaurantCustomer"))
-//		location = AgentLocation.Restaurant;
-//		print("Walking to Restaurant");
-//		hunger = HungerState.Eating;
-//		//Semaphore
-////		for(MyRole r: roles)
-////		{
-////			if(r.description.equals("RestaurantCustomer"))
-////			{
-////				r.role.msgIsActive();
-////			}
-////		}
-//		for(MyRole r: roles)
-//		{
-//			//change this for restaurant
-//			if(r.description.equals("RestaurantCustomerWc"))
-//			{
-//				r.role.msgIsActive();
-//			}
-//			
-////			if(r.description.equals("RestaurantCustomer"))
-////			{
-////				r.role.msgIsActive();
-////			}
-		}
 	}
 		
 
