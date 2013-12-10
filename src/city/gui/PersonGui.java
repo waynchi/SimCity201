@@ -419,6 +419,46 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = true;
 
 			}
+			System.out.println(getCurrentLane());
+			if(getCurrentLane().equals("6_0")) {
+				if(this.destination.equals("Restaurant 4")) {
+					this.currentCell.hasPerson = false;
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(20);
+					currentCell = sidewalkSegment.get(0);
+				}
+			}
+			if(getCurrentLane().equals("9_4")) {
+				this.currentCell.hasPerson = false;
+				this.direction="up";
+				sidewalkSegment = allSidewalks.get(16);
+				currentCell = sidewalkSegment.get(27);
+
+			}
+			if(getCurrentLane().equals("16_15")) {
+				System.out.println(this.destination.contains("Apartment"));
+				if(this.destination.equals("Bank") || this.destination.equals("Restaurant 3") || this.destination.equals("Restaurant 4")) {
+					this.currentCell.hasPerson = false;
+					this.direction="right";
+					sidewalkSegment = allSidewalks.get(22);
+					currentCell = sidewalkSegment.get(4);
+
+					
+				}
+			}
+			if(getCurrentLane().equals("8_0")) {
+				if(this.destination.equals("Restaurant 4") || this.destination.equals("Restaurant 3")) {
+					this.currentCell.hasPerson = false;
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(20);
+					currentCell = sidewalkSegment.get(11);
+				} else {
+					this.currentCell.hasPerson = false;
+					this.direction="left";
+					sidewalkSegment = allSidewalks.get(9);
+					currentCell = sidewalkSegment.get(36);
+				}
+			}
 			if(getCurrentLane().equals("24_3")) {
 				this.currentCell.hasPerson = false;
 				if(yDestination < y) {
@@ -447,22 +487,22 @@ public class PersonGui extends Rectangle2D.Double {
 //
 //
 //			}
-			if (getCurrentLane().equals("20_0")) {
-				this.currentCell.hasPerson = false;
-				if (yDestination > y) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(6);
-					currentCell = sidewalkSegment.get(0);
-					this.currentCell.hasPerson = true;
-
-				} else {
-					this.direction = "left";
-					sidewalkSegment = allSidewalks.get(22);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-					this.currentCell.hasPerson = true;
-
-				}
-			}
+//			if (getCurrentLane().equals("20_0")) {
+//				this.currentCell.hasPerson = false;
+//				if (yDestination > y) {
+//					this.direction = "right";
+//					sidewalkSegment = allSidewalks.get(6);
+//					currentCell = sidewalkSegment.get(0);
+//					this.currentCell.hasPerson = true;
+//
+//				} else {
+//					this.direction = "left";
+//					sidewalkSegment = allSidewalks.get(22);
+//					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+//					this.currentCell.hasPerson = true;
+//
+//				}
+//			}
 
 			if (getCurrentLane().equals("0_20")) {
 				this.currentCell.hasPerson = false;
