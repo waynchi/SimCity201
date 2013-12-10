@@ -181,7 +181,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		repairManRole.setTag(AlertTag.HOME);
 		
-		yelp.addRestaurant(restaurant, 5);
+		yelp.addRestaurant(restaurant, 500);
 		yelp.addRestaurant(restaurant2, 3);
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 5);
