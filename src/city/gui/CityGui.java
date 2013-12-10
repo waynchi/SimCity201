@@ -829,7 +829,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.start();
 	}
 	
-	public void createNormativeBaselineB(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
+	public void createNormativeB(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
 		FileReader input = null;
 		try {
 			if(System.getProperty("file.separator").equals("/"))
@@ -1260,6 +1260,11 @@ public class CityGui extends JFrame implements ActionListener {
 		bg.msgGoToNextStop(busAgent, cityPanel.busStops.get(cityPanel.busStops.size()-1));
 		cityPanel.vehicles.add(bg);
 		timer.start();
+	}
+	
+	public void createNonNormG() {
+		CookRole c = (CookRole) RestaurantHostRoleYc.getCook();
+		c.setLow();
 	}
 
 	public void displayBuildingPanel(BuildingPanel bp) {
