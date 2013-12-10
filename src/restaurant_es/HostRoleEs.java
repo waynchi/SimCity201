@@ -62,7 +62,7 @@ public class HostRoleEs extends Role implements Host{
 	
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
-	private int waiterCount = 0;
+	private int waiterCount = -1;
 	public class MyWaiter {
 		Waiter w;
 		waiterStatus s;
@@ -115,7 +115,7 @@ public class HostRoleEs extends Role implements Host{
 	public void msgIsActive() {
 		isActive = true;
 		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
-		getPersonAgent().getRestaurant(0).isClosed = false;
+		getPersonAgent().getRestaurant(4).isClosed = false;
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -372,7 +372,7 @@ public class HostRoleEs extends Role implements Host{
 	}
 	
 	private void closeRestaurant() {
-		getPersonAgent().getRestaurant(0).isClosed = true;
+		getPersonAgent().getRestaurant(4).isClosed = true;
 		setClose = false;
 	}
 

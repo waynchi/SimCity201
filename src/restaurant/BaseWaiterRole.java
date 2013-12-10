@@ -107,7 +107,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void msgIsInActive () {
-		print("msgIsInActive");
+		print("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
