@@ -1215,6 +1215,7 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				print("Going to Bank from Scheduler");
 				GoToBank();
 			}
 			Person = true;
@@ -1807,7 +1808,7 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(type.equals("NormativeB3"))
 				{
-					personGui.setDestination("BusStop 1");
+					personGui.setDestination("Bus Stop 1");
 					try {
 						moving.acquire();
 					} catch (InterruptedException e) {
@@ -1818,6 +1819,7 @@ public class PeopleAgent extends Agent implements People{
 					{
 						if(r.description == "BusPassenger")
 						{
+							((BusPassengerRole)r.role).setCurrentBusStop(cityGui.cityPanel.busStops.get(0));
 							((BusPassengerRole)r.role).setDestinationPlace("Bank");
 							r.role.msgIsActive();
 						}

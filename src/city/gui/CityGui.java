@@ -901,9 +901,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-//					if(!(job.equals("BankRestaurantMarket"))){
-//						person.setTest();
-//					}
+					if(!(job.equals("BankMarketRestaurant"))){
+						person.setTest();
+					}
 					count++;
 					person.startThread();		
 					
@@ -1226,7 +1226,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						person.setType("NormativeB3");
-						person.setMoney(50000);
+						person.setMoney(1000000);
 						person.hasCar = false;
 					}
 					
@@ -1812,6 +1812,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiEs.updatePosition();
 		restaurantGuiPS.updatePosition();
 		vkAnimationPanel.updatePosition();
+//		busStopGui.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
@@ -1823,6 +1824,10 @@ public class CityGui extends JFrame implements ActionListener {
 		for(int k = 0; k < apartment1HouseAnimationPanels.size(); k++)
 		{
 			apartment2HouseAnimationPanels.get(k).gui.updatePosition();
+		}
+		for(BusStop bs : cityPanel.busStops)
+		{
+			bs.myGui.updatePosition();
 		}
 		int x = 20;
 		time++;
@@ -1915,6 +1920,18 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 		}
 	}
+
+	public void pedestrianCrashSimulationFinished() {
+		// TODO Auto-generated method stub
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			v.simulatingPedestrianCrash = false;
+			v.simulatorPerson = null;
+		}
+		this.cityControls.btnScenario8.setEnabled(true);
+	}
+
+
 
 	
 	

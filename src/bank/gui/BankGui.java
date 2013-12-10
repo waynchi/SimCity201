@@ -89,7 +89,7 @@ public class BankGui extends JPanel implements ActionListener {
     
     public void popCustomer() {
     	for(int i = 0; i < customers.size(); i++) {
-    		((BankCustomerGui) customers.get(i)).setCust(i-1);
+    		customers.get(i).setCust(i-1);
     	}
     	customers.remove(0);
     }

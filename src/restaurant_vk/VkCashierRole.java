@@ -372,7 +372,7 @@ public class VkCashierRole extends Role implements Cashier {
 	 * Preparing to close down.
 	 */
 	public void prepareToClose() {
-		if (myPerson.getBank(0).isClosed == false) {
+		if (myPerson.getBank(0).isClosed == false && bankActivity != BankActivity.Robbed) {
 			if (workingCapital > minCapital && shiftRecord.isEmpty()) {
 				teller.msgNeedHelp(this, "blah");
 				bankActivity = BankActivity.HelpRequested;
@@ -406,6 +406,7 @@ public class VkCashierRole extends Role implements Cashier {
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
+		bankActivity = BankActivity.None;
 		myPerson.msgDone("RestaurantCashierRole");
 	}
 	
