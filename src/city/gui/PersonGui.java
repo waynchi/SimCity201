@@ -192,6 +192,14 @@ public class PersonGui extends Rectangle2D.Double {
 			xDestination = 142;
 			yDestination = 260;
 		}
+		else if (destination.equals("Apartment 1")) {
+			xDestination = 142;
+			yDestination = 340;
+		}
+		else if (destination.equals("Apartment 2")) {
+			xDestination = 92;
+			yDestination = 340;
+		}
 		else if(destination.equals("Black Abyss")) {
 			xDestination = 0;
 			yDestination = 0;
@@ -301,6 +309,88 @@ public class PersonGui extends Rectangle2D.Double {
 			
 			//Exiting Building Logic
 			
+			//Home 1
+			if(getCurrentLane().equals("28_1")) {
+				this.direction = "down";				
+			}
+			//Home 2
+			if(getCurrentLane().equals("28_5")) {
+				this.direction = "down";
+			}
+			//Home 3
+			if(getCurrentLane().equals("28_10")) {
+				this.direction = "down";
+			}
+			//Home 4
+			if(getCurrentLane().equals("26_1")) {
+				this.currentCell.hasPerson = false;
+				sidewalkSegment = allSidewalks.get(28);
+				currentCell = sidewalkSegment.get(1);
+				this.currentCell.hasPerson = true;
+			}
+			//Home 5
+			if(getCurrentLane().equals("26_5")) {
+				this.direction="up";
+			}
+			//Home 6
+			if(getCurrentLane().equals("26_10")) {
+				this.direction="up";
+				
+			}
+			//Home 7
+			if(getCurrentLane().equals("29_8")) {
+				this.direction="down";
+			}
+			//Home 8
+			if(getCurrentLane().equals("29_12")) {
+				this.direction="down";
+			}
+			//Home 9
+			if(getCurrentLane().equals("29_16")) {
+				this.direction="down";
+			}
+			//Home 10
+			if(getCurrentLane().equals("27_2")) {
+				this.direction="up";
+			}
+			//Home 11
+			if(getCurrentLane().equals("27_6")) {
+				this.direction="up";
+			}
+			//Home 12
+			if(getCurrentLane().equals("27_10")) {
+				this.direction = "up";
+			}
+			//Apartment 1
+			if(getCurrentLane().equals("27_18")) {
+				this.direction="up";
+			}
+			//Apartment 2
+			if(getCurrentLane().equals("29_24")) {
+				this.direction="down";
+			}
+			if(getCurrentLane().equals("28_11")) {
+				this.currentCell.hasPerson = false;
+				this.direction="down";
+				sidewalkSegment = allSidewalks.get(29);
+				this.currentCell = sidewalkSegment.get(0);
+				this.currentCell.hasPerson = true;
+			}
+			//Bottom Cross
+			if(getCurrentLane().equals("29_29")) {
+				this.currentCell.hasPerson = false;
+				this.direction="up";
+				sidewalkSegment = allSidewalks.get(27);
+				this.currentCell = sidewalkSegment.get(23);
+				this.currentCell.hasPerson = true;
+			}
+			if(getCurrentLane().equals("27_0")) {
+				this.currentCell.hasPerson = false;
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(0);
+				this.currentCell = sidewalkSegment.get(0);
+				this.currentCell.hasPerson = true;
+			}
 			//Restaurant Wayne
 			if(getCurrentLane().equals("20_5")) {
 				this.currentCell.hasPerson = false;
@@ -555,41 +645,10 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if (getCurrentLane().equals("1_0")) {
 				this.currentCell.hasPerson = false;
-				if (xDestination > 90 && xDestination < 142) {
-					// Cross
-					if (yDestination < y) {
-						// Go up
-						this.direction = "up";
-						sidewalkSegment = allSidewalks.get(28);
-						currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-						this.currentCell.hasPerson = true;
-
-					} else {
-						// Go down
-						this.direction = "down";
-						sidewalkSegment = allSidewalks.get(29);
-						currentCell = sidewalkSegment.get(0);
-						this.currentCell.hasPerson = true;
-
-					}
-				} else {
-					if (yDestination < y) {
-						// Go up
-						this.direction = "up";
-						sidewalkSegment = allSidewalks.get(26);
-						currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-						this.currentCell.hasPerson = true;
-
-					} else {
-						// Go down
-						this.direction = "down";
-						sidewalkSegment = allSidewalks.get(27);
-						currentCell = sidewalkSegment.get(0);
-						this.currentCell.hasPerson = true;
-
-					}
-				}
-
+				this.direction = "up";
+				sidewalkSegment = allSidewalks.get(26);
+				currentCell = sidewalkSegment.get(12);
+				currentCell.hasPerson = true;
 			}
 
 			boolean canMove = true;
