@@ -9,7 +9,9 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import people.People;
 import people.PeopleAgent;
+import transportation.CarGui;
 import city.gui.trace.AlertLevel;
 import city.gui.trace.AlertLog;
 import city.gui.trace.AlertTag;
@@ -239,7 +241,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		
 		else if(e.getActionCommand().equals("Add Vehicles to Demonstrate Collision")) {
-			VehicleGui vehicle = new VehicleGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel,"Car");
+			People person = new PeopleAgent("TEST PERSON", 1000.0, false);
+			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);
+			person.setPersonGui(personGui);
+			CarGui vehicle = new CarGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+			vehicle.setPersonAgent(person);
 			vehicle.setDestination(1,1);
 			cityPanel.vehicles.add(vehicle);
 		}

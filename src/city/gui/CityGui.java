@@ -1532,17 +1532,17 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void triggerVehicleCrash() {
 		// TODO Auto-generated method stub
-		List<VehicleGui> currentCars = new ArrayList<VehicleGui>();
+		List<CarGui> currentCars = new ArrayList<CarGui>();
 		for(VehicleGui v : cityPanel.vehicles)
 		{
 			if(v.typeOfVehicle.equals("Car"))
-				currentCars.add(v);
+				currentCars.add((CarGui)v);
 		}
 		int maxVehicleListIndex = currentCars.size() - 1;
 		Random random = new Random();
 		int randomVehicleIndex = random.nextInt(maxVehicleListIndex);
-		VehicleGui vehicleToStop = currentCars.get(randomVehicleIndex);
-		vehicleToStop.stopNow();
+		CarGui carToStop = currentCars.get(randomVehicleIndex);
+		carToStop.stopNow();
 		
 	}
 	
