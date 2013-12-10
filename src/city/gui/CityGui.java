@@ -494,7 +494,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
 					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
-					cityPanel.vehicles.add(carGui);
+					//cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
 					
@@ -1387,6 +1387,22 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantHostRoleWc.getCook().setLow();
 		RestaurantHostRoleEs.getCook().setLow();
 		RestaurantHostRolePS.getCook().setLow();
+		
+	}
+
+	public void triggerVehicleCrash() {
+		// TODO Auto-generated method stub
+		List<VehicleGui> currentCars = new ArrayList<VehicleGui>();
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			if(v.typeOfVehicle.equals("Car"))
+				currentCars.add(v);
+		}
+		int maxVehicleListIndex = currentCars.size() - 1;
+		Random random = new Random();
+		int randomVehicleIndex = random.nextInt(maxVehicleListIndex);
+		VehicleGui vehicleToStop = currentCars.get(randomVehicleIndex);
+		vehicleToStop.stopNow();
 		
 	}
 	

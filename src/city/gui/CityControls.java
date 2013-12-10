@@ -224,7 +224,12 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			
 		}
 		else if(e.getActionCommand().equals("Trigger Vehicle Crash")) {
-			
+			if(cityGui.cityPanel.vehicles.size() < 3)
+			{
+				System.out.println("Must be more than 2 cars present to trigger a vehicle crash, currently only: " + (cityGui.cityPanel.vehicles.size()-1));
+				return;
+			}
+			cityGui.triggerVehicleCrash();
 		}
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
 			
