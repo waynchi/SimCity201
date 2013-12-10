@@ -33,7 +33,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	 */
 	@Override
 	public void msgIsActive(){
-	print("CarPassenger is now active");
+//	print("CarPassenger is now active");
 	myCar.msgTakeMeHere(this,destination);
 //	//destination = myPerson.state.toString();
 	}
