@@ -405,6 +405,14 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell = sidewalkSegment.get(0);
 				this.currentCell.hasPerson = true;
 			}
+			//Restaurant Zack
+			if(getCurrentLane().equals("20_1")) {
+				this.direction="right";
+				this.currentCell.hasPerson = false;
+				sidewalkSegment = allSidewalks.get(6);
+				this.currentCell = sidewalkSegment.get(0);
+				this.currentCell.hasPerson = true;
+			}
 			//Restaurant Wayne
 			if(getCurrentLane().equals("20_5")) {
 				this.currentCell.hasPerson = false;
