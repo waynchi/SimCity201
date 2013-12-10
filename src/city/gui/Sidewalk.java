@@ -70,8 +70,8 @@ public class Sidewalk {
 	public void redLight() {
 		redLight = true;
 	}
-	public People getPerson() {
-		return person;
+	public PersonGui getPersonGui() {
+		return person.getPersonGui();
 	}
 	
 	public void greenLight() {
