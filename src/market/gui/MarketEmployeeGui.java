@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import restaurant.interfaces.Cook;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.MarketEmployee;
 
@@ -20,6 +21,7 @@ public class MarketEmployeeGui implements Gui{
     private ImageIcon market_employee = new ImageIcon("res/market/marketEmployee.jpeg");
     private enum guiCommand {GOT_ORDER_FROM_RESTAURANT, NONE};
     guiCommand command;
+    Cook currentCook;
 	
 	public MarketEmployeeGui(MarketEmployee me){
 		this.employee = me;
@@ -80,7 +82,7 @@ public class MarketEmployeeGui implements Gui{
         	g.setColor(Color.LIGHT_GRAY);
         	g.fillRect(xPos+30, yPos-30, 150, 20);
         	g.setColor(Color.black);
-        	g.drawString("getting items from cook", xPos+30, yPos-20);
+        	g.drawString("getting items for " + currentCook.getName(), xPos+30, yPos-20);
         }
 
 	}
@@ -124,9 +126,10 @@ public class MarketEmployeeGui implements Gui{
 		goToCounter = true;
 	}
 
-	public void showGotOrderFromRestaurant() {
+	public void showGotOrderFromRestaurant(Cook cook) {
 		// TODO Auto-generated method stub
 		command = guiCommand.GOT_ORDER_FROM_RESTAURANT;
+		currentCook = cook;
 	}
 
 	public void noCommand() {

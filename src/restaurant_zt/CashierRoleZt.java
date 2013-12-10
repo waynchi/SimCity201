@@ -384,7 +384,7 @@ public class CashierRoleZt extends Role implements Cashier {
 	private void clockIn() {
 		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(2);
-		teller = (Teller) getPersonAgent().getTeller();
+		teller = (Teller) getPersonAgent().getBank(0).t;
 		if (!inTest){
 			host.setCashier(this);
 			cashierGui.setPresent(true);

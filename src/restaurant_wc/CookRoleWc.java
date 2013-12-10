@@ -334,11 +334,13 @@ public class CookRoleWc extends Role implements Cook{
 				}
 			}
 		}
-		int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
-		int marketNumber = (int)(Math.random() * marketSize);
-		marketOrders.add(new MarketOrder(marketOrder,marketNumber));
-		((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
-	}
+		if (marketOrder.size()!=0) {
+			int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
+			int marketNumber = (int)(Math.random() * marketSize);
+			marketOrders.add(new MarketOrder(marketOrder,marketNumber));
+			((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
+			}
+		}
 	
 	public void getOrderFromRevolvingStand() {
 		print ("going to revolving stand");
@@ -522,7 +524,7 @@ public class CookRoleWc extends Role implements Cook{
 	@Override
 	public void setLow() {
 		for (Map.Entry<String, Food> entry : foods.entrySet()) {
-			entry.getValue().amount = 4;
+			entry.getValue().amount = 2;
 		}
 		orderFoodThatIsLow();
 		getPersonAgent().CallstateChanged();

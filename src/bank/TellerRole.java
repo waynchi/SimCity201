@@ -216,7 +216,6 @@ public class TellerRole extends Role implements Teller {
 				return true;
 			}
 		}
-
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -231,6 +230,7 @@ public class TellerRole extends Role implements Teller {
 		if (customer.type.equals("customer")) customer.customer.msgReadyToHelp(this);
 		if (customer.type.equals("mcashier")) customer.mcashier.msgReadyToHelp(this);
 		if (customer.type.equals("cashier")) customer.cashier.msgReadyToHelp(this);
+		if (customer.type.equals("robber")) customer.robber.msgReadyToHelp(this);
 	}
 	
 	private void newAccount(myBankCustomer customer) {
@@ -256,13 +256,15 @@ public class TellerRole extends Role implements Teller {
 		customer.robber.msgPleaseDontHurtMe(1000000);
 		myPerson.getBank(0).isClosed = true;
 		waitingCustomers.remove(customer);
+		currentCustomer = null;
 		for(myBankCustomer cust:waitingCustomers){
 			if (cust.type.equals("customer")) cust.customer.msgGetOut();
 			if (cust.type.equals("mcashier")) cust.mcashier.msgGetOut();
 			if (cust.type.equals("cashier")) cust.cashier.msgGetOut();
 			if (cust.type.equals("robber")) cust.robber.msgGetOut();
 		}
-		Leave();
+		waitingCustomers.clear();
+		LeavePost = true;
 	}
 	
 	private void withdrawMoney(myBankCustomer customer) {
@@ -300,6 +302,7 @@ public class TellerRole extends Role implements Teller {
 		isActive = false;
 		LeavePost = false;
 		if (!isTest) {
+			gui.isAtDesk = false;
 			gui.leave = true;
 			gui.DoExitRestaurant();
 			try {

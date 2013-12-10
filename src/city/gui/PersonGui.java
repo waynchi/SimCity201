@@ -29,6 +29,8 @@ public class PersonGui extends Rectangle2D.Double {
 	boolean called;
 	String destination;
 	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
+	public boolean simulatingCrash;
+	public boolean labelIt = false;
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -45,11 +47,17 @@ public class PersonGui extends Rectangle2D.Double {
 		this.direction = "right";
 		this.person = person;
 		called = false;
+		simulatingCrash = false;
 
 	}
 
-	public void setSidewalk(Lane l) {
-		this.currentCell = sidewalkSegment.get(sidewalkSegment.indexOf(l));
+	public void setSidewalk(Sidewalk s) {
+		this.currentCell = s;
+	}
+	
+	public void setSideWalkSegment(ArrayList<Sidewalk> segment)
+	{
+		this.sidewalkSegment = segment;
 	}
 
 	public void setLocation(int x, int y) {
@@ -61,6 +69,8 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void move(double xVelocity, double yVelocity) {
+		if(simulatingCrash)
+			return;
 		Sidewalk nextCell;
 		if (this.direction.equals("right")) {
 			nextCell = sidewalkSegment.get(sidewalkSegment
@@ -75,42 +85,51 @@ public class PersonGui extends Rectangle2D.Double {
 			nextCell = sidewalkSegment.get(sidewalkSegment
 					.indexOf(this.currentCell) + 1);
 		}
+		
 		if (!nextCell.hasPerson) {
 			if (currentCell.yVelocity > 0) {
 				if (this.direction.equals("up")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) - 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 				if (this.direction.equals("down")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) + 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 
 			}
 			if (currentCell.xVelocity > 0) {
 				if (this.direction.equals("left")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) - 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 				}
 				if (this.direction.equals("right")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) + 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 			}
 			this.setOrientation();
 		}
-		nextCell.setPerson(person);
+		
 	}
 
 	public void setDestination(String destination) {
@@ -281,6 +300,8 @@ public class PersonGui extends Rectangle2D.Double {
 			//g2.draw(this);
 			
 			g2.drawImage(custsprite.getImage(), (int)x, (int)y, null);
+			
+			if (labelIt) g2.drawString(person.getName(), (int)x-1, (int)y-2);
 
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
 				this.reachedDestination(this.destination);
@@ -384,6 +405,14 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell = sidewalkSegment.get(0);
 				this.currentCell.hasPerson = true;
 			}
+			//Restaurant Zack
+			if(getCurrentLane().equals("20_1")) {
+				this.direction="right";
+				this.currentCell.hasPerson = false;
+				sidewalkSegment = allSidewalks.get(6);
+				this.currentCell = sidewalkSegment.get(0);
+				this.currentCell.hasPerson = true;
+			}
 			//Restaurant Wayne
 			if(getCurrentLane().equals("20_5")) {
 				this.currentCell.hasPerson = false;
@@ -401,6 +430,44 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = true;
 
 			}
+			if(getCurrentLane().equals("6_0")) {
+				if(this.destination.equals("Restaurant 4")) {
+					this.currentCell.hasPerson = false;
+					this.direction="down";
+					sidewalkSegment = allSidewalks.get(20);
+					currentCell = sidewalkSegment.get(0);
+				}
+			}
+			if(getCurrentLane().equals("9_4")) {
+				this.currentCell.hasPerson = false;
+				this.direction="up";
+				sidewalkSegment = allSidewalks.get(16);
+				currentCell = sidewalkSegment.get(27);
+
+			}
+			if(getCurrentLane().equals("16_15")) {
+				if(this.destination.equals("Bank") || this.destination.equals("Restaurant 3") || this.destination.equals("Restaurant 4")) {
+					this.currentCell.hasPerson = false;
+					this.direction="right";
+					sidewalkSegment = allSidewalks.get(22);
+					currentCell = sidewalkSegment.get(4);
+
+					
+				}
+			}
+			if(getCurrentLane().equals("8_0")) {
+				if(this.destination.equals("Restaurant 4") || this.destination.equals("Restaurant 3")) {
+					this.currentCell.hasPerson = false;
+					this.direction="up";
+					sidewalkSegment = allSidewalks.get(20);
+					currentCell = sidewalkSegment.get(11);
+				} else {
+					this.currentCell.hasPerson = false;
+					this.direction="left";
+					sidewalkSegment = allSidewalks.get(9);
+					currentCell = sidewalkSegment.get(36);
+				}
+			}
 			if(getCurrentLane().equals("24_3")) {
 				this.currentCell.hasPerson = false;
 				if(yDestination < y) {
@@ -411,40 +478,84 @@ public class PersonGui extends Rectangle2D.Double {
 
 				}
 			}
+			if(getCurrentLane().equals("14_4")) {
+				this.currentCell.hasPerson = false;
+				if(xDestination > 190)
+				{
+					this.direction = "right";
+					sidewalkSegment = allSidewalks.get(11);
+					currentCell = sidewalkSegment.get(0);
+					this.currentCell.hasPerson = true;
+				}
+			}
+			if(getCurrentLane().equals("13_14")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "down";
+				sidewalkSegment = allSidewalks.get(19);
+				currentCell = sidewalkSegment.get(0);
+				this.currentCell.hasPerson = true;
+			}
+			if(getCurrentLane().equals("19_11")) {
+				this.currentCell.hasPerson = false;
+				if(yDestination < 130)
+					this.direction = "down";
+				else{
+					this.direction = "left";
+					sidewalkSegment = allSidewalks.get(8);
+					currentCell = sidewalkSegment.get(16);
+					this.currentCell.hasPerson = true;
+				}
+			}
+			if(getCurrentLane().equals("19_15")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "right";
+				sidewalkSegment = allSidewalks.get(24);
+				currentCell = sidewalkSegment.get(19);
+				this.currentCell.hasPerson = true;
+			}
 			if (getCurrentLane().equals("7_0")) {
 				this.currentCell.hasPerson = false;
+				if(yDestination > 132)
+				{
+					this.direction = "up";
+					sidewalkSegment = allSidewalks.get(14);
+					currentCell = sidewalkSegment.get(10);
+					this.currentCell.hasPerson = true;
+				}
+				else{
 				this.direction = "left";
 				sidewalkSegment = allSidewalks.get(23);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 				this.currentCell.hasPerson = true;
-
-
-			}
-			if (getCurrentLane().equals("22_0")) {
-				this.currentCell.hasPerson = false;
-				this.direction = "left";
-				sidewalkSegment = allSidewalks.get(2);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				this.currentCell.hasPerson = true;
-
-
-			}
-			if (getCurrentLane().equals("20_0")) {
-				this.currentCell.hasPerson = false;
-				if (yDestination > y) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(6);
-					currentCell = sidewalkSegment.get(0);
-					this.currentCell.hasPerson = true;
-
-				} else {
-					this.direction = "left";
-					sidewalkSegment = allSidewalks.get(22);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-					this.currentCell.hasPerson = true;
-
 				}
+
+
 			}
+//			if (getCurrentLane().equals("22_0")) {
+//				this.currentCell.hasPerson = false;
+//				this.direction = "left";
+//				sidewalkSegment = allSidewalks.get(2);
+//				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+//				this.currentCell.hasPerson = true;
+//
+//
+//			}
+//			if (getCurrentLane().equals("20_0")) {
+//				this.currentCell.hasPerson = false;
+//				if (yDestination > y) {
+//					this.direction = "right";
+//					sidewalkSegment = allSidewalks.get(6);
+//					currentCell = sidewalkSegment.get(0);
+//					this.currentCell.hasPerson = true;
+//
+//				} else {
+//					this.direction = "left";
+//					sidewalkSegment = allSidewalks.get(22);
+//					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+//					this.currentCell.hasPerson = true;
+//
+//				}
+//			}
 
 			if (getCurrentLane().equals("0_20")) {
 				this.currentCell.hasPerson = false;
@@ -518,7 +629,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if (getCurrentLane().equals("10_32")) {
 				this.currentCell.hasPerson = false;
-				if (xDestination > x) {
+				if (xDestination > x || this.destination.equals("Bank") || this.destination.equals("Market")) {
 					this.direction = "right";
 				} else {
 					this.direction = "down";
@@ -528,7 +639,7 @@ public class PersonGui extends Rectangle2D.Double {
 				}
 
 			}
-			if (getCurrentLane().equals("15_5")) {
+			if (getCurrentLane().equals("15_10")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "left";
 				sidewalkSegment = allSidewalks.get(23);
@@ -541,6 +652,16 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(3);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 				this.currentCell.hasPerson = true;
+			}
+			if(getCurrentLane().equals("23_4")) {
+				if(xDestination > x) {
+					this.currentCell.hasPerson = false;
+					this.direction = "up";
+					sidewalkSegment = allSidewalks.get(16);
+					currentCell = sidewalkSegment.get(10);
+					this.currentCell.hasPerson = true;
+				}
+				
 			}
 			if (getCurrentLane().equals("3_0")) {
 				this.currentCell.hasPerson = false;
@@ -634,7 +755,15 @@ public class PersonGui extends Rectangle2D.Double {
 			if (getCurrentLane().equals("11_15")) {
 				//Cross the street
 				this.currentCell.hasPerson = false;
-				this.direction = "right";
+				if(yDestination > y)
+				{
+					this.direction = "down";
+					sidewalkSegment = allSidewalks.get(13);
+					currentCell = sidewalkSegment.get(4);
+					currentCell.hasPerson = true;
+				}
+				else
+					this.direction = "right";
 			}
 			if (getCurrentLane().equals("1_0")) {
 				this.currentCell.hasPerson = false;
@@ -713,14 +842,26 @@ public class PersonGui extends Rectangle2D.Double {
 
 	public void reachedDestination(String reachedDestination) {
 		// TODO Auto-generated method stub
-		if(reachedDestination.equals("Bus Stop 1"))
-		{
-			BusPassengerRole bpr = new BusPassengerRole();
-			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-			bpr.setDestinationPlace("Bank");
-			bpr.msgIsActive();
-			person.addRole(bpr, "BusPassenger");
-			
-		}
+//		if(reachedDestination.equals("Bus Stop 1"))
+//		{
+//			BusPassengerRole bpr = new BusPassengerRole();
+//			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+//			bpr.setDestinationPlace("Bank");
+//			bpr.msgIsActive();
+//			person.addRole(bpr, "BusPassenger");
+//			
+//		}
+	}
+
+	public void stopNow() {
+		// TODO Auto-generated method stub
+		simulatingCrash = true;
+		this.currentCell.simulatingCrash = true;
+		this.currentCell.hasPerson = false;
+	}
+	
+	public void setDirection(String direction)
+	{
+		this.direction = direction;
 	}
 }

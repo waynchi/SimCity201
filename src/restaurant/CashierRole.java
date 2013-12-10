@@ -168,6 +168,7 @@ public class CashierRole extends Role implements Cashier {
 				if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
 					mb.itemsReceived = true;
 					orderFound = true;
+					print("");
 				}
 			}
 			if (!orderFound) {
@@ -199,6 +200,7 @@ public class CashierRole extends Role implements Cashier {
 
 	// from market cashier
 	public void msgHereIsChange(double change) {
+		print("received change " + change + " from market cashier");
 		log.add(new LoggedEvent("received change " + change + " from market cashier"));
 		working_capital += change;
 		getPersonAgent().CallstateChanged();

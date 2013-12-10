@@ -20,11 +20,15 @@ import city.gui.trace.TracePanel;
 
 public class CityControls extends JPanel implements ActionListener, ChangeListener {
 	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField name;
 	TracePanel tracePanel;
 	ControlPanel controlPanel;
 	CityPanel cityPanel;
 	CityGui cityGui;
+	JComboBox rolesList;
+	JTextField money;
+	JCheckBox hasCar;
+	JButton btnScenario8;
 	
 	
 	static final int FPS_MIN = 1;
@@ -87,21 +91,35 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario5.addActionListener(this);
 			panel.add(btnScenario5);
 			
-			JButton btnScenario6 = new JButton("Trigger Bank Robbery");
+			JButton btnScenario6 = new JButton("Bank Robbery");
 			btnScenario6.addActionListener(this);
 			panel.add(btnScenario6);
 			
-			JButton btnScenario7 = new JButton("Trigger Vehicle Crash");
+			JButton btnScenario7 = new JButton("Vehicle Crash");
 			btnScenario7.addActionListener(this);
 			panel.add(btnScenario7);
 			
-			JButton btnScenario8 = new JButton("Trigger Predestrian Getting Hit");
+			JButton btnScenario20 = new JButton("Set To Friday");
+			btnScenario20.addActionListener(this);
+			panel.add(btnScenario20);
+
+			JButton btnScenario21 = new JButton("People Gui Labels");
+			btnScenario21.addActionListener(this);
+			panel.add(btnScenario21);
+			
+			JButton btnScenario8 = new JButton("Pedestrian Collision");
+			btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
+
 			btnScenario8.addActionListener(this);
 			panel.add(btnScenario8);
 			
-			JButton btnScenario9 = new JButton("Trigger Weekend");
+			JButton btnScenario9 = new JButton("Weekend");
 			btnScenario9.addActionListener(this);
 			panel.add(btnScenario9);
+			
+			JButton btnScenarioB= new JButton("Normative Scenario B");
+			btnScenarioB.addActionListener(this);
+			panel.add(btnScenarioB);
 			
 			JButton btnClear = new JButton("Clear World");
 			btnClear.addActionListener(this);
@@ -115,12 +133,37 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		if(text.equals("Controls")) {
 			JPanel panel = new JPanel();
-			textField_1 = new JTextField();
-			panel.add(textField_1);
-			textField_1.setColumns(10);
+			
+			JLabel nameLabel = new JLabel("Name:");
+			panel.add(nameLabel);
+			
+			name = new JTextField();
+			panel.add(name);
+			name.setColumns(10);
+			
+			JLabel roleLabel = new JLabel("Role:");
+			panel.add(roleLabel);
+			String[] options = { "Unemployed","RestaurantSpecialWaiter", "RestaurantNormalWaiter", "RestaurantSpecialWaiterZt","RestaurantNormalWaiterZt","RestaurantSpecialWaiterEs","RestaurantNormalWaiterEs","RestaurantSpecialWaiterVk","RestaurantNormalWaiterVk","RestaurantSpecialWaiterWc","RestaurantNormalWaiterWc","RestaurantSpecialWaiterPs","RestaurantNormalWaiterPs" };
+			rolesList = new JComboBox(options);
+			rolesList.addActionListener(this);
+			panel.add(rolesList);
+			
+			JLabel moneyLabel = new JLabel("Money:");
+			panel.add(moneyLabel);
+			money = new JTextField();
+			panel.add(money);
+			money.setColumns(10);
+			
+			JLabel carLabel = new JLabel("Has Car:");
+			panel.add(carLabel);
+			hasCar = new JCheckBox();
+			panel.add(hasCar);
 			
 			JButton btnAddPerson = new JButton("Add Person");
+			btnAddPerson.addActionListener(this);
 			panel.add(btnAddPerson);
+			
+			
 			
 			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
 			btnDemonstrateCollisionVehicle.addActionListener(this);
@@ -163,6 +206,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			tracePanel.showAlertsWithTag(AlertTag.BANK);
 			tracePanel.showAlertsWithTag(AlertTag.HOME);
 			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT1);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT2);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT3);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT4);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT5);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT6);
 			tracePanel.showAlertsWithTag(AlertTag.MARKET);
 			
 
@@ -187,6 +235,17 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		if(e.getActionCommand().equals("Normal Scenario 1")) {
 			
 		}
+		else if(e.getActionCommand().equals("Add Person")) {
+			try {
+				double moneyOut = Double.parseDouble(money.getText());
+				System.out.println("Creating a person");
+				cityGui.CreatePerson(name.getText(), rolesList.getSelectedItem().toString(), moneyOut, hasCar.isSelected());
+			} catch(NumberFormatException nfe) {
+				money.setText("Please enter a valid number");
+			}
+
+
+		}
 		else if(e.getActionCommand().equals("Create World From Config File")) {
 			System.out.println("Creating World From Config");
 			cityGui.CreateWorld(this.cityGui.RestaurantCookWaiterMonitor, this.cityGui.RestaurantCookWaiterMonitorZT, this.cityGui.RestaurantCookWaiterMonitorWc, this.cityGui.RestaurantCookWaiterMonitorEs, this.cityGui.RestaurantCookWaiterMonitorPS, this.cityGui.revolvingStand);
@@ -206,6 +265,21 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
 			
+		}	
+		else if(e.getActionCommand().equals("Normative Scenario B")) {
+			System.out.println("Normative B initiated.");
+			cityGui.createNormativeB();
+		}
+		
+		else if(e.getActionCommand().equals("People Gui Labels")) {
+			for (People peep : cityGui.people) {
+				if (peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = false;
+				}
+				if (!peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = true;
+				}
+			}
 		}
 		else if(e.getActionCommand().equals("Close Banks")) {
 			System.out.println("Closing all banks");
@@ -222,8 +296,13 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Non-Norm Scenario 2")) {
 			
 		}
-		else if(e.getActionCommand().equals("Trigger Bank Robbery")) {
-			
+		else if(e.getActionCommand().equals("Bank Robbery")) {
+			System.out.println("Bank will be robbed soon");
+			cityGui.robber.msgRobBank();
+		}
+		else if(e.getActionCommand().equals("Set To Friday")) {
+			System.out.println("Day has been changed to friday");
+			cityGui.dayOfWeek = 4; //4 is the integer equivalent of friday
 		}
 		else if(e.getActionCommand().equals("Trigger Vehicle Crash")) {
 			if(cityGui.cityPanel.vehicles.size() < 3)
@@ -236,7 +315,13 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
 			if(cityGui.isPedestrianCrossingStreet())
 			{
-				
+				btnScenario8.setEnabled(false);
+				System.out.println("Starting pedestrian crash scenario");
+				cityGui.stopPedestriansCrossingStreetAndTellVehiclesSimulationStarted();
+			}
+			else
+			{
+				System.out.println("Pedestrian must be crossing the street!");
 			}
 		}
 		else if(e.getActionCommand().equals("Trigger Weekend")) {
@@ -254,7 +339,8 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
 			PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);			
+			person.setPersonGui(personGui);
 			personGui.setDestination("Bank");
 			cityPanel.people.add(personGui); 
 			

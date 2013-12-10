@@ -33,7 +33,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	 */
 	@Override
 	public void msgIsActive(){
-	print("CarPassenger is now active");
+//	print("CarPassenger is now active");
 	myCar.msgTakeMeHere(this,destination);
 //	//destination = myPerson.state.toString();
 	}
@@ -43,7 +43,7 @@ public class CarPassengerRole extends Role implements CarPassenger{
 	 */
 	@Override
 	public void msgArrivedToDestination(String place){
- 	print("Received message that Car arrived to destination: " + place);
+// 	print("Received message that Car arrived to destination: " + place);
 	if(destination.equals(place)){
 		myCar.msgImLeaving(this);
 		//myGui.DoLeaveCar(this);

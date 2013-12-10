@@ -25,7 +25,7 @@ import java.util.*;
 public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
 	ArrayList<Lane> lanes;
-	ArrayList<Sidewalk> sidewalks;
+	public ArrayList<Sidewalk> sidewalks;
 	public ArrayList<VehicleGui> vehicles;
 	public ArrayList<PersonGui> people;
 	public List<BusStop> busStops;
@@ -36,7 +36,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	sidewalkStrip7,sidewalkStrip8,sidewalkStrip9,sidewalkStrip10,sidewalkStrip11,sidewalkStrip12,sidewalkStrip13,sidewalkStrip14,sidewalkStrip15,
 	sidewalkStrip16,sidewalkStrip17,sidewalkStrip18,sidewalkStrip19,sidewalkStrip20,sidewalkStrip21,sidewalkStrip22,sidewalkStrip23,sidewalkStrip24,
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
-	ArrayList<ArrayList<Sidewalk>> allSidewalks;
+	public ArrayList<ArrayList<Sidewalk>> allSidewalks;
 	ArrayList<Lane> intersections;
 	ArrayList<Sidewalk> crosswalks;
 	CityGui city;
@@ -663,9 +663,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			lanes.add(l);
 			road21.add(l);
 		}
-		for(int k = 0 ; k < (crossHeight + 60)/19; k++)
+		for(int k = 0 ; k < (crossHeight + 80)/19; k++)
 		{
-			l = new Lane( crossX - 230, crossY + 110 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "21_" + k );
+			l = new Lane( crossX - 230, crossY + 80 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "21_" + k );
 			lanes.add(l);
 			road22.add(l);
 		}
@@ -677,11 +677,11 @@ public class CityPanel extends JPanel implements MouseListener {
 				Building home;
 				if(i == 0)
 				{
-					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
+					home = new Building( i*80+ 70, j*40 + 10, 40, 40, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
 				}
 				else
 				{
-					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
+					home = new Building( i*80+ 70, j*40 + 10, 40, 40, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
 				}
 				buildings.add( home );
 			}
@@ -693,44 +693,44 @@ public class CityPanel extends JPanel implements MouseListener {
 				Building home;
 				if(i == 0)
 				{
-					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
+					home = new Building( i*80+ 70, j*40 + 200, 40, 40, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
 					System.out.println("Home " + (6+(i+1)*(j+1)) + ": " + (122 - 30*i) + "," + (j*40+10));
 				}
 				else
 				{
-					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
+					home = new Building( i*80+ 70, j*40 + 200, 40, 40, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
 					System.out.println("Home " + (6+(j+4)) + ": " + (122 - 20*i) + "," + (j*40+10));
 				}
 				buildings.add(home);
 			}
 		}
 		
-		Building apartment1 = new Building( 150, hozY + 310, 30, 30, 580, 322, "Apartment 1" );
+		Building apartment1 = new Building( 150, hozY + 310, 40, 40, 102, 370, "Apartment 1" );
 		buildings.add(apartment1);
-		Building apartment2 = new Building( 60, hozY + 310, 30, 30, 580, 322, "Apartment 2" );
+		Building apartment2 = new Building( 50, hozY + 310, 40, 40, 122, 370, "Apartment 2" );
 		buildings.add(apartment2);
 		
 		
 		
 		//First Section, Top Row
 		
-		Building market = new Building( hozX + 230, hozY + 310, 60, 100, 580, 322, "Market" );
+		Building market = new Building( hozX + 210, hozY + 310, 60, 140, 580, 322, "Market" );
 		buildings.add(market);
-		Building bank = new Building( hozX + 230, hozY + 140, 80, 80, 560, 302, "Bank" );
+		Building bank = new Building( hozX + 210, hozY + 140, 80, 80, 560, 152, "Bank" );
 		buildings.add(bank);
 		Building restaurant1 = new Building( hozX + 460, hozY + 30, 40, 40, 830, 42, "Restaurant 1" );
 		buildings.add(restaurant1);
 		
-		Building restaurant2 = new Building( hozX + 230, hozY + 30, 40, 40, 580, 42, "Restaurant 2" );
+		Building restaurant2 = new Building( hozX + 210, hozY + 30, 40, 40, 580, 42, "Restaurant 2" );
 		buildings.add(restaurant2);
 		
-		Building restaurant3 = new Building( hozX + 460, hozY + 140, 20, 20, 810, 152, "Restaurant 3" );
+		Building restaurant3 = new Building( hozX + 460, hozY + 140, 40, 40, 810, 152, "Restaurant 3" );
 		buildings.add(restaurant3);
 		
-		Building restaurant4 = new Building( hozX + 450, hozY + 190, 20, 20, 772, 240, "Restaurant 4" );
+		Building restaurant4 = new Building( hozX + 450, hozY + 190, 40, 40, 772, 240, "Restaurant 4" );
 		buildings.add(restaurant4);
 		
-		Building restaurant5 = new Building( hozX + 370, hozY + 60, 20, 20, 700, 132, "Restaurant 5" );
+		Building restaurant5 = new Building( hozX + 370, hozY + 30, 20, 50, 700, 132, "Restaurant 5" );
 		buildings.add(restaurant5);
 		
 //		Building restaurant5 = new Building( hozX + 660, hozY + 60, 20, 20, 990, 100, "Restaurant 5" );
@@ -738,7 +738,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 //		Building bank2 = new Building( hozX + 370, hozY + 60, 20, 20, 580, 152, "Bank" );
 //		buildings.add(bank2);
-		Building restaurant6 = new Building( hozX + 660, hozY + 140, 20, 20, 982, 180, "Restaurant 6" );
+		Building restaurant6 = new Building( hozX + 660, hozY + 140, 20, 40, 982, 180, "Restaurant 6" );
 		buildings.add(restaurant6);
 //		Building restaurant7 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 7" );
 //		buildings.add(restaurant7);
@@ -755,22 +755,26 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip23,this.sidewalkStrip23.get(3),this.allSidewalks, this, person);					
-//		personGui.setDestination("Apartment 2");
+//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
+
+//		personGui.setDestination("Bank");
+//		personGui.setSidewalk(allSidewalks.get(7).get(10));
+//		personGui.setSideWalkSegment(allSidewalks.get(7));
+//		personGui.setDirection("left");
 //		this.people.add(personGui);
 		
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
 //		bpr.setPerson(person);
-//		bpr.setCurrentBusStop(busStops.get(1));
-//		bpr.setDestinationBusStop(busStops.get(0));
+//		bpr.setCurrentBusStop(busStops.get(0));
+//		bpr.setDestinationPlace("Bank");
 //		bpr.msgIsActive();
 		
-//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		CarGui cg = new CarGui(5, 5, 10, 10, road21, road21.get(6), allRoads, this);
 //		CarAgent carAgent = new CarAgent();
 //		carAgent.setGui(cg);
 //		carAgent.startThread();
-//		cg.msgGoToThisPlace(carAgent, "Restaurant 6");
+//		cg.msgGoToThisPlace(carAgent, "Bank");
 //		vehicles.add(cg);
 //		
 
@@ -1094,6 +1098,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 	public void mouseClicked(MouseEvent me) {
 		//Check to see which building was clicked
+		System.out.println("Clicked(X,Y): " + "(" + me.getX() + "," + me.getY() + ")");
 		for ( int i=0; i<buildings.size(); i++ ) {
 			Building b = buildings.get(i);
 			if ( b.contains( me.getX(), me.getY() ) ) {
