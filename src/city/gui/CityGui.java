@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import bank.BankCustomerRole;
+import bank.RobberRole;
 import bank.TellerRole;
 import bank.gui.BankGui;
 import market.MarketCashierRole;
@@ -156,6 +157,8 @@ public class CityGui extends JFrame implements ActionListener {
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
+	
+	PeopleAgent robber;
 	
 	private int count = 0;
 
@@ -648,6 +651,15 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
 						person.hasCar = false;
+					}
+					if (job.equals("Robber")) {
+						RobberRole robberRole = new RobberRole(bankGui);
+						robberRole.setTag(AlertTag.BANK);
+						person.addJob("Robber", start, end);
+						person.addRole(robberRole,"Robber");
+						robberRole.setPerson(person);
+						person.hasCar = false;
+						robber = person;
 					}
 					if (job.equals("RestaurantNormalWaiterVk")) {
 						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRoleVk);
