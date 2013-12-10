@@ -38,5 +38,5 @@
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
 1,BankRestaurantMarket,bankrestaurantmarket,50000,50000
-1,MarketBankRestaurant,MarketBankRestaurant,50000,50000
+1,MarketRestaurantBank,MarketRestaurantBank,50000,50000
 1,BankMarketRestaurant,BankMarketRestaurant,50000,50000
