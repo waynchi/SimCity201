@@ -1607,7 +1607,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void stopPedestriansCrossingStreet() {
 		// TODO Auto-generated method stub
-		if(cityPanel.sidewalkStrip23.get(0).hasPerson)
+		if(cityPanel.sidewalkStrip23.get(0).hasPerson);
 			//cityPanel.sidewalkStrip23.get(0)
 	}
 	
