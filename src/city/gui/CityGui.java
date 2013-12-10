@@ -167,6 +167,14 @@ public class CityGui extends JFrame implements ActionListener {
 	RevolvingStand revolvingStand;
 
 	public CityGui() {
+		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
+		RestaurantHostRoleZt.setTag(AlertTag.RESTAURANT3);
+		RestaurantHostRoleWc.setTag(AlertTag.RESTAURANT4);
+		RestaurantHostRoleEs.setTag(AlertTag.RESTAURANT5); 
+		RestaurantHostRolePS.setTag(AlertTag.RESTAURANT6);
+		
+		repairManRole.setTag(AlertTag.HOME);
+		
 		yelp.addRestaurant(restaurant, 5);
 		yelp.addRestaurant(restaurant2, 3);
 		yelp.addRestaurant(restaurant3, 4);
@@ -187,6 +195,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		bankGui = new BankGui(timer);
 		BankTellerRole = new TellerRole(bankGui); 
+		BankTellerRole.setTag(AlertTag.BANK);
 		bank.t = BankTellerRole;
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
@@ -195,12 +204,14 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiPS = new RestaurantGuiPS(timer);
 		vkAnimationPanel = new RestaurantVkAnimationPanel(timer);
 		RestaurantHostRoleVk = new VkHostRole(vkAnimationPanel);
+		RestaurantHostRoleVk.setTag(AlertTag.RESTAURANT2);
 		restaurant2.h = RestaurantHostRoleVk;
 
 
 		
 		marketGui = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
+		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 		
 		
@@ -212,16 +223,6 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurants.add(restaurant4);
 		restaurants.add(restaurant5);
 		restaurants.add(restaurant6);
-		
-		//Set trace tags
-		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
-		RestaurantHostRoleWc.setTag(AlertTag.RESTAURANT4);
-		RestaurantHostRolePS.setTag(AlertTag.RESTAURANT6);
-
-
-		repairManRole.setTag(AlertTag.HOME);
-		BankTellerRole.setTag(AlertTag.BANK);
-		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		
 		BankTellerRole.addAccount(market);
 		BankTellerRole.addAccount(restaurant);
@@ -594,7 +595,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					
 					
-					bankCustomerRole.setTag(AlertTag.RESTAURANT1);
+					bankCustomerRole.setTag(AlertTag.BANK);
 					cityPanel.people.add(personGui);
 					person.addRole(bankCustomerRole,"BankCustomer");
 					bankCustomerRole.setPerson(person);
@@ -1602,6 +1603,12 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		
 		return false;
+	}
+
+	public void stopPedestriansCrossingStreet() {
+		// TODO Auto-generated method stub
+		if(cityPanel.sidewalkStrip23.get(0).hasPerson)
+			//cityPanel.sidewalkStrip23.get(0)
 	}
 	
 	
