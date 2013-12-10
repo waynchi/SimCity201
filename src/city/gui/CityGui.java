@@ -761,7 +761,7 @@ public class CityGui extends JFrame implements ActionListener {
 					PeopleAgent person;
 //					if(rand.nextInt(5) < 2)
 //					{
-						 person = new PeopleAgent(name, 1000.0, false); //TODO
+						 person = new PeopleAgent(name, 1000.0, true); //TODO
 //					}
 //					else
 //					{
@@ -940,7 +940,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					person.HomeNum = count;
 //					if(!(job.equals("BankMarketRestaurant"))){
-						person.setTest();
+//						person.setTest();
 //					}
 					count++;
 					person.startThread();		

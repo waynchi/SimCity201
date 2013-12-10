@@ -265,9 +265,8 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
 			
-		}
-		
-		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
+		}	
+		else if(e.getActionCommand().equals("Normative Scenario B")) {
 			System.out.println("Normative B initiated.");
 			cityGui.createNormativeB();
 		}
