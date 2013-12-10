@@ -107,7 +107,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario21.addActionListener(this);
 			panel.add(btnScenario21);
 			
-			JButton btnScenario8 = new JButton("Pedestrian Collision");
+			btnScenario8 = new JButton("Pedestrian Collision");
 			btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 
 			btnScenario8.addActionListener(this);
@@ -120,6 +120,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			JButton btnScenarioB= new JButton("Normative Scenario B");
 			btnScenarioB.addActionListener(this);
 			panel.add(btnScenarioB);
+			
+			JButton btnScenarioA= new JButton("Normative Scenario A");
+			btnScenarioA.addActionListener(this);
+			panel.add(btnScenarioA);
 			
 			JButton btnClear = new JButton("Clear World");
 			btnClear.addActionListener(this);
@@ -269,6 +273,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Normative Scenario B")) {
 			System.out.println("Normative B initiated.");
 			cityGui.createNormativeB();
+		}
+		else if(e.getActionCommand().equals("Normative Scenario A")) {
+			System.out.println("Normative A initiated.");
+			cityGui.createNormativeA();
 		}
 		
 		else if(e.getActionCommand().equals("People Gui Labels")) {
