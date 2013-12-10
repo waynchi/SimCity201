@@ -1,5 +1,4 @@
-1,RepairMan,BobTheBuilder,50000,50000
-1,Teller,teller,1000,2100
+1,Teller,teller,800,2100
 1,RestaurantNormalWaiter,John,1000,1900
 1,RestaurantNormalWaiter,Joey,1000,1900
 1,RestaurantNormalWaiter,Judah,1000,1900
@@ -36,8 +35,7 @@
 1,RestaurantCookPs,James6,1000,1900
 1,RestaurantHostPs,Billy6,900,1930
 1,RestaurantCashierPs,Zack6,930,1900
-1,RestaurantCustomer,customer,5000,50000
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
-1,MarketCustomer,MarketCustomer,5000,50000
-1,BankRestaurantMarket,bankrestaurantmarket,5000,50000
+1,BankRestaurantMarket,bankrestaurantmarket,50000,50000
+1,MarketBankRestaurant,MarketBankRestaurant,50000,50000
