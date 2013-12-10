@@ -27,9 +27,9 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
 	protected Cashier cashier = null;
-	private boolean leave = false;
-	private boolean enter = false;
-	private ClosingState closingState = ClosingState.Closed;
+	protected boolean leave = false;
+	protected boolean enter = false;
+	protected ClosingState closingState = ClosingState.Closed;
 		
 	public VkWaiterBaseRole(Host host) {
 		super();
@@ -454,16 +454,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		enter = false;
 	}
 	
-	private void leaveRestaurant() {
-		if (closingState == ClosingState.None)
-			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
-		gui.DoLeaveRestaurant();
-		try {
-			movingAround.acquire();
-		} catch (InterruptedException e) {}
-		isActive = false;
-		leave = false;
-		myPerson.msgDone("RestaurantNormalWaiterRole");
+	protected void leaveRestaurant() {
 	}
 	
 	private void prepareToClose() {
