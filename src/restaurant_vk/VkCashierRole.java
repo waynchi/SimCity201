@@ -210,9 +210,6 @@ public class VkCashierRole extends Role implements Cashier {
 		if (teller == null) {
 			this.teller = (Teller) myPerson.getTeller(0);
 		}
-		if (mCashier == null) {
-			print("WHAT THE FUCK??!!!");
-		}
 		enter = true;
 		isActive = true;
 		stateChanged();
