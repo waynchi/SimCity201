@@ -25,9 +25,9 @@ public interface People {
 	
 	public abstract Role getHost(int i);
 	
-	public Teller getTeller();
+	public abstract Teller getTeller();
 	
-	public PersonGui getPersonGui();
+	public abstract PersonGui getPersonGui();
 	
 	public abstract void setType(String t);
 	
@@ -70,6 +70,8 @@ public interface People {
 	public abstract void GoToHouse();
 
 	public abstract void GoBuyCar();
+	
+	public abstract void setHasCar(boolean t);
 
 	public abstract void LeaveWork();
 

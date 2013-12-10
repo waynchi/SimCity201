@@ -569,9 +569,10 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
+					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT3);
 					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 					RestaurantCustomerRoleZt.setPerson(person);
-					
+				
 					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT4);
 					person.addRole(RestaurantCustomerRoleWc, "RestaurantCustomerWc");
 					RestaurantCustomerRoleWc.setPerson(person);
@@ -580,7 +581,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
 					RestaurantCustomerRoleWc.setPerson(person);
 					
-					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
+					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT6);
 					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
 					RestaurantCustomerRoleWc.setPerson(person);
 										
@@ -627,9 +628,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-//					if(!(job.equals("BankMarketRestaurant"))){
+					if(!(job.equals("BankRestaurantMarket"))){
 						person.setTest();
-//					}
+					}
 					count++;
 					person.startThread();		
 					
