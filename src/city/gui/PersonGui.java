@@ -291,15 +291,23 @@ public class PersonGui extends Rectangle2D.Double {
 				person.msgDone("PersonGui");
 				this.destination = null;
 			}
+			
+			//Exiting Building Logic
+			
+			//Restaurant Wayne
+			if(getCurrentLane().equals("20_5")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "up";
+			}
 			if(getCurrentLane().equals("12_15")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "up";
 			}
-			if(getCurrentLane().equals("6_16")) {
+			if(getCurrentLane().equals("6_20")) {
 				this.currentCell.hasPerson = false;
-				this.direction = "left";
-				sidewalkSegment = allSidewalks.get(7);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+				this.direction = "up";
+				sidewalkSegment = allSidewalks.get(12);
+				currentCell = sidewalkSegment.get(15);
 			}
 			if(getCurrentLane().equals("24_3")) {
 				this.currentCell.hasPerson = false;
@@ -486,23 +494,16 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(16);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
-			if (getCurrentLane().equals("11_15")) {
+			if(getCurrentLane().equals("11_19")) {
 				this.currentCell.hasPerson = false;
-				this.direction = "down";
-				sidewalkSegment = allSidewalks.get(13);
-				currentCell = sidewalkSegment.get(0);
+				this.direction = "up";
+				sidewalkSegment = allSidewalks.get(12);
+				currentCell = sidewalkSegment.get(4);
 			}
-			if (getCurrentLane().equals("13_5")) {
+			if (getCurrentLane().equals("11_15")) {
+				//Cross the street
 				this.currentCell.hasPerson = false;
-				if (this.xDestination > x) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(12);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				} else {
-					this.direction = "left";
-					sidewalkSegment = allSidewalks.get(7);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				}
+				this.direction = "right";
 			}
 			if (getCurrentLane().equals("1_0")) {
 				this.currentCell.hasPerson = false;
@@ -626,7 +627,7 @@ public class PersonGui extends Rectangle2D.Double {
 		{
 			BusPassengerRole bpr = new BusPassengerRole();
 			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-			bpr.setDestinationBusStop(cityPanel.busStops.get(2));
+			bpr.setDestinationPlace("Bank");
 			bpr.msgIsActive();
 			person.addRole(bpr, "BusPassenger");
 			
