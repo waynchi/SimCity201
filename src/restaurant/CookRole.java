@@ -39,7 +39,7 @@ public class CookRole extends Role implements Cook{
 	private CookWaiterMonitor theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
-	private Timer schedulerTimer = new Timer();
+	private Timer schedulerTimer;
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
@@ -151,6 +151,7 @@ public class CookRole extends Role implements Cook{
 
 	
 	public void startStandTimer() {
+		schedulerTimer = new Timer();
 		schedulerTimer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				checkStand();
@@ -443,9 +444,6 @@ public class CookRole extends Role implements Cook{
 			e.printStackTrace();
 		}
 		leaveWork = false;
-		schedulerTimer.cancel();
-		cookGui.setPresent(false);
-		cookGui.setDefaultDestination();
 		getPersonAgent().msgDone("RestaurantCookRole");
 	}
 	//utilities
