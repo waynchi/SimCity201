@@ -378,7 +378,6 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print("blah");
 		getPersonAgent().CallstateChanged();
 	}
 
@@ -443,7 +442,11 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		schedulerTimer = null;
+		isActive = false;
 		leaveWork = false;
+		cookGui.setPresent(false);
+		cookGui.setDefaultDestination();
 		getPersonAgent().msgDone("RestaurantCookRole");
 	}
 	//utilities

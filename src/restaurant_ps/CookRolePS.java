@@ -1,5 +1,6 @@
 package restaurant_ps;
 
+import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_ps.gui.CookGuiPS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
@@ -39,7 +40,7 @@ public class CookRolePS extends Role implements Cook{
 	private CookWaiterMonitorPS theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
-	private Timer schedulerTimer = new Timer();
+	private Timer schedulerTimer;
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
@@ -55,6 +56,7 @@ public class CookRolePS extends Role implements Cook{
 	private Host host;
 	private Cashier cashier;
 	private MarketEmployee marketEmployee;
+	private final int period = 700;
 
 	//private MarketEmployeeRole marketEmployee = null;
 
@@ -146,6 +148,23 @@ public class CookRolePS extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
+	public void startStandTimer() {
+		schedulerTimer = new Timer();
+		schedulerTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				checkStand();
+			}
+		}, period, period);
+	}
+	
+	
+	public void checkStand() {
+		if (theMonitor.getOrderSize() != 0) {
+			synchronized(orders) {
+				getOrderFromRevolvingStand();			}
+			getPersonAgent().CallstateChanged();
+		}
+	}
 	// from market truck (market employee for now)
 		public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
 			log.add(new LoggedEvent("received items from market"));
@@ -242,17 +261,6 @@ public class CookRolePS extends Role implements Cook{
 			}
 		}
 
-
-		schedulerTimer.scheduleAtFixedRate(
-				new TimerTask(){
-					public void run(){
-						while (theMonitor.getOrderSize() != 0){
-							getOrderFromRevolvingStand();
-							orders.add (new MyOrder(theMonitor.removeOrder()));
-						}									
-					} 
-				},0,5000);
-
 		if (leaveWork) {
 			done();
 			return true;
@@ -346,6 +354,7 @@ public class CookRolePS extends Role implements Cook{
 	
 	public void getOrderFromRevolvingStand() {
 		print ("going to revolving stand");
+		orders.add (new MyOrder(theMonitor.removeOrder()));
 		cookGui.DoGoToRevolvingStand();
 		try {
 			atRevolvingStand.acquire();
@@ -353,14 +362,15 @@ public class CookRolePS extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cookGui.DoGoToCookingPlace();
-			try {
-				atGrill.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
+		cookGui.DoGoToCookingPlace();
+		try {
+			atGrill.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		getPersonAgent().CallstateChanged();
 	}
 
 
@@ -407,9 +417,10 @@ public class CookRolePS extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(5);
+		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
-		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
+		startStandTimer();
+		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
 		orderFoodThatIsLow();
@@ -423,6 +434,8 @@ public class CookRolePS extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		schedulerTimer = null;
+		isActive = false;
 		leaveWork = false;
 		cookGui.setPresent(false);
 		cookGui.setDefaultDestination();
