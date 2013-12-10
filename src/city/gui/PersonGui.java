@@ -79,42 +79,51 @@ public class PersonGui extends Rectangle2D.Double {
 			nextCell = sidewalkSegment.get(sidewalkSegment
 					.indexOf(this.currentCell) + 1);
 		}
+		
 		if (!nextCell.hasPerson) {
 			if (currentCell.yVelocity > 0) {
 				if (this.direction.equals("up")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) - 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 				if (this.direction.equals("down")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) + 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 
 			}
 			if (currentCell.xVelocity > 0) {
 				if (this.direction.equals("left")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) - 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 				}
 				if (this.direction.equals("right")) {
+					currentCell.setPerson(null);
 					this.currentCell.hasPerson = false;
 					this.currentCell = sidewalkSegment.get(sidewalkSegment
 							.indexOf(this.currentCell) + 1);
 					this.currentCell.hasPerson = true;
+					currentCell.setPerson(person);
 
 				}
 			}
 			this.setOrientation();
 		}
-		nextCell.setPerson(person);
+		
 	}
 
 	public void setDestination(String destination) {
