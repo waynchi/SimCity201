@@ -11,7 +11,7 @@ import transportation.interfaces.BusPassenger;
 public class BusPassengerRole extends Role implements BusPassenger{
 
 	public BusStop currentBusStop;
-	public BusStop destinationBusStop;
+	//public BusStop destinationBusStop;
 	public String destinationPlace;
 	public Bus myBus;
 	public enum Event {busArrived,busArrivedAtDestination};
@@ -133,10 +133,10 @@ public class BusPassengerRole extends Role implements BusPassenger{
 		this.currentBusStop = S;
 	}
 //	
-	public void setDestinationBusStop(BusStop D)
-	{
-		this.destinationBusStop = D;
-	}
+//	public void setDestinationBusStop(BusStop D)
+//	{
+//		this.destinationBusStop = D;
+//	}
 	
 	public void setDestinationPlace(String place)
 	{
