@@ -62,53 +62,55 @@ public class PersonGui extends Rectangle2D.Double {
 
 	public void move(double xVelocity, double yVelocity) {
 		Sidewalk nextCell;
-		if (this.direction.equals("right")) {
-			nextCell = sidewalkSegment.get(sidewalkSegment
-					.indexOf(this.currentCell) + 1);
-		} else if (this.direction.equals("left")) {
-			nextCell = sidewalkSegment.get(sidewalkSegment
-					.indexOf(this.currentCell) - 1);
-		} else if (this.direction.equals("up")) {
-			nextCell = sidewalkSegment.get(sidewalkSegment
-					.indexOf(this.currentCell) - 1);
-		} else {
-			nextCell = sidewalkSegment.get(sidewalkSegment
-					.indexOf(this.currentCell) + 1);
-		}
-		if (!nextCell.hasPerson) {
-			if (currentCell.yVelocity > 0) {
-				if (this.direction.equals("up")) {
-					this.currentCell.hasPerson = false;
-					this.currentCell = sidewalkSegment.get(sidewalkSegment
-							.indexOf(this.currentCell) - 1);
-					this.currentCell.hasPerson = true;
-
-				}
-				if (this.direction.equals("down")) {
-					this.currentCell.hasPerson = false;
-					this.currentCell = sidewalkSegment.get(sidewalkSegment
-							.indexOf(this.currentCell) + 1);
-					this.currentCell.hasPerson = true;
-
-				}
-
+		if(!this.direction.equals("stop")) { 
+			if (this.direction.equals("right")) {
+				nextCell = sidewalkSegment.get(sidewalkSegment
+						.indexOf(this.currentCell) + 1);
+			} else if (this.direction.equals("left")) {
+				nextCell = sidewalkSegment.get(sidewalkSegment
+						.indexOf(this.currentCell) - 1);
+			} else if (this.direction.equals("up")) {
+				nextCell = sidewalkSegment.get(sidewalkSegment
+						.indexOf(this.currentCell) - 1);
+			} else {
+				nextCell = sidewalkSegment.get(sidewalkSegment
+						.indexOf(this.currentCell) + 1);
 			}
-			if (currentCell.xVelocity > 0) {
-				if (this.direction.equals("left")) {
-					this.currentCell.hasPerson = false;
-					this.currentCell = sidewalkSegment.get(sidewalkSegment
-							.indexOf(this.currentCell) - 1);
-					this.currentCell.hasPerson = true;
+			if (!nextCell.hasPerson) {
+				if (currentCell.yVelocity > 0) {
+					if (this.direction.equals("up")) {
+						this.currentCell.hasPerson = false;
+						this.currentCell = sidewalkSegment.get(sidewalkSegment
+								.indexOf(this.currentCell) - 1);
+						this.currentCell.hasPerson = true;
+	
+					}
+					if (this.direction.equals("down")) {
+						this.currentCell.hasPerson = false;
+						this.currentCell = sidewalkSegment.get(sidewalkSegment
+								.indexOf(this.currentCell) + 1);
+						this.currentCell.hasPerson = true;
+	
+					}
+	
 				}
-				if (this.direction.equals("right")) {
-					this.currentCell.hasPerson = false;
-					this.currentCell = sidewalkSegment.get(sidewalkSegment
-							.indexOf(this.currentCell) + 1);
-					this.currentCell.hasPerson = true;
-
+				if (currentCell.xVelocity > 0) {
+					if (this.direction.equals("left")) {
+						this.currentCell.hasPerson = false;
+						this.currentCell = sidewalkSegment.get(sidewalkSegment
+								.indexOf(this.currentCell) - 1);
+						this.currentCell.hasPerson = true;
+					}
+					if (this.direction.equals("right")) {
+						this.currentCell.hasPerson = false;
+						this.currentCell = sidewalkSegment.get(sidewalkSegment
+								.indexOf(this.currentCell) + 1);
+						this.currentCell.hasPerson = true;
+	
+					}
 				}
+				this.setOrientation();
 			}
-			this.setOrientation();
 		}
 
 	}
@@ -367,6 +369,7 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(2);
 				currentCell = sidewalkSegment.get(0);
 				this.currentCell.hasPerson = true;
+			
 
 			}
 
