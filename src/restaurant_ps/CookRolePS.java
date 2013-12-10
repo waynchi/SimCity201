@@ -3,6 +3,7 @@ package restaurant_ps;
 import restaurant_ps.gui.CookGuiPS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
+import restaurant.CookRole.MarketOrder;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_ps.interfaces.Host;
@@ -15,6 +16,7 @@ import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketEmployee;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -61,13 +63,15 @@ public class CookRolePS extends Role implements Cook{
 	public class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean delivered;
-		int marketCount;
+		//int marketCount;
 		int orderNumber = -1;
+		int marketNumber = -1;
 
-		private MarketOrder (Map<String,Integer> mo){
+		private MarketOrder (Map<String,Integer> mo, int market){
 			marketOrder = mo;
 			delivered = false;
-			marketCount = 1;
+			//marketCount = 1;
+			marketNumber = market;
 		};
 	}
 
@@ -143,31 +147,31 @@ public class CookRolePS extends Role implements Cook{
 	}	
 
 	// from market truck (market employee for now)
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
-		log.add(new LoggedEvent("received items from market"));
-		for (Map.Entry<String, Integer> entry : items.entrySet()) {
-			foods.get(entry.getKey()).amount += entry.getValue();
-			foods.get(entry.getKey()).isOrdered = false;
-		}
-		for (MarketOrder mo : marketOrders) {
-			if (mo.orderNumber == orderNumber) {
-				mo.delivered = true;
+		public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+			log.add(new LoggedEvent("received items from market"));
+			for (Map.Entry<String, Integer> entry : items.entrySet()) {
+				foods.get(entry.getKey()).amount += entry.getValue();
+				foods.get(entry.getKey()).isOrdered = false;
 			}
-		}
-		getPersonAgent().CallstateChanged();
-
-	}
-
-
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int marketNumber) {
-		for (MarketOrder mo : marketOrders) {
-			if (mo.marketOrder == items) {
-				mo.orderNumber = orderNumber;
+			for (MarketOrder mo : marketOrders) {
+				if (mo.orderNumber == orderNumber && mo.marketNumber == marketNumber) {
+					mo.delivered = true;
+				}
 			}
+			getPersonAgent().CallstateChanged();
+
 		}
-		getPersonAgent().CallstateChanged();
-		
-	}
+
+
+		public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
+			for (MarketOrder mo : marketOrders) {
+				if (mo.marketOrder == items && mo.marketNumber == market) {
+					mo.orderNumber = orderNumber;
+				}
+			}
+			getPersonAgent().CallstateChanged();
+			
+		}
 
 	
 	/*public void msgSupply (Map<String,Integer> orderList, Map<String,Integer> supplyList) {
@@ -265,8 +269,7 @@ public class CookRolePS extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		// PLEASE FIX THE LAST PARAMETER. EDIT BY VIKRANT TO MAKE YOUR STUFF COMPILE.
-		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, 0);
+		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, order.marketNumber);
 		marketOrders.remove(order);
 	}
 	
@@ -332,8 +335,10 @@ public class CookRolePS extends Role implements Cook{
 				}
 			}
 		}
-		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
+		int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
+		int marketNumber = (int)(Math.random() * marketSize);
+		marketOrders.add(new MarketOrder(marketOrder,marketNumber));
+		((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
 	}
 	
 	

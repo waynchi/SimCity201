@@ -557,7 +557,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
 					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
-					cityPanel.vehicles.add(carGui);
+					//cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
 					
@@ -627,11 +627,11 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-					//person.setTest();
+//					if(!(job.equals("BankMarketRestaurant"))){
+						person.setTest();
+//					}
 					count++;
-					person.startThread();
-					
-					
+					person.startThread();		
 					
 					
 					if (job.equals("RestaurantNormalWaiter")) {
@@ -882,6 +882,26 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(1000000);
 						person.hasCar = false;
 					}
+					if(job.equals("MarketRestaurantBank"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB2");
+						person.setMoney(50000);
+						person.hasCar = true;
+					}
+					if(job.equals("BankMarketRestaurant"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB3");
+						person.setMoney(50000);
+						person.hasCar = false;
+					}
+					
+				
 				
 					people.add(person);
 					
@@ -1428,6 +1448,7 @@ public class CityGui extends JFrame implements ActionListener {
 			if(time%(x) == 0)
 			{
 				cityPanel.setTime(time/x);
+				System.out.println(time/x);
 			}
 			for (PeopleAgent p : people) {
 				p.msgTimeIs(time/x);
@@ -1450,6 +1471,22 @@ public class CityGui extends JFrame implements ActionListener {
 		RestaurantHostRoleWc.getCook().setLow();
 		RestaurantHostRoleEs.getCook().setLow();
 		RestaurantHostRolePS.getCook().setLow();
+		
+	}
+
+	public void triggerVehicleCrash() {
+		// TODO Auto-generated method stub
+		List<VehicleGui> currentCars = new ArrayList<VehicleGui>();
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			if(v.typeOfVehicle.equals("Car"))
+				currentCars.add(v);
+		}
+		int maxVehicleListIndex = currentCars.size() - 1;
+		Random random = new Random();
+		int randomVehicleIndex = random.nextInt(maxVehicleListIndex);
+		VehicleGui vehicleToStop = currentCars.get(randomVehicleIndex);
+		vehicleToStop.stopNow();
 		
 	}
 	

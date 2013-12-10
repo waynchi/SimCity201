@@ -59,12 +59,15 @@ public class PeopleAgent extends Agent implements People{
 		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
+	public enum DepositState
+	{Deposited,NextDay	}
 	
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Sleeping;
 	public AgentEvent event = AgentEvent.GoingToSleep;
 	public AgentLocation location = AgentLocation.Home;
 	public BuyState buy = BuyState.NextDay;
+	public DepositState deposit = DepositState.NextDay;
 	
 	
 	public void setTest()
@@ -225,7 +228,7 @@ public class PeopleAgent extends Agent implements People{
 			if(role.equals("RestaurantCustomerRole"))
 			{
 				hunger = HungerState.NotHungry;
-				Hunger = 500;
+				Hunger = 2400;
 			}
 //			if(role.equals("BankCustomerRole"))
 //			{
@@ -326,7 +329,7 @@ public class PeopleAgent extends Agent implements People{
 	
 	public void msgTimeIs(int Time)
 	{
-		if(type.equals("NormativeB1"))
+		if(type.equals("NormativeB3"))
 		{
 			Hunger--;
 			//print("Hunger is " + Hunger);
@@ -349,29 +352,17 @@ public class PeopleAgent extends Agent implements People{
 				location = AgentLocation.Home;
 				event = AgentEvent.GoingToSleep;
 				buy = BuyState.NextDay;
+				deposit = DepositState.NextDay;
 				log.add(new LoggedEvent("Sleeping In Message"));
 				Hunger = 1230;
 				stateChanged();
 				return;
 			}
-			if(state == AgentState.Idle)
+			if((state == AgentState.Idle || state == AgentState.IdleAtHome))
 			{
-				if(!Banks.get(0).isClosed)
+				if(buy == BuyState.NextDay)
 				{
-					if(Money >= 1000000)
-					{
-						event = AgentEvent.GoingToDepositMoney;
-						log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-						stateChanged();
-						return;
-					}
-				}
-			}
-			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
-			{
-				if(!Markets.get(0).isClosed)
-				{
-					if(!hasCar)
+					if(!Markets.get(0).isClosed)
 					{
 						if(rand.nextInt(100) <= 100)
 						{
@@ -401,6 +392,23 @@ public class PeopleAgent extends Agent implements People{
 	//							return;
 	//						}	
 						}
+					}
+				}
+			}
+			if(state == AgentState.Idle)
+			{
+				if(!Banks.get(0).isClosed)
+				{
+					if(Money >= 10000)
+					{
+						if(deposit == DepositState.NextDay)
+						{
+							event = AgentEvent.GoingToDepositMoney;
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+							deposit = DepositState.Deposited;
+							stateChanged();
+							return;
+						}						
 					}
 				}
 			}
@@ -435,6 +443,267 @@ public class PeopleAgent extends Agent implements People{
 					}	
 				}
 			}
+			if(state == AgentState.Idle)
+			{
+				if(location != AgentLocation.Home)
+				{
+					event = AgentEvent.GoingHome;
+					stateChanged();
+					return;
+				}
+			}
+		}
+		if(type.equals("NormativeB2"))
+		{
+			Hunger--;
+			//print("Hunger is " + Hunger);
+			if(Hunger == 0)
+			{
+				print("I have become hungry");
+				hunger = HungerState.Hungry;
+			}
+			if(Time == 600 && state == AgentState.Sleeping)
+			{
+				print("I am waking up");
+				event = AgentEvent.WakingUp;
+				location = AgentLocation.Home;
+				log.add(new LoggedEvent("Waking Up In Message"));
+				stateChanged();
+				return;
+			}
+			if(Time == 2330)
+			{
+				location = AgentLocation.Home;
+				event = AgentEvent.GoingToSleep;
+				buy = BuyState.NextDay;
+				deposit = DepositState.NextDay;
+				log.add(new LoggedEvent("Sleeping In Message"));
+				Hunger = 1230;
+				stateChanged();
+				return;
+			}
+			if((state == AgentState.Idle || state == AgentState.IdleAtHome))
+			{
+				if(buy == BuyState.NextDay)
+				{
+					if(!Markets.get(0).isClosed)
+					{
+						if(rand.nextInt(100) <= 100)
+						{
+							buy = BuyState.GoingToBuy;
+						}
+						else
+						{
+							buy = BuyState.NotBuying;
+						}
+						if(buy == BuyState.GoingToBuy)
+						{
+							if(Money >= 20000)
+							{
+								event = AgentEvent.GoingToBuyCar;
+								print("I am going to buy a car");
+								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+								buy = BuyState.NotBuying;
+								stateChanged();
+								return;
+							}
+	//						else
+	//						{
+	//							event = AgentEvent.GoingToRetrieveMoney;
+	//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+	//							stateChanged();
+	//							buy = BuyState.NotBuying;
+	//							return;
+	//						}	
+						}
+					}
+				}
+			}
+			if(state == AgentState.Idle &&  Time >= 1300)
+			{
+				if(!Banks.get(0).isClosed)
+				{
+					if(Money >= 10000)
+					{
+						if(deposit == DepositState.NextDay)
+						{
+							event = AgentEvent.GoingToDepositMoney;
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+							deposit = DepositState.Deposited;
+							stateChanged();
+							return;
+						}						
+					}
+				}
+			}
+			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
+			{
+				if(hunger == HungerState.Hungry)
+				{
+					//change this for restaurant
+					if(!Restaurants.get(1).isClosed)
+					{
+						if(rand.nextInt(2) <2)
+						{
+							event = AgentEvent.GoingToRestaurant;
+							print("Going To Restaurant To Eat");
+							stateChanged();
+							return;
+						}
+						else
+						{
+							event = AgentEvent.GoingHome;
+							print("Going Home To Eat");
+							stateChanged();
+							return;
+						}
+					}
+					else
+					{
+						event = AgentEvent.GoingHome;
+						print("Eating at Home because no restaurants are open.");
+						stateChanged();				
+						return;
+					}	
+				}
+			}
+			if(state == AgentState.Idle)
+			{
+				if(location != AgentLocation.Home)
+				{
+					event = AgentEvent.GoingHome;
+					stateChanged();
+					return;
+				}
+			}
+		}
+		if(type.equals("NormativeB1"))
+		{
+			Hunger--;
+			//print("Hunger is " + Hunger);
+			if(Hunger == 0)
+			{
+				print("I have become hungry");
+				hunger = HungerState.Hungry;
+			}
+			if(Time == 600 && state == AgentState.Sleeping)
+			{
+				print("I am waking up");
+				event = AgentEvent.WakingUp;
+				location = AgentLocation.Home;
+				log.add(new LoggedEvent("Waking Up In Message"));
+				stateChanged();
+				return;
+			}
+			if(Time == 2330)
+			{
+				location = AgentLocation.Home;
+				event = AgentEvent.GoingToSleep;
+				deposit = DepositState.NextDay;
+				buy = BuyState.NextDay;
+				log.add(new LoggedEvent("Sleeping In Message"));	
+				Hunger = 1230;
+				stateChanged();
+				return;
+			}
+			if(state == AgentState.Idle)
+			{
+				if(!Banks.get(0).isClosed)
+				{
+					if(Money >= 1000000)
+					{
+						if(deposit == DepositState.NextDay)
+						{
+							event = AgentEvent.GoingToDepositMoney;
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+							deposit = DepositState.Deposited;
+							stateChanged();
+							return;
+						}
+					}
+				}
+			}
+			if((state == AgentState.Idle || state == AgentState.IdleAtHome) &&  Time >= 1300)
+			{
+				if(buy == BuyState.NextDay)
+				{
+					if(!Markets.get(0).isClosed)
+					{
+						if(!hasCar)
+						{
+							if(rand.nextInt(100) <= 100)
+							{
+								buy = BuyState.GoingToBuy;
+							}
+							else
+							{
+								buy = BuyState.NotBuying;
+							}
+							if(buy == BuyState.GoingToBuy)
+							{
+								if(Money >= 20000)
+								{
+									event = AgentEvent.GoingToBuyCar;
+									print("I am going to buy a car");
+									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+									buy = BuyState.NotBuying;
+									stateChanged();
+									return;
+								}
+		//						else
+		//						{
+		//							event = AgentEvent.GoingToRetrieveMoney;
+		//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+		//							stateChanged();
+		//							buy = BuyState.NotBuying;
+		//							return;
+		//						}	
+							}
+						}
+					}
+				}
+			
+			}
+			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
+			{
+				if(hunger == HungerState.Hungry)
+				{
+					//change this for restaurant
+					if(!Restaurants.get(1).isClosed)
+					{
+						if(rand.nextInt(2) <2)
+						{
+							event = AgentEvent.GoingToRestaurant;
+							print("Going To Restaurant To Eat");
+							stateChanged();
+							return;
+						}
+						else
+						{
+							event = AgentEvent.GoingHome;
+							print("Going Home To Eat");
+							stateChanged();
+							return;
+						}
+					}
+					else
+					{
+						event = AgentEvent.GoingHome;
+						print("Eating at Home because no restaurants are open.");
+						stateChanged();				
+						return;
+					}	
+				}
+			}
+			if(state == AgentState.Idle)
+			{
+				if(location != AgentLocation.Home)
+				{
+					event = AgentEvent.GoingHome;
+					stateChanged();
+					return;
+				}
+			}
 		}
 		if(type.equals("default"))
 		{
@@ -466,6 +735,7 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Home;
 			event = AgentEvent.GoingToSleep;
 			buy = BuyState.NextDay;
+			deposit = DepositState.NextDay;
 			log.add(new LoggedEvent("Sleeping In Message"));
 			Hunger = 1230;
 			stateChanged();
@@ -555,7 +825,7 @@ public class PeopleAgent extends Agent implements People{
 						{
 							if(!hasCar)
 							{
-								if(rand.nextInt(100) <= 100)
+								if(rand.nextInt(100) <= 10)
 								{
 									buy = BuyState.GoingToBuy;
 								}
@@ -593,10 +863,14 @@ public class PeopleAgent extends Agent implements People{
 				//System.out.println(Money);
 				if(Money >= 1000000)
 				{
-					event = AgentEvent.GoingToDepositMoney;
-					log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-					stateChanged();
-					return;
+					if(deposit == DepositState.NextDay)
+					{
+						event = AgentEvent.GoingToDepositMoney;
+						log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+						deposit = DepositState.Deposited;
+						stateChanged();
+						return;
+					}
 				}
 			}
 			if(location != AgentLocation.Home)
@@ -679,7 +953,7 @@ public class PeopleAgent extends Agent implements People{
 					{
 						if(!hasCar)
 						{
-							if(rand.nextInt(100) <= 100)
+							if(rand.nextInt(100) <= 10)
 							{
 								buy = BuyState.GoingToBuy;
 							}
@@ -708,9 +982,10 @@ public class PeopleAgent extends Agent implements People{
 						}				
 						else if(!Banks.get(0).isClosed)
 						{
-							if(Money >= 1000000)
+							if(deposit == DepositState.NextDay)
 							{
 								event = AgentEvent.GoingToDepositMoney;
+								deposit = DepositState.Deposited;
 								stateChanged();
 								return;
 							}
@@ -1290,6 +1565,9 @@ public class PeopleAgent extends Agent implements People{
 		if(state != AgentState.EatingAtHome && state != AgentState.IdleAtHome)
 		{
 			state = AgentState.Idle;
+			event = AgentEvent.Idle;
+			print("I am now " + state.toString());
+			location = AgentLocation.Home;
 		}
 	}
 

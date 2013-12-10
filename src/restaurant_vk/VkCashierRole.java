@@ -401,7 +401,7 @@ public class VkCashierRole extends Role implements Cashier {
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Cashier");
+		myPerson.msgDone("RestaurantCashierRole");
 	}
 	
 	public void enterRestaurant() {
