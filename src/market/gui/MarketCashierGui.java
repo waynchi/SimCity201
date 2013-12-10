@@ -3,12 +3,16 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+
 import market.MarketCashierRole;
 
 public class MarketCashierGui implements Gui{
 	boolean isPresent;
 	MarketCashierRole cashier;
 	MarketGui gui;
+    private ImageIcon market_cashier = new ImageIcon("res/market/cashier.png");
+
 	
 	int xDestination = 380, yDestination = 0;
 	int xPos = 170, yPos = 0;
@@ -47,10 +51,9 @@ public class MarketCashierGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.yellow);
-		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.BLACK);
-        g.drawString("Cahsier", xPos, yPos+20);
+		g.setColor(Color.blue);
+		g.drawRect(xPos-2, yPos-2, 34, 34);
+        g.drawImage(market_cashier.getImage(), xPos, yPos, 30, 30, null);
         
 	}
 

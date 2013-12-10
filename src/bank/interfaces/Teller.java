@@ -8,8 +8,12 @@ import restaurant.interfaces.Cashier;
  */
 
 public interface Teller {
+	
+	public abstract void msgGiveMoney();
 
 	public abstract void msgHere(BankCustomer cust, String name);
+	
+	public abstract void msgHere(Robber robber, String name);
 	
 	public abstract void msgNeedHelp(Cashier cashier, String name);
 	

@@ -3,7 +3,6 @@ package market.test;
 import java.util.Map;
 
 import people.People;
-import restaurant.test.mock.LoggedEvent;
 import market.gui.AnimationPanel;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketCustomer;
@@ -17,7 +16,7 @@ public class MockMarketCustomer extends Mock implements MarketCustomer {
 
 	@Override
 	public void msgHereIsYourOrder(Map<String, Integer> items) {
-		log.add(new LoggedEvent("received msgHereIsYourOrder"));				
+		log.add(new LoggedEvent("received my items"));				
 	}
 
 	@Override

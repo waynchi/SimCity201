@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import restaurant.CookRole;
 import restaurant.interfaces.Cook;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
@@ -36,10 +35,12 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		Cook cook = null;
 		Map<String,Integer> items;
 		int orderNumber;		
-		Order (Cook c, Map<String, Integer> i, int number) {
+		int marketNumber;
+		Order (Cook c, Map<String, Integer> i, int number, int market) {
 			cook = c;
 			items = i;
 			orderNumber = number;
+			marketNumber = market;
 		}
 	}
 	
@@ -57,9 +58,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number, int market) {
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
-		orders.add(new Order (cook, items, number));
+		orders.add(new Order (cook, items, number, market));
 		stateChanged();
 	}
 
@@ -80,16 +81,17 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	private void deliverOrder(final Order order) {
 		//if(!inTest){
-				gui.doDeliver(this, order.cook, order.orderNumber);
+/*				gui.doDeliver(this, order.cook, order.orderNumber);
 				try {
 					atRestaurant.acquire();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (!((CookRole) order.cook).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+				*/
+				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
-					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
+					order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
 				}
 				else {
@@ -98,13 +100,13 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 				}
 				orders.remove(order);
 				
-				gui.doGoBackToMarket();
+				/*gui.doGoBackToMarket();
 				try {
 					atMarket.acquire();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 	}
 
 

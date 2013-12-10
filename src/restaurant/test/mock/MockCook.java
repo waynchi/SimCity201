@@ -10,6 +10,12 @@ import restaurant.interfaces.Waiter;
 
 public class MockCook extends Mock implements Cook{
 	
+	int restaurantIndex;
+	
+	public void setRestaurantIndex(int i) {
+		restaurantIndex = i;
+	}
+	
 	public MockCook(String name) {
 		super(name);
 		// TODO Auto-generated constructor stub
@@ -54,6 +60,6 @@ public class MockCook extends Mock implements Cook{
 	@Override
 	public int getRestaurantIndex() {
 		// TODO Auto-generated method stub
-		return 0;
+		return restaurantIndex;
 	}
 }

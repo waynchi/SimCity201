@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 
 import transportation.BusStop;
+import transportation.CarGui;
 
 
 public class VehicleGui extends Rectangle2D.Double {
@@ -31,6 +32,7 @@ public class VehicleGui extends Rectangle2D.Double {
 	int time;
 	public String typeOfVehicle;
 	private ImageIcon img = null;
+	protected boolean simulatingCrash = false;
 	
 	public VehicleGui( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
@@ -62,6 +64,9 @@ public class VehicleGui extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
+		if(simulatingCrash)
+			return;
+		
 		Lane nextCell;
 		if(this.direction.equals("right")) {
 			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
@@ -74,6 +79,31 @@ public class VehicleGui extends Rectangle2D.Double {
 		}
 		else {
 			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+		}
+		if(nextCell.hasCar && nextCell.simulatingCrash)
+		{
+			CarGui carToRemove = null;
+			for(VehicleGui car : cityPanel.vehicles)
+			{
+				if(car.simulatingCrash)
+				{
+					carToRemove = (CarGui)car;
+					break;
+				}
+			}
+			cityPanel.vehicles.remove(carToRemove);
+			carToRemove.currentCell.simulatingCrash = false;
+			carToRemove.simulatingCrash = false;
+			carToRemove.currentCell.hasCar = false;
+			carToRemove.tellPersonGuiToWalk();
+			
+			if(this.typeOfVehicle.equals("Car"))
+			{
+				cityPanel.vehicles.remove(this);
+				this.currentCell.hasCar = false;
+				this.tellPersonGuiToWalk();
+			}
+			return;
 		}
 		if(!nextCell.hasCar) {
 			if(currentCell.yVelocity > 0) {
@@ -113,6 +143,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 
 	}
+	
 	public void setDestination(int xd, int yd) {
 		xDestination = xd;
 		yDestination = yd;
@@ -153,8 +184,8 @@ public class VehicleGui extends Rectangle2D.Double {
 		
 		if(xDestination > 0 && yDestination > 0)
 		{
-			if(typeOfVehicle.equals("Car"))
-				System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
+			//if(typeOfVehicle.equals("Car"))
+			//	System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
 			
 		time++;
 		if(typeOfVehicle.equals("Bus"))
@@ -170,7 +201,7 @@ public class VehicleGui extends Rectangle2D.Double {
 		g2.drawImage(img.getImage(), (int)x, (int)y, 20, 20, null);
 
 
-		if(getCurrentLane().equals("1_0")) {
+		if(getCurrentLane().equals("0_0")) {
 			currentCell.hasCar = false;
 			if(typeOfVehicle.equals("Bus")) {
 				this.direction="right";
@@ -185,25 +216,25 @@ public class VehicleGui extends Rectangle2D.Double {
 				}
 			}
 		}
-		if(getCurrentLane().equals("19_0")) {
+		if(getCurrentLane().equals("18_0")) {
 			currentCell.hasCar = false;
 			this.direction="down";
 			laneSegment = allLanes.get(19);
 			currentCell = laneSegment.get(0);
 		}
-		if(getCurrentLane().equals("20_7")) {
+		if(getCurrentLane().equals("19_7")) {
 			currentCell.hasCar = false;
 			this.direction="down";
 			laneSegment = allLanes.get(21);
 			currentCell = laneSegment.get(0);
 		}
-		if(getCurrentLane().equals("22_7")) {
+		if(getCurrentLane().equals("21_7")) {
 			currentCell.hasCar = false;
 			this.direction="up";
 			laneSegment = allLanes.get(20);
 			currentCell = laneSegment.get(6);
 		}
-		if(getCurrentLane().equals("21_1")) {
+		if(getCurrentLane().equals("20_1")) {
 			currentCell.hasCar = false;
 			this.direction="right";
 			laneSegment = allLanes.get(1);
@@ -219,7 +250,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			this.reachedDestination();
 			return;
 		}
-		if(getCurrentLane().equals("13_4")) {
+		if(getCurrentLane().equals("12_4")) {
 			currentCell.hasCar = false;
 
 			
@@ -228,7 +259,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(13);
 
 		}
-		else if(getCurrentLane().equals("4_0")) {
+		else if(getCurrentLane().equals("3_0")) {
 			currentCell.hasCar = false;
 
 
@@ -237,7 +268,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("6_1")) {
+		else if(getCurrentLane().equals("5_1")) {
 			currentCell.hasCar = false;
 
 
@@ -247,7 +278,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(16);
 
 		}
-		else if(getCurrentLane().equals("17_0")) {
+		else if(getCurrentLane().equals("16_0")) {
 			currentCell.hasCar = false;
 
 
@@ -256,7 +287,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(9);
 
 		}
-		else if(getCurrentLane().equals("12_24")) {
+		else if(getCurrentLane().equals("11_26")) {
 			currentCell.hasCar = false;
 
 
@@ -265,16 +296,16 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(15);
 
 		}
-		else if(getCurrentLane().equals("13_13")) {
+		else if(getCurrentLane().equals("12_13")) {
 			currentCell.hasCar = false;
 
 
 			this.direction="right";
 			laneSegment = allLanes.get(11);
-			currentCell = laneSegment.get(1);
+			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("6_9") && this.direction!="left") {
+		else if(getCurrentLane().equals("5_9") && this.direction!="left") {
 			currentCell.hasCar = false;
 
 
@@ -283,7 +314,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("4_16") && this.direction!="left") {
+		else if(getCurrentLane().equals("3_16") && this.direction!="left") {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -292,7 +323,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("13_0") && this.direction !="down") {
+		else if(getCurrentLane().equals("12_0") && this.direction !="down") {
 			currentCell.hasCar = false;
 
 
@@ -301,7 +332,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("12_0")) {
+		else if(getCurrentLane().equals("11_0")) {
 			currentCell.hasCar = false;
 
 			this.direction="up";
@@ -310,7 +341,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 		}
 		
-		else if(getCurrentLane().equals("12_15")) {
+		else if(getCurrentLane().equals("11_15")) {
 			currentCell.hasCar = false;
 
 			if(xDestination == 772 ) {
@@ -319,7 +350,7 @@ public class VehicleGui extends Rectangle2D.Double {
 				currentCell = laneSegment.get(12);
 			}
 		}
-		else if(getCurrentLane().equals("15_12")) {
+		else if(getCurrentLane().equals("14_12")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -339,7 +370,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			}
 			
 		
-		else if(getCurrentLane().equals("10_9")) {
+		else if(getCurrentLane().equals("9_9")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -356,7 +387,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 		}
 		
-		else if(getCurrentLane().equals("16_0")) {
+		else if(getCurrentLane().equals("15_0")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -371,7 +402,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 
 		}
-		else if(getCurrentLane().equals("8_14")) {
+		else if(getCurrentLane().equals("7_14")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -397,7 +428,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			
 		}
 		
-		else if(getCurrentLane().equals("14_6")) {
+		else if(getCurrentLane().equals("13_6")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -412,14 +443,14 @@ public class VehicleGui extends Rectangle2D.Double {
 				currentCell = laneSegment.get(13);
 			}
 		}
-		else if(getCurrentLane().equals("11_0")) {
+		else if(getCurrentLane().equals("10_0")) {
 			currentCell.hasCar = false;
 
 			this.direction = "up";
 			laneSegment = allLanes.get(13);
 			currentCell = laneSegment.get(12);
 		}
-		else if(getCurrentLane().equals("11_16")) {
+		else if(getCurrentLane().equals("10_16")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -430,14 +461,14 @@ public class VehicleGui extends Rectangle2D.Double {
 			}
 			
 		}
-		else if(getCurrentLane().equals("5_9")) {
+		else if(getCurrentLane().equals("4_9")) {
 			currentCell.hasCar = false;
 
 			this.direction = "down";
 			laneSegment = allLanes.get(17);
 			currentCell = laneSegment.get(0);
 		}
-		else if(getCurrentLane().equals("18_4") && yDestination >= 132) {
+		else if(getCurrentLane().equals("17_4") && yDestination >= 132) {
 			currentCell.hasCar = false;
 
 			this.direction = "left";
@@ -445,7 +476,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			int hackFirstCell = laneSegment.size() - 1;
 			currentCell = laneSegment.get(hackFirstCell);
 		}
-		else if(getCurrentLane().equals("15_5"))
+		else if(getCurrentLane().equals("14_5"))
 		{
 			
 			if(xDestination < x) //option 1
@@ -459,7 +490,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			}
 			
 		}
-		else if(getCurrentLane().equals("18_14")) {
+		else if(getCurrentLane().equals("17_14")) {
 			currentCell.hasCar = false;
 
 			this.direction = "left";
@@ -467,7 +498,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			laneSegment = allLanes.get(10);
 			currentCell = laneSegment.get(hackFirstCell);
 		}
-		else if(getCurrentLane().equals("3_16")) {
+		else if(getCurrentLane().equals("2_16")) {
 			currentCell.hasCar = false;
 
 			if(xDestination > 752) {
@@ -482,7 +513,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 			}
 		}
-		else if(getCurrentLane().equals("14_0")) {
+		else if(getCurrentLane().equals("13_0")) {
 			currentCell.hasCar = false;
 
 			this.direction = "right";
@@ -490,7 +521,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(0);
 		
 		}
-		else if(getCurrentLane().equals("16_6")) {
+		else if(getCurrentLane().equals("15_6")) {
 			currentCell.hasCar = false;
 			if(xDestination < x){
 				this.direction = "left";
@@ -504,7 +535,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			}
 			
 		}
-		else if(getCurrentLane().equals("2_13")) {
+		else if(getCurrentLane().equals("1_13")) {
 			currentCell.hasCar = false;
 
 			//Intersection
@@ -535,7 +566,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			
 			
 		}
-		else if(getCurrentLane().equals("17_7")) {
+		else if(getCurrentLane().equals("16_7")) {
 			currentCell.hasCar = false;
 			//Intersection
 			
@@ -551,7 +582,7 @@ public class VehicleGui extends Rectangle2D.Double {
 				currentCell = laneSegment.get(6);
 			}
 		}
-		else if(getCurrentLane().equals("9_1")) {
+		else if(getCurrentLane().equals("8_1")) {
 			currentCell.hasCar = false;
 			//Intersection
 			
@@ -574,7 +605,7 @@ public class VehicleGui extends Rectangle2D.Double {
 				
 			}
 		}
-		else if(getCurrentLane().equals("7_0")) {
+		else if(getCurrentLane().equals("6_0")) {
 			currentCell.hasCar = false;
 			//Intersection
 			
@@ -599,99 +630,99 @@ public class VehicleGui extends Rectangle2D.Double {
 
 		boolean canMove = true;
 		if(time % 5 == 0) {
-			if(getCurrentLane().equals("2_12")) {
-				Lane intersection = getLaneInformation("2_13");
+			if(getCurrentLane().equals("1_12")) {
+				Lane intersection = getLaneInformation("1_13");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("8_13")) {
-				Lane intersection = getLaneInformation("8_13");
+			else if(getCurrentLane().equals("7_13")) {
+				Lane intersection = getLaneInformation("7_13");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("10_8")) {
-				Lane intersection = getLaneInformation("10_8");
+			else if(getCurrentLane().equals("9_8")) {
+				Lane intersection = getLaneInformation("9_8");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("6_2")) {
-				Lane intersection = getLaneInformation("6_2");
+			else if(getCurrentLane().equals("5_2")) {
+				Lane intersection = getLaneInformation("5_2");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("13_1")) {
-				Lane intersection = getLaneInformation("13_1");
+			else if(getCurrentLane().equals("12_1")) {
+				Lane intersection = getLaneInformation("12_1");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("16_7")) {
-				Lane intersection = getLaneInformation("16_7");
+			else if(getCurrentLane().equals("15_7")) {
+				Lane intersection = getLaneInformation("15_7");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("16_1")) {
-				Lane intersection = getLaneInformation("16_1");
+			else if(getCurrentLane().equals("15_1")) {
+				Lane intersection = getLaneInformation("15_1");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("18_4")) {
-				Lane intersection = getLaneInformation("18_4");
+			else if(getCurrentLane().equals("17_4")) {
+				Lane intersection = getLaneInformation("17_4");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("11_17")) {
-				Lane intersection = getLaneInformation("11_17");
+			else if(getCurrentLane().equals("10_17")) {
+				Lane intersection = getLaneInformation("10_17");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("3_15")) {
-				Lane intersection = getLaneInformation("3_15");
+			else if(getCurrentLane().equals("2_15")) {
+				Lane intersection = getLaneInformation("2_15");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("15_11")) {
-				Lane intersection = getLaneInformation("15_11");
+			else if(getCurrentLane().equals("14_11")) {
+				Lane intersection = getLaneInformation("14_11");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("15_4")) {
-				Lane intersection = getLaneInformation("15_4");
+			else if(getCurrentLane().equals("14_4")) {
+				Lane intersection = getLaneInformation("14_4");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
 
-			else if(getCurrentLane().equals("17_8")) {
-				Lane intersection = getLaneInformation("17_8");
+			else if(getCurrentLane().equals("16_8")) {
+				Lane intersection = getLaneInformation("16_8");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("12_13")) {
-				Lane intersection = getLaneInformation("12_13");
+			else if(getCurrentLane().equals("11_13")) {
+				Lane intersection = getLaneInformation("11_13");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("9_2")) {
-				Lane intersection = getLaneInformation("9_2");
+			else if(getCurrentLane().equals("8_2")) {
+				Lane intersection = getLaneInformation("8_2");
 				if(intersection.redLight) {
 					canMove = false;
 				}
 			}
-			else if(getCurrentLane().equals("7_1")) {
-				Lane intersection = getLaneInformation("7_1");
+			else if(getCurrentLane().equals("6_1")) {
+				Lane intersection = getLaneInformation("6_1");
 				if(intersection.redLight) {
 					canMove = false;
 				}
@@ -754,5 +785,14 @@ public class VehicleGui extends Rectangle2D.Double {
 		}
 
 		
+	}
+	public void stopNow() {
+		// TODO Auto-generated method stub
+		simulatingCrash = true;
+		this.currentCell.simulatingCrash = true;
+	}
+	
+	//gets overwritten by cargui
+	protected void tellPersonGuiToWalk(){
 	}
 }

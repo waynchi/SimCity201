@@ -65,6 +65,7 @@ public class VkHostRole extends Role implements Host{
 		synchronized (customers) {
 			customers.add(cust);
 		}
+		print("Customer is hungry.");
 		stateChanged();
 	}
 	
@@ -75,7 +76,7 @@ public class VkHostRole extends Role implements Host{
 	public void tableIsFree(int table) {
 		Table t = ((ArrayList<Table>) tables).get(table - 1);
 		t.setUnoccupied();
-		System.out.println("Table " + table + " is free.");
+		print("Table " + table + " is free.");
 		stateChanged();
 	}
 	
@@ -137,7 +138,7 @@ public class VkHostRole extends Role implements Host{
 		}
 		Table t = ((ArrayList<Table>) tables).get(table - 1);
 		t.setUnoccupied();
-		System.out.println("Table " + table + " is free.");
+		print("Table " + table + " is free.");
 		stateChanged();
 	}
 	
@@ -163,7 +164,9 @@ public class VkHostRole extends Role implements Host{
 		stateChanged();
 	}
 	
-	public void closeRestaurant() {
+	public void msgSetClose() {
+		print("Received msgSetClosed(). I'm VkHostRole.");
+		restaurant.isClosed = true;
 		closingState = ClosingState.ToBeClosed;
 		stateChanged();
 	}
@@ -314,7 +317,7 @@ public class VkHostRole extends Role implements Host{
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Host");
+		myPerson.msgDone("RestaurantHostRole");
 	}
 	
 	private void prepareToClose() {

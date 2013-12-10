@@ -29,7 +29,7 @@ public class VkCustomerRole extends Role implements Customer{
 	private Menu menu;
 	private CustomerRestaurantCheck currentCheck = null;
 	private List<CustomerRestaurantCheck> checks = new ArrayList<CustomerRestaurantCheck>();
-	private Host host;
+	public Host host = null;
 	private Waiter waiter;
 	private VkCashierRole cashier = null;
 	private Semaphore movingAround = new Semaphore(0, true);
@@ -65,7 +65,6 @@ public class VkCustomerRole extends Role implements Customer{
 		print("Received followMeToTable(Menu m).");
 		event = AgentEvent.followHost;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		this.menu = m;
 		stateChanged();
 	}
@@ -104,7 +103,6 @@ public class VkCustomerRole extends Role implements Customer{
 				leaveOption = true;
 			}
 		}
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 
@@ -145,7 +143,6 @@ public class VkCustomerRole extends Role implements Customer{
 		choice = order;
 		print("My choice is " + choice);
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -156,7 +153,6 @@ public class VkCustomerRole extends Role implements Customer{
 		print("Screw it. I'm leaving!");
 		event = AgentEvent.abruptlyLeaving;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -164,12 +160,12 @@ public class VkCustomerRole extends Role implements Customer{
 	 * A message used by the waiter to tell that the order can't be made.
 	 */
 	public void outOfChoice(Menu m, String choice) {
-		print("I have to decide again! Fuck it!");
+		print("I have to decide again! Screw it!");
 		customerGui.setCaption("");
 		this.menu = m;
-		state = AgentState.DecidingOrder;
+		state = AgentState.BeingSeated;
+		event = AgentEvent.seated;
 		leaveOption = true;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
@@ -206,12 +202,17 @@ public class VkCustomerRole extends Role implements Customer{
 	 */
 	public void tablesAreFull() {
 		leaveOption = true;
-		customerGui.setLeaveOption(leaveOption);
 		stateChanged();
 	}
 	
 	public void msgIsActive() {
 		isActive = true;
+		if (host == null) {
+			host = (VkHostRole)myPerson.getRestaurant(1).h;
+			if (cashier == null) {
+				this.cashier = (VkCashierRole) ((VkHostRole)host).cashier;
+			}
+		}
 		gotHungry();
 	}
 	
@@ -316,21 +317,21 @@ public class VkCustomerRole extends Role implements Customer{
 	 * restaurant. It informs the host that the customer has to be seated.
 	 */
 	private void goToRestaurant() {
-		Do("Going to host.");
+		print("Going to host.");
 		customerGui.DoGoToRestaurant();
 		try {
 			movingAround.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		host.IWantToEat(this);// send our instance, so he can respond to us
+		host.IWantToEat(this);
 	}
 
 	/*
 	 * An action that carries forward the process of sitting down.
 	 */
 	private void SitDown() {
-		Do("Being seated. Going to table");
+		print("Being seated. Going to table");
 		customerGui.DoGoToSeat();
 	}
 	
@@ -339,7 +340,6 @@ public class VkCustomerRole extends Role implements Customer{
 	 * sitting.
 	 */
 	private void seated() {
-		print("I'm sitting.");
 		customerGui.setMenuCopy();
 		List<String> menuItems = menu.getAllFoodNames();
 		List<String> affordableItems = new ArrayList<String>();
@@ -350,11 +350,10 @@ public class VkCustomerRole extends Role implements Customer{
 				affordableItems.add(s);
 			}
 		}
-		if (affordableItems.isEmpty()) {
+		if (affordableItems.isEmpty() || menu.getAllFoodNames().isEmpty()) {
 			print("Screw it. I'm leaving!");
 			event = AgentEvent.abruptlyLeaving;
 			leaveOption = false;
-			customerGui.setLeaveOption(leaveOption);
 		}
 		else {
 			Random generator = new Random();
@@ -363,7 +362,6 @@ public class VkCustomerRole extends Role implements Customer{
 			event = AgentEvent.orderDecided;
 			print("My choice is " + choice);
 			leaveOption = false;
-			customerGui.setLeaveOption(leaveOption);
 		}
 	}
 	
@@ -391,7 +389,7 @@ public class VkCustomerRole extends Role implements Customer{
 	 * hunger level.
 	 */
 	private void EatFood() {
-		Do("Eating Food");
+		print("Eating Food");
 		customerGui.setCaption(choice);
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
@@ -401,7 +399,7 @@ public class VkCustomerRole extends Role implements Customer{
 				event = AgentEvent.doneEating;
 				stateChanged();
 			}
-		}, 5000);
+		}, 1000);
 	}
 
 	/*
@@ -409,14 +407,13 @@ public class VkCustomerRole extends Role implements Customer{
 	 * carry out the animation.
 	 */
 	private void leaveRestaurant() {
-		Do("Leaving.");
+		print("Leaving.");
 		waiter = null;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoExitRestaurant();
 		currentCheck = null;
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 	
 	/*
@@ -445,10 +442,9 @@ public class VkCustomerRole extends Role implements Customer{
 		waiter = null;
 		choice = "";
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 	
 	/*
@@ -458,10 +454,9 @@ public class VkCustomerRole extends Role implements Customer{
 		host.ICantWait(this);
 		waiter = null;
 		leaveOption = false;
-		customerGui.setLeaveOption(leaveOption);
 		customerGui.DoGoAway();
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------
@@ -491,13 +486,6 @@ public class VkCustomerRole extends Role implements Customer{
 
 	public AgentState getState() {
 		return state;
-	}
-	
-	/**
-	 * Hack to establish connection to Host agent.
-	 */
-	public void setHost(Host host) {
-		this.host = host;
 	}
 	
 	public void setWaiter(Waiter waiter) {
