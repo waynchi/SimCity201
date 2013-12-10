@@ -633,9 +633,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-					if(!(job.equals("BankRestaurantMarket"))){
-						person.setTest();
-					}
+//					if(!(job.equals("BankRestaurantMarket"))){
+//						person.setTest();
+//					}
 					count++;
 					person.startThread();		
 					
