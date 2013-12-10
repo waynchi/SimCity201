@@ -176,6 +176,7 @@ public class VkCashierRole extends Role implements Cashier {
 		workingCapital += amount;
 		bankActivity = BankActivity.None;
 		print("Withdrawn successfully.");
+		teller.msgDoneAndLeaving();
 		stateChanged();
 	}
 
@@ -186,6 +187,7 @@ public class VkCashierRole extends Role implements Cashier {
 	public void msgDepositSuccessful(double funds) {
 		workingCapital = minCapital;
 		bankActivity = BankActivity.None;
+		teller.msgDoneAndLeaving();
 		stateChanged();
 	}
 	
