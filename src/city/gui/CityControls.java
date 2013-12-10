@@ -87,19 +87,19 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario5.addActionListener(this);
 			panel.add(btnScenario5);
 			
-			JButton btnScenario6 = new JButton("Trigger Bank Robbery");
+			JButton btnScenario6 = new JButton("Bank Robbery");
 			btnScenario6.addActionListener(this);
 			panel.add(btnScenario6);
 			
-			JButton btnScenario7 = new JButton("Trigger Vehicle Crash");
+			JButton btnScenario7 = new JButton("Vehicle Crash");
 			btnScenario7.addActionListener(this);
 			panel.add(btnScenario7);
 			
-			JButton btnScenario8 = new JButton("Trigger Predestrian Getting Hit");
+			JButton btnScenario8 = new JButton("Predestrian Collision");
 			btnScenario8.addActionListener(this);
 			panel.add(btnScenario8);
 			
-			JButton btnScenario9 = new JButton("Trigger Weekend");
+			JButton btnScenario9 = new JButton("Weekend");
 			btnScenario9.addActionListener(this);
 			panel.add(btnScenario9);
 			
