@@ -1290,9 +1290,9 @@ public class CityGui extends JFrame implements ActionListener {
 		busStopGui = new BusStopGui();
 		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322,new ArrayList<String>(Arrays.asList("Market 1","Market 2")), "BusStop 2"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4")), "BusStop 3"));
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4","Bank")), "BusStop 3"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Restaurant 2", "Restaurant 5")), "BusStop 4"));
 		busStopGui = new BusStopGui();
 		
 		InsideBusGui igb = new InsideBusGui();
