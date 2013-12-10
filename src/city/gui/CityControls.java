@@ -229,7 +229,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Non-Norm Scenario 2")) {
 			
 		}
-		else if(e.getActionCommand().equals("Trigger Bank Robbery")) {
+		else if(e.getActionCommand().equals("Bank Robbery")) {
 			System.out.println("Bank will be robbed soon");
 			cityGui.robber.msgRobBank();
 		}

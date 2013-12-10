@@ -656,7 +656,7 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("Robber")) {
 						RobberRole robberRole = new RobberRole(bankGui);
 						robberRole.setTag(AlertTag.BANK);
-						person.addJob("Robber", start, end);
+						//person.addJob("Robber", start, end);
 						person.addRole(robberRole,"Robber");
 						robberRole.setPerson(person);
 						person.hasCar = false;
