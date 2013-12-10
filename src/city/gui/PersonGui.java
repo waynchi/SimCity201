@@ -53,6 +53,11 @@ public class PersonGui extends Rectangle2D.Double {
 	public void setSidewalk(Sidewalk s) {
 		this.currentCell = s;
 	}
+	
+	public void setSideWalkSegment(ArrayList<Sidewalk> segment)
+	{
+		this.sidewalkSegment = segment;
+	}
 
 	public void setLocation(int x, int y) {
 		setRect(x, y, getWidth(), getHeight());
@@ -742,5 +747,10 @@ public class PersonGui extends Rectangle2D.Double {
 		simulatingCrash = true;
 		this.currentCell.simulatingCrash = true;
 		this.currentCell.hasPerson = false;
+	}
+	
+	public void setDirection(String direction)
+	{
+		this.direction = direction;
 	}
 }

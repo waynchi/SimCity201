@@ -90,7 +90,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public int dayOfWeek = 0;
 	public Timer timer;
 	BankGui bankGui;
-	CityPanel cityPanel;
+	public CityPanel cityPanel;
 	public JPanel buildingPanels;
 	CardLayout cardLayout;
 	CityControls cityControls;

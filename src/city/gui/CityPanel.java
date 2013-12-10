@@ -25,7 +25,7 @@ import java.util.*;
 public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
 	ArrayList<Lane> lanes;
-	ArrayList<Sidewalk> sidewalks;
+	public ArrayList<Sidewalk> sidewalks;
 	public ArrayList<VehicleGui> vehicles;
 	public ArrayList<PersonGui> people;
 	public List<BusStop> busStops;
@@ -36,7 +36,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	sidewalkStrip7,sidewalkStrip8,sidewalkStrip9,sidewalkStrip10,sidewalkStrip11,sidewalkStrip12,sidewalkStrip13,sidewalkStrip14,sidewalkStrip15,
 	sidewalkStrip16,sidewalkStrip17,sidewalkStrip18,sidewalkStrip19,sidewalkStrip20,sidewalkStrip21,sidewalkStrip22,sidewalkStrip23,sidewalkStrip24,
 	sidewalkStrip25,sidewalkStrip26,sidewalkStrip27,sidewalkStrip28,sidewalkStrip29,sidewalkStrip30;
-	ArrayList<ArrayList<Sidewalk>> allSidewalks;
+	public ArrayList<ArrayList<Sidewalk>> allSidewalks;
 	ArrayList<Lane> intersections;
 	ArrayList<Sidewalk> crosswalks;
 	CityGui city;
@@ -757,6 +757,9 @@ public class CityPanel extends JPanel implements MouseListener {
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 //		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip23,this.sidewalkStrip23.get(3),this.allSidewalks, this, person);					
 //		personGui.setDestination("Apartment 2");
+//		personGui.setSidewalk(allSidewalks.get(23).get(24));
+//		personGui.setSideWalkSegment(allSidewalks.get(23));
+//		personGui.setDirection("left");
 //		this.people.add(personGui);
 		
 		
