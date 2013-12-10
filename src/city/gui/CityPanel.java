@@ -791,7 +791,6 @@ public class CityPanel extends JPanel implements MouseListener {
 	public void paintComponent( Graphics g ) {
 		clock.setText(time);
 		count++;
-		System.out.println(count % 1300);
 		if(count % 1300 == 0) { //Let people walk everywhere
 			for(Sidewalk crosswalk : crosswalks) {
 				//FIRST CROSSWALK (MIDDLE)
