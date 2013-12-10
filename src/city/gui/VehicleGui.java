@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 
 import transportation.BusStop;
+import transportation.CarGui;
 
 
 public class VehicleGui extends Rectangle2D.Double {
@@ -81,12 +82,12 @@ public class VehicleGui extends Rectangle2D.Double {
 		}
 		if(nextCell.hasCar && nextCell.simulatingCrash)
 		{
-			VehicleGui carToRemove = null;
+			CarGui carToRemove = null;
 			for(VehicleGui car : cityPanel.vehicles)
 			{
 				if(car.simulatingCrash)
 				{
-					carToRemove = car;
+					carToRemove = (CarGui)car;
 					break;
 				}
 			}
@@ -94,11 +95,13 @@ public class VehicleGui extends Rectangle2D.Double {
 			carToRemove.currentCell.simulatingCrash = false;
 			carToRemove.simulatingCrash = false;
 			carToRemove.currentCell.hasCar = false;
+			carToRemove.tellPersonGuiToWalk();
 			
 			if(this.typeOfVehicle.equals("Car"))
 			{
 				cityPanel.vehicles.remove(this);
 				this.currentCell.hasCar = false;
+				this.tellPersonGuiToWalk();
 			}
 			return;
 		}
@@ -140,6 +143,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 
 	}
+	
 	public void setDestination(int xd, int yd) {
 		xDestination = xd;
 		yDestination = yd;
@@ -788,4 +792,7 @@ public class VehicleGui extends Rectangle2D.Double {
 		this.currentCell.simulatingCrash = true;
 	}
 	
+	//gets overwritten by cargui
+	protected void tellPersonGuiToWalk(){
+	}
 }
