@@ -140,6 +140,11 @@ public class CityGui extends JFrame implements ActionListener {
 	
 
 	List<House> myHouses = new ArrayList<House>();
+	
+	//List of all workplaces so that they can be shutdown
+	List<Bank> banks = new ArrayList<Bank>();
+	List<Market> markets = new ArrayList<Market>();
+	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
 
 	
@@ -195,6 +200,16 @@ public class CityGui extends JFrame implements ActionListener {
 		marketGui = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
+		
+		
+		markets.add(market);
+		banks.add(bank);
+		restaurants.add(restaurant);
+		restaurants.add(restaurant2);
+		restaurants.add(restaurant3);
+		restaurants.add(restaurant4);
+		restaurants.add(restaurant5);
+		restaurants.add(restaurant6);
 		
 		//Set trace tags
 		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
@@ -797,6 +812,15 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(1000);
 						person.hasCar = false;
 					}
+					if(job.equals("BankRestaurantMarket"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB1");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
 				
 					people.add(person);
 					
@@ -813,13 +837,15 @@ public class CityGui extends JFrame implements ActionListener {
 		BusAgent busAgent = new BusAgent();
 		buses.add(busAgent);
 		BusStopGui busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
+		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152,new ArrayList<String>(Arrays.asList("Home 1","Home 2",
+				"Home 3","Home 4","Home 5","Home 6","Home 7","Home 8","Home 9","Home 10","Home 11","Home 12","Apartment 1","Apartment 2")), "BusStop 1"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322, "BusStop2"));
+		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322,new ArrayList<String>(Arrays.asList("Market 1","Market 2")), "BusStop 2"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132, "BusStop3"));
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4")), "BusStop 3"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
+		busStopGui = new BusStopGui();
 		
 		InsideBusGui igb = new InsideBusGui();
 		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
@@ -1246,13 +1272,15 @@ public class CityGui extends JFrame implements ActionListener {
 		BusAgent busAgent = new BusAgent();
 		buses.add(busAgent);
 		BusStopGui busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152, "BusStop1"));
+		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152,new ArrayList<String>(Arrays.asList("Home 1","Home 2",
+				"Home 3","Home 4","Home 5","Home 6","Home 7","Home 8","Home 9","Home 10","Home 11","Home 12","Apartment 1","Apartment 2")), "BusStop 1"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322, "BusStop2"));
+		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322,new ArrayList<String>(Arrays.asList("Market 1","Market 2")), "BusStop 2"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132, "BusStop3"));
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4")), "BusStop 3"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132, "BusStop4"));
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
+		busStopGui = new BusStopGui();
 		
 		InsideBusGui igb = new InsideBusGui();
 		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
@@ -1263,7 +1291,25 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.vehicles.add(bg);
 		timer.start();
 	}
+	
+	public void closeBanks() {
+		for (Bank bank : banks) {
+			bank.isClosed = true;
+		}
+	}
 
+	public void closeMarkets() {
+		for (Market market : markets) {
+			market.isClosed = true;
+		}
+	}
+	
+	public void closeRestaurants() {
+		for (Restaurant rest : restaurants) {
+			rest.isClosed = true;
+		}
+	}
+	
 	public void displayBuildingPanel(BuildingPanel bp) {
 		cardLayout.show(buildingPanels, bp.getName());
 		System.out.println(bp.getName());
