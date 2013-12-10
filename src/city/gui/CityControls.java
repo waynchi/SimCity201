@@ -57,7 +57,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenarioOne.addActionListener(this);
 			panel.add(btnScenarioOne);
 			
-			JButton btnScenario1 = new JButton("Normal Scenario 2");
+			JButton btnScenario1 = new JButton("Non-Norm Scenario G");
 			btnScenario1.addActionListener(this);
 			panel.add(btnScenario1);
 			
@@ -193,7 +193,9 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			System.out.println("Clearing World");
 			cityGui.ClearWorld();
 		}
-		else if(e.getActionCommand().equals("Normal Scenario 2")) {
+		else if(e.getActionCommand().equals("Non-Norm Scenario G")) {
+			System.out.println("Creating non normative scenario G. Market fails to deliver because restaurant is closed.");
+			cityGui.createNonNormG();
 		}
 		else if(e.getActionCommand().equals("Normal Scenario 3")) {
 			System.out.println("Starting normative scenario: all restaurants order from markets");

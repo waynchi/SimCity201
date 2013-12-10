@@ -4,6 +4,8 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+
 import people.People;
 import transportation.BusPassengerRole;
 
@@ -26,6 +28,7 @@ public class PersonGui extends Rectangle2D.Double {
 	People person;
 	boolean called;
 	String destination;
+	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -270,9 +273,11 @@ public class PersonGui extends Rectangle2D.Double {
 	public void draw(Graphics2D g2) {
 		if (xDestination > 0 && yDestination > 0) {
 			time++;
-			g2.setColor(Color.red);
-			g2.fill(this);
-			g2.draw(this);
+			//g2.setColor(Color.red);
+			//g2.fill(this);
+			//g2.draw(this);
+			
+			g2.drawImage(custsprite.getImage(), (int)x, (int)y, null);
 
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
 				this.reachedDestination(this.destination);
@@ -291,15 +296,23 @@ public class PersonGui extends Rectangle2D.Double {
 				person.msgDone("PersonGui");
 				this.destination = null;
 			}
+			
+			//Exiting Building Logic
+			
+			//Restaurant Wayne
+			if(getCurrentLane().equals("20_5")) {
+				this.currentCell.hasPerson = false;
+				this.direction = "up";
+			}
 			if(getCurrentLane().equals("12_15")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "up";
 			}
-			if(getCurrentLane().equals("6_16")) {
+			if(getCurrentLane().equals("6_20")) {
 				this.currentCell.hasPerson = false;
-				this.direction = "left";
-				sidewalkSegment = allSidewalks.get(7);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+				this.direction = "up";
+				sidewalkSegment = allSidewalks.get(12);
+				currentCell = sidewalkSegment.get(15);
 			}
 			if(getCurrentLane().equals("24_3")) {
 				this.currentCell.hasPerson = false;
@@ -344,6 +357,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 
 			if(getCurrentLane().equals("2_10")) {
+				this.currentCell.hasPerson = false;
 				//Crossed the first street. Up or down?
 				if(yDestination < 152) {
 					this.direction = "up";
@@ -387,6 +401,7 @@ public class PersonGui extends Rectangle2D.Double {
 				currentCell = sidewalkSegment.get(4);
 			}
 			if(getCurrentLane().equals("10_36")) {
+				this.currentCell.hasPerson = false;
 				//Crossed the sidewalk. Continue to next segment
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(11);
@@ -399,7 +414,7 @@ public class PersonGui extends Rectangle2D.Double {
 				} else {
 					this.direction = "down";
 					sidewalkSegment = allSidewalks.get(15);
-					currentCell = sidewalkSegment.get(0);
+					currentCell = sidewalkSegment.get(4);
 				}
 
 			}
@@ -486,23 +501,16 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(16);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
-			if (getCurrentLane().equals("11_15")) {
+			if(getCurrentLane().equals("11_19")) {
 				this.currentCell.hasPerson = false;
-				this.direction = "down";
-				sidewalkSegment = allSidewalks.get(13);
-				currentCell = sidewalkSegment.get(0);
+				this.direction = "up";
+				sidewalkSegment = allSidewalks.get(12);
+				currentCell = sidewalkSegment.get(4);
 			}
-			if (getCurrentLane().equals("13_5")) {
+			if (getCurrentLane().equals("11_15")) {
+				//Cross the street
 				this.currentCell.hasPerson = false;
-				if (this.xDestination > x) {
-					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(12);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				} else {
-					this.direction = "left";
-					sidewalkSegment = allSidewalks.get(7);
-					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				}
+				this.direction = "right";
 			}
 			if (getCurrentLane().equals("1_0")) {
 				this.currentCell.hasPerson = false;
@@ -626,7 +634,7 @@ public class PersonGui extends Rectangle2D.Double {
 		{
 			BusPassengerRole bpr = new BusPassengerRole();
 			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-			bpr.setDestinationBusStop(cityPanel.busStops.get(2));
+			bpr.setDestinationPlace("Bank");
 			bpr.msgIsActive();
 			person.addRole(bpr, "BusPassenger");
 			
