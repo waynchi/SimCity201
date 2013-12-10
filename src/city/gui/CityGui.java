@@ -87,6 +87,7 @@ import java.util.*;
 import java.util.List;
 
 public class CityGui extends JFrame implements ActionListener {
+	public int dayOfWeek = 0;
 	public Timer timer;
 	BankGui bankGui;
 	CityPanel cityPanel;
@@ -1563,8 +1564,22 @@ public class CityGui extends JFrame implements ActionListener {
 //		if((time % (100*x)+x) == 60*x) {
 //			time += 40*x;
 //		}
+		if(dayOfWeek == 7) {
+			dayOfWeek = 0;
+		}
 		if(time == 2400*x) {
 			time=0;
+			dayOfWeek++;
+		}
+		if(dayOfWeek == 5 && time == 0) {
+			for(Bank bank : banks) {
+				bank.isClosed = true;
+			}
+		}
+		if(dayOfWeek == 6 && time == 0) {
+			for(Bank bank :banks) {
+				bank.isClosed = true;
+			}
 		}
 		repaint();
 

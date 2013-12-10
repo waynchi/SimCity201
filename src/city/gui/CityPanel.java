@@ -677,11 +677,11 @@ public class CityPanel extends JPanel implements MouseListener {
 				Building home;
 				if(i == 0)
 				{
-					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
+					home = new Building( i*80+ 70, j*40 + 10, 40, 40, (122 - 30*i), j*40 + 10, "Home " + ((i+1)*(j+1)) );
 				}
 				else
 				{
-					home = new Building( i*80+ 70, j*40 + 10, 20, 20, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
+					home = new Building( i*80+ 70, j*40 + 10, 40, 40, (122 - 20*i), j*40 + 10, "Home " + (j+4) );
 				}
 				buildings.add( home );
 			}
@@ -693,28 +693,28 @@ public class CityPanel extends JPanel implements MouseListener {
 				Building home;
 				if(i == 0)
 				{
-					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
+					home = new Building( i*80+ 70, j*40 + 200, 40, 40, (122 - 30*i), j*40 + 210, "Home " + (6+((i+1)*(j+1))) );
 					System.out.println("Home " + (6+(i+1)*(j+1)) + ": " + (122 - 30*i) + "," + (j*40+10));
 				}
 				else
 				{
-					home = new Building( i*80+ 70, j*40 + 200, 20, 20, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
+					home = new Building( i*80+ 70, j*40 + 200, 40, 40, (122 - 20*i), j*40 + 210, "Home " + (6+(j+4)) );
 					System.out.println("Home " + (6+(j+4)) + ": " + (122 - 20*i) + "," + (j*40+10));
 				}
 				buildings.add(home);
 			}
 		}
 		
-		Building apartment1 = new Building( 150, hozY + 310, 30, 30, 102, 370, "Apartment 1" );
+		Building apartment1 = new Building( 150, hozY + 310, 40, 40, 102, 370, "Apartment 1" );
 		buildings.add(apartment1);
-		Building apartment2 = new Building( 60, hozY + 310, 30, 30, 122, 370, "Apartment 2" );
+		Building apartment2 = new Building( 50, hozY + 310, 40, 40, 122, 370, "Apartment 2" );
 		buildings.add(apartment2);
 		
 		
 		
 		//First Section, Top Row
 		
-		Building market = new Building( hozX + 230, hozY + 310, 60, 100, 580, 322, "Market" );
+		Building market = new Building( hozX + 210, hozY + 310, 60, 140, 580, 322, "Market" );
 		buildings.add(market);
 		Building bank = new Building( hozX + 210, hozY + 140, 80, 80, 560, 302, "Bank" );
 		buildings.add(bank);
@@ -766,12 +766,12 @@ public class CityPanel extends JPanel implements MouseListener {
 //		bpr.setDestinationBusStop(busStops.get(0));
 //		bpr.msgIsActive();
 		
-		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		CarAgent carAgent = new CarAgent();
-		carAgent.setGui(cg);
-		carAgent.startThread();
-		cg.msgGoToThisPlace(carAgent, "Apartment 2");
-		vehicles.add(cg);
+//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		CarAgent carAgent = new CarAgent();
+//		carAgent.setGui(cg);
+//		carAgent.startThread();
+//		cg.msgGoToThisPlace(carAgent, "Apartment 2");
+//		vehicles.add(cg);
 //		
 
 		
@@ -1069,7 +1069,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.fill(bs);
 		}
 		
-		//g.drawImage(background.getImage(), 0, 0, null);
+		g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
 			VehicleGui v = vehicles.get(i);
