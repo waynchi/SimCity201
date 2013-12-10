@@ -25,6 +25,7 @@ public class Sidewalk {
 	public boolean redLight;
 	boolean hasPerson;
 	People person;
+	public boolean simulatingCrash;
 	
 	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc, String name ) {
 		width = w;
@@ -38,6 +39,7 @@ public class Sidewalk {
 		sideColor = sc;
 		this.name = name;
 		hasPerson = false;
+		simulatingCrash = false;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );

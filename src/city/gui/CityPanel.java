@@ -663,9 +663,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			lanes.add(l);
 			road21.add(l);
 		}
-		for(int k = 0 ; k < (crossHeight + 60)/19; k++)
+		for(int k = 0 ; k < (crossHeight + 80)/19; k++)
 		{
-			l = new Lane( crossX - 230, crossY + 110 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "21_" + k );
+			l = new Lane( crossX - 230, crossY + 80 + 20*k, crossWidth, laneWidth, 0, 1, false, Color.DARK_GRAY, Color.black, "21_" + k );
 			lanes.add(l);
 			road22.add(l);
 		}
@@ -705,9 +705,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
-		Building apartment1 = new Building( 150, hozY + 310, 30, 30, 580, 322, "Apartment 1" );
+		Building apartment1 = new Building( 150, hozY + 310, 30, 30, 102, 370, "Apartment 1" );
 		buildings.add(apartment1);
-		Building apartment2 = new Building( 60, hozY + 310, 30, 30, 580, 322, "Apartment 2" );
+		Building apartment2 = new Building( 60, hozY + 310, 30, 30, 122, 370, "Apartment 2" );
 		buildings.add(apartment2);
 		
 		
@@ -766,12 +766,12 @@ public class CityPanel extends JPanel implements MouseListener {
 //		bpr.setDestinationBusStop(busStops.get(0));
 //		bpr.msgIsActive();
 		
-//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-//		CarAgent carAgent = new CarAgent();
-//		carAgent.setGui(cg);
-//		carAgent.startThread();
-//		cg.msgGoToThisPlace(carAgent, "Restaurant 6");
-//		vehicles.add(cg);
+		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+		CarAgent carAgent = new CarAgent();
+		carAgent.setGui(cg);
+		carAgent.startThread();
+		cg.msgGoToThisPlace(carAgent, "Apartment 2");
+		vehicles.add(cg);
 //		
 
 		
@@ -1094,6 +1094,7 @@ public class CityPanel extends JPanel implements MouseListener {
 	
 	public void mouseClicked(MouseEvent me) {
 		//Check to see which building was clicked
+		System.out.println("Clicked(X,Y): " + "(" + me.getX() + "," + me.getY() + ")");
 		for ( int i=0; i<buildings.size(); i++ ) {
 			Building b = buildings.get(i);
 			if ( b.contains( me.getX(), me.getY() ) ) {
