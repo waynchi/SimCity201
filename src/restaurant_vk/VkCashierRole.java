@@ -210,6 +210,9 @@ public class VkCashierRole extends Role implements Cashier {
 		if (teller == null) {
 			this.teller = (Teller) myPerson.getTeller(0);
 		}
+		if (mCashier == null) {
+			print("WHAT THE FUCK??!!!");
+		}
 		enter = true;
 		isActive = true;
 		stateChanged();
@@ -315,6 +318,9 @@ public class VkCashierRole extends Role implements Cashier {
 	 */
 	private void payBill(Bill b) {
 		print("Paying market bill.");
+		if (mCashier == null) {
+			this.mCashier = ((MarketEmployee)myPerson.getMarketEmployee(0)).getCashier();
+		}
 		mCashier.msgHereIsPayment(b.cost, b.orderNumber, this);
 		b.s = BillState.Paid;
 		workingCapital -= b.cost;
