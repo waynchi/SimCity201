@@ -69,9 +69,17 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario3.addActionListener(this);
 			panel.add(btnScenario3);
 			
-			JButton btnScenario4 = new JButton("Non-Norm Scenario 1");
+			JButton btnScenario4 = new JButton("Close Banks");
 			btnScenario4.addActionListener(this);
 			panel.add(btnScenario4);
+			
+			JButton btnScenario10 = new JButton("Close Markets");
+			btnScenario10.addActionListener(this);
+			panel.add(btnScenario10);
+			
+			JButton btnScenario11 = new JButton("Close Restaurants");
+			btnScenario11.addActionListener(this);
+			panel.add(btnScenario11);
 			
 			JButton btnScenario5 = new JButton("Non-Norm Scenario 2");
 			btnScenario5.addActionListener(this);
@@ -195,8 +203,17 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
 			
 		}
-		else if(e.getActionCommand().equals("Non-Norm Scenario 1")) {
-			
+		else if(e.getActionCommand().equals("Close Banks")) {
+			System.out.println("Closing all banks");
+			cityGui.closeBanks();
+		}
+		else if(e.getActionCommand().equals("Close Markets")) {
+			System.out.println("Closing all markets");
+			cityGui.closeMarkets();
+		}
+		else if(e.getActionCommand().equals("Close Restaurants")) {
+			System.out.println("Closing all restaurants");
+			cityGui.closeRestaurants();
 		}
 		else if(e.getActionCommand().equals("Non-Norm Scenario 2")) {
 			
