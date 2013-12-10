@@ -121,6 +121,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenarioB.addActionListener(this);
 			panel.add(btnScenarioB);
 			
+			JButton btnScenarioA= new JButton("Normative Scenario A");
+			btnScenarioA.addActionListener(this);
+			panel.add(btnScenarioA);
+			
 			JButton btnClear = new JButton("Clear World");
 			btnClear.addActionListener(this);
 			panel.add(btnClear);
@@ -269,6 +273,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Normative Scenario B")) {
 			System.out.println("Normative B initiated.");
 			cityGui.createNormativeB();
+		}
+		else if(e.getActionCommand().equals("Normative Scenario A")) {
+			System.out.println("Normative A initiated.");
+			cityGui.createNormativeA();
 		}
 		
 		else if(e.getActionCommand().equals("People Gui Labels")) {
