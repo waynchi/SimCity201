@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketEmployee;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -61,13 +62,15 @@ public class CookRole extends Role implements Cook{
 	public class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean delivered;
-		int marketCount;
+		//int marketCount;
 		int orderNumber = -1;
+		int marketNumber = -1;
 
-		private MarketOrder (Map<String,Integer> mo){
+		private MarketOrder (Map<String,Integer> mo, int market){
 			marketOrder = mo;
 			delivered = false;
-			marketCount = 1;
+			//marketCount = 1;
+			marketNumber = market;
 		};
 	}
 
@@ -332,8 +335,10 @@ public class CookRole extends Role implements Cook{
 				}
 			}
 		}
-		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
+		int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
+		int marketNumber = (int)(Math.random() * marketSize);
+		marketOrders.add(new MarketOrder(marketOrder,marketNumber));
+		((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
 	}
 	
 	
