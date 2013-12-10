@@ -16,7 +16,7 @@ public interface MarketCashier {
 	
 	public abstract void msgGetOut();
 
-	public abstract void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items, int orderNumber);
+	public abstract void msgHereIsACheck(Cashier restaurantCashier, Map<String, Integer> items, int orderNumber, int marketNumber);
 
 	public abstract void msgHereIsPayment(MarketCustomer customer, double totalPaid);
 	
