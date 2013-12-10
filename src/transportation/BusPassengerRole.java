@@ -7,6 +7,7 @@ import people.Role;
 import transportation.gui.BusPassengerGui;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
+import city.gui.Sidewalk;
 
 public class BusPassengerRole extends Role implements BusPassenger{
 
@@ -73,7 +74,27 @@ public class BusPassengerRole extends Role implements BusPassenger{
 		myBus.msgImLeaving(this);
 		//myGui.DoLeaveBus(this);
 		if(myPerson != null)
-		myPerson.msgDone("BusPassenger");
+		{
+			if(bs.name.equals("BusStop 1"))
+			{
+				
+			}
+			else if(bs.name.equals("BusStop 2"))
+			{
+						
+			}
+			else if(bs.name.equals("BusStop 3"))
+			{
+						
+			}
+			else if(bs.name.equals("BusStop 4"))
+			{
+				myPerson.getPersonGui().setSidewalk(bs.bp.myCity.cityPanel.allSidewalks.get(23).get(24));
+				myPerson.getPersonGui().setSideWalkSegment(bs.bp.myCity.cityPanel.allSidewalks.get(23));
+				myPerson.getPersonGui().setDirection("left");
+			}
+			myPerson.msgDone("BusPassenger");
+		}
 	}
 	}
 	
