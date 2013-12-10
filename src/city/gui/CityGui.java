@@ -1304,7 +1304,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.start();
 	}
 	
-	public void createNormativeB(CookWaiterMonitor RestaurantCookWaiterMonitor, CookWaiterMonitorZt RestaurantCookWaiterMonitorZT, CookWaiterMonitorWc RestaurantCookWaiterMonitorWc, CookWaiterMonitorEs RestaurantCookWaiterMonitorEs, CookWaiterMonitorPS RestaurantCookWaiterMonitorPS, RevolvingStand revolvingStand) {
+	public void createNormativeB() {
 		FileReader input = null;
 		try {
 			if(System.getProperty("file.separator").equals("/"))
