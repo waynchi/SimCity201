@@ -1546,6 +1546,15 @@ public class CityGui extends JFrame implements ActionListener {
 		carToStop.stopNow();
 		
 	}
+
+	public boolean isPedestrianCrossingStreet() {
+		// TODO Auto-generated method stub
+		if(cityPanel.sidewalkStrip23.get(0).hasPerson || cityPanel.sidewalkStrip23.get(1).hasPerson)
+			return true;
+		
+		
+		return false;
+	}
 	
 	
 }
