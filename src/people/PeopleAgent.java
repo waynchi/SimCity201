@@ -180,6 +180,10 @@ public class PeopleAgent extends Agent implements People{
 		log.add(new LoggedEvent("Role added: " + description));
 	}
 	
+	public void setHasCar(boolean t)
+	{
+		hasCar = t;
+	}
 	/* (non-Javadoc)
 	 * @see people.People#CallPrint(java.lang.String)
 	 */
