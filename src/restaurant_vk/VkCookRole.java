@@ -220,9 +220,9 @@ public class VkCookRole extends Role implements Cook {
 	 * A message called by the market employee to assign order number to an order.
 	 */
 	@Override
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		for (MarketOrder mo : marketOrders) {
-			if (mo.itemsRequested == items) {
+			if (mo.itemsRequested == items && marketNumber == mo.marketNumber) {
 				mo.orderNumber = orderNumber;
 				return;
 			}
@@ -235,8 +235,8 @@ public class VkCookRole extends Role implements Cook {
 	 * been requested.
 	 */
 	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
-		MarketOrder mo = findMarketOrder(orderNumber);
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+		MarketOrder mo = findMarketOrder(orderNumber, marketNumber);
 		mo.itemsSupplied = items;
 		for (Map.Entry<String, Integer> e : items.entrySet()) {
 			Food f = inventory.get(e.getKey());
@@ -396,9 +396,9 @@ public class VkCookRole extends Role implements Cook {
 		return null;
 	}
 	
-	private MarketOrder findMarketOrder(int number) {
+	private MarketOrder findMarketOrder(int number, int marketNumber) {
 		for (MarketOrder o : marketOrders) {
-			if (o.orderNumber == number)
+			if (o.orderNumber == number && o.marketNumber == marketNumber)
 				return o;
 		}
 		return null;
