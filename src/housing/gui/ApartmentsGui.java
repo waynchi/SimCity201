@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class ApartmentsGui implements HGui{
 	public Apartments a;
 	public int houseWidth = 76;
@@ -16,6 +18,7 @@ public class ApartmentsGui implements HGui{
 	public Dimension entranceCoordinates = new Dimension(197, 520);
 	public List<HGui> guis = new ArrayList<HGui>();
 	public ApartmentsAnimationPanel ap;
+	private ImageIcon back = new ImageIcon("res/apartment.png");
 
 	public ApartmentsGui(Apartments a) {
 		this.a = a;
@@ -43,6 +46,7 @@ public class ApartmentsGui implements HGui{
 			y = 0;
 			x += (houseHeight + 30);
 		}
+		g.drawImage(back.getImage(),0,0,null);
 		for (HGui g1 : guis) {
 			if (g1 instanceof ResidentGui && ((ResidentGui)g1).isPresentInComplex())
 				g1.draw(g);
