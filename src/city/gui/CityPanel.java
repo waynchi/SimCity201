@@ -754,13 +754,13 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 		
-//		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
-//		personGui.setDestination("Bus Stop 1");
-//		personGui.setSidewalk(allSidewalks.get(23).get(24));
-//		personGui.setSideWalkSegment(allSidewalks.get(23));
-//		personGui.setDirection("left");
-//		this.people.add(personGui);
+		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
+		personGui.setDestination("Bank");
+		personGui.setSidewalk(allSidewalks.get(23).get(24));
+		personGui.setSideWalkSegment(allSidewalks.get(23));
+		personGui.setDirection("left");
+		this.people.add(personGui);
 		
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
