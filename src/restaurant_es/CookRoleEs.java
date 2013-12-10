@@ -48,7 +48,7 @@ public class CookRoleEs extends Role implements Cook{
 	
 	private CookGui cookGui = null;
 	private RestaurantGuiEs restGui = null;
-	public int restaurantIndex = 0;
+	public int restaurantIndex = 4;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
@@ -418,7 +418,7 @@ public class CookRoleEs extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(4);
 		host.setCook(this);
 		startStandTimer();
 		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
