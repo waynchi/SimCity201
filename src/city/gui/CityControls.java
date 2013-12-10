@@ -107,7 +107,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario21.addActionListener(this);
 			panel.add(btnScenario21);
 			
-			JButton btnScenario8 = new JButton("Pedestrian Collision");
+			btnScenario8 = new JButton("Pedestrian Collision");
 			btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 
 			btnScenario8.addActionListener(this);
