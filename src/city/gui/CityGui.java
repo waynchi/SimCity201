@@ -181,7 +181,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		repairManRole.setTag(AlertTag.HOME);
 		
-		yelp.addRestaurant(restaurant, 500);
+		yelp.addRestaurant(restaurant, 5);
 		yelp.addRestaurant(restaurant2, 3);
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 5);
@@ -832,12 +832,12 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					else if(count == 12) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(13), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(12), cityPanel.allRoads, cityPanel);
 
 					}
 					else {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(14), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(12), cityPanel.allRoads, cityPanel);
 
 					}
 					person.setPersonGui(personGui);
@@ -1298,9 +1298,9 @@ public class CityGui extends JFrame implements ActionListener {
 		busStopGui = new BusStopGui();
 		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322,new ArrayList<String>(Arrays.asList("Market 1","Market 2")), "BusStop 2"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4")), "BusStop 3"));
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4","Bank")), "BusStop 3"));
 		busStopGui = new BusStopGui();
-		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Restaurant 2", "Restaurant 5")), "BusStop 4"));
 		busStopGui = new BusStopGui();
 		
 		InsideBusGui igb = new InsideBusGui();

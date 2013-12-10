@@ -202,7 +202,7 @@ public class VehicleGui extends Rectangle2D.Double {
 //		
 		g2.drawImage(img.getImage(), (int)x, (int)y, 20, 20, null);
 
-		if(getCurrentLane().equals("19_0")) {
+		if(getCurrentLane().equals("19_1")) {
 			this.direction="down";
 		}
 		if(getCurrentLane().equals("0_0")) {
@@ -234,10 +234,10 @@ public class VehicleGui extends Rectangle2D.Double {
 		if(getCurrentLane().equals("19_5")) {
 			this.direction="down";
 		}
-		if(getCurrentLane().equals("20_2") || getCurrentLane().equals("20_5") || getCurrentLane().equals("20_6")) {
+		if(getCurrentLane().equals("20_2") || getCurrentLane().equals("20_5") || getCurrentLane().equals("20_6") || getCurrentLane().equals("20_12")) {
 			this.direction="up";
 		}
-		if(getCurrentLane().equals("21_4") || getCurrentLane().equals("21_6") || getCurrentLane().equals("21_8")) {
+		if(getCurrentLane().equals("21_4") || getCurrentLane().equals("21_6") || getCurrentLane().equals("21_8") || getCurrentLane().equals("21_12")) {
 			this.direction="down";
 		}
 		if(getCurrentLane().equals("18_1") || getCurrentLane().equals("18_3") || getCurrentLane().equals("18_5")) {
