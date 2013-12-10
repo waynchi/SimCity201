@@ -8,9 +8,12 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import bank.interfaces.Teller;
+import bank.TellerRole;
+import market.MarketEmployeeRole;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
+import transportation.BusPassengerRole;
 import restaurant.HostRole;
 import restaurant_zt.HostRoleZt;
 import restaurant_wc.HostRoleWc;
@@ -46,6 +49,7 @@ public class PeopleAgent extends Agent implements People{
 	private boolean testmode = false;
 	public int HomeNum = 0;
 	private String type = "default";
+	private boolean Robber = false;
 	
 	private Semaphore moving = new Semaphore(0,true);
 	
@@ -53,10 +57,10 @@ public class PeopleAgent extends Agent implements People{
 
 	public enum BuyState{GoingToBuy, NotBuying, NextDay}
 	public enum AgentState 
-	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome, GoingHome}
+	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome, GoingHome, GoingToRobBank}
 	public enum AgentEvent 
 	{Waiting, GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
-		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
+		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome, RobbingBank}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public enum DepositState
@@ -221,7 +225,7 @@ public class PeopleAgent extends Agent implements People{
 	public void msgDone(String role)
 	{
 		print("Recieved msgDone from "+ role);
-		if(role == "CarPassenger")
+		if(role == "CarPassenger" || role == "BusPassenger")
 		{
 			moving.release();
 		}
@@ -245,7 +249,10 @@ public class PeopleAgent extends Agent implements People{
 //			}
 			if(role.equals("MarketCustomerRole"))
 			{
-				hasCar = true;
+				if(!type.equals("NormativeB3"))
+				{
+					hasCar = true;
+				}
 			}
 			if(role.equals("RepairManFixing"))
 			{
@@ -315,6 +322,11 @@ public class PeopleAgent extends Agent implements People{
 				state = AgentState.Idle;
 				stateChanged();
 			}
+			if(event == AgentEvent.RobbingBank)
+			{
+				state = AgentState.Idle;
+				stateChanged();
+			}
 		}
 	}
 	
@@ -360,55 +372,18 @@ public class PeopleAgent extends Agent implements People{
 			{
 				location = AgentLocation.Home;
 				event = AgentEvent.GoingToSleep;
-				buy = BuyState.NextDay;
 				deposit = DepositState.NextDay;
-				log.add(new LoggedEvent("Sleeping In Message"));
+				buy = BuyState.NextDay;
+				log.add(new LoggedEvent("Sleeping In Message"));	
 				Hunger = 1230;
 				stateChanged();
 				return;
-			}
-			if((state == AgentState.Idle || state == AgentState.IdleAtHome))
-			{
-				if(buy == BuyState.NextDay)
-				{
-					if(!Markets.get(0).isClosed)
-					{
-						if(rand.nextInt(100) <= 100)
-						{
-							buy = BuyState.GoingToBuy;
-						}
-						else
-						{
-							buy = BuyState.NotBuying;
-						}
-						if(buy == BuyState.GoingToBuy)
-						{
-							if(Money >= 20000)
-							{
-								event = AgentEvent.GoingToBuyCar;
-								print("I am going to buy a car");
-								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-								buy = BuyState.NotBuying;
-								stateChanged();
-								return;
-							}
-	//						else
-	//						{
-	//							event = AgentEvent.GoingToRetrieveMoney;
-	//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-	//							stateChanged();
-	//							buy = BuyState.NotBuying;
-	//							return;
-	//						}	
-						}
-					}
-				}
 			}
 			if(state == AgentState.Idle)
 			{
 				if(!Banks.get(0).isClosed)
 				{
-					if(Money >= 10000)
+					if(Money >= 1000000)
 					{
 						if(deposit == DepositState.NextDay)
 						{
@@ -417,9 +392,50 @@ public class PeopleAgent extends Agent implements People{
 							deposit = DepositState.Deposited;
 							stateChanged();
 							return;
-						}						
+						}
 					}
 				}
+			}
+			if((state == AgentState.Idle || state == AgentState.IdleAtHome) &&  Time >= 1300)
+			{
+				if(buy == BuyState.NextDay)
+				{
+					if(!Markets.get(0).isClosed)
+					{
+						if(!hasCar)
+						{
+							if(rand.nextInt(100) <= 100)
+							{
+								buy = BuyState.GoingToBuy;
+							}
+							else
+							{
+								buy = BuyState.NotBuying;
+							}
+							if(buy == BuyState.GoingToBuy)
+							{
+								if(Money >= 20000)
+								{
+									event = AgentEvent.GoingToBuyCar;
+									print("I am going to buy a car");
+									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+									buy = BuyState.NotBuying;
+									stateChanged();
+									return;
+								}
+		//						else
+		//						{
+		//							event = AgentEvent.GoingToRetrieveMoney;
+		//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+		//							stateChanged();
+		//							buy = BuyState.NotBuying;
+		//							return;
+		//						}	
+							}
+						}
+					}
+				}
+			
 			}
 			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
 			{
@@ -764,62 +780,91 @@ public class PeopleAgent extends Agent implements People{
 		int lastTime = 100000;
 		for(Job job: jobs)
 		{
-		if(Time == job.start)
-		{
-			event = AgentEvent.GoingToWork;
-			print("Going To Work from time is");
-			log.add(new LoggedEvent("Going To Work"));
-			stateChanged();
-			return;
-		}
-		if(Time == job.end)
-		{
-			event = AgentEvent.LeavingWork;
-			log.add(new LoggedEvent("Leaving Work"));
-			stateChanged();
-			return;
-		}
-		if(job.job.contains("RestaurantHost"))
-		{
-			if(Time == 1830)
+			if(job.job.equals("Teller") && cityGui.dayOfWeek >= 5)
 			{
-				for(MyRole r: roles)
-				{	
-					if(r.description.equals("RestaurantHost"))
+		
+			}
+			else 
+			{
+				if(Time == job.start)
+				{
+					event = AgentEvent.GoingToWork;
+					print("Going To Work from time is");
+					log.add(new LoggedEvent("Going To Work"));
+					stateChanged();
+					return;
+				}
+				if(Time == job.end)
+				{
+					event = AgentEvent.LeavingWork;
+					log.add(new LoggedEvent("Leaving Work"));
+					stateChanged();
+					return;
+				}
+			}
+			if(job.job.contains("RestaurantHost"))
+			{
+				if(Time == 1830)
+				{
+					for(MyRole r: roles)
 					{	
-						((HostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostVk"))
-					{	
-						((VkHostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostVk"))
-					{
-						((VkHostRole) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostZt"))
-					{	
-						((HostRoleZt) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostWc"))
-					{	
-						((HostRoleWc) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostPs"))
-					{	
-						((HostRolePS) r.role).msgSetClose();
-					}
-					if(r.description.equals("RestaurantHostEs"))
-					{	
-						((HostRoleEs) r.role).msgSetClose();
-					}
-					if(r.description.equals("MarketEmployee"))
-					{
-						((MarketEmployeeRole) r.role).msgSetClose();
+						if(r.description.equals("RestaurantHost"))
+						{	
+							((HostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{	
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostZt"))
+						{	
+							((HostRoleZt) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostWc"))
+						{	
+							((HostRoleWc) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostPs"))
+						{	
+							((HostRolePS) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostEs"))
+						{	
+							((HostRoleEs) r.role).msgSetClose();
+						}
 					}
 				}
 			}
-		}
+			if(job.job.equals("Teller") && cityGui.dayOfWeek < 5)
+			{
+				if(Time == 1900)
+				{
+					for(MyRole r: roles)
+					{	
+						if(r.description.equals("Teller"))
+						{
+							((TellerRole) r.role).msgSetClose();
+						}
+					}
+				}
+			}
+			if(job.job.equals("MarketEmployee"))
+			{
+				if(Time == 1730)
+				{
+					for(MyRole r: roles)
+					{	
+						if(r.description.equals("MarketEmployee"))
+						{
+							((MarketEmployeeRole) r.role).msgSetClose();
+						}
+					}
+				}
+			}
 		lastTime = job.end;
 		}
 		if(state == AgentState.Idle)
@@ -1010,8 +1055,26 @@ public class PeopleAgent extends Agent implements People{
 				}
 			}
 		}
+		if(state == AgentState.Idle)
+		{
+			if(Robber)
+			{
+				if(!Banks.get(0).isClosed)
+				{
+					Robber = false;
+					event = AgentEvent.RobbingBank;
+					stateChanged();
+					return;
+				}
+			}
+		}
 		}
 		
+	}
+	
+	public void msgRobBank()
+	{
+		Robber = true;
 	}
 
 	//scheduler
@@ -1156,6 +1219,18 @@ public class PeopleAgent extends Agent implements People{
 			}
 			Person = true;
 		}
+		if(state == AgentState.Idle && event == AgentEvent.RobbingBank)
+		{
+			state = AgentState.GoingToRobBank;
+			if(location == AgentLocation.Home)
+			{
+				LeaveHouse();
+			}
+			else
+			{
+				GoRobBank();
+			}
+		}
 		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToSleep)
 		{
 			state = AgentState.Sleeping;
@@ -1173,6 +1248,43 @@ public class PeopleAgent extends Agent implements People{
 
 //Actions
 
+	private void GoRobBank() {
+		location = AgentLocation.Road;
+		if(!testmode)
+		{
+		//TODO personGui.goToBank();
+			if(hasCar)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description == "CarPassenger")
+					{
+						((CarPassengerRole)r.role).setDestination("Bank");
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else
+			{
+				personGui.setDestination("Bank");
+				print("Do Not Have Car");
+			}
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		}
+		location = AgentLocation.Bank;
+		
+		for(MyRole r: roles)
+		{
+			if(r.description == "Robber")
+			{
+				r.role.msgIsActive();
+			}
+		}	
+	}
 	private void GoRepairShop() {
 		// TODO Auto-generated method stub
 		//gui message to ask for destination
@@ -1262,10 +1374,7 @@ public class PeopleAgent extends Agent implements People{
 				if(hasCar)
 				{
 					for(MyRole r: roles)
-					{
-						//change this for restaurant
-						((CarPassengerRole)r.role).setDestination("Restaurant 2");
-						r.role.msgIsActive();
+					{						
 						if(r.description == "CarPassenger")
 						{
 							//change this for restaurant
@@ -1294,7 +1403,6 @@ public class PeopleAgent extends Agent implements People{
 			{
 				//change this for restaurant
 				personGui.setDestination("Restaurant 2");
-				print("Do Not Have Car");
 				if(r.description.equals("RestaurantCustomerVk"))
 				{
 					r.role.msgIsActive();
@@ -1697,14 +1805,44 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				if(type.equals("NormativeB3"))
+				{
+					personGui.setDestination("BusStop 1");
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					for(MyRole r: roles)
+					{
+						if(r.description == "BusPassenger")
+						{
+							((BusPassengerRole)r.role).setDestinationPlace("Bank");
+							r.role.msgIsActive();
+						}
+					}
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						personGui.setDestination("Bank");
+					
+				}
+				else
+				{
+				//TODO Randomization
 				personGui.setDestination("Bank");
 				print("Do Not Have Car");
+				try {
+					moving.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				}
 			}
-		try {
-			moving.acquire();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		}
 		location = AgentLocation.Bank;
 		

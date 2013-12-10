@@ -237,6 +237,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	public void msgIsActive() {
+		print("I'm a waiter.");
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}

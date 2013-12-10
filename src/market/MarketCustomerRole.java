@@ -201,8 +201,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				e.printStackTrace();
 			}
 		}
-		getPersonAgent().msgDone("MarketCustomerRole");
 		state = marketCustomerState.DONE;
+		getPersonAgent().msgDone("MarketCustomerRole");
 		isActive = false;
 		customerGui.setPresent(false);
 	}

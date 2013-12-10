@@ -11,8 +11,10 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 import bank.BankCustomerRole;
+import bank.RobberRole;
 import bank.TellerRole;
 import bank.gui.BankGui;
+import bank.interfaces.Robber;
 import market.MarketCashierRole;
 import market.MarketCustomerRole;
 import market.MarketEmployeeRole;
@@ -68,6 +70,7 @@ import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
 import transportation.BusAgent;
+import transportation.BusPassengerRole;
 import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
@@ -90,7 +93,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public int dayOfWeek = 0;
 	public Timer timer;
 	BankGui bankGui;
-	CityPanel cityPanel;
+	public CityPanel cityPanel;
 	public JPanel buildingPanels;
 	CardLayout cardLayout;
 	CityControls cityControls;
@@ -156,6 +159,8 @@ public class CityGui extends JFrame implements ActionListener {
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
+	
+	PeopleAgent robber;
 	
 	private int count = 0;
 
@@ -822,9 +827,12 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
 					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
-					//cityPanel.vehicles.add(carGui);
+					cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
+					BusPassengerRole busPassengerRole = new BusPassengerRole();
+					person.addRole(busPassengerRole, "BusPassenger");
+					busPassengerRole.setPerson(person);
 					
 					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
@@ -908,6 +916,15 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRole.setPerson(person);
 						person.hasCar = false;
 					}
+					if (job.equals("Robber")) {
+						RobberRole robberRole = new RobberRole(bankGui);
+						robberRole.setTag(AlertTag.BANK);
+						//person.addJob("Robber", start, end);
+						person.addRole(robberRole,"Robber");
+						robberRole.setPerson(person);
+						person.hasCar = false;
+						robber = person;
+					}
 					if (job.equals("RestaurantNormalWaiterVk")) {
 						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRoleVk);
 						RestaurantHostRoleVk.addWaiter(RestaurantNormalWaiterRoleVK);						
@@ -956,7 +973,7 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("RestaurantSpecialWaiterVk")) {
 						VkWaiterSpecialRole RestaurantSpecialWaiterRoleVk = new VkWaiterSpecialRole(RestaurantHostRoleVk,revolvingStand);
 						RestaurantHostRoleVk.addWaiter(RestaurantSpecialWaiterRoleVk);						
-						person.addJob("RestaurantSpecialWaiterRoleVk", start, end);
+						person.addJob("RestaurantSpecialWaiterVk", start, end);
 						person.addRole(RestaurantSpecialWaiterRoleVk,"RestaurantSpecialWaiterVk");
 						RestaurantSpecialWaiterRoleVk.setPerson(person);
 						person.hasCar = false;
@@ -1872,22 +1889,34 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public boolean isPedestrianCrossingStreet() {
 		// TODO Auto-generated method stub
-		if(cityPanel.sidewalkStrip23.get(0).hasPerson || cityPanel.sidewalkStrip23.get(1).hasPerson)
+		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
 			return true;
 		
 		
 		return false;
 	}
 
-	public void stopPedestriansCrossingStreet() {
+	public void stopPedestriansCrossingStreetAndTellVehiclesSimulationStarted() {
 		// TODO Auto-generated method stub
 
-		if(cityPanel.sidewalkStrip23.get(0).hasPerson)
-			cityPanel.sidewalkStrip23.get(0).getPerson().getPersonGui().stopNow();
+		PersonGui p = null;
+		
 		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
-			cityPanel.sidewalkStrip23.get(1).getPerson().getPersonGui().stopNow();
-
+		{
+			p = cityPanel.sidewalkStrip23.get(1).getPersonGui();
+			p.stopNow();
+		}
+		if(p != null)
+		{
+			for(VehicleGui v : cityPanel.vehicles)
+			{
+				v.simulatingPedestrianCrash = true;
+				v.setSimulatorPerson(p);
+			}
+		}
 	}
+
+	
 	
 	
 }
