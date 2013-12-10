@@ -743,8 +743,8 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
-//		personGui.setDestination("Restaurant 6");
+//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip12,this.sidewalkStrip12.get(3),this.allSidewalks, this, person);					
+//		personGui.setDestination("Home 1");
 //		this.people.add(personGui);
 		
 		
@@ -926,7 +926,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			g2.fill(bs);
 		}
 		
-		//g.drawImage(background.getImage(), 0, 0, null);
+		g.drawImage(background.getImage(), 0, 0, null);
 		
 		for(int i=0;i<vehicles.size();i++) {
 			VehicleGui v = vehicles.get(i);

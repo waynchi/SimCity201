@@ -28,13 +28,15 @@ public String name;
 public BusStopGui myGui;
 public BuildingPanel bp;
 public int buildingNumber;
+public List<String> placesNearby;
 
-public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, String name){
+public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, List<String> places,String name){
 	super(x,y,width,height);
 	this.xLocation = xLoc;
 	this.yLocation = yLoc;
 	this.name = name;
 	this.myGui = bg;
+	this.placesNearby = places;
 	
 }
 
@@ -146,6 +148,9 @@ public void setBuildingNumber(int n)
 }
 public int getBuildingNumber(){
 	return buildingNumber;
+}
+public List<String> getNearbyPlaces(){
+	return this.placesNearby;
 }
 }
 

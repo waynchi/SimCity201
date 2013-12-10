@@ -402,7 +402,7 @@ public class VkCustomerRole extends Role implements Customer{
 				event = AgentEvent.doneEating;
 				stateChanged();
 			}
-		}, 2000);
+		}, 1000);
 	}
 
 	/*

@@ -11,7 +11,8 @@ import transportation.interfaces.BusPassenger;
 public class BusPassengerRole extends Role implements BusPassenger{
 
 	public BusStop currentBusStop;
-	public BusStop destination;
+	//public BusStop destinationBusStop;
+	public String destinationPlace;
 	public Bus myBus;
 	public enum Event {busArrived,busArrivedAtDestination};
 	public enum State {waitingAtBusStop,waitingInBus,leavingBus};
@@ -58,7 +59,13 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	@Override
 	public void msgArrivedAtStop(BusStop bs){
 	System.out.println("Bus passenger recieved message that bus arrived at new bus stop");
-	if (bs == destination)
+	boolean getOffHere = false;
+	for(String place : bs.getNearbyPlaces())
+	{
+		if(place.equals(this.destinationPlace))
+			getOffHere = true;
+	}
+	if (getOffHere)
 	{
 //		event = Event.busArrivedAtDestination;
 //	    stateChanged();    
@@ -126,9 +133,14 @@ public class BusPassengerRole extends Role implements BusPassenger{
 		this.currentBusStop = S;
 	}
 //	
-	public void setDestinationBusStop(BusStop D)
+//	public void setDestinationBusStop(BusStop D)
+//	{
+//		this.destinationBusStop = D;
+//	}
+	
+	public void setDestinationPlace(String place)
 	{
-		this.destination = D;
+		this.destinationPlace = place;
 	}
 
 	
