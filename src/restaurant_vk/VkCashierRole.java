@@ -336,6 +336,7 @@ public class VkCashierRole extends Role implements Cashier {
 		else if (s.role.equals("Cashier")) {
 			s.p.Money += cashierSalary;
 		}
+		print("Paying employee");
 		s.s = ShiftState.Done;
 	}
 	
@@ -346,7 +347,7 @@ public class VkCashierRole extends Role implements Cashier {
 		if (deposit == true) {
 			bankActivity = BankActivity.DepositRequested;
 			deposit = false;
-			System.out.println("Asking teller to deposit.");
+			print("Asking teller to deposit.");
 			teller.msgDeposit(getPersonAgent().getRestaurant(1).bankAccountID, workingCapital - minCapital);
 		}
 		else if (withdraw == true) {
@@ -354,7 +355,7 @@ public class VkCashierRole extends Role implements Cashier {
 			withdraw = false;
 			double total = 0.0;
 			total += (computeRequiredMoney() - workingCapital);
-			System.out.println("Asking teller to withdraw.");
+			print("Asking teller to withdraw.");
 			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
 		}
 	}
