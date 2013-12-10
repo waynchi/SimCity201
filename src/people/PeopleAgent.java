@@ -1804,6 +1804,8 @@ public class PeopleAgent extends Agent implements People{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+			personGui.setDestination("Bank");
+		
 		}
 		location = AgentLocation.Bank;
 		
