@@ -268,9 +268,6 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void draw(Graphics2D g2) {
-		if(!getCurrentLane().equals("0_0")) {
-			//System.out.println(getCurrentLane());
-		}
 		if (xDestination > 0 && yDestination > 0) {
 			time++;
 			g2.setColor(Color.red);

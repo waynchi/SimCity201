@@ -16,6 +16,7 @@ import restaurant_zt.HostRoleZt;
 import restaurant_wc.HostRoleWc;
 import restaurant_es.HostRoleEs;
 import restaurant_vk.VkHostRole;
+import restaurant_ps.HostRolePS;
 import market.MarketEmployeeRole;
 import city.Bank;
 import city.Market;
@@ -34,7 +35,7 @@ public class PeopleAgent extends Agent implements People{
 	private Yelp yelp;
 	public Double Money;
 	public Double Balance;
-	private int Hunger = 1300;
+	private int Hunger = 1200;
 	public Boolean hasCar;
 	public String name;
 	public enum HungerState
@@ -224,7 +225,7 @@ public class PeopleAgent extends Agent implements People{
 			if(role.equals("RestaurantCustomerRole"))
 			{
 				hunger = HungerState.NotHungry;
-				Hunger = 2400;
+				Hunger = 500;
 			}
 //			if(role.equals("BankCustomerRole"))
 //			{
@@ -325,6 +326,287 @@ public class PeopleAgent extends Agent implements People{
 	
 	public void msgTimeIs(int Time)
 	{
+		if(type.equals("NormativeB1"))
+		{
+			Hunger--;
+			//print("Hunger is " + Hunger);
+			if(Hunger == 0)
+			{
+				print("I have become hungry");
+				hunger = HungerState.Hungry;
+			}
+			if(Time == 600 && state == AgentState.Sleeping)
+			{
+				print("I am waking up");
+				event = AgentEvent.WakingUp;
+				location = AgentLocation.Home;
+				log.add(new LoggedEvent("Waking Up In Message"));
+				stateChanged();
+				return;
+			}
+			if(Time == 2330)
+			{
+				location = AgentLocation.Home;
+				event = AgentEvent.GoingToSleep;
+				buy = BuyState.NextDay;
+				log.add(new LoggedEvent("Sleeping In Message"));
+				Hunger = 1230;
+				stateChanged();
+				return;
+			}
+			/*if(Time >= 2330 && state != AgentState.Sleeping)
+			{
+				state = AgentState.IdleAtHome;
+				event = AgentEvent.GoingToSleep;
+				buy = BuyState.NextDay;
+				//print("Sleeping because of a bug");
+				log.add(new LoggedEvent("Sleeping In Message"));
+				Hunger = 1215;
+				stateChanged();
+				return;
+			}*/
+			int lastTime = 100000;
+			for(Job job: jobs)
+			{
+			if(Time == job.start)
+			{
+				event = AgentEvent.GoingToWork;
+				print("Going To Work from time is");
+				log.add(new LoggedEvent("Going To Work"));
+				stateChanged();
+				return;
+			}
+			if(Time == job.end)
+			{
+				event = AgentEvent.LeavingWork;
+				log.add(new LoggedEvent("Leaving Work"));
+				stateChanged();
+				return;
+			}
+			if(job.job.contains("RestaurantHost"))
+			{
+				if(Time == 1830)
+				{
+					for(MyRole r: roles)
+					{	
+						if(r.description.equals("RestaurantHost"))
+						{	
+							((HostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{	
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostVk"))
+						{
+							((VkHostRole) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostZt"))
+						{	
+							((HostRoleZt) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostWc"))
+						{	
+							((HostRoleWc) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostPs"))
+						{	
+							((HostRolePS) r.role).msgSetClose();
+						}
+						if(r.description.equals("RestaurantHostEs"))
+						{	
+							((HostRoleEs) r.role).msgSetClose();
+						}
+						if(r.description.equals("MarketEmployee"))
+						{
+							((MarketEmployeeRole) r.role).msgSetClose();
+						}
+					}
+				}
+			}
+			lastTime = job.end;
+			}
+			if(state == AgentState.Idle)
+			{
+				if(buy == BuyState.NextDay && Time <=2100)
+				{
+						if(jobs.get(0).start - Time >= 200)
+						{
+							if(!(Markets.get(0).isClosed))
+							{
+								if(!hasCar)
+								{
+									if(rand.nextInt(100) <= 100)
+									{
+										buy = BuyState.GoingToBuy;
+									}
+									else
+									{
+										buy = BuyState.NotBuying;
+									}
+									if(buy == BuyState.GoingToBuy)
+									{
+										if(Money >= 20000)
+										{
+											event = AgentEvent.GoingToBuyCar;
+											print("I am going to buy a car");
+											log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+											buy = BuyState.NotBuying;
+											stateChanged();
+											return;
+										}
+//										else
+//										{
+//											event = AgentEvent.GoingToRetrieveMoney;
+//											log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//											stateChanged();
+//											buy = BuyState.NotBuying;
+//											return;
+//										}	
+									}
+								}			
+							}
+						}
+					}
+				else if(!Banks.get(0).isClosed)
+				{
+					//System.out.println(Money);
+					if(Money >= 1000000)
+					{
+						event = AgentEvent.GoingToDepositMoney;
+						log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+						stateChanged();
+						return;
+					}
+				}
+				if(location != AgentLocation.Home)
+				{
+					event = AgentEvent.GoingHome;
+					stateChanged();
+					return;
+				}
+			}
+			//state != AgentState.Sleeping && state != AgentState.Working && state != AgentState.Waiting
+			if(state == AgentState.Idle)
+			{
+				if(hunger == HungerState.Hungry)
+				{
+					//change this for restaurant
+					if(!Restaurants.get(1).isClosed)
+					{
+						if(rand.nextInt(2) <2)
+						{
+							event = AgentEvent.GoingToRestaurant;
+							print("Going To Restaurant To Eat");
+							stateChanged();
+							return;
+						}
+						else
+						{
+							event = AgentEvent.GoingHome;
+							print("Going Home To Eat");
+							stateChanged();
+							return;
+						}
+					}
+					else
+					{
+						event = AgentEvent.GoingHome;
+						print("Eating at Home because no restaurants are open.");
+						stateChanged();				
+						return;
+					}	
+				}
+			}
+			if(state == AgentState.IdleAtHome)
+			{
+				if(hunger == HungerState.Hungry)
+				{
+					//change this for restaurant
+					if(!Restaurants.get(1).isClosed)
+					{
+						if(rand.nextInt(2) < 2)
+						{
+							event = AgentEvent.GoingToRestaurant;
+							print("Going To Restaurant To Eat");
+							stateChanged();
+							return;
+						}
+						else
+						{
+							event = AgentEvent.GoingHome;
+							print("Going Home To Eat");
+							stateChanged();
+							return;
+						}
+					}
+					else
+					{
+						event = AgentEvent.EatingAtHome;
+						print("Eating at Home because no restaurants are open.");
+						stateChanged();
+						return;
+					}
+				}
+			}
+			if(Time >= lastTime)
+			{
+				if(state == AgentState.Idle)
+				{
+					if(!Markets.get(0).isClosed)
+					{
+						if(buy == BuyState.NextDay)
+						{
+							if(!hasCar)
+							{
+								if(rand.nextInt(100) <= 100)
+								{
+									buy = BuyState.GoingToBuy;
+								}
+								else
+								{
+									buy = BuyState.NotBuying;
+								}
+								if(buy == BuyState.GoingToBuy)
+								{
+									if(Money >= 20000)
+									{
+										event = AgentEvent.GoingToBuyCar;
+										buy = BuyState.NotBuying;
+										stateChanged();
+										return;
+									}
+				//					else if(!(Time>= 2100 && Money <= 30000))
+				//					{
+				//						event = AgentEvent.GoingToRetrieveMoney;
+				//						log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+				//						stateChanged();
+				//						return;
+				//					}
+									buy = BuyState.NotBuying;
+								}
+							}				
+							else if(!Banks.get(0).isClosed)
+							{
+								if(Money >= 1000000)
+								{
+									event = AgentEvent.GoingToDepositMoney;
+									stateChanged();
+									return;
+								}
+							}
+							//event = AgentEvent.GoingHome;
+						}
+					}
+					if(location != AgentLocation.Home)
+					{
+						event = AgentEvent.GoingHome;
+						stateChanged();
+						return;
+					}
+				}
+			}
+		}
 		if(type.equals("default"))
 		{
 		/*if(Time == 0)
@@ -403,10 +685,10 @@ public class PeopleAgent extends Agent implements People{
 					{	
 						((VkHostRole) r.role).msgSetClose();
 					}
-//					if(r.description.equals("RestaurantHostVk"))
-//					{
-//						((VkHostRole) r.role).msgSetClose();
-//					}
+					if(r.description.equals("RestaurantHostVk"))
+					{
+						((VkHostRole) r.role).msgSetClose();
+					}
 					if(r.description.equals("RestaurantHostZt"))
 					{	
 						((HostRoleZt) r.role).msgSetClose();
@@ -415,10 +697,10 @@ public class PeopleAgent extends Agent implements People{
 					{	
 						((HostRoleWc) r.role).msgSetClose();
 					}
-//					if(r.description.equals("RestaurantHostPs"))
-//					{	
-//						((HostRolePs) r.role).msgSetClose();
-//					}
+					if(r.description.equals("RestaurantHostPs"))
+					{	
+						((HostRolePS) r.role).msgSetClose();
+					}
 					if(r.description.equals("RestaurantHostEs"))
 					{	
 						((HostRoleEs) r.role).msgSetClose();
@@ -1408,7 +1690,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1447,7 +1729,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1486,7 +1768,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1525,7 +1807,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 1");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1565,7 +1847,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 2");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1605,7 +1887,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 2");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1644,7 +1926,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 2");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1683,7 +1965,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 2");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1723,7 +2005,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 3");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1763,7 +2045,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 3");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1802,7 +2084,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 3");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1841,7 +2123,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 3");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1881,7 +2163,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 4");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1921,7 +2203,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 4");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1960,7 +2242,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 4");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1999,7 +2281,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 4");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2039,7 +2321,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 5");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -2079,7 +2361,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 5");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2118,7 +2400,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 5");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2157,7 +2439,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 5");
+							personGui.setDestination("Restaurant 6");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();

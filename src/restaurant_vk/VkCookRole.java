@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -37,7 +38,7 @@ public class VkCookRole extends Role implements Cook {
 	private RevolvingStand stand;
 	private Timer standTimer;
 	private final int period = 5000;
-	private MarketEmployee market;
+	private List<MarketEmployee> markets = new ArrayList<MarketEmployee>();
 	private Cashier cashier;
 	private boolean leave = false;
 	private boolean enter = false;
@@ -123,7 +124,9 @@ public class VkCookRole extends Role implements Cook {
 				order.put(f.name, qty);
 			}
 		}
-		MarketOrder o = new MarketOrder(order);
+		int marketNumber = selectMarket();
+		MarketEmployee market = markets.get(marketNumber);
+		MarketOrder o = new MarketOrder(order, marketNumber);
 		marketOrders.add(o);
 		market.msgHereIsAnOrder(order, this, cashier);
 	}
@@ -259,8 +262,9 @@ public class VkCookRole extends Role implements Cook {
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}
-		if (market == null) {
-			this.market = (MarketEmployee) myPerson.getMarketEmployee(0);
+		if (markets.size() == 0) {
+			this.markets.add((MarketEmployee) myPerson.getMarketEmployee(0));
+//			this.markets.add((MarketEmployee) myPerson.getMarketEmployee(1));
 		}
 		isActive = true;
 		enter = true;
@@ -451,7 +455,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	public void addMarket(MarketEmployee m) {
-		this.market = m;
+		markets.add(m);
 	}
 	
 	@Override
@@ -465,6 +469,14 @@ public class VkCookRole extends Role implements Cook {
 	
 	public String getName() {
 		return myPerson.getName();
+	}
+	
+	private int selectMarket() {
+		Random generator = new Random();
+		int num = generator.nextInt(markets.size());
+		if (markets.size() != 0)
+			return num;
+		return -1;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -540,11 +552,13 @@ public class VkCookRole extends Role implements Cook {
 		public Map<String, Integer> itemsRequested = new HashMap<String, Integer>();
 		public Map<String, Integer> itemsSupplied = new HashMap<String, Integer>();
 		public int orderNumber;
+		public int marketNumber;
 		public MarketOrderState s;
 		
-		public MarketOrder(Map<String, Integer> items) {
+		public MarketOrder(Map<String, Integer> items, int marketNumber) {
 			itemsRequested = items;
 			s = MarketOrderState.Requested;
+			this.marketNumber = marketNumber;
 		}
 	}
 	
