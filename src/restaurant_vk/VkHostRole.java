@@ -317,7 +317,7 @@ public class VkHostRole extends Role implements Host{
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Host");
+		myPerson.msgDone("RestaurantHostRole");
 	}
 	
 	private void prepareToClose() {

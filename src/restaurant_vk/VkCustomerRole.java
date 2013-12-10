@@ -413,7 +413,7 @@ public class VkCustomerRole extends Role implements Customer{
 		customerGui.DoExitRestaurant();
 		currentCheck = null;
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 	
 	/*
@@ -444,7 +444,7 @@ public class VkCustomerRole extends Role implements Customer{
 		leaveOption = false;
 		customerGui.DoGoAway();
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 	
 	/*
@@ -456,7 +456,7 @@ public class VkCustomerRole extends Role implements Customer{
 		leaveOption = false;
 		customerGui.DoGoAway();
 		isActive = false;
-		myPerson.msgDone("Customer");
+		myPerson.msgDone("RestaurantCustomerRole");
 	}
 
 	/**--------------------------------------------------------------------------------------------------------------

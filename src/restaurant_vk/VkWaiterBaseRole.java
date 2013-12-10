@@ -463,7 +463,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Waiter");
+		myPerson.msgDone("RestaurantNormalWaiterRole");
 	}
 	
 	private void prepareToClose() {

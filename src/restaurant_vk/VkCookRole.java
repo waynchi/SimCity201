@@ -158,7 +158,7 @@ public class VkCookRole extends Role implements Cook {
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Cook");
+		myPerson.msgDone("RestaurantCookRole");
 	}
 	
 	private void prepareToClose() {
