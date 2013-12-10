@@ -1280,16 +1280,23 @@ public class CityGui extends JFrame implements ActionListener {
 	}
 	
 	public void closeBanks() {
-		
+		for (Bank bank : banks) {
+			bank.isClosed = true;
+		}
 	}
 
 	public void closeMarkets() {
-		
+		for (Market market : markets) {
+			market.isClosed = true;
+		}
 	}
 	
 	public void closeRestaurants() {
-		
+		for (Restaurant rest : restaurants) {
+			rest.isClosed = true;
+		}
 	}
+	
 	public void displayBuildingPanel(BuildingPanel bp) {
 		cardLayout.show(buildingPanels, bp.getName());
 		System.out.println(bp.getName());
