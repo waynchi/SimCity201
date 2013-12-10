@@ -54,6 +54,8 @@ public class CookRole extends Role implements Cook{
 
 	private Host host;
 	private Cashier cashier;
+	private final int period = 700;
+
 	//private MarketEmployee marketEmployee;
 
 	//private MarketEmployeeRole marketEmployee = null;
@@ -147,6 +149,24 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
+	
+	public void startStandTimer() {
+		schedulerTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				checkStand();
+			}
+		}, period, period);
+	}
+	
+	
+	public void checkStand() {
+		if (theMonitor.getOrderSize() != 0) {
+			synchronized(orders) {
+				getOrderFromRevolvingStand();			}
+			getPersonAgent().CallstateChanged();
+		}
+	}
+	
 	// from market truck (market employee for now)
 	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		print ("received items from market");
@@ -244,16 +264,6 @@ public class CookRole extends Role implements Cook{
 				}
 			}
 		}
-
-
-		schedulerTimer.scheduleAtFixedRate(
-				new TimerTask(){
-					public void run(){
-						while (theMonitor.getOrderSize() != 0){
-							getOrderFromRevolvingStand();
-						}									
-					} 
-				},0,5000);
 
 		if (leaveWork) {
 			done();
@@ -416,6 +426,7 @@ public class CookRole extends Role implements Cook{
 		}
 		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
+		startStandTimer();
 		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
@@ -431,6 +442,7 @@ public class CookRole extends Role implements Cook{
 			e.printStackTrace();
 		}
 		leaveWork = false;
+		schedulerTimer.cancel();
 		cookGui.setPresent(false);
 		cookGui.setDefaultDestination();
 		getPersonAgent().msgDone("RestaurantCookRole");
