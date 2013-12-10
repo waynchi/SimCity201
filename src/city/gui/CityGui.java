@@ -33,6 +33,7 @@ import restaurant_es.CookRoleEs;
 import restaurant_es.HostRoleEs;
 import restaurant_es.NormalWaiterRoleEs;
 import restaurant_es.RestaurantCustomerRoleEs;
+import restaurant_es.SpecialWaiterRoleEs;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
@@ -41,6 +42,7 @@ import restaurant_ps.RestaurantCustomerRolePS;
 import restaurant_ps.CashierRolePS;
 import restaurant_ps.CookRolePS;
 import restaurant_ps.NormalWaiterRolePS;
+import restaurant_ps.SpecialWaiterRolePS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
@@ -52,6 +54,7 @@ import restaurant_wc.CookRoleWc;
 import restaurant_wc.HostRoleWc;
 import restaurant_wc.NormalWaiterRoleWc;
 import restaurant_wc.RestaurantCustomerRoleWc;
+import restaurant_wc.SpecialWaiterRoleWc;
 import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant_wc.gui.RestaurantPanelWc;
 import restaurant_wc.gui.RestaurantPanelWc.CookWaiterMonitorWc;
@@ -60,6 +63,7 @@ import restaurant_zt.CookRoleZt;
 import restaurant_zt.HostRoleZt;
 import restaurant_zt.NormalWaiterRoleZt;
 import restaurant_zt.RestaurantCustomerRoleZt;
+import restaurant_zt.SpecialWaiterRoleZt;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
@@ -637,9 +641,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGuiYc);
-						
 						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
-						
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);
@@ -682,6 +684,54 @@ public class CityGui extends JFrame implements ActionListener {
 						RestaurantNormalWaiterRolePS.setPerson(person);
 						person.hasCar = false;
 					}
+					if (job.equals("RestaurantSpecialWaiter")) {
+						SpecialWaiterRole RestaurantSpecialWaiterRole = new SpecialWaiterRole(RestaurantCookWaiterMonitor   ,restaurantGuiYc);
+						RestaurantSpecialWaiterRole.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantSpecialWaiter", start, end);
+						person.addRole(RestaurantSpecialWaiterRole,"RestaurantSpecialWaiter");
+						RestaurantSpecialWaiterRole.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantSpecialWaiterVk")) {
+						VkWaiterSpecialRole RestaurantSpecialWaiterRoleVk = new VkWaiterSpecialRole(RestaurantHostRoleVk,revolvingStand);
+						RestaurantHostRoleVk.addWaiter(RestaurantSpecialWaiterRoleVk);						
+						person.addJob("RestaurantSpecialWaiterRoleVk", start, end);
+						person.addRole(RestaurantSpecialWaiterRoleVk,"RestaurantSpecialWaiterVk");
+						RestaurantSpecialWaiterRoleVk.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantSpecialWaiterZt")) {
+						SpecialWaiterRoleZt RestaurantSpecialWaiterRoleZt = new SpecialWaiterRoleZt(RestaurantCookWaiterMonitorZT,restaurantGuiZt);
+						RestaurantSpecialWaiterRoleZt.setTag(AlertTag.RESTAURANT3);
+						person.addJob("RestaurantSpecialWaiterZt", start, end);
+						person.addRole(RestaurantSpecialWaiterRoleZt,"RestaurantSpecialWaiterZt");
+						RestaurantSpecialWaiterRoleZt.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantSpecialWaiterWc")) {
+						SpecialWaiterRoleWc RestaurantSpecialWaiterRoleWc = new SpecialWaiterRoleWc(RestaurantCookWaiterMonitorWc,restaurantGuiWc);
+						RestaurantSpecialWaiterRoleWc.setTag(AlertTag.RESTAURANT4);
+						person.addJob("RestaurantSpecialWaiterWc", start, end);
+						person.addRole(RestaurantSpecialWaiterRoleWc,"RestaurantSpecialWaiterWc");
+						RestaurantSpecialWaiterRoleWc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantSpecialWaiterEs")) {
+						SpecialWaiterRoleEs RestaurantSpecialWaiterRoleEs = new SpecialWaiterRoleEs(RestaurantCookWaiterMonitorEs,restaurantGuiEs);
+						RestaurantSpecialWaiterRoleEs.setTag(AlertTag.RESTAURANT5);
+						person.addJob("RestaurantSpecialWaiterEs", start, end);
+						person.addRole(RestaurantSpecialWaiterRoleEs,"RestaurantSpecialWaiterEs");
+						RestaurantSpecialWaiterRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantSpecialWaiterPs")) {
+						SpecialWaiterRolePS RestaurantSpecialWaiterRolePs = new SpecialWaiterRolePS(RestaurantCookWaiterMonitorPS,restaurantGuiPS);
+						RestaurantSpecialWaiterRolePs.setTag(AlertTag.RESTAURANT6);
+						person.addJob("RestaurantSpecialWaiterPs", start, end);
+						person.addRole(RestaurantSpecialWaiterRolePs,"RestaurantSpecialWaiterPs");
+						RestaurantSpecialWaiterRolePs.setPerson(person);
+						person.hasCar = false;
+					}					
 					if (job.equals("RestaurantCook")) {
 						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGuiYc);
 						
@@ -1134,9 +1184,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					if (job.equals("RestaurantNormalWaiter")) {
 						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGuiYc);
-						
 						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
-						
 						person.addJob("RestaurantNormalWaiter", start, end);
 						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
 						RestaurantNormalWaiterRole.setPerson(person);

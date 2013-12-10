@@ -5,7 +5,7 @@ import restaurant_zt.CookRoleZt;
 import restaurant_zt.HostRoleZt;
 import restaurant_zt.NormalWaiterRoleZt;
 import restaurant_zt.RestaurantCustomerRoleZt;
-import restaurant_zt.SpecialWaiterRole;
+import restaurant_zt.SpecialWaiterRoleZt;
 import restaurant_zt.CookRoleZt.MyOrder;
 
 import javax.swing.*;
@@ -96,7 +96,7 @@ public class RestaurantPanelZt extends JPanel implements ActionListener{
     		//if (name.equalsIgnoreCase("special")){
     			BaseWaiterRole w = new NormalWaiterRoleZt(gui);
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(theMonitor,gui);
+        			w = new SpecialWaiterRoleZt(theMonitor,gui);
     			}
     			WaiterGuiZt g = new WaiterGuiZt(w);
         		g.setHomePosition(waiters.size());
