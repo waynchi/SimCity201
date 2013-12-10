@@ -352,6 +352,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 
 			if(getCurrentLane().equals("2_10")) {
+				this.currentCell.hasPerson = false;
 				//Crossed the first street. Up or down?
 				if(yDestination < 152) {
 					this.direction = "up";
@@ -395,6 +396,7 @@ public class PersonGui extends Rectangle2D.Double {
 				currentCell = sidewalkSegment.get(4);
 			}
 			if(getCurrentLane().equals("10_36")) {
+				this.currentCell.hasPerson = false;
 				//Crossed the sidewalk. Continue to next segment
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(11);
