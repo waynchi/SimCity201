@@ -41,7 +41,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	 */
 	@Override
 	public void msgBusArrived(Bus b){
-	System.out.println("Bus passenger recieved message that bus arrived");
+	print("Bus passenger recieved message that bus arrived");
 	myBus = b;
 	//event = Event.busArrived;
 	//stateChanged();
@@ -58,7 +58,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	 */
 	@Override
 	public void msgArrivedAtStop(BusStop bs){
-	System.out.println("Bus passenger recieved message that bus arrived at new bus stop");
+	print("Bus passenger recieved message that bus arrived at new bus stop");
 	boolean getOffHere = false;
 	for(String place : bs.getNearbyPlaces())
 	{
@@ -68,7 +68,8 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	if (getOffHere)
 	{
 //		event = Event.busArrivedAtDestination;
-//	    stateChanged();    
+//	    stateChanged(); 
+		print("Bus passenger getting off here");
 		myBus.msgImLeaving(this);
 		//myGui.DoLeaveBus(this);
 		if(myPerson != null)
