@@ -103,7 +103,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario20.addActionListener(this);
 			panel.add(btnScenario20);
 
-
+			JButton btnScenario21 = new JButton("People Gui Labels");
+			btnScenario21.addActionListener(this);
+			panel.add(btnScenario21);
+			
 			JButton btnScenario8 = new JButton("Pedestrian Collision");
 			btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 
@@ -258,6 +261,17 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Bus Stop Scenario")) {
 			
+		}
+		
+		else if(e.getActionCommand().equals("People Gui Labels")) {
+			for (People peep : cityGui.people) {
+				if (peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = false;
+				}
+				if (!peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = true;
+				}
+			}
 		}
 		else if(e.getActionCommand().equals("Close Banks")) {
 			System.out.println("Closing all banks");
