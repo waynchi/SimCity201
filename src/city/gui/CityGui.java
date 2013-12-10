@@ -414,12 +414,12 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-		BusPassengerRole bpr = new BusPassengerRole();
-		bpr.setPerson(person);
-		bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-		bpr.setDestinationPlace("Bank");
-		bpr.msgIsActive();
+//		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+//		BusPassengerRole bpr = new BusPassengerRole();
+//		bpr.setPerson(person);
+//		bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+//		bpr.setDestinationPlace("Bank");
+//		bpr.msgIsActive();
 
 	}
 	
@@ -938,9 +938,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-					if(!(job.equals("BankMarketRestaurant"))){
-						person.setTest();
-					}
+//					if(!(job.equals("BankMarketRestaurant"))){
+//						person.setTest();
+//					}
 					count++;
 					person.startThread();		
 					
@@ -1852,7 +1852,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiEs.updatePosition();
 		restaurantGuiPS.updatePosition();
 		vkAnimationPanel.updatePosition();
-//		busStopGui.updatePosition();
+
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
