@@ -194,7 +194,9 @@ public class VkCashierRole extends Role implements Cashier {
 	 * record their shift so that they could be paid by the cashier.
 	 */
 	public void recordShift(PeopleAgent p, String role) {
-		shiftRecord.add(new Shift(p, role));
+		synchronized(shiftRecord) {
+			shiftRecord.add(new Shift(p, role));
+		}
 		stateChanged();
 	}
 	
@@ -564,19 +566,21 @@ public class VkCashierRole extends Role implements Cashier {
 	}
 	
 	private Shift findPayableShift() {
-		for (Shift s : shiftRecord) {
-			if (s.s == ShiftState.Pending) {
-				double total = minCapital;
-				if (s.role.equals("Cashier"))
-					total += cashierSalary;
-				else if (s.role.equals("Cook"))
-					total += cookSalary;
-				else if (s.role.equals("Waiter"))
-					total += waiterSalary;
-				else if (s.role.equals("Host"))
-					total += hostSalary;
-				if (workingCapital >= total)
-					return s;
+		synchronized(shiftRecord) {
+			for (Shift s : shiftRecord) {
+				if (s.s == ShiftState.Pending) {
+					double total = minCapital;
+					if (s.role.equals("Cashier"))
+						total += cashierSalary;
+					else if (s.role.equals("Cook"))
+						total += cookSalary;
+					else if (s.role.equals("Waiter"))
+						total += waiterSalary;
+					else if (s.role.equals("Host"))
+						total += hostSalary;
+					if (workingCapital >= total)
+						return s;
+				}
 			}
 		}
 		return null;

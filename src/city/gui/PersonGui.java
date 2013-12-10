@@ -29,6 +29,7 @@ public class PersonGui extends Rectangle2D.Double {
 	boolean called;
 	String destination;
 	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
+	public boolean simulatingCrash;
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -45,6 +46,7 @@ public class PersonGui extends Rectangle2D.Double {
 		this.direction = "right";
 		this.person = person;
 		called = false;
+		simulatingCrash = false;
 
 	}
 
@@ -61,6 +63,8 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void move(double xVelocity, double yVelocity) {
+		if(simulatingCrash)
+			return;
 		Sidewalk nextCell;
 		if (this.direction.equals("right")) {
 			nextCell = sidewalkSegment.get(sidewalkSegment
@@ -722,5 +726,11 @@ public class PersonGui extends Rectangle2D.Double {
 			person.addRole(bpr, "BusPassenger");
 			
 		}
+	}
+
+	public void stopNow() {
+		// TODO Auto-generated method stub
+		simulatingCrash = true;
+		this.currentCell.simulatingCrash = true;
 	}
 }
