@@ -1,3 +1,4 @@
+1,RepairMan,BobTheBuilder,50000,50000
 1,Teller,teller,800,1930
 1,RestaurantNormalWaiter,John,1000,1900
 1,RestaurantNormalWaiter,Joey,1000,1900
@@ -19,8 +20,8 @@
 1,RestaurantCashierEs,Zack3,930,1900
 1,RestaurantNormalWaiterVk,John4,1000,1900
 1,RestaurantNormalWaiterVk,Joey4,1000,1900
-1,RestaurantNormalWaiterVk,Judah4,1000,1900
 1,RestaurantSpecialWaiterVk,Joseph4,1000,1900
+1,RestaurantNormalWaiterVk,Judah4,1000,1900
 1,RestaurantCookVk,James4,1000,1900
 1,RestaurantHostVk,Billy4,900,1930
 1,RestaurantCashierVk,Zack4,930,1900
@@ -36,17 +37,8 @@
 1,RestaurantCookPs,James6,1000,1900
 1,RestaurantHostPs,Billy6,900,1930
 1,RestaurantCashierPs,Zack6,930,1900
+1,RestaurantCustomer,customer,5000,50000
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
-1,BankRestaurantMarket,bankrestaurantmarket,50000,50000
-1,MarketRestaurantBank,MarketRestaurantBank,50000,50000
-1,BankMarketRestaurant,BankMarketRestaurant,50000,50000
-1,NormativeA,NormativeA,5000,50000
-1,None,Eric,5000,50000
-1,None,Yinyi,5000,50000
-1,None,Vikrant,5000,50000
-1,None,Peppy,5000,50000
-1,None,RandomPasserBy,5000,50000
-1,MarketCustomer,Joe,50000,50000
-1,RepairMan,Bob,50000,50000
-1,Robber,Robber,5000,5000
+1,MarketCustomer,MarketCustomer,5000,50000
+1,NormativeA,NormativeA,50000,50000

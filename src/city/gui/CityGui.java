@@ -761,7 +761,7 @@ public class CityGui extends JFrame implements ActionListener {
 					PeopleAgent person;
 //					if(rand.nextInt(5) < 2)
 //					{
-						 person = new PeopleAgent(name, 1000.0, true); //TODO
+						 person = new PeopleAgent(name, 1000.0, false); //TODO
 //					}
 //					else
 //					{
@@ -1267,7 +1267,15 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(1000000);
 						person.hasCar = false;
 					}
-					
+					if(job.equals("NormativeA"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeA");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
 				
 				
 					people.add(person);
@@ -1782,6 +1790,543 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						person.setType("NormativeB3");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
+					if(job.equals("NormativeA"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeA");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
+				
+					people.add(person);
+					
+				}
+			}
+			bufRead.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BusAgent busAgent = new BusAgent();
+		buses.add(busAgent);
+		BusStopGui busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,220,180,30,30,220,152,new ArrayList<String>(Arrays.asList("Home 1","Home 2",
+				"Home 3","Home 4","Home 5","Home 6","Home 7","Home 8","Home 9","Home 10","Home 11","Home 12","Apartment 1","Apartment 2")), "BusStop 1"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,680,350,30,30,680,322,new ArrayList<String>(Arrays.asList("Market 1","Market 2")), "BusStop 2"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,880,90,30,30,870,132,new ArrayList<String>(Arrays.asList("Restaurant 6","Restaurant 1", "Restaurant 3", "Restaurant 4")), "BusStop 3"));
+		busStopGui = new BusStopGui();
+		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
+		busStopGui = new BusStopGui();
+		
+		InsideBusGui igb = new InsideBusGui();
+		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+		cityPanel.buses.add(bg);
+		busAgent.setGui(bg);
+		busAgent.startThread();
+		bg.msgGoToNextStop(busAgent, cityPanel.busStops.get(cityPanel.busStops.size()-1));
+		cityPanel.vehicles.add(bg);
+		timer.start();
+		
+		
+		
+	}
+	
+	public void createNormativeA() {
+		FileReader input = null;
+		try {
+			if(System.getProperty("file.separator").equals("/"))
+			{
+				input = new FileReader( "src//normativeBaseLineB.txt");
+			}
+			else if(System.getProperty("file.separator").equals("\\"))
+			{
+				input = new FileReader( "src\\normativeBaseLineB.txt");
+			}
+			BufferedReader bufRead = new BufferedReader(input);
+			String line = null;
+			while ((line = bufRead.readLine()) != null) {
+				configParams.addAll(Arrays.asList(line.split("\\s*,\\s*")));
+			}
+			Iterator<String> configIteration = configParams.iterator();
+			while (configIteration.hasNext()) {
+				String amount = configIteration.next();
+				String job = configIteration.next();
+				String name = configIteration.next();
+				int start = Integer.parseInt(configIteration.next());
+				int end = Integer.parseInt(configIteration.next());
+				if (isInteger(amount)) {
+					PeopleAgent person;
+//					if(rand.nextInt(5) < 2)
+//					{
+						 person = new PeopleAgent(name, 1000.0, false); //TODO
+//					}
+//					else
+//					{
+//						 person = new PeopleAgent(name, 1000.0, true );
+//					}//TODO
+					person.setCityGui(this);
+					person.addYelp(yelp);
+					PersonGui personGui;
+					if(count == 0) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(1),cityPanel.allSidewalks, cityPanel, person);					
+					}
+					else if(count == 1) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 2) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 3) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(1),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 4) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 5) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 6) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 7) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 8) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 9) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(2),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 10) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 11) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 12) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+					person.setPersonGui(personGui);
+					person.Restaurants.add(restaurant);
+					person.Restaurants.add(restaurant2);
+					person.Restaurants.add(restaurant3);
+					person.Restaurants.add(restaurant4);
+					person.Restaurants.add(restaurant5);
+					person.Restaurants.add(restaurant6);
+					person.Banks.add(bank);
+					person.Markets.add(market);
+					RestaurantCustomerRole RestaurantCustomerRole = new RestaurantCustomerRole(restaurantGuiYc);
+					RestaurantCustomerRoleZt RestaurantCustomerRoleZt = new RestaurantCustomerRoleZt(restaurantGuiZt);
+					RestaurantCustomerRoleWc RestaurantCustomerRoleWc = new RestaurantCustomerRoleWc(restaurantGuiWc);
+					RestaurantCustomerRoleEs RestaurantCustomerRoleEs = new RestaurantCustomerRoleEs(restaurantGuiEs);
+					RestaurantCustomerRolePS RestaurantCustomerRolePs = new RestaurantCustomerRolePS(restaurantGuiPS);
+
+					VkCustomerRole RestaurantCustomerRoleVk = new VkCustomerRole(vkAnimationPanel);
+					MarketCustomerRole marketCustomerRole = new MarketCustomerRole(marketGui);
+					person.addRole(marketCustomerRole, "MarketCustomer");
+					marketCustomerRole.setPerson(person);
+					
+					CarAgent carAgent = new CarAgent();
+					carAgent.startThread();
+					CarPassengerRole carPassengerRole = new CarPassengerRole();
+					person.addRole(carPassengerRole, "CarPassenger");
+					carPassengerRole.setPerson(person);
+					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+					cityPanel.vehicles.add(carGui);
+					carAgent.setGui(carGui);
+					carPassengerRole.setCar(carAgent);
+					
+					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
+					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
+					RestaurantCustomerRole.setPerson(person);
+					
+					RestaurantCustomerRoleVk.setTag(AlertTag.RESTAURANT2);
+					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
+					RestaurantCustomerRoleVk.setPerson(person);
+					
+					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
+					RestaurantCustomerRoleZt.setPerson(person);
+					
+					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT4);
+					person.addRole(RestaurantCustomerRoleWc, "RestaurantCustomerWc");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
+					RestaurantCustomerRoleWc.setPerson(person);
+					
+					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
+					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
+					RestaurantCustomerRoleWc.setPerson(person);
+										
+					
+					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
+					
+					
+					
+					bankCustomerRole.setTag(AlertTag.RESTAURANT1);
+					cityPanel.people.add(personGui);
+					person.addRole(bankCustomerRole,"BankCustomer");
+					bankCustomerRole.setPerson(person);
+					
+//					int extraPeople = 0;
+					HousingResidentRole residentRole = new HousingResidentRole();
+					if(count <= 11) {
+						House house = myHouses.get(count);
+						houses.add(house);
+						house.setOccupant(residentRole);
+						residentRole.setHouse(house);
+						System.out.println("Person added to villa");
+					}
+					else if(count <= 36){
+//						extraPeople++;
+						House apartmentHouse = apartment1.getAvailableApartment();
+						houses.add(apartmentHouse);
+						apartmentHouse.setOccupant(residentRole);
+						residentRole.setHouse(apartmentHouse);
+					}
+					else
+					{
+						House apartmentHouse2 = apartment2.getAvailableApartment();
+						houses.add(apartmentHouse2);
+						apartmentHouse2.setOccupant(residentRole);
+						residentRole.setHouse(apartmentHouse2);
+					}
+					
+					
+					residentRole.setTag(AlertTag.HOME);
+					//residentRole.testModeOn();
+					residentRole.setPerson(person);
+					residentRole.isActive = true;
+					residentRole.setRepairMan(repairManRole);
+					person.addRole(residentRole, "Resident");
+					
+					person.HomeNum = count;
+					count++;
+					person.startThread();
+					
+					
+					
+					if (job.equals("RestaurantNormalWaiter")) {
+						NormalWaiterRole RestaurantNormalWaiterRole = new NormalWaiterRole(restaurantGuiYc);
+						RestaurantNormalWaiterRole.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantNormalWaiter", start, end);
+						person.addRole(RestaurantNormalWaiterRole,"RestaurantNormalWaiter");
+						RestaurantNormalWaiterRole.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantNormalWaiterVk")) {
+						VkWaiterNormalRole RestaurantNormalWaiterRoleVK = new VkWaiterNormalRole(RestaurantHostRoleVk);
+						RestaurantHostRoleVk.addWaiter(RestaurantNormalWaiterRoleVK);						
+						person.addJob("RestaurantNormalWaiterVk", start, end);
+						person.addRole(RestaurantNormalWaiterRoleVK,"RestaurantNormalWaiterVk");
+						RestaurantNormalWaiterRoleVK.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantNormalWaiterZt")) {
+						NormalWaiterRoleZt RestaurantNormalWaiterRoleZT = new NormalWaiterRoleZt(restaurantGuiZt);						
+						person.addJob("RestaurantNormalWaiterZt", start, end);
+						person.addRole(RestaurantNormalWaiterRoleZT,"RestaurantNormalWaiterZt");
+						RestaurantNormalWaiterRoleZT.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantNormalWaiterWc")) {
+						NormalWaiterRoleWc RestaurantNormalWaiterRoleWc = new NormalWaiterRoleWc(restaurantGuiWc);
+						RestaurantNormalWaiterRoleWc.setTag(AlertTag.RESTAURANT4);
+						person.addJob("RestaurantNormalWaiterWc", start, end);
+						person.addRole(RestaurantNormalWaiterRoleWc,"RestaurantNormalWaiterWc");
+						RestaurantNormalWaiterRoleWc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantNormalWaiterEs")) {
+						NormalWaiterRoleEs RestaurantNormalWaiterRoleEs = new NormalWaiterRoleEs(restaurantGuiEs);						
+						person.addJob("RestaurantNormalWaiterEs", start, end);
+						person.addRole(RestaurantNormalWaiterRoleEs,"RestaurantNormalWaiterEs");
+						RestaurantNormalWaiterRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantNormalWaiterPs")) {
+						NormalWaiterRolePS RestaurantNormalWaiterRolePS = new NormalWaiterRolePS(restaurantGuiPS);						
+						person.addJob("RestaurantNormalWaiterPs", start, end);
+						person.addRole(RestaurantNormalWaiterRolePS,"RestaurantNormalWaiterPs");
+						RestaurantNormalWaiterRolePS.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCook")) {
+						CookRole RestaurantCookRole = new CookRole(RestaurantCookWaiterMonitor, restaurantGuiYc);
+						
+						RestaurantCookRole.setTag(AlertTag.RESTAURANT1);
+						
+						person.addJob("RestaurantCook", start, end);
+						person.addRole(RestaurantCookRole, "RestaurantCook");
+						RestaurantCookRole.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCookZt")) {
+						CookRoleZt RestaurantCookRoleZT = new CookRoleZt(RestaurantCookWaiterMonitorZT, restaurantGuiZt);
+						
+						RestaurantCookRoleZT.setTag(AlertTag.RESTAURANT1);
+						
+						person.addJob("RestaurantCookZt", start, end);
+						person.addRole(RestaurantCookRoleZT, "RestaurantCookZt");
+						RestaurantCookRoleZT.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCookWc")) {
+						CookRoleWc RestaurantCookRoleWc = new CookRoleWc(RestaurantCookWaiterMonitorWc, restaurantGuiWc);
+						RestaurantCookRoleWc.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantCookWc", start, end);
+						person.addRole(RestaurantCookRoleWc, "RestaurantCookWc");
+						RestaurantCookRoleWc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCookEs")) {
+						CookRoleEs RestaurantCookRoleEs = new CookRoleEs(RestaurantCookWaiterMonitorEs, restaurantGuiEs);
+						
+						RestaurantCookRoleEs.setTag(AlertTag.RESTAURANT1);
+						
+						person.addJob("RestaurantCookEs", start, end);
+						person.addRole(RestaurantCookRoleEs, "RestaurantCookEs");
+						RestaurantCookRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCookPs")) {
+						CookRolePS RestaurantCookRolePS = new CookRolePS(RestaurantCookWaiterMonitorPS, restaurantGuiPS);					
+						RestaurantCookRolePS.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantCookPs", start, end);
+						person.addRole(RestaurantCookRolePS, "RestaurantCookPs");
+						RestaurantCookRolePS.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCookVk")) {
+						VkCookRole RestaurantCookRoleVK = new VkCookRole(revolvingStand, vkAnimationPanel);
+						RestaurantCookRoleVK.setTag(AlertTag.RESTAURANT1);
+						RestaurantCookRoleVK.setHost(RestaurantHostRoleVk);
+						RestaurantHostRoleVk.setCook(RestaurantCookRoleVK);
+						person.addJob("RestaurantCookVk", start, end);
+						person.addRole(RestaurantCookRoleVK, "RestaurantCookVk");
+						RestaurantCookRoleVK.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHost")) {
+						person.addJob("RestaurantHost", start, end);
+						person.addRole(RestaurantHostRoleYc, "RestaurantHost");
+						RestaurantHostRoleYc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostZt")) {
+						person.addJob("RestaurantHostZt", start, end);
+						person.addRole(RestaurantHostRoleZt, "RestaurantHostZt");
+						RestaurantHostRoleZt.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostEs")) {
+						person.addJob("RestaurantHostEs", start, end);
+						person.addRole(RestaurantHostRoleEs, "RestaurantHostEs");
+						RestaurantHostRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostPs")) {
+						person.addJob("RestaurantHostPs", start, end);
+						person.addRole(RestaurantHostRolePS, "RestaurantHostPs");
+						RestaurantHostRolePS.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostWc")) {
+						person.addJob("RestaurantHostWc", start, end);
+						person.addRole(RestaurantHostRoleWc, "RestaurantHostWc");
+						RestaurantHostRoleWc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantHostVk")) {
+						person.addJob("RestaurantHostVk", start, end);
+						person.addRole(RestaurantHostRoleVk, "RestaurantHostVk");
+						RestaurantHostRoleVk.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashier")) {
+						CashierRole RestaurantCashierRole = new CashierRole(restaurantGuiYc);
+						RestaurantCashierRole.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantCashier", start, end);
+						person.addRole(RestaurantCashierRole,"RestaurantCashier");
+						RestaurantCashierRole.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierZt")) {
+						CashierRoleZt RestaurantCashierRoleZT = new CashierRoleZt(restaurantGuiZt);
+											
+						person.addJob("RestaurantCashierZt", start, end);
+						person.addRole(RestaurantCashierRoleZT,"RestaurantCashierZt");
+						RestaurantCashierRoleZT.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierWc")) {
+						CashierRoleWc RestaurantCashierRoleWc = new CashierRoleWc(restaurantGuiWc);
+						RestaurantCashierRoleWc.setTag(AlertTag.RESTAURANT1);
+						person.addJob("RestaurantCashierWc", start, end);
+						person.addRole(RestaurantCashierRoleWc,"RestaurantCashierWc");
+						RestaurantCashierRoleWc.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierEs")) {
+						CashierRoleEs RestaurantCashierRoleEs = new CashierRoleEs(restaurantGuiEs);
+						person.addJob("RestaurantCashierEs", start, end);
+						person.addRole(RestaurantCashierRoleEs,"RestaurantCashierEs");
+						RestaurantCashierRoleEs.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierPs")) {
+						CashierRolePS RestaurantCashierRolePS = new CashierRolePS(restaurantGuiPS);
+						person.addJob("RestaurantCashierPs", start, end);
+						person.addRole(RestaurantCashierRolePS,"RestaurantCashierPs");
+						RestaurantCashierRolePS.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCashierVk")) {
+						VkCashierRole RestaurantCashierRoleVK = new VkCashierRole(vkAnimationPanel);
+						RestaurantCashierRoleVK.setHost(RestaurantHostRoleVk);
+						RestaurantCashierRoleVK.setTag(AlertTag.RESTAURANT1);
+						RestaurantHostRoleVk.setCashier(RestaurantCashierRoleVK);	
+						person.addJob("RestaurantCashierVk", start, end);
+						person.addRole(RestaurantCashierRoleVK,"RestaurantCashierVk");
+						RestaurantCashierRoleVK.setPerson(person);
+						person.hasCar = false;
+					}
+					if (job.equals("RestaurantCustomer"))
+					{
+						person.hasCar = false;
+					}
+					if (job.equals("Teller")) {
+						person.addJob("Teller", start, end);
+						person.addRole(BankTellerRole, "Teller");
+						BankTellerRole.setPerson(person);	
+//						person.hasCar = true;
+					}
+					if(job.equals("Nobody")) {
+						person.addJob("MarketEmployee", start, end);
+						person.addRole(MarketEmployeeRole,"MarketEmployee");
+						MarketEmployeeRole.setPerson(person);
+						person.setMoney(1000000);
+//						person.hasCar = true;
+					}
+					if(job.equals("RepairMan"))
+					{
+						person.addJob("RepairMan", start, end);
+						person.addRole(repairManRole,"RepairMan");
+						repairManRole.setPerson(person);
+						person.setMoney(1000000);
+//						person.hasCar = true;
+					}
+					if(job.equals("MarketEmployee"))
+					{
+						person.addJob("MarketEmployee", start,end);
+						person.addRole(MarketEmployeeRole, "MarketEmployee");
+						MarketEmployeeRole.setPerson(person);
+						person.setMoney(10000);
+//						person.hasCar = true;
+					}
+					if(job.equals("MarketCashier"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+//						person.hasCar = true;
+						person.hasCar = false;
+					}
+					if(job.equals("MarketCustomer"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+						person.hasCar = false;
+					}
+					if(job.equals("NormativeB1"))
+					{
+						person.addJob("MarketEmployee", start, end);
+						person.setMoney(100000);
+						((PeopleAgent)person).setType(job);
+						person.hasCar = false;
+					}
+					if(job.equals("NormativeB2"))
+					{
+						person.addJob("MarketCashier", start, end);
+						person.setMoney(100000);
+						((PeopleAgent)person).setType(job);
+						person.hasCar = false;
+					}
+					if(job.equals("NormativeB3"))
+					{
+						person.addJob("MarketCashier", start, end);
+						person.addRole(repairManRole, "RepairMan");
+						repairManRole.setPerson(person);
+						person.setMoney(100000);
+						((PeopleAgent)person).setType(job);
+//						person.hasCar = true;
+					}
+					if(job.equals("BankRestaurantMarket"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB1");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
+					if(job.equals("MarketRestaurantBank"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB2");
+						person.setMoney(50000);
+						person.hasCar = true;
+					}
+					if(job.equals("BankMarketRestaurant"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB3");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
+					if(job.equals("NormativeA"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeA");
 						person.setMoney(1000000);
 						person.hasCar = false;
 					}
