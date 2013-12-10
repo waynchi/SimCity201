@@ -213,9 +213,6 @@ public class VkCustomerRole extends Role implements Customer{
 				this.cashier = (VkCashierRole) ((VkHostRole)host).cashier;
 			}
 		}
-		if (host == null) {
-			print("FUCK");
-		}
 		gotHungry();
 	}
 	
