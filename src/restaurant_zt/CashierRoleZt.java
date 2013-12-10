@@ -167,72 +167,42 @@ public class CashierRoleZt extends Role implements Cashier {
 	// market interaction
 	
 	// from cook
-<<<<<<< HEAD
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
-		print("told by cook that market order is delivered, ready to pay");
-		boolean orderFound = false;
-		synchronized(marketBills){
-			for (MarketBill mb : marketBills) {
-				if (mb.orderNumber == orderNumber) {
-					mb.itemsReceived = true;
-					orderFound = true;
+		public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
+			log.add(new LoggedEvent("told by cook that market order is delivered, ready to pay"));
+			boolean orderFound = false;
+			synchronized(marketBills){
+				for (MarketBill mb : marketBills) {
+					if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
+						mb.itemsReceived = true;
+						orderFound = true;
+					}
+				}
+				if (!orderFound) {
+					marketBills.add(new MarketBill(marketOrder, orderNumber, marketNumber));
+				}
+			}
+			getPersonAgent().CallstateChanged();
+		}
+		
+		// from market cashier
+		public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
+			log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
+
+			boolean orderFound = false;
+			synchronized(marketBills){
+				for (MarketBill mb : marketBills) {
+					if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
+						mb.checkReceived = true;
+						orderFound = true;
+					}
 				}
 			}
 			if (!orderFound) {
-				marketBills.add(new MarketBill(marketOrder, orderNumber));
+				marketBills.add(new MarketBill(price ,items, orderNumber, marketNumber));
 			}
+			getPersonAgent().CallstateChanged();
+
 		}
-		getPersonAgent().CallstateChanged();
-	}
-	
-	// from market cashier
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
-		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
-
-		boolean orderFound = false;
-		synchronized(marketBills){
-			for (MarketBill mb : marketBills) {
-				if (mb.orderNumber == orderNumber) {
-					mb.checkReceived = true;
-					orderFound = true;
-=======
-				public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
-					log.add(new LoggedEvent("told by cook that market order is delivered, ready to pay"));
-					boolean orderFound = false;
-					synchronized(marketBills){
-						for (MarketBill mb : marketBills) {
-							if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
-								mb.itemsReceived = true;
-								orderFound = true;
-							}
-						}
-						if (!orderFound) {
-							marketBills.add(new MarketBill(marketOrder, orderNumber, marketNumber));
-						}
-					}
-					getPersonAgent().CallstateChanged();
->>>>>>> restaurant
-				}
-				
-				// from market cashier
-				public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
-					log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
-
-					boolean orderFound = false;
-					synchronized(marketBills){
-						for (MarketBill mb : marketBills) {
-							if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
-								mb.checkReceived = true;
-								orderFound = true;
-							}
-						}
-					}
-					if (!orderFound) {
-						marketBills.add(new MarketBill(price ,items, orderNumber, marketNumber));
-					}
-					getPersonAgent().CallstateChanged();
-
-				}
 
 	// from market cashier
 	public void msgHereIsChange(double change) {
