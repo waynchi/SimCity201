@@ -95,7 +95,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario7.addActionListener(this);
 			panel.add(btnScenario7);
 			
-			JButton btnScenario8 = new JButton("Trigger Predestrian Getting Hit");
+			JButton btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 			btnScenario8.addActionListener(this);
 			panel.add(btnScenario8);
 			
@@ -234,9 +234,15 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			cityGui.triggerVehicleCrash();
 		}
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
+			System.out.println("CLICKED");
 			if(cityGui.isPedestrianCrossingStreet())
 			{
 				cityGui.stopPedestriansCrossingStreet();
+				System.out.println("Starting pedestrian crash scenario");
+			}
+			else
+			{
+				System.out.println("Pedestrian must be crossing the street!");
 			}
 		}
 		else if(e.getActionCommand().equals("Trigger Weekend")) {
