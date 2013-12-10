@@ -163,6 +163,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			tracePanel.showAlertsWithTag(AlertTag.BANK);
 			tracePanel.showAlertsWithTag(AlertTag.HOME);
 			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT1);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT2);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT3);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT4);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT5);
+			tracePanel.showAlertsWithTag(AlertTag.RESTAURANT6);
 			tracePanel.showAlertsWithTag(AlertTag.MARKET);
 			
 
