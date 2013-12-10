@@ -70,6 +70,9 @@ public class Sidewalk {
 	public void redLight() {
 		redLight = true;
 	}
+	public People getPerson() {
+		return person;
+	}
 	
 	public void greenLight() {
 		redLight = false;

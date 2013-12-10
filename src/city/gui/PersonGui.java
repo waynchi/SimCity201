@@ -110,6 +110,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			this.setOrientation();
 		}
+		nextCell.setPerson(person);
 	}
 
 	public void setDestination(String destination) {
