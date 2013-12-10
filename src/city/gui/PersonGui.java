@@ -414,7 +414,7 @@ public class PersonGui extends Rectangle2D.Double {
 				} else {
 					this.direction = "down";
 					sidewalkSegment = allSidewalks.get(15);
-					currentCell = sidewalkSegment.get(0);
+					currentCell = sidewalkSegment.get(4);
 				}
 
 			}
