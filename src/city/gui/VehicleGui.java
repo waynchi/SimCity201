@@ -33,6 +33,8 @@ public class VehicleGui extends Rectangle2D.Double {
 	public String typeOfVehicle;
 	private ImageIcon img = null;
 	protected boolean simulatingCrash = false;
+	protected boolean simulatingPedestrianCrash = false;
+	protected PersonGui simulatorPerson = null;
 	
 	public VehicleGui( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
@@ -271,6 +273,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			this.direction="down";
 			laneSegment = allLanes.get(12);
 			currentCell = laneSegment.get(0);
+			
 
 		}
 		else if(getCurrentLane().equals("5_1")) {
@@ -558,6 +561,14 @@ public class VehicleGui extends Rectangle2D.Double {
 				this.direction="down";
 				laneSegment = allLanes.get(12);
 				currentCell = laneSegment.get(6);
+				//check if pedestrian is there
+				if(simulatingPedestrianCrash && simulatorPerson != null)
+				{
+					ArrayList<Sidewalk> sidewalk = cityPanel.allSidewalks.get(8);
+					Sidewalk sidewalkSegment = sidewalk.get(9);
+					simulatorPerson.setSidewalk(sidewalkSegment);
+					
+				}
 			}
 			//Option #2
 			else {
@@ -629,6 +640,12 @@ public class VehicleGui extends Rectangle2D.Double {
 				this.direction = "down";
 				laneSegment = allLanes.get(12);
 				currentCell = laneSegment.get(6);
+				if(simulatingPedestrianCrash && simulatorPerson != null)
+				{
+					ArrayList<Sidewalk> sidewalk = cityPanel.allSidewalks.get(8);
+					Sidewalk sidewalkSegment = sidewalk.get(9);
+					simulatorPerson.setSidewalk(sidewalkSegment);		
+				}
 			}
 		}
 
@@ -795,6 +812,11 @@ public class VehicleGui extends Rectangle2D.Double {
 		// TODO Auto-generated method stub
 		simulatingCrash = true;
 		this.currentCell.simulatingCrash = true;
+	}
+	
+	public void setSimulatorPerson(PersonGui p)
+	{
+		simulatorPerson = p;
 	}
 	
 	//gets overwritten by cargui

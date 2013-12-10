@@ -50,8 +50,8 @@ public class PersonGui extends Rectangle2D.Double {
 
 	}
 
-	public void setSidewalk(Lane l) {
-		this.currentCell = sidewalkSegment.get(sidewalkSegment.indexOf(l));
+	public void setSidewalk(Sidewalk s) {
+		this.currentCell = s;
 	}
 
 	public void setLocation(int x, int y) {
@@ -433,15 +433,15 @@ public class PersonGui extends Rectangle2D.Double {
 
 
 			}
-			if (getCurrentLane().equals("22_0")) {
-				this.currentCell.hasPerson = false;
-				this.direction = "left";
-				sidewalkSegment = allSidewalks.get(2);
-				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
-				this.currentCell.hasPerson = true;
-
-
-			}
+//			if (getCurrentLane().equals("22_0")) {
+//				this.currentCell.hasPerson = false;
+//				this.direction = "left";
+//				sidewalkSegment = allSidewalks.get(2);
+//				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
+//				this.currentCell.hasPerson = true;
+//
+//
+//			}
 			if (getCurrentLane().equals("20_0")) {
 				this.currentCell.hasPerson = false;
 				if (yDestination > y) {
@@ -741,5 +741,6 @@ public class PersonGui extends Rectangle2D.Double {
 		// TODO Auto-generated method stub
 		simulatingCrash = true;
 		this.currentCell.simulatingCrash = true;
+		this.currentCell.hasPerson = false;
 	}
 }

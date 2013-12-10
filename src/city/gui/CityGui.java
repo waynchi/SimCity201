@@ -1613,22 +1613,34 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public boolean isPedestrianCrossingStreet() {
 		// TODO Auto-generated method stub
-		if(cityPanel.sidewalkStrip23.get(0).hasPerson || cityPanel.sidewalkStrip23.get(1).hasPerson)
+		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
 			return true;
 		
 		
 		return false;
 	}
 
-	public void stopPedestriansCrossingStreet() {
+	public void stopPedestriansCrossingStreetAndTellVehiclesSimulationStarted() {
 		// TODO Auto-generated method stub
 
-		if(cityPanel.sidewalkStrip23.get(0).hasPerson)
-			cityPanel.sidewalkStrip23.get(0).getPersonGui().stopNow();
+		PersonGui p = null;
+		
 		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
-			cityPanel.sidewalkStrip23.get(1).getPersonGui().stopNow();
-
+		{
+			p = cityPanel.sidewalkStrip23.get(1).getPersonGui();
+			p.stopNow();
+		}
+		if(p != null)
+		{
+			for(VehicleGui v : cityPanel.vehicles)
+			{
+				v.simulatingPedestrianCrash = true;
+				v.setSimulatorPerson(p);
+			}
+		}
 	}
+
+	
 	
 	
 }
