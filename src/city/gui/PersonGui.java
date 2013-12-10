@@ -58,7 +58,6 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void move(double xVelocity, double yVelocity) {
-		System.out.println(this.direction);
 		Sidewalk nextCell;
 		if (this.direction.equals("right")) {
 			nextCell = sidewalkSegment.get(sidewalkSegment
@@ -269,7 +268,9 @@ public class PersonGui extends Rectangle2D.Double {
 	}
 
 	public void draw(Graphics2D g2) {
-		System.out.println(getCurrentLane());
+		if(!getCurrentLane().equals("0_0")) {
+			//System.out.println(getCurrentLane());
+		}
 		if (xDestination > 0 && yDestination > 0) {
 			time++;
 			g2.setColor(Color.red);
@@ -303,7 +304,7 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(7);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
-			if(getCurrentLane().equals("24_0")) {
+			if(getCurrentLane().equals("24_3")) {
 				this.currentCell.hasPerson = false;
 				if(yDestination < y) {
 					this.direction = "up";
@@ -345,20 +346,31 @@ public class PersonGui extends Rectangle2D.Double {
 				currentCell = sidewalkSegment.get(0);
 			}
 
+			if(getCurrentLane().equals("2_10")) {
+				//Crossed the first street. Up or down?
+				if(yDestination < 152) {
+					this.direction = "up";
+					sidewalkSegment = allSidewalks.get(16);
+					currentCell = sidewalkSegment.get(16);
+				}
+				if(yDestination == 152) {
+					this.direction = "right";
+					sidewalkSegment = allSidewalks.get(22);
+					currentCell = sidewalkSegment.get(0);
+				}
+							
+			}
 			if (getCurrentLane().equals("2_5")) {
 				this.currentCell.hasPerson = false;
 				// Intersection
 				if(xDestination > 200) {
 					if (yDestination < 152) {
 						// We need to cross
-						this.direction = "up";
-						sidewalkSegment = allSidewalks.get(16);
-						currentCell = sidewalkSegment.get(12);
+						this.direction = "right";
+						
 					}
 					if (yDestination == 152) {
 						this.direction = "right";
-						sidewalkSegment = allSidewalks.get(22);
-						currentCell = sidewalkSegment.get(0);
 					}
 					if (yDestination > 152) {
 						this.direction = "down";
@@ -371,18 +383,22 @@ public class PersonGui extends Rectangle2D.Double {
 					currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 				}
 			}
-			if (getCurrentLane().equals("16_0")) {
+			if (getCurrentLane().equals("16_5")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(10);
+				currentCell = sidewalkSegment.get(4);
+			}
+			if(getCurrentLane().equals("10_36")) {
+				//Crossed the sidewalk. Continue to next segment
+				this.direction = "right";
+				sidewalkSegment = allSidewalks.get(11);
 				currentCell = sidewalkSegment.get(0);
 			}
-			if (getCurrentLane().equals("10_27")) {
+			if (getCurrentLane().equals("10_32")) {
 				this.currentCell.hasPerson = false;
 				if (xDestination > x) {
 					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(11);
-					currentCell = sidewalkSegment.get(0);
 				} else {
 					this.direction = "down";
 					sidewalkSegment = allSidewalks.get(15);
@@ -414,7 +430,7 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(25);
 				currentCell = sidewalkSegment.get(0);
 			}
-			if (getCurrentLane().equals("25_32")) {
+			if (getCurrentLane().equals("25_33")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(24);
@@ -450,12 +466,17 @@ public class PersonGui extends Rectangle2D.Double {
 				sidewalkSegment = allSidewalks.get(3);
 				currentCell = sidewalkSegment.get(sidewalkSegment.size()-1);
 			}
-			if (getCurrentLane().equals("22_27")) {
+			if(getCurrentLane().equals("22_36")) {
+				this.currentCell.hasPerson = false;
+				this.direction="right";
+				sidewalkSegment = allSidewalks.get(6);
+				currentCell = sidewalkSegment.get(0);
+			}
+			if (getCurrentLane().equals("22_32")) {
 				this.currentCell.hasPerson = false;
 				if (yDestination < y) {
 					this.direction = "right";
-					sidewalkSegment = allSidewalks.get(6);
-					currentCell = sidewalkSegment.get(0);
+
 				} else {
 					this.direction = "down";
 					sidewalkSegment = allSidewalks.get(20);
