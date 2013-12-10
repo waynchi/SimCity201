@@ -415,11 +415,12 @@ public class CityGui extends JFrame implements ActionListener {
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		BusPassengerRole bpr = new BusPassengerRole();
-//		bpr.setPerson(person);
-//		bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-//		bpr.setDestinationPlace("Bank");
-//		bpr.msgIsActive();
+//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
+//		personGui.setDestination("Bus Stop 1");
+//		personGui.setSidewalk(allSidewalks.get(23).get(24));
+//		personGui.setSideWalkSegment(allSidewalks.get(23));
+//		personGui.setDirection("left");
+//		this.people.add(personGui);
 
 	}
 	
