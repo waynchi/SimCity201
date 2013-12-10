@@ -158,6 +158,11 @@ public class PeopleAgent extends Agent implements People{
 		return name;
 	}
 	
+	public PersonGui getPersonGui()
+	{
+		return personGui;
+	}
+	
 	public void setPersonGui(PersonGui gui)
 	{
 		personGui = gui;

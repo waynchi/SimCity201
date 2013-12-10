@@ -27,6 +27,8 @@ public interface People {
 	
 	public Teller getTeller();
 	
+	public PersonGui getPersonGui();
+	
 	public abstract void setType(String t);
 	
 	public abstract Role getTeller(int i);
