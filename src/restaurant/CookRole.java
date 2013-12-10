@@ -147,14 +147,14 @@ public class CookRole extends Role implements Cook{
 	}	
 
 	// from market truck (market employee for now)
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
 			foods.get(entry.getKey()).isOrdered = false;
 		}
 		for (MarketOrder mo : marketOrders) {
-			if (mo.orderNumber == orderNumber) {
+			if (mo.orderNumber == orderNumber && mo.marketNumber == marketNumber) {
 				mo.delivered = true;
 			}
 		}
@@ -163,9 +163,9 @@ public class CookRole extends Role implements Cook{
 	}
 
 
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
 		for (MarketOrder mo : marketOrders) {
-			if (mo.marketOrder == items) {
+			if (mo.marketOrder == items && mo.marketNumber == market) {
 				mo.orderNumber = orderNumber;
 			}
 		}
@@ -269,7 +269,7 @@ public class CookRole extends Role implements Cook{
 	public void askCashierToPayForOrder(MarketOrder order) {
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber);
+		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, order.marketNumber);
 		marketOrders.remove(order);
 	}
 	

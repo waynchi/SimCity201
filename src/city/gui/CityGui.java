@@ -183,6 +183,7 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		bankGui = new BankGui(timer);
 		BankTellerRole = new TellerRole(bankGui); 
+		bank.t = BankTellerRole;
 		restaurantGuiYc = new RestaurantGui(timer);
 		restaurantGuiZt = new RestaurantGuiZt(timer);
 		restaurantGuiWc = new RestaurantGuiWc(timer);

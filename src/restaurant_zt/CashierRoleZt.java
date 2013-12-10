@@ -14,6 +14,7 @@ import java.util.concurrent.Semaphore;
 
 import com.sun.xml.internal.bind.marshaller.MinimumEscapeHandler;
 
+import bank.TellerRole;
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
 import people.People;
