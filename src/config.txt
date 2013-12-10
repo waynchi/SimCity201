@@ -41,3 +41,4 @@
 1,BankRestaurantMarket,bankrestaurantmarket,50000,50000
 1,MarketRestaurantBank,MarketRestaurantBank,50000,50000
 1,BankMarketRestaurant,BankMarketRestaurant,50000,50000
+1,Robber,Robber,5000,5000

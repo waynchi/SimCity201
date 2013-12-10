@@ -70,6 +70,7 @@ import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
 import transportation.BusAgent;
+import transportation.BusPassengerRole;
 import transportation.BusStop;
 import transportation.CarAgent;
 import transportation.CarGui;
@@ -570,6 +571,9 @@ public class CityGui extends JFrame implements ActionListener {
 					cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
+					BusPassengerRole busPassengerRole = new BusPassengerRole();
+					person.addRole(busPassengerRole, "BusPassenger");
+					busPassengerRole.setPerson(person);
 					
 					RestaurantCustomerRole.setTag(AlertTag.RESTAURANT1);
 					person.addRole(RestaurantCustomerRole,"RestaurantCustomer");
@@ -656,7 +660,7 @@ public class CityGui extends JFrame implements ActionListener {
 					if (job.equals("Robber")) {
 						RobberRole robberRole = new RobberRole(bankGui);
 						robberRole.setTag(AlertTag.BANK);
-						person.addJob("Robber", start, end);
+						//person.addJob("Robber", start, end);
 						person.addRole(robberRole,"Robber");
 						robberRole.setPerson(person);
 						person.hasCar = false;

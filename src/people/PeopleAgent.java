@@ -11,6 +11,7 @@ import bank.interfaces.Teller;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
 import transportation.CarPassengerRole;
+import transportation.BusPassengerRole;
 import restaurant.HostRole;
 import restaurant_zt.HostRoleZt;
 import restaurant_wc.HostRoleWc;
@@ -222,7 +223,7 @@ public class PeopleAgent extends Agent implements People{
 	public void msgDone(String role)
 	{
 		print("Recieved msgDone from "+ role);
-		if(role == "CarPassenger")
+		if(role == "CarPassenger" || role == "BusPassenger")
 		{
 			moving.release();
 		}
@@ -246,7 +247,10 @@ public class PeopleAgent extends Agent implements People{
 //			}
 			if(role.equals("MarketCustomerRole"))
 			{
-				hasCar = true;
+				if(!type.equals("NormativeB3"))
+				{
+					hasCar = true;
+				}
 			}
 			if(role.equals("RepairManFixing"))
 			{
@@ -366,55 +370,18 @@ public class PeopleAgent extends Agent implements People{
 			{
 				location = AgentLocation.Home;
 				event = AgentEvent.GoingToSleep;
-				buy = BuyState.NextDay;
 				deposit = DepositState.NextDay;
-				log.add(new LoggedEvent("Sleeping In Message"));
+				buy = BuyState.NextDay;
+				log.add(new LoggedEvent("Sleeping In Message"));	
 				Hunger = 1230;
 				stateChanged();
 				return;
 			}
-			if((state == AgentState.Idle || state == AgentState.IdleAtHome))
-			{
-				if(buy == BuyState.NextDay)
-				{
-					if(!Markets.get(0).isClosed)
-					{
-						if(rand.nextInt(100) <= 100)
-						{
-							buy = BuyState.GoingToBuy;
-						}
-						else
-						{
-							buy = BuyState.NotBuying;
-						}
-						if(buy == BuyState.GoingToBuy)
-						{
-							if(Money >= 20000)
-							{
-								event = AgentEvent.GoingToBuyCar;
-								print("I am going to buy a car");
-								log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-								buy = BuyState.NotBuying;
-								stateChanged();
-								return;
-							}
-	//						else
-	//						{
-	//							event = AgentEvent.GoingToRetrieveMoney;
-	//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-	//							stateChanged();
-	//							buy = BuyState.NotBuying;
-	//							return;
-	//						}	
-						}
-					}
-				}
-			}
-			if(state == AgentState.Idle &&  Time >= 1300)
+			if(state == AgentState.Idle)
 			{
 				if(!Banks.get(0).isClosed)
 				{
-					if(Money >= 10000)
+					if(Money >= 1000000)
 					{
 						if(deposit == DepositState.NextDay)
 						{
@@ -423,9 +390,50 @@ public class PeopleAgent extends Agent implements People{
 							deposit = DepositState.Deposited;
 							stateChanged();
 							return;
-						}						
+						}
 					}
 				}
+			}
+			if((state == AgentState.Idle || state == AgentState.IdleAtHome) &&  Time >= 1300)
+			{
+				if(buy == BuyState.NextDay)
+				{
+					if(!Markets.get(0).isClosed)
+					{
+						if(!hasCar)
+						{
+							if(rand.nextInt(100) <= 100)
+							{
+								buy = BuyState.GoingToBuy;
+							}
+							else
+							{
+								buy = BuyState.NotBuying;
+							}
+							if(buy == BuyState.GoingToBuy)
+							{
+								if(Money >= 20000)
+								{
+									event = AgentEvent.GoingToBuyCar;
+									print("I am going to buy a car");
+									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+									buy = BuyState.NotBuying;
+									stateChanged();
+									return;
+								}
+		//						else
+		//						{
+		//							event = AgentEvent.GoingToRetrieveMoney;
+		//							log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+		//							stateChanged();
+		//							buy = BuyState.NotBuying;
+		//							return;
+		//						}	
+							}
+						}
+					}
+				}
+			
 			}
 			if(state == AgentState.Idle || state == AgentState.IdleAtHome)
 			{
@@ -1766,12 +1774,34 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
+				if(type.equals("NormativeB3"))
+				{
+					personGui.setDestination("BusStop 1");
+				}
+				else
+				{
+				//TODO Randomization
 				personGui.setDestination("Bank");
 				print("Do Not Have Car");
+				}
 			}
 		try {
 			moving.acquire();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for(MyRole r: roles)
+		{
+			if(r.description == "BusPassenger")
+			{
+				((BusPassengerRole)r.role).setDestinationPlace("Bank");
+				r.role.msgIsActive();
+			}
+		}
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		}
