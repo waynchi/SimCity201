@@ -1733,12 +1733,20 @@ public class PeopleAgent extends Agent implements People{
 		}
 		}
 		location = AgentLocation.Market;
-		for(MyRole r: roles)
+		if(!Markets.get(0).isClosed)
 		{
-			if(r.description.equals("MarketCustomer"))
-			{	
-				r.role.msgIsActive();
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("MarketCustomer"))
+				{	
+					r.role.msgIsActive();
+				}
 			}
+		}
+		else
+		{
+			state = AgentState.Idle;
+			event = AgentEvent.Idle;
 		}
 	}
 
@@ -1847,13 +1855,20 @@ public class PeopleAgent extends Agent implements People{
 			}
 		}
 		location = AgentLocation.Bank;
-		
-		for(MyRole r: roles)
+		if(!Banks.get(0).isClosed)
 		{
-			if(r.description == "BankCustomer")
+			for(MyRole r: roles)
 			{
-				r.role.msgIsActive();
+				if(r.description == "BankCustomer")
+				{
+					r.role.msgIsActive();
+				}
 			}
+		}
+		else
+		{
+			state = AgentState.Idle;
+			event = AgentEvent.Idle;
 		}
 	}
 		

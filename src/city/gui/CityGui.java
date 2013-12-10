@@ -939,7 +939,7 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					person.HomeNum = count;
 //					if(!(job.equals("BankMarketRestaurant"))){
-//						person.setTest();
+						person.setTest();
 //					}
 					count++;
 					person.startThread();		
