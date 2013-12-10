@@ -60,7 +60,7 @@ public class PeopleAgent extends Agent implements People{
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public enum DepositState
-	{Deposited,NextDay	}
+	{Deposited,NextDay}
 	
 	public HungerState hunger = HungerState.NotHungry;
 	public AgentState state = AgentState.Sleeping;
@@ -1530,7 +1530,19 @@ public class PeopleAgent extends Agent implements People{
 			}
 			else
 			{
-				personGui.setDestination("Home 1"); //TODO this is guess
+				if(HomeNum <= 12)
+				{
+					personGui.setDestination("Home "+ HomeNum);
+				}
+				else if(HomeNum <= 37)
+				{
+					personGui.setDestination("Apartment 1");
+				}
+				else if(HomeNum <= 62)
+				{
+					personGui.setDestination("Apartment 2");
+				}
+				 //TODO this is guess
 				print("Do Not Have Car");
 			}
 			

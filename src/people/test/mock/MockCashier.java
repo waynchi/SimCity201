@@ -58,18 +58,31 @@ public class MockCashier extends Role implements Cashier {
 		
 	}
 
+
 	@Override
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder,
-			int orderNumber) {
+			int orderNumber, int marketNumber) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,
-			int orderNumber) {
+			int orderNumber, int marketNumber) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
