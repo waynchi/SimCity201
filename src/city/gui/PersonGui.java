@@ -30,6 +30,7 @@ public class PersonGui extends Rectangle2D.Double {
 	String destination;
 	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
 	public boolean simulatingCrash;
+	public boolean labelIt = false;
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -299,6 +300,8 @@ public class PersonGui extends Rectangle2D.Double {
 			//g2.draw(this);
 			
 			g2.drawImage(custsprite.getImage(), (int)x, (int)y, null);
+			
+			if (labelIt) g2.drawString(person.getName(), (int)x-1, (int)y-2);
 
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
 				this.reachedDestination(this.destination);
