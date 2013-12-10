@@ -414,6 +414,12 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+//		BusPassengerRole bpr = new BusPassengerRole();
+//		bpr.setPerson(person);
+//		bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+//		bpr.setDestinationPlace("Bank");
+//		bpr.msgIsActive();
 
 	}
 	
@@ -451,63 +457,85 @@ public class CityGui extends JFrame implements ActionListener {
 		configParams.clear();
 	}
 	public void CreatePerson(String name, String role, double money, boolean hasCar) {
+		
 		PeopleAgent person = new PeopleAgent(name, money, hasCar); 
 		person.setCityGui(this);
 		person.addYelp(yelp);
 		PersonGui personGui;
+		CarGui carGui;
+		
+		CarAgent carAgent = new CarAgent();
+		carAgent.startThread();
+		CarPassengerRole carPassengerRole = new CarPassengerRole();
+		person.addRole(carPassengerRole, "CarPassenger");
+		carPassengerRole.setPerson(person);
 		if(count == 0) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(1),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(1), cityPanel.allRoads, cityPanel);
+
 		}
 		else if(count == 1) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(5),cityPanel.allSidewalks, cityPanel, person);					
-
+			carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(5), cityPanel.allRoads, cityPanel);
 		}
 		else if(count == 2) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(10),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(10), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 3) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(1),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(1), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 4) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(5), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 5) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(10), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 6) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(8), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 7) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(12), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 8) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(16), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 9) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(2),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(2), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 10) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(6), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 11) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(10), cityPanel.allRoads, cityPanel);
 
 		}
 		else if(count == 12) {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(18), cityPanel.allRoads, cityPanel);
 
 		}
 		else {
 			personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
+			carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(24), cityPanel.allRoads, cityPanel);
 
 		}
 		person.setPersonGui(personGui);
@@ -530,12 +558,7 @@ public class CityGui extends JFrame implements ActionListener {
 		person.addRole(marketCustomerRole, "MarketCustomer");
 		marketCustomerRole.setPerson(person);
 		
-		CarAgent carAgent = new CarAgent();
-		carAgent.startThread();
-		CarPassengerRole carPassengerRole = new CarPassengerRole();
-		person.addRole(carPassengerRole, "CarPassenger");
-		carPassengerRole.setPerson(person);
-		CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+
 		//cityPanel.vehicles.add(carGui);
 		carAgent.setGui(carGui);
 		carPassengerRole.setCar(carAgent);
@@ -746,59 +769,74 @@ public class CityGui extends JFrame implements ActionListener {
 					person.setCityGui(this);
 					person.addYelp(yelp);
 					PersonGui personGui;
+					CarGui carGui;
 					if(count == 0) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(1),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(1), cityPanel.allRoads, cityPanel);
+
 					}
 					else if(count == 1) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(5),cityPanel.allSidewalks, cityPanel, person);					
-
+						carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(5), cityPanel.allRoads, cityPanel);
 					}
 					else if(count == 2) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(10),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road20, cityPanel.road20.get(10), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 3) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(1),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(1), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 4) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(5), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 5) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road19, cityPanel.road19.get(10), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 6) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(8), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 7) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(12), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 8) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(16), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 9) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(2),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(2), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 10) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(6), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 11) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(10), cityPanel.allRoads, cityPanel);
 
 					}
 					else if(count == 12) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(18), cityPanel.allRoads, cityPanel);
 
 					}
 					else {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(24), cityPanel.allRoads, cityPanel);
 
 					}
 					person.setPersonGui(personGui);
@@ -826,7 +864,6 @@ public class CityGui extends JFrame implements ActionListener {
 					CarPassengerRole carPassengerRole = new CarPassengerRole();
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
-					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 					cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
@@ -901,9 +938,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-					if(!(job.equals("BankMarketRestaurant"))){
-						person.setTest();
-					}
+//					if(!(job.equals("BankMarketRestaurant"))){
+//						person.setTest();
+//					}
 					count++;
 					person.startThread();		
 					
@@ -1754,6 +1791,9 @@ public class CityGui extends JFrame implements ActionListener {
 		bg.msgGoToNextStop(busAgent, cityPanel.busStops.get(cityPanel.busStops.size()-1));
 		cityPanel.vehicles.add(bg);
 		timer.start();
+		
+		
+		
 	}
 	
 	public void closeBanks() {
@@ -1812,7 +1852,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiEs.updatePosition();
 		restaurantGuiPS.updatePosition();
 		vkAnimationPanel.updatePosition();
-//		busStopGui.updatePosition();
+
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();

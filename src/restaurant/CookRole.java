@@ -54,6 +54,8 @@ public class CookRole extends Role implements Cook{
 
 	private Host host;
 	private Cashier cashier;
+	private final int period = 700;
+
 	//private MarketEmployee marketEmployee;
 
 	//private MarketEmployeeRole marketEmployee = null;
@@ -147,6 +149,24 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
+	
+	public void startStandTimer() {
+		schedulerTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				checkStand();
+			}
+		}, period, period);
+	}
+	
+	
+	public void checkStand() {
+		if (theMonitor.getOrderSize() != 0) {
+			synchronized(orders) {
+				getOrderFromRevolvingStand();			}
+			getPersonAgent().CallstateChanged();
+		}
+	}
+	
 	// from market truck (market employee for now)
 	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		print ("received items from market");
@@ -245,16 +265,6 @@ public class CookRole extends Role implements Cook{
 			}
 		}
 
-
-		schedulerTimer.scheduleAtFixedRate(
-				new TimerTask(){
-					public void run(){
-						while (theMonitor.getOrderSize() != 0){
-							getOrderFromRevolvingStand();
-						}									
-					} 
-				},0,5000);
-
 		if (leaveWork) {
 			done();
 			return true;
@@ -278,6 +288,7 @@ public class CookRole extends Role implements Cook{
 	
 	// The correct waiter is notified of the cooked order
 	public void plateFood(MyOrder order) {
+		print("plating food for table " + order.tableNumber);
 		log.add(new LoggedEvent("food for table " + order.tableNumber + " is ready!"));
 		order.waiter.msgOrderIsReady(order.food, order.tableNumber);
 		order.state = OrderState.PLATED;
@@ -297,6 +308,7 @@ public class CookRole extends Role implements Cook{
 		f.amount--;
 
 		order.state = OrderState.COOKING;
+		print("goint to fridge");
 		cookGui.goToFridge();
 		try {
 			atFridge.acquire();
@@ -312,7 +324,7 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		print("cooking for table " + order.tableNumber);
 		cookGui.cookFood(order.food);
 		new java.util.Timer().schedule(
 				new java.util.TimerTask(){
@@ -359,13 +371,13 @@ public class CookRole extends Role implements Cook{
 		orders.add (new MyOrder(theMonitor.removeOrder()));
 
 		cookGui.DoGoToCookingPlace();
-			try {
-				atGrill.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+		try {
+			atGrill.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		print("blah");
 	}
 
 
@@ -414,6 +426,7 @@ public class CookRole extends Role implements Cook{
 		}
 		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
+		startStandTimer();
 		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
@@ -429,6 +442,7 @@ public class CookRole extends Role implements Cook{
 			e.printStackTrace();
 		}
 		leaveWork = false;
+		schedulerTimer.cancel();
 		cookGui.setPresent(false);
 		cookGui.setDefaultDestination();
 		getPersonAgent().msgDone("RestaurantCookRole");
@@ -465,6 +479,7 @@ public class CookRole extends Role implements Cook{
 			tableNumber = order.table;
 			food = order.food;
 			state = OrderState.PENDING;
+			getPersonAgent().CallstateChanged();
 		}
 	}
 

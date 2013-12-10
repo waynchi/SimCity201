@@ -32,7 +32,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	@Override
 	public void msgIsActive(){
 	//destination = myPerson.state.toString();
-	
+	//System.out.println("SDFS");
 	currentBusStop.msgWaitingHere(this);
 	//myState = State.waitingAtBusStop;
 	}
@@ -42,7 +42,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	 */
 	@Override
 	public void msgBusArrived(Bus b){
-	print("Bus passenger recieved message that bus arrived");
+	//print("Bus passenger recieved message that bus arrived");
 	myBus = b;
 	//event = Event.busArrived;
 	//stateChanged();
@@ -59,7 +59,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	 */
 	@Override
 	public void msgArrivedAtStop(BusStop bs){
-	print("Bus passenger recieved message that bus arrived at new bus stop");
+	//print("Bus passenger recieved message that bus arrived at new bus stop");
 	boolean getOffHere = false;
 	for(String place : bs.getNearbyPlaces())
 	{
@@ -70,7 +70,7 @@ public class BusPassengerRole extends Role implements BusPassenger{
 	{
 //		event = Event.busArrivedAtDestination;
 //	    stateChanged(); 
-		print("Bus passenger getting off here");
+		//print("Bus passenger getting off here");
 		myBus.msgImLeaving(this);
 		//myGui.DoLeaveBus(this);
 		if(myPerson != null)
