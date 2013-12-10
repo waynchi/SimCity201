@@ -77,15 +77,21 @@ public class BusPassengerRole extends Role implements BusPassenger{
 		{
 			if(bs.name.equals("BusStop 1"))
 			{
-				
+				myPerson.getPersonGui().setSidewalk(bs.bp.myCity.cityPanel.allSidewalks.get(0).get(9));
+				myPerson.getPersonGui().setSideWalkSegment(bs.bp.myCity.cityPanel.allSidewalks.get(0));
+				myPerson.getPersonGui().setDirection("right");
 			}
 			else if(bs.name.equals("BusStop 2"))
 			{
-						
+				myPerson.getPersonGui().setSidewalk(bs.bp.myCity.cityPanel.allSidewalks.get(25).get(27));
+				myPerson.getPersonGui().setSideWalkSegment(bs.bp.myCity.cityPanel.allSidewalks.get(25));
+				myPerson.getPersonGui().setDirection("right");		
 			}
 			else if(bs.name.equals("BusStop 3"))
 			{
-						
+				myPerson.getPersonGui().setSidewalk(bs.bp.myCity.cityPanel.allSidewalks.get(7).get(10));
+				myPerson.getPersonGui().setSideWalkSegment(bs.bp.myCity.cityPanel.allSidewalks.get(7));
+				myPerson.getPersonGui().setDirection("left");
 			}
 			else if(bs.name.equals("BusStop 4"))
 			{
