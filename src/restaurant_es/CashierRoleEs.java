@@ -2,14 +2,17 @@ package restaurant_es;
 
 import restaurant_es.gui.RestaurantCashierGui;
 import restaurant_es.gui.RestaurantGuiEs;
+import restaurant.CashierRole.MarketBill;
 import restaurant.interfaces.Cashier;
 import restaurant_es.interfaces.Customer;
 import restaurant_es.interfaces.Host;
 import restaurant_es.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
 import people.People;
@@ -86,20 +89,23 @@ public class CashierRoleEs extends Role implements Cashier {
 		Double amount;
 		public boolean itemsReceived = false;
 		public boolean checkReceived = false;
-		public int orderNumber;
+		public int orderNumber = -1;
+		public int marketNumber = -1;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (double a, Map<String, Integer> items, int number) {
+		public MarketBill (double a, Map<String, Integer> items, int number, int market) {
 			amount = a;
 			itemsOrdered = items;
 			checkReceived = true;
 			orderNumber = number;
+			marketNumber = market;
 		}
 
-		public MarketBill ( Map<String, Integer> items, int number) {
+		public MarketBill ( Map<String, Integer> items, int number, int market) {
 			itemsOrdered = items;
 			itemsReceived = true;
 			orderNumber = number;
+			marketNumber = market;
 		}
 
 	}
@@ -153,6 +159,7 @@ public class CashierRoleEs extends Role implements Cashier {
 	// market interaction
 	
 	// from cook
+<<<<<<< HEAD
 	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
 		log.add(new LoggedEvent("told by cook that market order is delivered, ready to pay"));
 		boolean orderFound = false;
@@ -161,12 +168,25 @@ public class CashierRoleEs extends Role implements Cashier {
 				if (mb.orderNumber == orderNumber) {
 					mb.itemsReceived = true;
 					orderFound = true;
+=======
+		public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
+			log.add(new LoggedEvent("told by cook that market order is delivered, ready to pay"));
+			boolean orderFound = false;
+			synchronized(marketBills){
+				for (MarketBill mb : marketBills) {
+					if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
+						mb.itemsReceived = true;
+						orderFound = true;
+					}
+				}
+				if (!orderFound) {
+					marketBills.add(new MarketBill(marketOrder, orderNumber, marketNumber));
+>>>>>>> restaurant
 				}
 			}
-			if (!orderFound) {
-				marketBills.add(new MarketBill(marketOrder, orderNumber));
-			}
+			getPersonAgent().CallstateChanged();
 		}
+<<<<<<< HEAD
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -180,15 +200,28 @@ public class CashierRoleEs extends Role implements Cashier {
 				if (mb.orderNumber == orderNumber) {
 					mb.checkReceived = true;
 					orderFound = true;
+=======
+		
+		// from market cashier
+		public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
+			log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
+
+			boolean orderFound = false;
+			synchronized(marketBills){
+				for (MarketBill mb : marketBills) {
+					if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
+						mb.checkReceived = true;
+						orderFound = true;
+					}
+>>>>>>> restaurant
 				}
 			}
-		}
-		if (!orderFound) {
-			marketBills.add(new MarketBill(price ,items, orderNumber));
-		}
-		getPersonAgent().CallstateChanged();
+			if (!orderFound) {
+				marketBills.add(new MarketBill(price ,items, orderNumber, marketNumber));
+			}
+			getPersonAgent().CallstateChanged();
 
-	}
+		}
 
 	// from market cashier
 	public void msgHereIsChange(double change) {
@@ -578,5 +611,6 @@ public class CashierRoleEs extends Role implements Cashier {
 	public String getName() {
 		return getPersonAgent().getName();
 	}
+
 
 }
