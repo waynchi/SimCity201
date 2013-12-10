@@ -450,11 +450,11 @@ public class VkCashierRole extends Role implements Cashier {
 		// check if there is anybody left to be paid. If there isn't, and there is excess
 		// money, then deposit it. Else, shut down the restaurant..
 		if (closingState == ClosingState.Preparing && host.anyCustomer() == false && isAnyCheckThere() == false && (bankActivity == BankActivity.None || bankActivity == BankActivity.Robbed)) {
-			if (shiftRecord.isEmpty() && workingCapital > minCapital && bankActivity != BankActivity.Robbed) {
+			if (shiftRecord.isEmpty() && workingCapital > minCapital && bankActivity != BankActivity.Robbed && myPerson.getBank(0).isClosed == false) {
 				prepareToClose();
 				return true;
 			}
-			else if (workingCapital < computeRequiredMoney() && bankActivity != BankActivity.Robbed) {
+			else if (workingCapital < computeRequiredMoney() && bankActivity != BankActivity.Robbed && myPerson.getBank(0).isClosed == false) {
 				prepareToClose();
 				return true;
 			}
