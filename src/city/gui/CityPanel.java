@@ -205,7 +205,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		}
 		
 		Lane l;
-		for(int k = 0 ; k<((hozX - 210) + hozY+110)/20 ; k++)
+		for(int k = 0 ; k<((hozX - 210) + hozY+140)/20 ; k++)
 		{
 			l = new Lane( hozX - 210 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "0_" + k );
 			lanes.add( l );
@@ -297,7 +297,7 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
-		for(int k = 0; k < (hozWidth - 40)/10; k ++)
+		for(int k = 0; k < (hozWidth )/10; k ++)
 		{
 		s = new Sidewalk( hozX + 440 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "6_" + k ); 
 		sidewalks.add(s);
@@ -442,7 +442,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		}
 		
 		
-		for(int k = 0 ; k <(hozWidth+90)/20;k++)
+		for(int k = 0 ; k <(hozWidth+120)/20;k++)
 		{
 		l = new Lane( hozX + 110 + 20*k, hozY + 90, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "6_" + k );
 		lanes.add(l);
@@ -500,9 +500,9 @@ public class CityPanel extends JPanel implements MouseListener {
 			}
 		}
 		
-		for(int k = 0; k < (hozWidth+300)/20;k++)
+		for(int k = 0; k < (hozWidth+340)/20;k++)
 		{
-		l = new Lane( hozX + 110 + 20*k, hozY + 280, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "11_" + k );
+		l = new Lane( hozX + 70 + 20*k, hozY + 280, laneWidth, hozHeight, 1, 0, true, Color.DARK_GRAY, Color.black, "11_" + k );
 		lanes.add(l);
 		road12.add(l);
 		if(k == 13){

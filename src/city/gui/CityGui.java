@@ -140,6 +140,11 @@ public class CityGui extends JFrame implements ActionListener {
 	
 
 	List<House> myHouses = new ArrayList<House>();
+	
+	//List of all workplaces so that they can be shutdown
+	List<Bank> banks = new ArrayList<Bank>();
+	List<Market> markets = new ArrayList<Market>();
+	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
 
 	
@@ -195,6 +200,16 @@ public class CityGui extends JFrame implements ActionListener {
 		marketGui = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
+		
+		
+		markets.add(market);
+		banks.add(bank);
+		restaurants.add(restaurant);
+		restaurants.add(restaurant2);
+		restaurants.add(restaurant3);
+		restaurants.add(restaurant4);
+		restaurants.add(restaurant5);
+		restaurants.add(restaurant6);
 		
 		//Set trace tags
 		RestaurantHostRoleYc.setTag(AlertTag.RESTAURANT1);
@@ -1272,7 +1287,18 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.vehicles.add(bg);
 		timer.start();
 	}
+	
+	public void closeBanks() {
+		
+	}
 
+	public void closeMarkets() {
+		
+	}
+	
+	public void closeRestaurants() {
+		
+	}
 	public void displayBuildingPanel(BuildingPanel bp) {
 		cardLayout.show(buildingPanels, bp.getName());
 		System.out.println(bp.getName());

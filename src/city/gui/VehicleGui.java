@@ -153,8 +153,8 @@ public class VehicleGui extends Rectangle2D.Double {
 		
 		if(xDestination > 0 && yDestination > 0)
 		{
-			if(typeOfVehicle.equals("Car"))
-				System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
+			//if(typeOfVehicle.equals("Car"))
+			//	System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
 			
 		time++;
 		if(typeOfVehicle.equals("Bus"))
@@ -256,7 +256,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			currentCell = laneSegment.get(9);
 
 		}
-		else if(getCurrentLane().equals("11_24")) {
+		else if(getCurrentLane().equals("11_26")) {
 			currentCell.hasCar = false;
 
 
@@ -271,7 +271,7 @@ public class VehicleGui extends Rectangle2D.Double {
 
 			this.direction="right";
 			laneSegment = allLanes.get(11);
-			currentCell = laneSegment.get(1);
+			currentCell = laneSegment.get(0);
 
 		}
 		else if(getCurrentLane().equals("5_9") && this.direction!="left") {
