@@ -62,7 +62,7 @@ public class HostRole extends Role implements Host{
 	
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
-	private int waiterCount = 0;
+	private int waiterCount = -1;
 	public class MyWaiter {
 		Waiter w;
 		waiterStatus s;
