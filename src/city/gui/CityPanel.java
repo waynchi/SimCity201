@@ -755,8 +755,8 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		
 //		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip23,this.sidewalkStrip23.get(3),this.allSidewalks, this, person);					
-//		personGui.setDestination("Apartment 2");
+//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
+//		personGui.setDestination("Bus Stop 1");
 //		personGui.setSidewalk(allSidewalks.get(23).get(24));
 //		personGui.setSideWalkSegment(allSidewalks.get(23));
 //		personGui.setDirection("left");
@@ -765,8 +765,8 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 //		BusPassengerRole bpr = new BusPassengerRole();
 //		bpr.setPerson(person);
-//		bpr.setCurrentBusStop(busStops.get(1));
-//		bpr.setDestinationBusStop(busStops.get(0));
+//		bpr.setCurrentBusStop(busStops.get(0));
+//		bpr.setDestinationPlace("Bank");
 //		bpr.msgIsActive();
 		
 //		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
