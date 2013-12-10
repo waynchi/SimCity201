@@ -207,6 +207,9 @@ public class VkCashierRole extends Role implements Cashier {
 		if (mCashier == null) {
 			this.mCashier = ((MarketEmployee)myPerson.getMarketEmployee(0)).getCashier();
 		}
+		if (teller == null) {
+			this.teller = (Teller) myPerson.getTeller(0);
+		}
 		enter = true;
 		isActive = true;
 		stateChanged();
@@ -343,6 +346,7 @@ public class VkCashierRole extends Role implements Cashier {
 		if (deposit == true) {
 			bankActivity = BankActivity.DepositRequested;
 			deposit = false;
+			System.out.println("Asking teller to deposit.");
 			teller.msgDeposit(getPersonAgent().getRestaurant(1).bankAccountID, workingCapital - minCapital);
 		}
 		else if (withdraw == true) {
@@ -350,6 +354,7 @@ public class VkCashierRole extends Role implements Cashier {
 			withdraw = false;
 			double total = 0.0;
 			total += (computeRequiredMoney() - workingCapital);
+			System.out.println("Asking teller to withdraw.");
 			teller.msgWithdraw(getPersonAgent().getRestaurant(1).bankAccountID, total);
 		}
 	}
