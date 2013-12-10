@@ -134,7 +134,7 @@ public class VkCookRole extends Role implements Cook {
 	public void informCashier(MarketOrder mo) {
 		print("Informing cashier about order.");
 		mo.s = MarketOrderState.InformedCashier;
-		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
+		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber, mo.marketNumber);
 	}
 	
 	private void enterRestaurant() {

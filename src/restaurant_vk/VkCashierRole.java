@@ -97,17 +97,17 @@ public class VkCashierRole extends Role implements Cashier {
 	 * the items he had requested from the market.
 	 */
 	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
 		boolean found = false;
 		for (Bill b : bills) {
-			if (b.orderNumber == orderNumber) {
+			if (b.orderNumber == orderNumber && b.marketNumber == marketNumber) {
 				found = true;
 				b.itemsFromCook = marketOrder;
 				break;
 			}
 		}
 		if (found == false) {
-			Bill b = new Bill(orderNumber);
+			Bill b = new Bill(orderNumber, marketNumber);
 			b.itemsFromCook = marketOrder;
 			bills.add(b);
 		}
@@ -118,10 +118,10 @@ public class VkCashierRole extends Role implements Cashier {
 	 * A message called by the market cashier to give the bill to the cook.
 	 */
 	@Override
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber, int marketNumber) {
 		boolean found = false;
 		for (Bill b : bills) {
-			if (b.orderNumber == orderNumber) {
+			if (b.orderNumber == orderNumber && b.marketNumber == marketNumber) {
 				found = true;
 				b.itemsFromMarket = items;
 				b.cost = price;
@@ -129,7 +129,7 @@ public class VkCashierRole extends Role implements Cashier {
 			}
 		}
 		if (found == false) {
-			Bill b = new Bill(orderNumber);
+			Bill b = new Bill(orderNumber, marketNumber);
 			b.cost = price;
 			b.itemsFromMarket = items;
 			bills.add(b);
@@ -653,9 +653,10 @@ public class VkCashierRole extends Role implements Cashier {
 		Map<String, Integer> itemsFromMarket = null;
 		BillState s;
 		int orderNumber;
+		int marketNumber;
 		double cost;
 		
-		public Bill(int orderNumber) {
+		public Bill(int orderNumber, int marketNumber) {
 			this.orderNumber = orderNumber;
 			s = BillState.Unpaid;
 		}
