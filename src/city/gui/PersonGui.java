@@ -609,7 +609,7 @@ public class PersonGui extends Rectangle2D.Double {
 		{
 			BusPassengerRole bpr = new BusPassengerRole();
 			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-			bpr.setDestinationBusStop(cityPanel.busStops.get(2));
+			bpr.setDestinationPlace("Bank");
 			bpr.msgIsActive();
 			person.addRole(bpr, "BusPassenger");
 			
