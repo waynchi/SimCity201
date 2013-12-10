@@ -642,9 +642,9 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(residentRole, "Resident");
 					
 					person.HomeNum = count;
-//					if(!(job.equals("BankRestaurantMarket"))){
-//						person.setTest();
-//					}
+					if(!(job.equals("BankMarketRestaurant"))){
+						person.setTest();
+					}
 					count++;
 					person.startThread();		
 					
@@ -967,7 +967,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						person.setType("NormativeB3");
-						person.setMoney(50000);
+						person.setMoney(1000000);
 						person.hasCar = false;
 					}
 					
@@ -1553,6 +1553,7 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantGuiEs.updatePosition();
 		restaurantGuiPS.updatePosition();
 		vkAnimationPanel.updatePosition();
+		busStopGui.updatePosition();
 		for(int i = 0; i < houseAnimationPanels.size(); i++)
 		{
 			houseAnimationPanels.get(i).updatePosition();
