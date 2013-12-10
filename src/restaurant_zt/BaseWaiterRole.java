@@ -311,7 +311,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			}
 			
 			if (leaveWork && customers.size() == 0) {
-				done();
+				msgDone();
 			}
 			
 		}catch (ConcurrentModificationException e) {return false;}
@@ -465,7 +465,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		host.msgTableIsFree(((RestaurantCustomerRoleZt) c).getTableNumber());
 	}
 	
-	public abstract void done();
+	public abstract void msgDone();
 
 	//utilities
 
