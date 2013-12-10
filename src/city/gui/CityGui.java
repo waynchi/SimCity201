@@ -832,12 +832,12 @@ public class CityGui extends JFrame implements ActionListener {
 					}
 					else if(count == 12) {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(13), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road21, cityPanel.road21.get(12), cityPanel.allRoads, cityPanel);
 
 					}
 					else {
 						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
-						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(14), cityPanel.allRoads, cityPanel);
+						carGui = new CarGui(5,5,10,10, cityPanel.road22, cityPanel.road22.get(12), cityPanel.allRoads, cityPanel);
 
 					}
 					person.setPersonGui(personGui);
