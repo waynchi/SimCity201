@@ -30,11 +30,6 @@ public class VkWaiterSpecialRole extends VkWaiterBaseRole implements Waiter {
 	 * and the table number.
 	 */
 	protected void passOrderToCook(MyCustomer mc) {
-		DoGoToRevolvingStand();
-		try {
-			movingAround.acquire();
-		} catch (InterruptedException e) {}
-		
 		stand.addOrder(this, mc.choice, mc.table);
 		print("Order has been put in revolving stand.");
 		mc.os = OrderStatus.GivenToCook;
