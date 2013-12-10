@@ -76,7 +76,7 @@ public class VkHostRole extends Role implements Host{
 	public void tableIsFree(int table) {
 		Table t = ((ArrayList<Table>) tables).get(table - 1);
 		t.setUnoccupied();
-		System.out.println("Table " + table + " is free.");
+		print("Table " + table + " is free.");
 		stateChanged();
 	}
 	
