@@ -2,9 +2,14 @@ package restaurant_vk.gui;
 
 import restaurant_vk.VkCustomerRole;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 public class VkCustomerGui implements VkGui{
 
@@ -24,6 +29,7 @@ public class VkCustomerGui implements VkGui{
 	private final int CUST_WIDTH = 20;
 	private final int CUST_HEIGHT = 20;
 	RestaurantVkAnimationPanel ap;
+	public Image sprite = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
 
 	public VkCustomerGui(VkCustomerRole c) {
 		agent = c;
@@ -32,6 +38,11 @@ public class VkCustomerGui implements VkGui{
 		xDestination = -20;
 		yDestination = 300;
 		setSymbols();
+		try {
+			sprite = ImageIO.read(new File("res/custsprite_2.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
 	}
 
 	public void updatePosition() {
@@ -63,6 +74,7 @@ public class VkCustomerGui implements VkGui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
+				isPresent = false;
 			}
 			else if (command == Command.GoToPay) {
 				agent.msgAnimationFinishedGoToPay();
@@ -81,8 +93,10 @@ public class VkCustomerGui implements VkGui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
-		g.fillRect(xPos, yPos, CUST_WIDTH, CUST_HEIGHT);
+//		g.setColor(Color.GREEN);
+//		g.fillRect(xPos, yPos, CUST_WIDTH, CUST_HEIGHT);
+		
+		g.drawImage(sprite, xPos, yPos, null);
 		
 		// If some caption has to be displayed, then do this.
 		g.setColor(Color.BLACK);
@@ -131,7 +145,6 @@ public class VkCustomerGui implements VkGui{
 		yDestination = -20;
 		command = Command.LeaveRestaurant;
 		caption = "";
-		isPresent = false;
 	}
 	
 	public void DoGoAway() {
