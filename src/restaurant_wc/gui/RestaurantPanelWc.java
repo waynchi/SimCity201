@@ -5,7 +5,7 @@ import restaurant_wc.CookRoleWc;
 import restaurant_wc.HostRoleWc;
 import restaurant_wc.NormalWaiterRoleWc;
 import restaurant_wc.RestaurantCustomerRoleWc;
-import restaurant_wc.SpecialWaiterRole;
+import restaurant_wc.SpecialWaiterRoleWc;
 import restaurant_wc.CookRoleWc.MyOrder;
 
 import javax.swing.*;
@@ -96,7 +96,7 @@ public class RestaurantPanelWc extends JPanel implements ActionListener{
     		//if (name.equalsIgnoreCase("special")){
     			BaseWaiterRole w = new NormalWaiterRoleWc(gui);
     			if (name.equalsIgnoreCase("special")) {
-        			w = new SpecialWaiterRole(theMonitor,gui);
+        			w = new SpecialWaiterRoleWc(theMonitor,gui);
     			}
     			WaiterGui g = new WaiterGui(w);
         		g.setHomePosition(waiters.size());

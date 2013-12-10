@@ -5,8 +5,8 @@ import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
 import restaurant_zt.gui.WaiterGuiZt;
 import restaurant_zt.interfaces.Waiter;
 
-public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
-	public SpecialWaiterRole(CookWaiterMonitorZt monitor, RestaurantGuiZt gui) {
+public class SpecialWaiterRoleZt extends BaseWaiterRole implements Waiter{
+	public SpecialWaiterRoleZt(CookWaiterMonitorZt monitor, RestaurantGuiZt gui) {
 		super();
 		restGui = gui;
 		waiterGui = new WaiterGuiZt(this);
