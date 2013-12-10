@@ -26,8 +26,8 @@ public class CityPanel extends JPanel implements MouseListener {
 	ArrayList<Building> buildings;
 	ArrayList<Lane> lanes;
 	ArrayList<Sidewalk> sidewalks;
-	ArrayList<VehicleGui> vehicles;
-	ArrayList<PersonGui> people;
+	public ArrayList<VehicleGui> vehicles;
+	public ArrayList<PersonGui> people;
 	public List<BusStop> busStops;
 	public List<BusGui> buses;
 	ArrayList<Lane> road1,road2,road3,road4,road5,road6,road7,road8,road9,road10,road11,road12,road13,road14,road15,road16,road17,road18,road19,road20,road21,road22;
@@ -766,13 +766,13 @@ public class CityPanel extends JPanel implements MouseListener {
 //		bpr.setDestinationBusStop(busStops.get(0));
 //		bpr.msgIsActive();
 		
-		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
-		CarAgent carAgent = new CarAgent();
-		carAgent.setGui(cg);
-		carAgent.startThread();
-		cg.msgGoToThisPlace(carAgent, "Restaurant 6");
-		vehicles.add(cg);
-		
+//		CarGui cg = new CarGui(5, 5, 10, 10, road2, road2.get(0), allRoads, this);
+//		CarAgent carAgent = new CarAgent();
+//		carAgent.setGui(cg);
+//		carAgent.startThread();
+//		cg.msgGoToThisPlace(carAgent, "Restaurant 6");
+//		vehicles.add(cg);
+//		
 
 		
 //		
