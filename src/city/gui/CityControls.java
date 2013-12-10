@@ -95,6 +95,9 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario7.addActionListener(this);
 			panel.add(btnScenario7);
 			
+			JButton btnScenario20 = new JButton("Set To Friday");
+			btnScenario20.addActionListener(this);
+			panel.add(btnScenario20);
 
 			JButton btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 
@@ -232,6 +235,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Bank Robbery")) {
 			System.out.println("Bank will be robbed soon");
 			cityGui.robber.msgRobBank();
+		}
+		else if(e.getActionCommand().equals("Set To Friday")) {
+			System.out.println("Day has been changed to friday");
+			cityGui.dayOfWeek = 4; //4 is the integer equivalent of friday
 		}
 		else if(e.getActionCommand().equals("Trigger Vehicle Crash")) {
 			if(cityGui.cityPanel.vehicles.size() < 3)
