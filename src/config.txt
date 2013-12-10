@@ -40,3 +40,4 @@
 1,MarketEmployee,MarketBob,930,1800
 1,MarketCashier,MarketNotBob,930,1800
 1,MarketCustomer,MarketCustomer,5000,50000
+1,BankRestaurantMarket,bankrestaurantmarket,5000,50000

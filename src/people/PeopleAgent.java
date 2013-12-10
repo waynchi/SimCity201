@@ -428,56 +428,56 @@ public class PeopleAgent extends Agent implements People{
 			}
 			if(state == AgentState.Idle)
 			{
-				if(buy == BuyState.NextDay && Time <=2100)
+				if(jobs.get(0).start - Time >= 200)
 				{
-						if(jobs.get(0).start - Time >= 200)
-						{
-							if(!(Markets.get(0).isClosed))
-							{
-								if(!hasCar)
-								{
-									if(rand.nextInt(100) <= 100)
-									{
-										buy = BuyState.GoingToBuy;
-									}
-									else
-									{
-										buy = BuyState.NotBuying;
-									}
-									if(buy == BuyState.GoingToBuy)
-									{
-										if(Money >= 20000)
-										{
-											event = AgentEvent.GoingToBuyCar;
-											print("I am going to buy a car");
-											log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-											buy = BuyState.NotBuying;
-											stateChanged();
-											return;
-										}
-//										else
-//										{
-//											event = AgentEvent.GoingToRetrieveMoney;
-//											log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//											stateChanged();
-//											buy = BuyState.NotBuying;
-//											return;
-//										}	
-									}
-								}			
-							}
-						}
-					}
-				else if(!Banks.get(0).isClosed)
-				{
-					//System.out.println(Money);
-					if(Money >= 1000000)
+					if(!Banks.get(0).isClosed)
 					{
-						event = AgentEvent.GoingToDepositMoney;
-						log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-						stateChanged();
-						return;
+						//System.out.println(Money);
+						if(Money >= 1000000)
+						{
+							event = AgentEvent.GoingToDepositMoney;
+							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+							stateChanged();
+							return;
+						}
+				}
+				else if(buy == BuyState.NextDay && Time <=2100)
+				{
+					if(!(Markets.get(0).isClosed))
+					{
+						if(!hasCar)
+						{
+							if(rand.nextInt(100) <= 100)
+							{
+								buy = BuyState.GoingToBuy;
+							}
+							else
+							{
+								buy = BuyState.NotBuying;
+							}
+							if(buy == BuyState.GoingToBuy)
+							{
+								if(Money >= 20000)
+								{
+									event = AgentEvent.GoingToBuyCar;
+									print("I am going to buy a car");
+									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+									buy = BuyState.NotBuying;
+									stateChanged();
+									return;
+								}
+//									else
+//									{
+//										event = AgentEvent.GoingToRetrieveMoney;
+//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//										stateChanged();
+//										buy = BuyState.NotBuying;
+//										return;
+//									}	
+							}
+						}			
 					}
+				}
 				}
 				if(location != AgentLocation.Home)
 				{
@@ -492,7 +492,15 @@ public class PeopleAgent extends Agent implements People{
 				if(hunger == HungerState.Hungry)
 				{
 					//change this for restaurant
-					if(!Restaurants.get(1).isClosed)
+					boolean closed = true;
+					for(int i = 0; i < Restaurants.size(); i++)
+					{
+						if(!Restaurants.get(i).isClosed)
+						{
+							closed = false;
+						}
+					}
+					if(!closed)
 					{
 						if(rand.nextInt(2) <2)
 						{
@@ -522,8 +530,15 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hunger == HungerState.Hungry)
 				{
-					//change this for restaurant
-					if(!Restaurants.get(1).isClosed)
+					boolean closed = true;
+					for(int i = 0; i < Restaurants.size(); i++)
+					{
+						if(!Restaurants.get(i).isClosed)
+						{
+							closed = false;
+						}
+					}
+					if(!closed)
 					{
 						if(rand.nextInt(2) < 2)
 						{
@@ -623,7 +638,7 @@ public class PeopleAgent extends Agent implements People{
 			print("I have become hungry");
 			hunger = HungerState.Hungry;
 		}
-		if(Time == 800 && state == AgentState.Sleeping)
+		if(Time == 600 && state == AgentState.Sleeping)
 		{
 			print("I am waking up");
 			event = AgentEvent.WakingUp;
@@ -716,50 +731,7 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Idle)
 		{
-			if(!jobs.isEmpty())
-			{
-				if(buy == BuyState.NextDay && Time <=2100)
-				{
-					if(jobs.get(0).start - Time >= 200)
-					{
-						if(!(Markets.get(0).isClosed))
-						{
-							if(!hasCar)
-							{
-								if(rand.nextInt(100) <= 100)
-								{
-									buy = BuyState.GoingToBuy;
-								}
-								else
-								{
-									buy = BuyState.NotBuying;
-								}
-								if(buy == BuyState.GoingToBuy)
-								{
-									if(Money >= 20000)
-									{
-										event = AgentEvent.GoingToBuyCar;
-										print("I am going to buy a car");
-										log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-										buy = BuyState.NotBuying;
-										stateChanged();
-										return;
-									}
-//									else
-//									{
-//										event = AgentEvent.GoingToRetrieveMoney;
-//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//										stateChanged();
-//										buy = BuyState.NotBuying;
-//										return;
-//									}	
-								}
-							}			
-						}
-					}
-				}
-			}
-			else if(!Banks.get(0).isClosed)
+			if(!Banks.get(0).isClosed)
 			{
 				//System.out.println(Money);
 				if(Money >= 1000000)
@@ -768,6 +740,46 @@ public class PeopleAgent extends Agent implements People{
 					log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
 					stateChanged();
 					return;
+				}
+			}
+			else if(buy == BuyState.NextDay && Time <=2100)
+			{
+				if(jobs.get(0).start - Time >= 200)
+				{
+					if(!(Markets.get(0).isClosed))
+					{
+						if(!hasCar)
+						{
+							if(rand.nextInt(100) <= 100)
+							{
+								buy = BuyState.GoingToBuy;
+							}
+							else
+							{
+								buy = BuyState.NotBuying;
+							}
+							if(buy == BuyState.GoingToBuy)
+							{
+								if(Money >= 20000)
+								{
+									event = AgentEvent.GoingToBuyCar;
+									print("I am going to buy a car");
+									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+									buy = BuyState.NotBuying;
+									stateChanged();
+									return;
+								}
+//								else
+//								{
+//									event = AgentEvent.GoingToRetrieveMoney;
+//									log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//									stateChanged();
+//									buy = BuyState.NotBuying;
+//									return;
+//								}	
+							}
+						}			
+					}
 				}
 			}
 			if(location != AgentLocation.Home)
@@ -909,8 +921,6 @@ public class PeopleAgent extends Agent implements People{
 //		print("My Current Hunger is : " + hunger.toString());
 //		print("My Type is: " + type);
 		boolean Roles = false, Person = false;
-		if(type.equals("default"))
-		{
 		synchronized(roles){
 		for(MyRole m : roles)
 		{
@@ -1050,7 +1060,6 @@ public class PeopleAgent extends Agent implements People{
 			state = AgentState.Sleeping;
 			log.add(new LoggedEvent("Sleeping In Scheduler. New State is " + state.toString()));
 			Person = true;
-		}
 		}
 		return (Roles || Person);
 	}
@@ -1683,14 +1692,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 1");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1722,14 +1731,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 1");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1761,14 +1770,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 1");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1800,14 +1809,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 1");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 1");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1840,14 +1849,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 2");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 2");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -1880,14 +1889,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 2");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 2");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1919,14 +1928,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 2");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 2");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1958,14 +1967,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 2");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 2");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -1998,14 +2007,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 3");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 3");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -2038,14 +2047,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 3");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 3");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2077,14 +2086,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 3");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 3");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2116,14 +2125,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 3");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 3");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2156,14 +2165,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 4");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 4");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -2196,14 +2205,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 4");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 4");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2235,14 +2244,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 4");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 4");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2274,14 +2283,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 4");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 4");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2314,14 +2323,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 5");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 5");
 							print("Do Not Have Car");
 						}
 						// TODO personGui.GoToRestaurantOne();
@@ -2354,14 +2363,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 5");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 5");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2393,14 +2402,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 5");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 5");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2432,14 +2441,14 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 5");
 									ro.role.msgIsActive();
 								}
 							}
 						}
 						else
 						{
-							personGui.setDestination("Restaurant 6");
+							personGui.setDestination("Restaurant 5");
 							print("Do Not Have Car");
 						}
 					//TODO personGui.GoToRestaurantOne();
@@ -2472,7 +2481,7 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 6");
 									ro.role.msgIsActive();
 								}
 							}
@@ -2512,7 +2521,7 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 6");
 									ro.role.msgIsActive();
 								}
 							}
@@ -2552,7 +2561,7 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 6");
 									ro.role.msgIsActive();
 								}
 							}
@@ -2591,7 +2600,7 @@ public class PeopleAgent extends Agent implements People{
 							{
 								if(ro.description == "CarPassenger")
 								{
-									((CarPassengerRole)ro.role).setDestination("Restaurant");
+									((CarPassengerRole)ro.role).setDestination("Restaurant 6");
 									ro.role.msgIsActive();
 								}
 							}

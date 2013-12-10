@@ -812,6 +812,15 @@ public class CityGui extends JFrame implements ActionListener {
 						person.setMoney(1000);
 						person.hasCar = false;
 					}
+					if(job.equals("BankRestaurantMarket"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB1");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
 				
 					people.add(person);
 					
