@@ -299,9 +299,12 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		for(int k = 0; k < (hozWidth )/10; k ++)
 		{
-		s = new Sidewalk( hozX + 440 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "6_" + k ); 
-		sidewalks.add(s);
-		sidewalkStrip7.add(s);
+			s = new Sidewalk( hozX + 440 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "6_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip7.add(s);
+			if(k == 16) {
+				crosswalks.add(s);
+			}
 		}
 		
 		for(int k = 0 ; k <(hozWidth)/10 ; k ++)
@@ -332,16 +335,19 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 70 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "10_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip11.add(s);
-		if(k==27) {
+		if(k==32) {
 			crosswalks.add(s);
 		}
 		}
 		
 		for(int k = 0; k < (hozWidth-10)/10; k++)
 		{
-		s = new Sidewalk( hozX + 450 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "11_" + k ); 
-		sidewalks.add(s);
-		sidewalkStrip12.add(s);
+			s = new Sidewalk( hozX + 450 + 10*k, hozY + 20 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "11_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip12.add(s);
+			if(k == 15) {
+				crosswalks.add(s);
+			}
 		}
 		
 		
@@ -381,7 +387,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 110, hozY - 20 + 10*k, sidewalkHeight, sidewalkHeight, 0, 0.5, false, Color.gray, Color.black, "16_" + k ); 
 		sidewalks.add(s);
 		sidewalkStrip17.add(s);
-		if(k==12) {
+		if(k==15) {
 			crosswalks.add(s);
 		}
 		}
@@ -436,7 +442,7 @@ public class CityPanel extends JPanel implements MouseListener {
 		s = new Sidewalk( hozX + 70 + 10*k, hozY + 130 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "22_" + k ); 
 		sidewalks.add(s);	
 		sidewalkStrip23.add(s);
-		if(k==27) {
+		if(k==32) {
 			crosswalks.add(s);
 		}
 		}
@@ -463,9 +469,12 @@ public class CityPanel extends JPanel implements MouseListener {
 		
 		for(int k = 0 ; k < (hozWidth + 160)/10;k++)
 		{
-		s = new Sidewalk( hozX + 70 + 10 *k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "23_" + k ); 
-		sidewalks.add(s);
-		sidewalkStrip24.add(s);
+			s = new Sidewalk( hozX + 70 + 10 *k, hozY + 80 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "23_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip24.add(s);
+			if(k == 4) {
+				crosswalks.add(s);
+			}
 		}
 		
 		
@@ -512,9 +521,12 @@ public class CityPanel extends JPanel implements MouseListener {
 
 		for(int k = 0 ; k < (hozWidth + 40)/10;k++)
 		{
-		s = new Sidewalk( hozX + 410 + 10*k,  hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "24_" + k ); 
-		sidewalks.add(s);
-		sidewalkStrip25.add(s);
+			s = new Sidewalk( hozX + 410 + 10*k,  hozY + 300 , sidewalkHeight, sidewalkHeight, 0.5, 0, true, Color.gray, Color.black, "24_" + k ); 
+			sidewalks.add(s);
+			sidewalkStrip25.add(s);
+			if(k == 3) {
+				crosswalks.add(s);
+			}
 		}
 		
 		for(int k = 0 ; k < (hozWidth + 130)/10;k++)
@@ -779,125 +791,255 @@ public class CityPanel extends JPanel implements MouseListener {
 	public void paintComponent( Graphics g ) {
 		clock.setText(time);
 		count++;
-		
-		if(count % 100 == 0) {
-			for(Lane intersection : intersections) {
-				//FIRST INTERSECTION (MIDDLE)
-				if(intersection.name.equals("13_1")) {
-					intersection.redLight();
+		System.out.println(count % 1300);
+		if(count % 1300 == 0) { //Let people walk everywhere
+			for(Sidewalk crosswalk : crosswalks) {
+				//FIRST CROSSWALK (MIDDLE)
+				if(crosswalk.name.equals("2_5")) {
+					crosswalk.greenLight();
 				}
-				if(intersection.name.equals("14_6")) {
-					intersection.redLight();
+				if(crosswalk.name.equals("23_4")) {
+					crosswalk.greenLight();
 				}
-				if(intersection.name.equals("2_12")) {
-					intersection.greenLight();
-				}
-				if(intersection.name.equals("7_1")) {
-					intersection.greenLight();
+				if(crosswalk.name.equals("16_15")) {
+					crosswalk.greenLight();
 				}
 				
 				//SECOND INTERSECTION (MIDDLE)
-				if(intersection.name.equals("8_13")) {
-					intersection.redLight();
-				}
-				if(intersection.name.equals("9_2")) {
-					intersection.redLight();
-				}
-				if(intersection.name.equals("16_6")) {
-					intersection.greenLight();
-				}
-				if(intersection.name.equals("15_4")) {
-					intersection.greenLight();
+				if(crosswalk.name.equals("22_32")) {
+					crosswalk.greenLight();
 				}
 				
 				//THIRD INTERSECTION (MIDDLE)
-				if(intersection.name.equals("10_8")) {
+				if(crosswalk.name.equals("6_16")) {
+					crosswalk.greenLight();
+				}
+				
+				
+			}
+			for(Lane intersection : intersections) {
+				//FIRST INTERSECTION (MIDDLE)
+				if(intersection.name.equals("12_1")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("17_8")) {
+				if(intersection.name.equals("13_6")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("18_4")) {
-					intersection.greenLight();
+				if(intersection.name.equals("1_12")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("6_1")) {
+					intersection.redLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("7_13")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("8_2")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("14_4")) {
+					intersection.redLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("9_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("16_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("17_4")) {
+					intersection.redLight();
 				}
 				
 				//TOP INTERSECTION
-				if(intersection.name.equals("3_15")) {
+				if(intersection.name.equals("2_15")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("6_2")) {
-					intersection.greenLight();
+				if(intersection.name.equals("5_2")) {
+					intersection.redLight();
 				}
 				
 				//BOTTOM INTERSECTION
-				if(intersection.name.equals("12_14")) {
+				if(intersection.name.equals("11_14")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("15_11")) {
-					intersection.greenLight();
+				if(intersection.name.equals("14_11")) {
+					intersection.redLight();
 				}
-				if(intersection.name.equals("11_17")) {
+				if(intersection.name.equals("10_17")) {
 					intersection.redLight();
 				}
 			}
 		}
-		if(count % 200 == 0) {
+		if(count % 600 == 0) {
+			for(Sidewalk crosswalk : crosswalks) {
+				//FIRST CROSSWALK (MIDDLE)
+				if(crosswalk.name.equals("2_5")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("23_4")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("16_15")) {
+					crosswalk.redLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(crosswalk.name.equals("22_32")) {
+					crosswalk.redLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(crosswalk.name.equals("6_16")) {
+					crosswalk.redLight();
+				}
+			}
 			for(Lane intersection : intersections) {
-				if(intersection.name.equals("13_1")) {
-					intersection.greenLight();
-				}
-				if(intersection.name.equals("14_6")) {
-					intersection.greenLight();
-				}
-				if(intersection.name.equals("2_12")) {
+				//FIRST INTERSECTION (MIDDLE)
+				if(intersection.name.equals("12_1")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("7_1")) {
+				if(intersection.name.equals("13_6")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("1_12")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("6_1")) {
+					intersection.greenLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(intersection.name.equals("7_13")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("8_2")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("15_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("14_4")) {
+					intersection.greenLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(intersection.name.equals("9_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("16_8")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("17_4")) {
+					intersection.greenLight();
+				}
+				
+				//TOP INTERSECTION
+				if(intersection.name.equals("2_15")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("5_2")) {
+					intersection.greenLight();
+				}
+				
+				//BOTTOM INTERSECTION
+				if(intersection.name.equals("11_14")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("14_11")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("10_17")) {
+					intersection.redLight();
+				}
+			}
+		}
+		if(count % 1200 == 0) {
+			for(Lane intersection : intersections) {
+				if(intersection.name.equals("12_1")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("13_6")) {
+					intersection.greenLight();
+				}
+				if(intersection.name.equals("1_12")) {
+					intersection.redLight();
+				}
+				if(intersection.name.equals("6_1")) {
 					intersection.redLight();
 				}
 				
 				//SECOND INTERSECTION (MIDDLE)
-				if(intersection.name.equals("8_13")) {
+				if(intersection.name.equals("7_13")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("9_2")) {
+				if(intersection.name.equals("8_2")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("16_6")) {
+				if(intersection.name.equals("15_6")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("15_4")) {
+				if(intersection.name.equals("14_4")) {
 					intersection.redLight();
 				}
 				
 				//THIRD INTERSECTION (MIDDLE)
-				if(intersection.name.equals("10_8")) {
+				if(intersection.name.equals("9_8")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("17_8")) {
+				if(intersection.name.equals("16_8")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("18_4")) {
+				if(intersection.name.equals("17_4")) {
 					intersection.redLight();
 				}
 				
 				//TOP INTERSECTION
-				if(intersection.name.equals("3_15")) {
+				if(intersection.name.equals("2_15")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("6_2")) {
+				if(intersection.name.equals("5_2")) {
 					intersection.redLight();
 				}
 				
 				//BOTTOM INTERSECTION
-				if(intersection.name.equals("12_14")) {
+				if(intersection.name.equals("11_14")) {
 					intersection.greenLight();
 				}
-				if(intersection.name.equals("15_11")) {
+				if(intersection.name.equals("14_11")) {
 					intersection.redLight();
 				}
-				if(intersection.name.equals("11_17")) {
+				if(intersection.name.equals("10_17")) {
 					intersection.greenLight();
+				}
+			}
+			
+			for(Sidewalk crosswalk : crosswalks) {
+				//FIRST CROSSWALK (MIDDLE)
+				if(crosswalk.name.equals("2_5")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("23_4")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("16_15")) {
+					crosswalk.greenLight();
+				}
+				
+				//SECOND INTERSECTION (MIDDLE)
+				if(crosswalk.name.equals("22_32")) {
+					crosswalk.redLight();
+				}
+				
+				//THIRD INTERSECTION (MIDDLE)
+				if(crosswalk.name.equals("6_16")) {
+					crosswalk.redLight();
 				}
 			}
 		}
