@@ -20,11 +20,14 @@ import city.gui.trace.TracePanel;
 
 public class CityControls extends JPanel implements ActionListener, ChangeListener {
 	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField name;
 	TracePanel tracePanel;
 	ControlPanel controlPanel;
 	CityPanel cityPanel;
 	CityGui cityGui;
+	JComboBox rolesList;
+	JTextField money;
+	JCheckBox hasCar;
 	
 	
 	static final int FPS_MIN = 1;
@@ -96,7 +99,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			panel.add(btnScenario7);
 			
 
-			JButton btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
+			JButton btnScenario8 = new JButton("Pedestrian Collision");
 
 			btnScenario8.addActionListener(this);
 			panel.add(btnScenario8);
@@ -117,12 +120,37 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		if(text.equals("Controls")) {
 			JPanel panel = new JPanel();
-			textField_1 = new JTextField();
-			panel.add(textField_1);
-			textField_1.setColumns(10);
+			
+			JLabel nameLabel = new JLabel("Name:");
+			panel.add(nameLabel);
+			
+			name = new JTextField();
+			panel.add(name);
+			name.setColumns(10);
+			
+			JLabel roleLabel = new JLabel("Role:");
+			panel.add(roleLabel);
+			String[] options = { "Unemployed","RestaurantSpecialWaiter", "RestaurantNormalWaiter", "RestaurantSpecialWaiterZt","RestaurantNormalWaiterZt","RestaurantSpecialWaiterEs","RestaurantNormalWaiterEs","RestaurantSpecialWaiterVk","RestaurantNormalWaiterVk","RestaurantSpecialWaiterWc","RestaurantNormalWaiterWc","RestaurantSpecialWaiterPs","RestaurantNormalWaiterPs" };
+			rolesList = new JComboBox(options);
+			rolesList.addActionListener(this);
+			panel.add(rolesList);
+			
+			JLabel moneyLabel = new JLabel("Money:");
+			panel.add(moneyLabel);
+			money = new JTextField();
+			panel.add(money);
+			money.setColumns(10);
+			
+			JLabel carLabel = new JLabel("Has Car:");
+			panel.add(carLabel);
+			hasCar = new JCheckBox();
+			panel.add(hasCar);
 			
 			JButton btnAddPerson = new JButton("Add Person");
+			btnAddPerson.addActionListener(this);
 			panel.add(btnAddPerson);
+			
+			
 			
 			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
 			btnDemonstrateCollisionVehicle.addActionListener(this);
@@ -193,6 +221,17 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Normal Scenario 1")) {
 			
+		}
+		else if(e.getActionCommand().equals("Add Person")) {
+			try {
+				double moneyOut = Double.parseDouble(money.getText());
+				System.out.println("Creating a person");
+				cityGui.CreatePerson(name.getText(), rolesList.getSelectedItem().toString(), moneyOut, hasCar.isSelected());
+			} catch(NumberFormatException nfe) {
+				money.setText("Please enter a valid number");
+			}
+
+
 		}
 		else if(e.getActionCommand().equals("Create World From Config File")) {
 			System.out.println("Creating World From Config");
