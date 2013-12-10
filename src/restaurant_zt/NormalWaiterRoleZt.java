@@ -27,8 +27,7 @@ public class NormalWaiterRoleZt extends BaseWaiterRole implements Waiter{
 		customer.state = customerState.waitingForFood;
 	}
 	
-	public void done () {
-		// gui needs to walk to exit
+	public void msgDone () {
 		waiterGui.DoExit();
 		try {
 			atExit.acquire();

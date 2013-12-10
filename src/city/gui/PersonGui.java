@@ -652,7 +652,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 
 			boolean canMove = true;
-			if (time % 20 == 0) {
+			if (time % 10 == 0) {
 				if (getCurrentLane().equals("2_5")) {
 					Sidewalk intersection = getSidewalkInformation("2_5");
 					if (intersection.redLight) {
