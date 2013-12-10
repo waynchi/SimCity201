@@ -281,11 +281,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		
 		else if(e.getActionCommand().equals("People Gui Labels")) {
 			for (People peep : cityGui.people) {
-				if (peep.getPersonGui().labelIt) {
-					peep.getPersonGui().labelIt = false;
-				}
 				if (!peep.getPersonGui().labelIt) {
 					peep.getPersonGui().labelIt = true;
+				}
+				else if (peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = false;
 				}
 			}
 		}
