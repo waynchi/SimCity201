@@ -47,7 +47,7 @@ public class VkCookRole extends Role implements Cook {
 
 	public VkCookRole(RevolvingStand s, RestaurantVkAnimationPanel p) {
 		timer = new Timer();
-		standTimer = new Timer();
+		standTimer = null;
 		this.stand = s;
 		gui = new VkCookGui(this);
 		gui.setAnimationPanel(p);
@@ -139,6 +139,7 @@ public class VkCookRole extends Role implements Cook {
 	
 	private void enterRestaurant() {
 		if (closingState == ClosingState.Closed) {
+			standTimer = new Timer();
 			startStandTimer();
 			closingState = ClosingState.None;
 		}
@@ -167,7 +168,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void shutDown() {
-		standTimer.cancel();
+		standTimer = null;
 		closingState = ClosingState.Closed;
 	}
 	
