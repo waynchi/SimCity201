@@ -731,15 +731,15 @@ public class PersonGui extends Rectangle2D.Double {
 
 	public void reachedDestination(String reachedDestination) {
 		// TODO Auto-generated method stub
-		if(reachedDestination.equals("Bus Stop 1"))
-		{
-			BusPassengerRole bpr = new BusPassengerRole();
-			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-			bpr.setDestinationPlace("Bank");
-			bpr.msgIsActive();
-			person.addRole(bpr, "BusPassenger");
-			
-		}
+//		if(reachedDestination.equals("Bus Stop 1"))
+//		{
+//			BusPassengerRole bpr = new BusPassengerRole();
+//			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+//			bpr.setDestinationPlace("Bank");
+//			bpr.msgIsActive();
+//			person.addRole(bpr, "BusPassenger");
+//			
+//		}
 	}
 
 	public void stopNow() {
