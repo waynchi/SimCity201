@@ -1571,11 +1571,15 @@ public class CityGui extends JFrame implements ActionListener {
 			time=0;
 			dayOfWeek++;
 		}
-		if(dayOfWeek == 5) {
-			//saturday
+		if(dayOfWeek == 5 && time == 0) {
+			for(Bank bank : banks) {
+				bank.isClosed = true;
+			}
 		}
-		if(dayOfWeek == 6) {
-			//sunday
+		if(dayOfWeek == 6 && time == 0) {
+			for(Bank bank :banks) {
+				bank.isClosed = true;
+			}
 		}
 		repaint();
 
