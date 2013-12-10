@@ -31,6 +31,7 @@ public class VehicleGui extends Rectangle2D.Double {
 	int time;
 	public String typeOfVehicle;
 	private ImageIcon img = null;
+	protected boolean simulatingCrash = false;
 	
 	public VehicleGui( int x, int y, int width, int height, ArrayList<Lane> laneSegment, Lane currentCell, ArrayList<ArrayList<Lane>> allLaneSegments, CityPanel cityPanel,String type ) {
 		super( x, y, width, height );
@@ -62,6 +63,9 @@ public class VehicleGui extends Rectangle2D.Double {
 	}
 	
 	public void move( int xv, int yv ) {
+		if(simulatingCrash)
+			return;
+		
 		Lane nextCell;
 		if(this.direction.equals("right")) {
 			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
@@ -74,6 +78,29 @@ public class VehicleGui extends Rectangle2D.Double {
 		}
 		else {
 			nextCell = laneSegment.get(laneSegment.indexOf(this.currentCell) + 1);
+		}
+		if(nextCell.hasCar && nextCell.simulatingCrash)
+		{
+			VehicleGui carToRemove = null;
+			for(VehicleGui car : cityPanel.vehicles)
+			{
+				if(car.simulatingCrash)
+				{
+					carToRemove = car;
+					break;
+				}
+			}
+			cityPanel.vehicles.remove(carToRemove);
+			carToRemove.currentCell.simulatingCrash = false;
+			carToRemove.simulatingCrash = false;
+			carToRemove.currentCell.hasCar = false;
+			
+			if(this.typeOfVehicle.equals("Car"))
+			{
+				cityPanel.vehicles.remove(this);
+				this.currentCell.hasCar = false;
+			}
+			return;
 		}
 		if(!nextCell.hasCar) {
 			if(currentCell.yVelocity > 0) {
@@ -755,4 +782,10 @@ public class VehicleGui extends Rectangle2D.Double {
 
 		
 	}
+	public void stopNow() {
+		// TODO Auto-generated method stub
+		simulatingCrash = true;
+		this.currentCell.simulatingCrash = true;
+	}
+	
 }
