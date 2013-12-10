@@ -457,6 +457,7 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 			Iterator<String> configIteration = configParams.iterator();
 			while (configIteration.hasNext()) {
+				System.out.println(count);
 				String amount = configIteration.next();
 				String job = configIteration.next();
 				String name = configIteration.next();
@@ -474,7 +475,62 @@ public class CityGui extends JFrame implements ActionListener {
 //					}//TODO
 					person.setCityGui(this);
 					person.addYelp(yelp);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+					PersonGui personGui;
+					if(count == 0) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(1),cityPanel.allSidewalks, cityPanel, person);					
+					}
+					else if(count == 1) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 2) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 3) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(1),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 4) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 5) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 6) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 7) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 8) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 9) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(2),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 10) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 11) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 12) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Restaurants.add(restaurant2);
@@ -917,7 +973,63 @@ public class CityGui extends JFrame implements ActionListener {
 //					}//TODO
 					person.setCityGui(this);
 					person.addYelp(yelp);
-					PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+					PersonGui personGui;
+					if(count == 0) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(1),cityPanel.allSidewalks, cityPanel, person);					
+					}
+					else if(count == 1) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 2) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip29,cityPanel.sidewalkStrip29.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 3) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(1),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 4) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(5),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 5) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip27,cityPanel.sidewalkStrip27.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 6) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(8),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 7) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(12),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 8) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(16),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 9) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(2),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 10) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(6),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 11) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(10),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else if(count == 12) {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip28,cityPanel.sidewalkStrip28.get(18),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					else {
+						personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip30,cityPanel.sidewalkStrip30.get(24),cityPanel.allSidewalks, cityPanel, person);					
+
+					}
+					personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
 					person.setPersonGui(personGui);
 					person.Restaurants.add(restaurant);
 					person.Restaurants.add(restaurant2);
@@ -1420,17 +1532,17 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public void triggerVehicleCrash() {
 		// TODO Auto-generated method stub
-		List<VehicleGui> currentCars = new ArrayList<VehicleGui>();
+		List<CarGui> currentCars = new ArrayList<CarGui>();
 		for(VehicleGui v : cityPanel.vehicles)
 		{
 			if(v.typeOfVehicle.equals("Car"))
-				currentCars.add(v);
+				currentCars.add((CarGui)v);
 		}
 		int maxVehicleListIndex = currentCars.size() - 1;
 		Random random = new Random();
 		int randomVehicleIndex = random.nextInt(maxVehicleListIndex);
-		VehicleGui vehicleToStop = currentCars.get(randomVehicleIndex);
-		vehicleToStop.stopNow();
+		CarGui carToStop = currentCars.get(randomVehicleIndex);
+		carToStop.stopNow();
 		
 	}
 	
