@@ -31,7 +31,7 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
         customer.state = customerState.waitingForFood;
 	}
 	
-	public void done () {
+	public void msgDone () {
 		// gui has to walk to exit
 		leaveWork = false;
 		waiterGui.DoExit();

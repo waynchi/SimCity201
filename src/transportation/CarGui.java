@@ -39,7 +39,13 @@ public class CarGui extends VehicleGui{
 	
 	@Override
 	public void tellPersonGuiToWalk(){
-		
+		person.getPersonGui().setDestination(destination);
+		cityPanel.people.add(person.getPersonGui());
+	}
+	
+	public void setCarDestination(String destination){
+		this.destination = destination;
+		super.driveHere(destination);
 	}
 
 }

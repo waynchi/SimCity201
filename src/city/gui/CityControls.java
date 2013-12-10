@@ -246,7 +246,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			person.setPersonGui(personGui);
 			CarGui vehicle = new CarGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 			vehicle.setPersonAgent(person);
-			vehicle.setDestination(1,1);
+			vehicle.setCarDestination("Restaurant 6");
 			cityPanel.vehicles.add(vehicle);
 		}
 		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
