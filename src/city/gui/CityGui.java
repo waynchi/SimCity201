@@ -1825,6 +1825,10 @@ public class CityGui extends JFrame implements ActionListener {
 		{
 			apartment2HouseAnimationPanels.get(k).gui.updatePosition();
 		}
+		for(BusStop bs : cityPanel.busStops)
+		{
+			bs.myGui.updatePosition();
+		}
 		int x = 20;
 		time++;
 		if(time%x == 0)
@@ -1916,6 +1920,18 @@ public class CityGui extends JFrame implements ActionListener {
 			}
 		}
 	}
+
+	public void pedestrianCrashSimulationFinished() {
+		// TODO Auto-generated method stub
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			v.simulatingPedestrianCrash = false;
+			v.simulatorPerson = null;
+		}
+		this.cityControls.btnScenario8.setEnabled(true);
+	}
+
+
 
 	
 	
