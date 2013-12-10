@@ -4,6 +4,8 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+
 import people.People;
 import transportation.BusPassengerRole;
 
@@ -26,6 +28,7 @@ public class PersonGui extends Rectangle2D.Double {
 	People person;
 	boolean called;
 	String destination;
+	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -270,9 +273,11 @@ public class PersonGui extends Rectangle2D.Double {
 	public void draw(Graphics2D g2) {
 		if (xDestination > 0 && yDestination > 0) {
 			time++;
-			g2.setColor(Color.red);
-			g2.fill(this);
-			g2.draw(this);
+			//g2.setColor(Color.red);
+			//g2.fill(this);
+			//g2.draw(this);
+			
+			g2.drawImage(custsprite.getImage(), (int)x, (int)y, null);
 
 			if (x == xDestination && y == (yDestination + 20) && called == true) {
 				this.reachedDestination(this.destination);
