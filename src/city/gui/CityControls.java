@@ -25,6 +25,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	ControlPanel controlPanel;
 	CityPanel cityPanel;
 	CityGui cityGui;
+	JButton btnScenario8;
 	
 	
 	static final int FPS_MIN = 1;
@@ -96,7 +97,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			panel.add(btnScenario7);
 			
 
-			JButton btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
+			btnScenario8 = new JButton("Trigger Pedestrian Getting Hit");
 
 			btnScenario8.addActionListener(this);
 			panel.add(btnScenario8);
@@ -242,11 +243,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			cityGui.triggerVehicleCrash();
 		}
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
-			System.out.println("CLICKED");
 			if(cityGui.isPedestrianCrossingStreet())
 			{
-				cityGui.stopPedestriansCrossingStreet();
+				btnScenario8.setEnabled(false);
 				System.out.println("Starting pedestrian crash scenario");
+				cityGui.stopPedestriansCrossingStreetAndTellVehiclesSimulationStarted();
 			}
 			else
 			{
@@ -268,7 +269,8 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		}
 		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
 			PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);			
+			person.setPersonGui(personGui);
 			personGui.setDestination("Bank");
 			cityPanel.people.add(personGui); 
 			

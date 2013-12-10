@@ -9,7 +9,7 @@ import java.awt.geom.*;
 public class BuildingPanel extends JPanel {
 	Rectangle2D myRectangle;
 	String myName;
-	CityGui myCity;
+	public CityGui myCity;
 	
 	public BuildingPanel( Rectangle2D r, int i, CityGui sc ) {
 		myRectangle = r;
