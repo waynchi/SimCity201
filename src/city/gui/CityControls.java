@@ -236,7 +236,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
 			if(cityGui.isPedestrianCrossingStreet())
 			{
-				
+				cityGui.stopPedestriansCrossingStreet();
 			}
 		}
 		else if(e.getActionCommand().equals("Trigger Weekend")) {
