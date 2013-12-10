@@ -202,7 +202,9 @@ public class VehicleGui extends Rectangle2D.Double {
 //		
 		g2.drawImage(img.getImage(), (int)x, (int)y, 20, 20, null);
 
-
+		if(getCurrentLane().equals("19_0")) {
+			this.direction="down";
+		}
 		if(getCurrentLane().equals("0_0")) {
 			currentCell.hasCar = false;
 			if(typeOfVehicle.equals("Bus")) {
@@ -228,6 +230,18 @@ public class VehicleGui extends Rectangle2D.Double {
 			this.direction="down";
 			laneSegment = allLanes.get(19);
 			currentCell = laneSegment.get(0);
+		}
+		if(getCurrentLane().equals("19_5")) {
+			this.direction="down";
+		}
+		if(getCurrentLane().equals("20_2") || getCurrentLane().equals("20_5") || getCurrentLane().equals("20_6")) {
+			this.direction="up";
+		}
+		if(getCurrentLane().equals("21_4") || getCurrentLane().equals("21_6") || getCurrentLane().equals("21_8")) {
+			this.direction="down";
+		}
+		if(getCurrentLane().equals("18_1") || getCurrentLane().equals("18_3") || getCurrentLane().equals("18_5")) {
+			this.direction="up";
 		}
 		if(getCurrentLane().equals("19_7")) {
 			currentCell.hasCar = false;
