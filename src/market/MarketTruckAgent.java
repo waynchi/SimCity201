@@ -35,10 +35,12 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		Cook cook = null;
 		Map<String,Integer> items;
 		int orderNumber;		
-		Order (Cook c, Map<String, Integer> i, int number) {
+		int marketNumber;
+		Order (Cook c, Map<String, Integer> i, int number, int market) {
 			cook = c;
 			items = i;
 			orderNumber = number;
+			marketNumber = market;
 		}
 	}
 	
@@ -56,9 +58,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number, int market) {
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
-		orders.add(new Order (cook, items, number));
+		orders.add(new Order (cook, items, number, market));
 		stateChanged();
 	}
 
@@ -89,7 +91,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 				*/
 				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
-					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
+					order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
 				}
 				else {
