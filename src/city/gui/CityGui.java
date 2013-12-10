@@ -1657,6 +1657,18 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 	}
 
+	public void pedestrianCrashSimulationFinished() {
+		// TODO Auto-generated method stub
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			v.simulatingPedestrianCrash = false;
+			v.simulatorPerson = null;
+		}
+		this.cityControls.btnScenario8.setEnabled(true);
+	}
+
+
+
 	
 	
 	

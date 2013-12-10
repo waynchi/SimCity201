@@ -564,9 +564,13 @@ public class VehicleGui extends Rectangle2D.Double {
 				//check if pedestrian is there
 				if(simulatingPedestrianCrash && simulatorPerson != null)
 				{
-					ArrayList<Sidewalk> sidewalk = cityPanel.allSidewalks.get(8);
-					Sidewalk sidewalkSegment = sidewalk.get(9);
-					simulatorPerson.setSidewalk(sidewalkSegment);
+					ArrayList<Sidewalk> sidewalksegment = cityPanel.allSidewalks.get(8);
+					Sidewalk sidewalk = sidewalksegment.get(9);
+					simulatorPerson.setSideWalkSegment(sidewalksegment);
+					simulatorPerson.setSidewalk(sidewalk);
+					simulatorPerson.setDirection("left");
+					simulatorPerson.simulatingCrash = false;
+					cityPanel.city.pedestrianCrashSimulationFinished();
 					
 				}
 			}
@@ -642,9 +646,11 @@ public class VehicleGui extends Rectangle2D.Double {
 				currentCell = laneSegment.get(6);
 				if(simulatingPedestrianCrash && simulatorPerson != null)
 				{
-					ArrayList<Sidewalk> sidewalk = cityPanel.allSidewalks.get(8);
-					Sidewalk sidewalkSegment = sidewalk.get(9);
-					simulatorPerson.setSidewalk(sidewalkSegment);		
+					ArrayList<Sidewalk> sidewalksegment = cityPanel.allSidewalks.get(8);
+					Sidewalk sidewalk = sidewalksegment.get(9);
+					simulatorPerson.setSideWalkSegment(sidewalksegment);
+					simulatorPerson.setSidewalk(sidewalk);	
+					simulatorPerson.setDirection("left");
 				}
 			}
 		}
