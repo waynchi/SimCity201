@@ -146,15 +146,12 @@ public class CityGui extends JFrame implements ActionListener {
 	List<Market> markets = new ArrayList<Market>();
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
-
-	
 	Market market;
 	TellerRole BankTellerRole;
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
 	
-
 	private int count = 0;
 
 	public int time = 0000;
@@ -1343,7 +1340,7 @@ public class CityGui extends JFrame implements ActionListener {
 		}
 		for(int k = 0; k < apartment1HouseAnimationPanels.size(); k++)
 		{
-			apartment1HouseAnimationPanels.get(k).gui.updatePosition();
+			apartment2HouseAnimationPanels.get(k).gui.updatePosition();
 		}
 		int x = 20;
 		time++;

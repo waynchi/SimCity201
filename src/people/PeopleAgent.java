@@ -421,6 +421,7 @@ public class PeopleAgent extends Agent implements People{
 						{
 							((MarketEmployeeRole) r.role).msgSetClose();
 						}
+						//TODO fix this.
 					}
 				}
 			}
@@ -428,56 +429,59 @@ public class PeopleAgent extends Agent implements People{
 			}
 			if(state == AgentState.Idle)
 			{
-				if(jobs.get(0).start - Time >= 200)
+				if(!jobs.isEmpty())
 				{
-					if(!Banks.get(0).isClosed)
+					if(jobs.get(0).start - Time >= 200)
 					{
-						//System.out.println(Money);
-						if(Money >= 1000000)
+						if(!Banks.get(0).isClosed)
 						{
-							event = AgentEvent.GoingToDepositMoney;
-							log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
-							stateChanged();
-							return;
+							//System.out.println(Money);
+							if(Money >= 1000000)
+							{
+								event = AgentEvent.GoingToDepositMoney;
+								log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
+								stateChanged();
+								return;
+							}
 						}
-				}
-				else if(buy == BuyState.NextDay && Time <=2100)
-				{
-					if(!(Markets.get(0).isClosed))
-					{
-						if(!hasCar)
+						if(buy == BuyState.NextDay && Time <=2100)
 						{
-							if(rand.nextInt(100) <= 100)
+							if(!(Markets.get(0).isClosed))
 							{
-								buy = BuyState.GoingToBuy;
-							}
-							else
-							{
-								buy = BuyState.NotBuying;
-							}
-							if(buy == BuyState.GoingToBuy)
-							{
-								if(Money >= 20000)
+								if(!hasCar)
 								{
-									event = AgentEvent.GoingToBuyCar;
-									print("I am going to buy a car");
-									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-									buy = BuyState.NotBuying;
-									stateChanged();
-									return;
-								}
-//									else
-//									{
-//										event = AgentEvent.GoingToRetrieveMoney;
-//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//										stateChanged();
-//										buy = BuyState.NotBuying;
-//										return;
-//									}	
+									if(rand.nextInt(100) <= 100)
+									{
+										buy = BuyState.GoingToBuy;
+									}
+									else
+									{
+										buy = BuyState.NotBuying;
+									}
+									if(buy == BuyState.GoingToBuy)
+									{
+										if(Money >= 20000)
+										{
+											event = AgentEvent.GoingToBuyCar;
+											print("I am going to buy a car");
+											log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+											buy = BuyState.NotBuying;
+											stateChanged();
+											return;
+										}
+		//									else
+		//									{
+		//										event = AgentEvent.GoingToRetrieveMoney;
+		//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+		//										stateChanged();
+		//										buy = BuyState.NotBuying;
+		//										return;
+		//									}	
+									}
+								}			
 							}
-						}			
+						}
 					}
-				}
 				}
 				if(location != AgentLocation.Home)
 				{
@@ -731,7 +735,50 @@ public class PeopleAgent extends Agent implements People{
 		}
 		if(state == AgentState.Idle)
 		{
-			if(!Banks.get(0).isClosed)
+			if(!jobs.isEmpty())
+			{
+				if(buy == BuyState.NextDay && Time <=2100)
+				{
+					if(jobs.get(0).start - Time >= 200)
+					{
+						if(!(Markets.get(0).isClosed))
+						{
+							if(!hasCar)
+							{
+								if(rand.nextInt(100) <= 100)
+								{
+									buy = BuyState.GoingToBuy;
+								}
+								else
+								{
+									buy = BuyState.NotBuying;
+								}
+								if(buy == BuyState.GoingToBuy)
+								{
+									if(Money >= 20000)
+									{
+										event = AgentEvent.GoingToBuyCar;
+										print("I am going to buy a car");
+										log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
+										buy = BuyState.NotBuying;
+										stateChanged();
+										return;
+									}
+//									else
+//									{
+//										event = AgentEvent.GoingToRetrieveMoney;
+//										log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
+//										stateChanged();
+//										buy = BuyState.NotBuying;
+//										return;
+//									}	
+								}
+							}			
+						}
+					}
+				}
+			}
+			else if(!Banks.get(0).isClosed)
 			{
 				//System.out.println(Money);
 				if(Money >= 1000000)
@@ -740,46 +787,6 @@ public class PeopleAgent extends Agent implements People{
 					log.add(new LoggedEvent("Depositing Money. Event is now: " + event.toString()));
 					stateChanged();
 					return;
-				}
-			}
-			else if(buy == BuyState.NextDay && Time <=2100)
-			{
-				if(jobs.get(0).start - Time >= 200)
-				{
-					if(!(Markets.get(0).isClosed))
-					{
-						if(!hasCar)
-						{
-							if(rand.nextInt(100) <= 100)
-							{
-								buy = BuyState.GoingToBuy;
-							}
-							else
-							{
-								buy = BuyState.NotBuying;
-							}
-							if(buy == BuyState.GoingToBuy)
-							{
-								if(Money >= 20000)
-								{
-									event = AgentEvent.GoingToBuyCar;
-									print("I am going to buy a car");
-									log.add(new LoggedEvent("Going To Buy Car. Event is now: " + event.toString()));
-									buy = BuyState.NotBuying;
-									stateChanged();
-									return;
-								}
-//								else
-//								{
-//									event = AgentEvent.GoingToRetrieveMoney;
-//									log.add(new LoggedEvent("Retrieving Money. Event is now: " + event.toString()));
-//									stateChanged();
-//									buy = BuyState.NotBuying;
-//									return;
-//								}	
-							}
-						}			
-					}
 				}
 			}
 			if(location != AgentLocation.Home)
