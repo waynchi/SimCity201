@@ -548,7 +548,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void depositExcessMoney() {
-		print("depositing money");
+		print("deposit money");
 		double amount = working_capital - min_working_capital;
 		log.add(new LoggedEvent("in action depositExcessMoney, about to deposit " + amount));
 		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, amount);
@@ -556,7 +556,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void withdrawMoney() {
-		print("withdrawing money");
+		print("withdraw money");
 		double amount = getTotalSalary() + min_working_capital - working_capital;
 		log.add(new LoggedEvent("in action withdrawMoney, about to withdraw " + amount));
 		teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID,amount);
