@@ -46,6 +46,7 @@ public class PeopleAgent extends Agent implements People{
 	private boolean testmode = false;
 	public int HomeNum = 0;
 	private String type = "default";
+	private boolean Robber = false;
 	
 	private Semaphore moving = new Semaphore(0,true);
 	
@@ -53,10 +54,10 @@ public class PeopleAgent extends Agent implements People{
 
 	public enum BuyState{GoingToBuy, NotBuying, NextDay}
 	public enum AgentState 
-	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome, GoingHome}
+	{Waiting, Sleeping, Working, EatingAtRestaurant, EatingAtHome, Idle, RestingAtHome, BuyingCar, atHome, GoingToBank, IdleAtHome, GoingHome, GoingToRobBank}
 	public enum AgentEvent 
 	{Waiting, GoingToSleep, WakingUp, GoingToRestaurant, GoingToWork, LeavingWork, GoingToRetrieveMoney, 
-		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome}
+		GoingToDepositMoney, GoingToBuyCar, Idle, GoingHome, RepairManMovingShop, RepairManArrivedShop, RepairManMoving, RepairManArrived, EatingAtHome, RobbingBank}
 	public enum AgentLocation
 	{Home, Bank, Market, Restaurant, Road}
 	public enum DepositState
@@ -315,6 +316,11 @@ public class PeopleAgent extends Agent implements People{
 				state = AgentState.Idle;
 				stateChanged();
 			}
+			if(event == AgentEvent.RobbingBank)
+			{
+				state = AgentState.Idle;
+				stateChanged();
+			}
 		}
 	}
 	
@@ -404,7 +410,7 @@ public class PeopleAgent extends Agent implements People{
 					}
 				}
 			}
-			if(state == AgentState.Idle)
+			if(state == AgentState.Idle &&  Time >= 1300)
 			{
 				if(!Banks.get(0).isClosed)
 				{
@@ -1010,8 +1016,26 @@ public class PeopleAgent extends Agent implements People{
 				}
 			}
 		}
+		if(state == AgentState.Idle)
+		{
+			if(Robber)
+			{
+				if(!Banks.get(0).isClosed)
+				{
+					Robber = false;
+					event = AgentEvent.RobbingBank;
+					stateChanged();
+					return;
+				}
+			}
+		}
 		}
 		
+	}
+	
+	public void msgRobBank()
+	{
+		Robber = true;
 	}
 
 	//scheduler
@@ -1156,6 +1180,18 @@ public class PeopleAgent extends Agent implements People{
 			}
 			Person = true;
 		}
+		if(state == AgentState.Idle && event == AgentEvent.RobbingBank)
+		{
+			state = AgentState.GoingToRobBank;
+			if(location == AgentLocation.Home)
+			{
+				LeaveHouse();
+			}
+			else
+			{
+				GoRobBank();
+			}
+		}
 		if((state == AgentState.Idle || state == AgentState.IdleAtHome) && event == AgentEvent.GoingToSleep)
 		{
 			state = AgentState.Sleeping;
@@ -1173,6 +1209,43 @@ public class PeopleAgent extends Agent implements People{
 
 //Actions
 
+	private void GoRobBank() {
+		location = AgentLocation.Road;
+		if(!testmode)
+		{
+		//TODO personGui.goToBank();
+			if(hasCar)
+			{
+				for(MyRole r: roles)
+				{
+					if(r.description == "CarPassenger")
+					{
+						((CarPassengerRole)r.role).setDestination("Bank");
+						r.role.msgIsActive();
+					}
+				}
+			}
+			else
+			{
+				personGui.setDestination("Bank");
+				print("Do Not Have Car");
+			}
+		try {
+			moving.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		}
+		location = AgentLocation.Bank;
+		
+		for(MyRole r: roles)
+		{
+			if(r.description == "Robber")
+			{
+				r.role.msgIsActive();
+			}
+		}	
+	}
 	private void GoRepairShop() {
 		// TODO Auto-generated method stub
 		//gui message to ask for destination

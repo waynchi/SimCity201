@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import bank.BankCustomerRole;
 import bank.TellerRole;
 import bank.gui.BankGui;
+import bank.interfaces.Robber;
 import market.MarketCashierRole;
 import market.MarketCustomerRole;
 import market.MarketEmployeeRole;
