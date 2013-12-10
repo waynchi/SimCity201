@@ -562,7 +562,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(carPassengerRole, "CarPassenger");
 					carPassengerRole.setPerson(person);
 					CarGui carGui = new CarGui(5,5,10,10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
-					//cityPanel.vehicles.add(carGui);
+					cityPanel.vehicles.add(carGui);
 					carAgent.setGui(carGui);
 					carPassengerRole.setCar(carAgent);
 					

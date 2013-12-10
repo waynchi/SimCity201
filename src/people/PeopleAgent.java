@@ -1262,10 +1262,7 @@ public class PeopleAgent extends Agent implements People{
 				if(hasCar)
 				{
 					for(MyRole r: roles)
-					{
-						//change this for restaurant
-						((CarPassengerRole)r.role).setDestination("Restaurant 2");
-						r.role.msgIsActive();
+					{						
 						if(r.description == "CarPassenger")
 						{
 							//change this for restaurant
