@@ -93,9 +93,6 @@ public class VkCustomerGui implements VkGui{
 	}
 
 	public void draw(Graphics2D g) {
-//		g.setColor(Color.GREEN);
-//		g.fillRect(xPos, yPos, CUST_WIDTH, CUST_HEIGHT);
-		
 		g.drawImage(sprite, xPos, yPos, null);
 		
 		// If some caption has to be displayed, then do this.
