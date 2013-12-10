@@ -1757,6 +1757,33 @@ public class CityGui extends JFrame implements ActionListener {
 						((PeopleAgent)person).setType(job);
 //						person.hasCar = true;
 					}
+					if(job.equals("BankRestaurantMarket"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB1");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
+					if(job.equals("MarketRestaurantBank"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB2");
+						person.setMoney(50000);
+						person.hasCar = true;
+					}
+					if(job.equals("BankMarketRestaurant"))
+					{
+						MarketCashierRole marketCashierRole = new MarketCashierRole(marketGui);
+						person.addJob("MarketCashier", start, end);
+						person.addRole(marketCashierRole, "MarketCashier");
+						person.setType("NormativeB3");
+						person.setMoney(1000000);
+						person.hasCar = false;
+					}
 				
 					people.add(person);
 					
