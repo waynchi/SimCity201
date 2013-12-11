@@ -67,8 +67,6 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
 			customer = cust;
 			itemsOrdered = itemsNeeded;
-			orderNumber = restaurantOrderNumber;
-			restaurantOrderNumber++;
 		}
 
 		public Order(Cook _cook, Cashier _cashier, Map<String, Integer> order) {
