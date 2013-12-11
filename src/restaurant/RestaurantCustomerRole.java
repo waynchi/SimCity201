@@ -121,11 +121,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
-		event = CustomerEvent.REST_IS_FULL;
-		getPersonAgent().CallstateChanged();
-	}
-	
 	// handles waiter follow me message and eventually sits down at the correct table
 	public void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m) {
 		print("following " + waiter.getName());
@@ -316,12 +311,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		host.IWantToEat(this);//send our instance, so he can respond to us
 	}
 
-	private void leaveRestaurantBecauseItsFull(){
-		print ("Rather leave than wait");
-		host.leaveRestaurant(this);
-		customerGui.DoExitRestaurant();
-
-	}
 	
 	private void doNotWantToReorder() {
 		//Animation support for Customer leaving after restaurant runs out of your choice
@@ -330,11 +319,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		customerGui.DoExitRestaurant();
 		state = CustomerState.LEAVING;
 	}
-	
-	private void stayInRestaurant() {
-		print("It's fine I'll wait");
-		host.waitInRestaurant(this);
-	}
+
 	
 	private void SitDown() {
 		Do("Being seated. Going to table");
@@ -525,6 +510,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	public String getState() {
 		return state.toString();
+	}
+
+	@Override
+	public void msgRestaurantIsFull() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
