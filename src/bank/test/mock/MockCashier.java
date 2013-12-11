@@ -70,8 +70,12 @@ public class MockCashier extends Mock implements Cashier {
 
 
 
+
+
+
 	@Override
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder,
+			int orderNumber, int marketNumber) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -79,7 +83,16 @@ public class MockCashier extends Mock implements Cashier {
 
 
 	@Override
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,
+			int orderNumber, int marketNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void msgGetOut() {
 		// TODO Auto-generated method stub
 		
 	}
