@@ -63,26 +63,6 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	 */
 	public RestaurantCustomerRoleWc(RestaurantGuiWc gui){
 		super();
-<<<<<<< HEAD
-=======
-//		// parsing customer name string to get desirable customer behavior
-//		String delims = "[ ]+";
-//		String[] tokens = temp.split(delims);
-//		choice = tokens[0];
-//		moneyOnMe = Double.parseDouble(tokens[1]);
-//		if (tokens[2].equalsIgnoreCase("y")) {
-//			leaveIfRestIsFull = true;	
-//		}
-//		if (tokens[3].equalsIgnoreCase("y")) {
-//			ableToPay = true;	
-//		}
-//		if (tokens[4].equalsIgnoreCase("y")) {
-//			unableToAfford = true;	
-//		}
-//		if (tokens[5].equalsIgnoreCase("y")) {
-//			ableToReOrder = true;
-//		}
->>>>>>> staging
 		this.restGui = gui;
 		customerGui = new CustomerGui(this);
 		restGui.getAnimationPanel().addGui(customerGui);
@@ -261,17 +241,11 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 			return true;
 		}
 		
-<<<<<<< HEAD
+
 		if (state == AgentState.WaitingForFood && event == AgentEvent.reordered) {
 			state = AgentState.Ordering;
-			if (reorderAcceptable){
-				TellWaiter();
-=======
-		if (state == CustomerState.WAITING_FOR_FOOD && event == CustomerEvent.ASKED_TO_REORDER) {
-			state = CustomerState.MAKING_DECISION;
 			if (ableToReOrder){
-				makeDecision();
->>>>>>> staging
+				TellWaiter();
 				return true;
 			}
 			else {
@@ -359,13 +333,8 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
 		}
 		//Case 1 - Can't afford anything on the menu. Customer leaves
-<<<<<<< HEAD
 		if (event == AgentEvent.seated){
-			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
-=======
-		if (event == CustomerEvent.SEATED){
 			if (getPersonAgent().getMoney() < minimumPrice && ableToPay){
->>>>>>> staging
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = AgentState.Leaving;
