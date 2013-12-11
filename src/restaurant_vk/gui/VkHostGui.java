@@ -2,6 +2,11 @@ package restaurant_vk.gui;
 
 import restaurant_vk.VkHostRole;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /*
  * Don't look at this thing. I just left it as it was in V1.
@@ -10,7 +15,7 @@ public class VkHostGui implements VkGui {
 
     public VkHostRole host = null;
     private int jobPosX = 20;
-    private int jobPosY = 130;
+    private int jobPosY = 115;
     private int entranceX = 20;
     private int entranceY = -20;
     private int xPos = entranceX, yPos = entranceY;
@@ -18,14 +23,21 @@ public class VkHostGui implements VkGui {
     public static final int xTable = 200;
     public static final int yTable = 250;
     private final int HOST_WIDTH = 20;
-    private final int HOST_HEIGHT = 20;
+    private final int HOST_HEIGHT = 35;
 	private State state = State.None;
 	public RestaurantVkAnimationPanel ap;
+	public Image sprite = new BufferedImage(HOST_WIDTH, HOST_HEIGHT, BufferedImage.TYPE_INT_BGR);
 	
 	enum State {None, Entering, Exiting, OnDuty};
 
     public VkHostGui(VkHostRole agent) {
         this.host = agent;
+        
+        try {
+			sprite = ImageIO.read(new File("res/restaurant_vk/host.gif"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
     }
 
     public void updatePosition() {
@@ -55,10 +67,7 @@ public class VkHostGui implements VkGui {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, HOST_WIDTH, HOST_HEIGHT);
-        g.setColor(Color.BLACK);
-        g.drawString("H", xPos + 4, yPos + 14);
+    	g.drawImage(sprite, xPos, yPos, null);
     }
 
     public boolean isPresent() {
