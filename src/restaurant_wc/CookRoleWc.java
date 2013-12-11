@@ -4,6 +4,7 @@ import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_wc.gui.CookGui;
 import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant_wc.gui.RestaurantPanelWc.CookWaiterMonitorWc;
+import restaurant_wc.gui.RestaurantPanelWc.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -474,6 +475,13 @@ public class CookRoleWc extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			// TODO Auto-generated constructor stub
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
 		}
 	}
 

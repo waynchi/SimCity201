@@ -39,24 +39,24 @@ public class RestaurantPanelPS extends JPanel implements ActionListener{
 	private JPanel imagePanel = new JPanel();
 	Boolean agentPaused = false;
 
-	/*public class Order {
-        int table;
-        String food;
-        WaiterAgent waiter;
-        Order (int t, String f,WaiterAgent w) {
+	public class Order {
+        public int table;
+        public String food;
+        public BaseWaiterRole waiter;
+        Order (int t, String f,BaseWaiterRole w) {
                 table  = t;
                 food = f;
                 waiter = w;
         }
-    }*/
+    }
 
     public class CookWaiterMonitorPS extends Object {
-        private List<MyOrder> orders = new ArrayList<MyOrder>();
+        private List<Order> orders = new ArrayList<Order>();
         synchronized public void addOrder (int table, String food, BaseWaiterRole waiter) {
-                orders.add (cook.new MyOrder (food, waiter,table));
+                orders.add (new Order (table, food, waiter));
         }
-        synchronized public MyOrder removeOrder () {
-                MyOrder temp;
+        synchronized public Order removeOrder () {
+                Order temp;
                 temp = orders.get(0);
                 orders.remove(0);
                 return temp;

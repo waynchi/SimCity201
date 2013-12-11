@@ -3,6 +3,7 @@ package restaurant_es;
 import restaurant_es.gui.CookGui;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
+import restaurant_es.gui.RestaurantPanelEs.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.CookRole.MyOrder;
 import restaurant.interfaces.Cashier;
@@ -351,6 +352,13 @@ public class CookRoleEs extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food= order.food;
+			state = OrderState.PENDING;
 		}
 	}
 
