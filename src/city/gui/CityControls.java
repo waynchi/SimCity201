@@ -169,14 +169,14 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			panel.add(btnAddPerson);
 			
 			
-			
-			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
-			btnDemonstrateCollisionVehicle.addActionListener(this);
-			panel.add(btnDemonstrateCollisionVehicle);
-			
-			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
-			btnDemonstrateCollisionPerson.addActionListener(this);
-			panel.add(btnDemonstrateCollisionPerson);
+//			
+//			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
+//			btnDemonstrateCollisionVehicle.addActionListener(this);
+//			panel.add(btnDemonstrateCollisionVehicle);
+//			
+//			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
+//			btnDemonstrateCollisionPerson.addActionListener(this);
+//			panel.add(btnDemonstrateCollisionPerson);
 			
 
 			JSlider framesPerSecond = new JSlider(JSlider.HORIZONTAL,
