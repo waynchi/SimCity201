@@ -36,7 +36,7 @@ public class CookGuiPS implements Gui {
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 150, fridgeY = 300;
+    private int fridgeX = 20, fridgeY = 300;
     
     boolean isPresent;
 	
@@ -102,7 +102,7 @@ public class CookGuiPS implements Gui {
         }
         else g.drawString("", 50, 265);
         for (int i=0; i<3;i++) {
-        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        	g.drawString(foodPlated.get(i), 20, 130+30*i);
         }
 	}
 

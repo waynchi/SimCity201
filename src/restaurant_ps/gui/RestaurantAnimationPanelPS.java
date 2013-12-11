@@ -24,8 +24,8 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
 
     private List<Gui> guis = new ArrayList<Gui>();
     private ImageIcon rest_floor = new ImageIcon("src/restaurant_ps/gui/myfloor.jpg");
-    private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
-    private ImageIcon fridge = new ImageIcon("res/restaurant/fridge.png");
+    private ImageIcon rest_table = new ImageIcon("src/restaurant_ps/gui/mysprite.png");
+    private ImageIcon fridge = new ImageIcon("src/restaurant_ps/gui/myfridge.jpg");
 
 
 
@@ -52,26 +52,30 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
 
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        for (int i=1; i<4; i++){
-            g2.drawImage(rest_table.getImage(),50+100*(i-1), 100,50,50, null);
-        }
+//        g2.setColor(Color.ORANGE);
+//        for (int i=1; i<4; i++){
+//            g2.drawImage(rest_table.getImage(),50+100*(i-1), 100,50,50, null);
+//        }
 
+        g2.drawImage(rest_table.getImage(),300,50,50,50, null);
+        g2.drawImage(rest_table.getImage(),400,50,50,50, null);
+        g2.drawImage(rest_table.getImage(),350,125,50,50, null);
         // grilling
         g2.setColor(Color.yellow);
         g2.fillRect(50, 250, 60, 20);//cooking
         
         // plating
-    	g2.setColor(Color.lightGray);
+    	g2.setColor(Color.green);
         for (int i=1; i<4; i++) {
-        	g2.fillRect(50+45*(i-1), 210, 40, 20);
+        	g2.fillRect(20, 130+30*i, 40, 20);
         }
         
         // fridge
-        g2.drawImage(fridge.getImage(),150,320,30,60, null);
+        g2.drawImage(fridge.getImage(),20,320,30,60, null);
         
         //revolving stand
-        g2.fillOval(350, 250, 70, 70);
+        g2.setColor(Color.white);
+        g2.fillOval(300, 250, 70, 70);
         
         
         g2.setColor(Color.white);
