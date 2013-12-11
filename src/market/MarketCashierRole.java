@@ -270,6 +270,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		} 
 
 		if (bankEvent == bankActivityEvent.BANK_CLOSED) {
+			deposit = withdraw = false;
 			closeMarket();
 			return true;
 		}
@@ -410,9 +411,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	private void closeMarket() {
 		print("closing market, going to the exit");
 		log.add(new LoggedEvent("in action closeMarket, goint to the exit"));
-		//if (!getPersonAgent().getBank(0).isClosed) {
+		if (deposit || withdraw) {
 			teller.msgDoneAndLeaving();
-		//}
+		}
 		deposit = withdraw = false;
 		isActive = false;
 		if (!inTest){

@@ -62,11 +62,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		Cook cook = null;
 		Cashier restaurantCashier = null;
 		int orderNumber;
-		orderState state = orderState.PENDING;
+		orderState state;
 
 		public Order (MarketCustomer cust, Map<String,Integer> itemsNeeded) {
 			customer = cust;
 			itemsOrdered = itemsNeeded;
+			state = orderState.PENDING;
 		}
 
 		public Order(Cook _cook, Cashier _cashier, Map<String, Integer> order) {
@@ -75,6 +76,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			restaurantCashier = _cashier;
 			orderNumber = restaurantOrderNumber;
 			restaurantOrderNumber++;
+			state = orderState.PENDING;
 		}
 
 		public String getState() {
@@ -216,6 +218,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		if (!orders.isEmpty()) {
 			for (Order o : orders) {
 				if (o.state ==orderState.PENDING) {
+					o.state = orderState.NONE;
 					giveOrderToCustomer(o);
 					return true;
 				}
@@ -225,7 +228,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 
 		if (leaveWork) {
-			done();
+			boolean noPendingCustomer = false;
+				for (Order o : orders) {
+					
+				}
+			if (noPendingCustomer)	done();
 			return true;
 		}
 

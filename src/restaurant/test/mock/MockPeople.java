@@ -222,4 +222,16 @@ public class MockPeople extends Mock implements People{
 		
 	}
 
+	@Override
+	public PersonGui getPersonGui() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setHasCar(boolean t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

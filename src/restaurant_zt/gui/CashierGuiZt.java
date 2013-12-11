@@ -2,6 +2,9 @@ package restaurant_zt.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+import javax.swing.ImageIcon;
 
 import restaurant_zt.CashierRoleZt;
 
@@ -9,6 +12,7 @@ public class CashierGuiZt implements Gui{
 	boolean isPresent;
 	CashierRoleZt cashier;
 	RestaurantGuiZt gui;
+    private ImageIcon restaurant_cashier = new ImageIcon("res/restaurant_zt/cashier.png");
 	
 	int xDestination = 250, yDestination = 250;
 	int xPos = 0, yPos = 0;
@@ -48,11 +52,9 @@ public class CashierGuiZt implements Gui{
 
 	@Override
 	public void draw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		g.setColor(Color.yellow);
-		g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(restaurant_cashier.getImage(), xPos, yPos, 20, 30, null);
         g.setColor(Color.white);
-        g.drawString("Cashier", xPos, yPos+20);
+        g.drawString("Cashier", xPos, yPos-20);
         
 	}
 

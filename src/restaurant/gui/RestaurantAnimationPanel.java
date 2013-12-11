@@ -12,20 +12,13 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
 	//static final int?
     private final int WINDOWX = 500;
     private final int WINDOWY = 400;
-    private final int TABLENUM = 3;
-    //private final int TABLEX = 200;
-    //private final int TABLEY = 250;
-    
-    
-    private final int TABLEWIDTH = 50;
-    
-    private Image bufferImage;
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
     private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
     private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
     private ImageIcon fridge = new ImageIcon("res/restaurant/fridge.png");
+    private ImageIcon register = new ImageIcon("res/restaurant/cash_register.png");
 
 
 
@@ -34,7 +27,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         setVisible(true);
         
         bufferSize = this.getSize();
-     	Timer t = timer;
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -70,8 +62,12 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         // fridge
         g2.drawImage(fridge.getImage(),150,320,30,60, null);
         
+        //cash register
+        g2.drawImage(register.getImage(),370,175,30,30, null);
+
+        
         //revolving stand
-        g2.fillOval(350, 250, 70, 70);
+        g2.fillOval(350, 250, 30, 30);
         
         
         g2.setColor(Color.white);
