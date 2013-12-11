@@ -121,7 +121,7 @@ public class WaiterGuiZt implements Gui {
         c.getGui().DoGoToPosition(currentTableX, currentTableY);
     }
 
-    public void DoApproachCustomer(Customer c) {
+    public void DoGoToCustomer(Customer c) {
     	currentCustomer = c;
     	Dimension dm = tableMap.get(((RestaurantCustomerRoleZt) c).getTableNumber());
     	xDestination = (int)(dm.getWidth()) - 20;
@@ -142,7 +142,7 @@ public class WaiterGuiZt implements Gui {
     
     public void DoBringFoodToCustomer(Customer c) {
     	BringingFoodToCustomer = true;
-    	DoApproachCustomer(c);
+    	DoGoToCustomer(c);
     }
     
     public void DoGoRest () {
