@@ -102,9 +102,12 @@ public class PeopleAgent extends Agent implements People{
 	public List<Role> getRoles()
 	{
 		List<Role> temp = new ArrayList<Role>();
+		synchronized(roles)
+		{
 		for(MyRole a: roles)
 		{
 			temp.add(a.role);
+		}
 		}
 		return temp;
 	}
@@ -277,6 +280,8 @@ public class PeopleAgent extends Agent implements People{
 			if(role.equals("RestaurantCashierRole") || role.equals("RestaurantHostRole") || role.equals("RestaurantWaiterRole") || role.equals("RestaurantCookRole"))
 			{
 				//Gui Stuff TODO
+				synchronized(roles)
+				{
 				for(MyRole r: roles)
 				{
 					if(r.description.equals("Resident"))
@@ -287,9 +292,12 @@ public class PeopleAgent extends Agent implements People{
 						}
 					}
 				}
+				}
 			}
 			if(role.equals("MarketEmployeeRole") || role.equals("TellerRole") || role.equals("MarketCashierRole"))
 			{
+				synchronized(roles)
+				{
 				for(MyRole r : roles)
 				{
 					//Gui STuff TODO
@@ -301,6 +309,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						//Stop
 					}
+				}
 				}
 			}
 		}
@@ -910,94 +919,198 @@ public class PeopleAgent extends Agent implements People{
 			return;
 		}*/
 		int lastTime = 100000;
-		for(Job job: jobs)
+		if(!testmode)
 		{
-			if(job.job.equals("Teller") && cityGui.dayOfWeek >= 5)
+			if(!jobs.isEmpty())
 			{
-		
-			}
-			else 
-			{
-				if(Time == job.start)
+				synchronized(jobs)
 				{
-					event = AgentEvent.GoingToWork;
-					print("Going To Work from time is");
-					log.add(new LoggedEvent("Going To Work"));
-					stateChanged();
-					return;
-				}
-				if(Time == job.end)
+				for(Job job: jobs)
 				{
-					event = AgentEvent.LeavingWork;
-					log.add(new LoggedEvent("Leaving Work"));
-					stateChanged();
-					return;
-				}
-			}
-			if(job.job.contains("RestaurantHost"))
-			{
-				if(Time == 1830)
-				{
-					for(MyRole r: roles)
-					{	
-						if(r.description.equals("RestaurantHost"))
-						{	
-							((HostRole) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostVk"))
-						{	
-							((VkHostRole) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostVk"))
+					if(job.job.equals("Teller") && cityGui.dayOfWeek >= 5)
+					{
+				
+					}
+					else 
+					{
+						if(Time == job.start)
 						{
-							((VkHostRole) r.role).msgSetClose();
+							event = AgentEvent.GoingToWork;
+							print("Going To Work from time is");
+							log.add(new LoggedEvent("Going To Work"));
+							stateChanged();
+							return;
 						}
-						if(r.description.equals("RestaurantHostZt"))
-						{	
-							((HostRoleZt) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostWc"))
-						{	
-							((HostRoleWc) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostPs"))
-						{	
-							((HostRolePS) r.role).msgSetClose();
-						}
-						if(r.description.equals("RestaurantHostEs"))
-						{	
-							((HostRoleEs) r.role).msgSetClose();
+						if(Time == job.end)
+						{
+							event = AgentEvent.LeavingWork;
+							log.add(new LoggedEvent("Leaving Work"));
+							stateChanged();
+							return;
 						}
 					}
-				}
-			}
-			if(job.job.equals("Teller") && cityGui.dayOfWeek < 5)
-			{
-				if(Time == 1900)
-				{
-					for(MyRole r: roles)
-					{	
-						if(r.description.equals("Teller"))
+					if(job.job.contains("RestaurantHost"))
+					{
+						if(Time == 1830)
 						{
-							((TellerRole) r.role).msgSetClose();
+							synchronized(roles)
+							{
+							for(MyRole r: roles)
+							{	
+								if(r.description.equals("RestaurantHost"))
+								{	
+									((HostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostVk"))
+								{	
+									((VkHostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostVk"))
+								{
+									((VkHostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostZt"))
+								{	
+									((HostRoleZt) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostWc"))
+								{	
+									((HostRoleWc) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostPs"))
+								{	
+									((HostRolePS) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostEs"))
+								{	
+									((HostRoleEs) r.role).msgSetClose();
+								}
+							}
+							}
 						}
 					}
-				}
-			}
-			if(job.job.equals("MarketEmployee"))
-			{
-				if(Time == 1730)
-				{
-					for(MyRole r: roles)
-					{	
-						if(r.description.equals("MarketEmployee"))
+					if(job.job.equals("Teller") && cityGui.dayOfWeek < 5)
+					{
+						if(Time == 1900)
 						{
-							((MarketEmployeeRole) r.role).msgSetClose();
+							synchronized(roles)
+							{
+							for(MyRole r: roles)
+							{	
+								if(r.description.equals("Teller"))
+								{
+									((TellerRole) r.role).msgSetClose();
+								}
+							}
+							}
 						}
 					}
+					if(job.job.equals("MarketEmployee"))
+					{
+						if(Time == 1730)
+						{
+							synchronized(roles)
+							{
+							for(MyRole r: roles)
+							{	
+								if(r.description.equals("MarketEmployee"))
+								{
+									((MarketEmployeeRole) r.role).msgSetClose();
+								}
+							}
+							}
+						}
+					}
+				lastTime = job.end;
+				}
 				}
 			}
-		lastTime = job.end;
+		}
+		if(testmode)
+		{
+			if(!jobs.isEmpty())
+			{
+				synchronized(jobs)
+				{
+				for(Job job: jobs)
+				{
+					{
+						if(Time == job.start)
+						{
+							event = AgentEvent.GoingToWork;
+							print("Going To Work from time is");
+							log.add(new LoggedEvent("Going To Work"));
+							stateChanged();
+							return;
+						}
+						if(Time == job.end)
+						{
+							event = AgentEvent.LeavingWork;
+							log.add(new LoggedEvent("Leaving Work"));
+							stateChanged();
+							return;
+						}
+					}
+					if(job.job.contains("RestaurantHost"))
+					{
+						if(Time == 1830)
+						{
+							synchronized(roles)
+							{
+							for(MyRole r: roles)
+							{	
+								if(r.description.equals("RestaurantHost"))
+								{	
+									((HostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostVk"))
+								{	
+									((VkHostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostVk"))
+								{
+									((VkHostRole) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostZt"))
+								{	
+									((HostRoleZt) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostWc"))
+								{	
+									((HostRoleWc) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostPs"))
+								{	
+									((HostRolePS) r.role).msgSetClose();
+								}
+								if(r.description.equals("RestaurantHostEs"))
+								{	
+									((HostRoleEs) r.role).msgSetClose();
+								}
+							}
+							}
+						}
+					}
+					if(job.job.equals("MarketEmployee"))
+					{
+						if(Time == 1730)
+						{
+							synchronized(roles)
+							{
+							for(MyRole r: roles)
+							{	
+								if(r.description.equals("MarketEmployee"))
+								{
+									((MarketEmployeeRole) r.role).msgSetClose();
+								}
+							}
+							}
+						}
+					}
+				lastTime = job.end;
+				}
+				}
+			}
 		}
 		if(state == AgentState.Idle)
 		{
@@ -1463,6 +1576,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{
 						if(r.description == "CarPassenger")
@@ -1471,6 +1586,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 1");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1489,6 +1605,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Going to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1497,6 +1615,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			}
 		}
 		if(restaurant.equals("Restaurant 2"))
 		{
@@ -1504,6 +1623,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{						
 						if(r.description == "CarPassenger")
@@ -1512,6 +1633,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 2");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1530,6 +1652,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Going to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1539,6 +1663,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			}
 		}
 		if(restaurant.equals("Restaurant 3"))
 		{
@@ -1546,6 +1671,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{
 						if(r.description == "CarPassenger")
@@ -1554,6 +1681,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 3");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1572,6 +1700,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Going to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1580,6 +1710,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			}
 		}
 		if(restaurant.equals("Restaurant 4"))
 		{
@@ -1587,6 +1718,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{
 						if(r.description == "CarPassenger")
@@ -1595,6 +1728,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 4");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1613,6 +1747,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Going to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1621,6 +1757,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			}
 		}
 		if(restaurant.equals("Restaurant 5"))
 		{
@@ -1628,6 +1765,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{
 						if(r.description == "CarPassenger")
@@ -1636,6 +1775,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 5");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1654,6 +1794,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Going to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1662,6 +1804,7 @@ public class PeopleAgent extends Agent implements People{
 					r.role.msgIsActive();
 				}
 			}
+			}
 		}
 		if(restaurant.equals("Restaurant 6"))
 		{
@@ -1669,6 +1812,8 @@ public class PeopleAgent extends Agent implements People{
 			{
 				if(hasCar)
 				{
+					synchronized(roles)
+					{
 					for(MyRole r: roles)
 					{
 						if(r.description == "CarPassenger")
@@ -1677,6 +1822,7 @@ public class PeopleAgent extends Agent implements People{
 							((CarPassengerRole)r.role).setDestination("Restaurant 6");
 							r.role.msgIsActive();
 						}
+					}
 					}
 				}
 				else
@@ -1695,6 +1841,8 @@ public class PeopleAgent extends Agent implements People{
 			location = AgentLocation.Restaurant;
 			print("Walking to Restaurant");
 			hunger = HungerState.Eating;
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				//change this for restaurant
@@ -1702,6 +1850,7 @@ public class PeopleAgent extends Agent implements People{
 				{
 					r.role.msgIsActive();
 				}
+			}
 			}
 		}
 //		if(!testmode)
@@ -1747,6 +1896,8 @@ public class PeopleAgent extends Agent implements People{
 		//personGui.GoToHouse(); TODO
 			if(hasCar)
 			{
+				synchronized(roles)
+				{
 				for(MyRole r: roles)
 				{
 					if(r.description == "CarPassenger")
@@ -1765,6 +1916,7 @@ public class PeopleAgent extends Agent implements People{
 						}
 						r.role.msgIsActive();
 					}
+				}
 				}
 			}
 			else
@@ -1792,6 +1944,8 @@ public class PeopleAgent extends Agent implements People{
 		}
 		}
 		location = AgentLocation.Home;
+		synchronized(roles)
+		{
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -1799,6 +1953,7 @@ public class PeopleAgent extends Agent implements People{
 				print("I am now a Resident");
 				r.role.msgIsActive();
 			}
+		}
 		}
 		if(state != AgentState.EatingAtHome && state != AgentState.IdleAtHome)
 		{
@@ -1841,6 +1996,8 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hasCar)
 			{
+				synchronized(roles)
+				{
 				for(MyRole r: roles)
 				{
 					if(r.description == "CarPassenger")
@@ -1848,6 +2005,7 @@ public class PeopleAgent extends Agent implements People{
 						((CarPassengerRole)r.role).setDestination("Market");
 						r.role.msgIsActive();
 					}
+				}
 				}
 			}
 			else
@@ -1865,12 +2023,15 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Market;
 		if(!Markets.get(0).isClosed)
 		{
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketCustomer"))
 				{	
 					r.role.msgIsActive();
 				}
+			}
 			}
 		}
 		else
@@ -1886,6 +2047,8 @@ public class PeopleAgent extends Agent implements People{
 	@Override
 	public void LeaveWork()
 	{
+		synchronized(roles)
+		{
 		for(MyRole r: roles)
 		{
 			if(r.description.equals(jobs.get(0).job))
@@ -1893,6 +2056,7 @@ public class PeopleAgent extends Agent implements People{
 				print("I am leaving work");
 				r.role.msgIsInActive();	
 			}
+		}
 		}
 	}
 
@@ -2022,12 +2186,15 @@ public class PeopleAgent extends Agent implements People{
 		location = AgentLocation.Bank;
 		if(!Banks.get(0).isClosed)
 		{
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				if(r.description == "BankCustomer")
 				{
 					r.role.msgIsActive();
 				}
+			}
 			}
 		}
 		else
@@ -2040,6 +2207,8 @@ public class PeopleAgent extends Agent implements People{
 	public void LeaveHouse()
 	{
 		print("I am leaving the house now");
+		synchronized(roles)
+		{
 		for(MyRole r: roles)
 		{
 			if(r.description.equals("Resident"))
@@ -2051,6 +2220,7 @@ public class PeopleAgent extends Agent implements People{
 				}
 				//Stop
 			}
+		}
 		}
 		location = AgentLocation.Road;
 		//Pause the Gui
@@ -2090,6 +2260,8 @@ public class PeopleAgent extends Agent implements People{
 		print("My job is " + jobs.get(i).job);
 		if(jobs.get(i).job.equals("RestaurantNormalWaiter"))
 		{
+			synchronized(roles)
+			{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("RestaurantNormalWaiter"))
@@ -2124,6 +2296,7 @@ public class PeopleAgent extends Agent implements People{
 					print("I am now a RestaurantNormalWaiter");
 					r.role.msgIsActive();
 				}
+			}
 			}
 			//roles.WaiterRole.msgIsActive();
 		}
