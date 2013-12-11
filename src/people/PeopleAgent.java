@@ -1011,7 +1011,7 @@ public class PeopleAgent extends Agent implements People{
 						{
 							if(!hasCar)
 							{
-								if(rand.nextInt(100) <= 10)
+								if(rand.nextInt(100) <= 50)
 								{
 									buy = BuyState.GoingToBuy;
 								}
@@ -1071,10 +1071,9 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				//change this for restaurant
-				if(!Restaurants.get(1).isClosed)
+				if(!Restaurants.get(0).isClosed || !Restaurants.get(1).isClosed || !Restaurants.get(2).isClosed || !Restaurants.get(3).isClosed || !Restaurants.get(4).isClosed || !Restaurants.get(5).isClosed)
 				{
-					if(rand.nextInt(2) <2)
+					if(rand.nextInt(5) <2)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
@@ -1102,10 +1101,9 @@ public class PeopleAgent extends Agent implements People{
 		{
 			if(hunger == HungerState.Hungry)
 			{
-				//change this for restaurant
-				if(!Restaurants.get(1).isClosed)
+				if(!Restaurants.get(0).isClosed || !Restaurants.get(1).isClosed || !Restaurants.get(2).isClosed || !Restaurants.get(3).isClosed || !Restaurants.get(4).isClosed || !Restaurants.get(5).isClosed)
 				{
-					if(rand.nextInt(2) < 2)
+					if(rand.nextInt(5) < 2)
 					{
 						event = AgentEvent.GoingToRestaurant;
 						print("Going To Restaurant To Eat");
@@ -1973,16 +1971,51 @@ public class PeopleAgent extends Agent implements People{
 						personGui.setDestination("Bank");
 					
 				}
+				else if(type.equals("NormativeB1"))
+				{
+					personGui.setDestination("Bank");
+					print("Do Not Have Car");
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 				else
 				{
-				//TODO Randomization
-				personGui.setDestination("Bank");
-				print("Do Not Have Car");
-				try {
-					moving.acquire();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+					if(rand.nextInt(10) <= 2)
+					{
+						personGui.setDestination("Bus Stop 1");
+						try {
+							moving.acquire();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						
+						for(MyRole r: roles)
+						{
+							if(r.description == "BusPassenger")
+							{
+								((BusPassengerRole)r.role).setCurrentBusStop(cityGui.cityPanel.busStops.get(0));
+								((BusPassengerRole)r.role).setDestinationPlace("Bank");
+								r.role.msgIsActive();
+							}
+						}
+						try {
+							moving.acquire();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+							personGui.setDestination("Bank");
+					}
+					personGui.setDestination("Bank");
+					print("Do Not Have Car");
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
