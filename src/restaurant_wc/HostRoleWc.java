@@ -61,7 +61,7 @@ public class HostRoleWc extends Role implements Host{
 	
 	
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
-	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
+	public enum waiterStatus{onBreak, Working, askingForBreak};	
 	private int waiterCount = -1;
 	public class MyWaiter {
 		Waiter w;
@@ -69,7 +69,7 @@ public class HostRoleWc extends Role implements Host{
 
 		public MyWaiter (Waiter waiter) {
 			w = waiter;
-			s = waiterStatus.AT_WORK;
+			s = waiterStatus.Working;
 		}
 		public void msgBreakApproved() {
 			// TODO Auto-generated method stub
@@ -81,14 +81,14 @@ public class HostRoleWc extends Role implements Host{
 	//total number of customers waiting or eating in restaurant
 	private int customerCount = 0;
 	private List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
-	private enum customerState{PENDING, ASKED_WHETHER_TO_WAIT, WAITING, SEATED, LEAVING};
+	private enum customerState{pending, informed, waiting, seated, leaving};
 	public class MyCustomer {
 		RestaurantCustomerRoleWc customer;
 		customerState state;
 
 		public MyCustomer (RestaurantCustomerRoleWc cust) {
 			customer = cust;
-				state = customerState.WAITING;
+				state = customerState.waiting;
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class HostRoleWc extends Role implements Host{
 		synchronized (waiters){
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
-					w.s = waiterStatus.ASKING_FOR_BREAK;
+					w.s = waiterStatus.askingForBreak;
 					getPersonAgent().CallstateChanged();
 
 				}
@@ -151,7 +151,7 @@ public class HostRoleWc extends Role implements Host{
 		synchronized (waiters){
 			for (MyWaiter w : waiters) {
 				if (waiter.getName().equals(w.w.getName())) {
-					w.s = waiterStatus.AT_WORK;
+					w.s = waiterStatus.Working;
 					getPersonAgent().CallstateChanged();
 
 				}
@@ -172,7 +172,7 @@ public class HostRoleWc extends Role implements Host{
 		synchronized(customers){
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
-					mc.state = customerState.LEAVING;
+					mc.state = customerState.leaving;
 					getPersonAgent().CallstateChanged();
 
 				}
@@ -185,7 +185,7 @@ public class HostRoleWc extends Role implements Host{
 
 			for (MyCustomer mc : customers){
 				if (mc.customer == cust) {
-					mc.state = customerState.WAITING;
+					mc.state = customerState.waiting;
 					getPersonAgent().CallstateChanged();
 
 				}
@@ -202,7 +202,7 @@ public class HostRoleWc extends Role implements Host{
 					print(table.getOccupant() + " leaving " + table);
 					for (MyCustomer mc : customers){
 						if (mc.customer == table.getOccupant()) {
-							mc.state = customerState.LEAVING;
+							mc.state = customerState.leaving;
 						}
 					}
 					customerCount--;
@@ -230,7 +230,7 @@ public class HostRoleWc extends Role implements Host{
 			synchronized(customers){
 
 				for (MyCustomer mc : customers) {
-					if (mc.state == customerState.LEAVING) {
+					if (mc.state == customerState.leaving) {
 						customers.remove(mc);
 						return true;
 					}
@@ -241,7 +241,7 @@ public class HostRoleWc extends Role implements Host{
 		synchronized(waiters){
 
 			for (MyWaiter waiter : waiters) {
-				if (waiter.s == waiterStatus.ASKING_FOR_BREAK) {
+				if (waiter.s == waiterStatus.askingForBreak) {
 					replyToBreakRequest(waiter);
 					return true;
 
@@ -253,7 +253,7 @@ public class HostRoleWc extends Role implements Host{
 			synchronized(customers){
 
 				for (MyCustomer mc : customers) {
-					if(mc.state == customerState.WAITING){
+					if(mc.state == customerState.waiting){
 						if (!waiters.isEmpty()) {
 							for (Table table : tables) {					
 								if (!table.isOccupied()) {
@@ -267,7 +267,7 @@ public class HostRoleWc extends Role implements Host{
 									}
 									synchronized(waiters){
 
-										while (waiters.get(waiterCount).s == waiterStatus.ON_BREAK){
+										while (waiters.get(waiterCount).s == waiterStatus.onBreak){
 											// find the first waiter that is at work
 											//print("shouldn't be in this while loop for the first waiter");
 											if (waiterCount != waiters.size()-1) {
@@ -312,14 +312,14 @@ public class HostRoleWc extends Role implements Host{
 
 	private void tellCustomerRestIsFull (MyCustomer mc) {
 		print ("Hi "+ mc.customer.getName() + ", restaurant is full now, do you want to wait?");
-		mc.customer.msgRestaurantIsFull();
-		mc.state = customerState.ASKED_WHETHER_TO_WAIT;
+		mc.customer.msgYouNeedToWait();
+		mc.state = customerState.informed;
 	}
 
 	private void TellWaiterToSeatCustomer(MyCustomer mc, Waiter waiter, Table table) {
 		print("Please take "+mc.customer.getName()+ " to table#" + table.tableNumber);
 		waiter.SitAtTable(mc.customer, table.tableNumber);
-		mc.state = customerState.SEATED;
+		mc.state = customerState.seated;
 		table.setOccupant (mc.customer);
 	}
 
@@ -327,9 +327,9 @@ public class HostRoleWc extends Role implements Host{
 		synchronized(waiters){
 
 			for (MyWaiter temp : waiters) {
-				if (temp.s == temp.s.AT_WORK && temp!=waiter) {
+				if (temp.s == temp.s.Working && temp!=waiter) {
 					print ("Okay "+waiter.w.getName()+", you can have a break!");
-					waiter.s = waiterStatus.ON_BREAK;
+					waiter.s = waiterStatus.onBreak;
 					waiter.w.msgBreakApproved();
 					//availableWaiters.remove(waiter.w);
 					return;
@@ -338,7 +338,7 @@ public class HostRoleWc extends Role implements Host{
 		}
 		print ("Sorry "+waiter.w.getName()+" , you are the only available waiter now and we're"
 				+ " counting on you. Fight on!");
-		waiter.s = waiterStatus.AT_WORK;
+		waiter.s = waiterStatus.Working;
 		waiter.w.msgBreakDenied();
 	}
 	
@@ -417,7 +417,7 @@ public class HostRoleWc extends Role implements Host{
 	public List<Waiter> getAvailableWaiters() {
 		List<Waiter> temp = new ArrayList<Waiter>();
 		for (MyWaiter mw: waiters){
-			if (mw.s == waiterStatus.AT_WORK) {
+			if (mw.s == waiterStatus.Working) {
 				temp.add(mw.w);
 			}
 		}

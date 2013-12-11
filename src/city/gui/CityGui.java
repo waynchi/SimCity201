@@ -370,7 +370,7 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(restaurantContainerPS, "" + 21);
 
 
-        buildingPanels.add(bank2Container, "" + 15);
+        buildingPanels.add(bankContainer, "" + 15);
         buildingPanels.add(bank2Container, "" + 23);
 
         

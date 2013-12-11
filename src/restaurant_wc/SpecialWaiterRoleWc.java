@@ -19,7 +19,7 @@ public class SpecialWaiterRoleWc extends BaseWaiterRole implements Waiter{
 		menu.add(new FoodOnMenu("Chicken", 10.99));
 		menu.add(new FoodOnMenu("Salad", 5.99));
 		menu.add(new FoodOnMenu("Pizza", 8.99));
-		state = agentState.WORKING;
+		state = agentState.working;
 		theMonitor = monitor;
 	}
 	
@@ -32,7 +32,7 @@ public class SpecialWaiterRoleWc extends BaseWaiterRole implements Waiter{
         customer.state = customerState.waitingForFood;
 	}
 	
-	public void done () {
+	public void Leaving () {
 		// gui has to walk to exit
 		leaveWork = false;
 		waiterGui.DoExit();

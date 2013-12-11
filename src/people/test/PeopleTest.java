@@ -137,6 +137,12 @@ public class PeopleTest extends TestCase
 		//person.addRole(new )
 	}	
 	
+	//This tests normative scenarioB
+	public void NormativeScenarioB()
+	{
+		
+	}
+	
 	public void testMarketScenario()
 	{
 		//AddingRoles

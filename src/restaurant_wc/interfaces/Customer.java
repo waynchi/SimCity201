@@ -9,10 +9,10 @@ import restaurant.interfaces.Cashier;
 public interface Customer {
 	public abstract void gotHungry();
 
-	public abstract void msgRestaurantIsFull();
+	public abstract void msgYouNeedToWait();
 	
 	// handles waiter follow me message and eventually sits down at the correct table
-	public abstract void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m);
+	public abstract void msgSitAtTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m);
 
 	// from animation, when customer has arrived at the table
 	public abstract void msgAtTable();
@@ -26,12 +26,12 @@ public interface Customer {
 	public abstract void msgWhatWouldYouLike();
 	
 	//from waiter agent
-	public abstract void msgReorder(List<FoodOnMenu> newMenu);
+	public abstract void msgWhatElseWouldYouLike(List<FoodOnMenu> newMenu);
 	
 	//from waiter agent
 	public abstract void msgHereIsYourFood();
 	
-	public abstract void msgHereIsCheck (Double d, Cashier cashier);
+	public abstract void msgHereIsYourTotal (Double d, Cashier cashier);
 	
 	public abstract void msgHereIsYourChange (Double change);
 

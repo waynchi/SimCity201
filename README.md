@@ -16,34 +16,24 @@ Here are a list of some, but not all, of the most notable actions that a person 
 4. Buying a car if they do not have a car and have money.
 5. Withdrawing, depositing, or requesting a loan from the bank.
 6. Going to work places either on feet or on car (if they have it).
+7. People Riding the Bus 
+8. Special Waiter
+9. Apartment Complex
+10. Robbers robbing the bank
+11. More houses, More Restaurants, and More Buildings
+12. Adding People directly into the City 
+13. Collision detection for pedestrians 
+14. Better graphical animation and images
 
 + So far, all of these actions will work and show up within either the main gui or the individual guis.
 
-Here are a list of some of the features that are working, but not implemented fully for V1
-
-1. People Riding the Bus (working but not implemented)
-2. RepairMan for Housing (working but not implemented)
-3. Special Waiter (working but not implemented)
-4. Apartment Complex (Working but not implemented).
-5. Renter and Owner Interaction (Working but not implemented)
-
-Here are a list of some, but not all, of the new features we will add for V2
-
-1. Robbers robbing the bank
-2. More houses, More Restaurants, and More Buildings
-3. A* within the individual buildings
-4. Buying food from the market to cook at home.
-5. Adding People directly into the City (we only have it partially ready)
-6. Collision detection for pedestrians (We have it halfway setup)
-7. Better graphical animation and images
-
-We are not limited to the above, but these are some of the things that we will be sure to do first. We will of course finish all of V2 requirements in the end. 
-
 For Further info on the city gui please access: [City Gui](https://github.com/usc-csci201-fall2013/team30/wiki/City-GUI)
 
-If there are any other suggetions, please post on our issue tracker!
+If there are any other suggestions, please post on our issue tracker!
 
 # How To Use Our SimCity
+
+V2.1
 
 Our SimCity runs autonomously. As a result, there is no configuration Panel.
 However, there is a config.txt located in the src folder (src/config.txt) that allows for creations of people. 
@@ -65,6 +55,23 @@ the city handles pathing and collision detection.
  4. The yellow block zooming around is our bus. The various lamp posts are its bus stops.
  5. Although you can read our log directly, it will be populated with a lot of messages (along with the constant timer/clock), making it somewhat hard to read. We have provided a trace log in the gui for your convenience. This trace log not only keeps track of all the messages, but if you scroll to the right, you can choose which messages to be shown or hidden. 
  6. Please enjoy our SimCity :) 
+ 
+V2.2
+
+As per V2.1, you can still start the SimCity through the config file.
+However, now we have now implemented many new methods to run our city as well as modify it. You can find these in the scenarios tab.
+
+#1 importance
+Clear World Function. This clears the world of all people, guis, etc. This is vital as it will allow you to completely restart the simulation for normativeBaselineA, normativeBaselineB, and the original config file. 
+I understand that this is no longer a necessity since the professor has stated that we can just restart the simulation, but I am still incredibly proud of it.
+However, if it does not work, all you have to do is copy the normativeBaselineA or normativeBaselineB into config.txt and restart the simulation.
+
+1) Scenarios that require clear world. We have a multitude of buttons that cover almost all the scenarios. Normative Scenario B, Normative Scenario A, and Start from Config must have the world cleared before they are executed.
+2) Other Scenarios. All of other scenarios can be run while the city itself is running. Since these scenarios require specific conditions (For e.g. car crash scenario would require cars to actually be in the city, or it may cause errors) we will control it ourselves and demonstrate it during our presentation.
+
+3) Add People Button. This button allows you to add people directly into the SimCity! There is a drop down menu for jobs; you may also assign other variables such as name, money, and if they have a car or not.
+
+
 
 
 
@@ -73,18 +80,22 @@ the city handles pathing and collision detection.
 * Vikrant Singhal
   * Housing Logic
   * Housing Gui
+  * Restaurant Special Waiter
 * Eric Strode
   * Bank Logic
   * Bank Gui
   * Main Gui Layout
   * Trace Log
+  * Design
 * Yinyi Chen
   * Restaurant Logic (New Things)
   * Restaurant Gui (New Things)
   * Market Logic
+  * Normative Scenario C
   * Market Gui
 * Peppy Sisay
-  * Transportation Logic (Vehicles and Bus)
+  * Transportation Logic (Vehicles)
+  * Transportation Logic (Bus)
   * Transportation Gui
   * SimCity Gui and Layout
 * Zack Tanner
@@ -92,12 +103,16 @@ the city handles pathing and collision detection.
   * Transportation Gui
   * City Configuration
   * Person Gui
+  * Add Person Function
 * Wayne Chi
   * People Logic
   * People Gui
   * City Configuration
   * Organizing and Combining Features
+  * Normative Scenarios A and B
   * Yelp creation
 
 + I (Wayne Chi, the Team Leader) believe that, although there were differences in skill level, everyone gave 200%  to this project (The extra hundred percent being derived from our sleep) and did an approximately equal amount of work.
 + Not only that, but the roles and contributions we have are loosely defined as we all helped each other out throughout the project, with most people fixing and editing code from all throughout the project.
+it 
++ Also, in the end, since it's hard for people to jump in on other tasks (such as my peopleAgent), some people spent a lot of time helping debug which was also useful.
