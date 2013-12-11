@@ -40,10 +40,9 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	//private Double due;
 	
 	//customer behaviors
-	private Boolean leaveIfRestIsFull = false;
-	private Boolean orderFoodThatICanAfford = false;
-	private Boolean leaveIfCheapestFoodOutOfStock = false;
-	private Boolean reorderAcceptable = false;
+	private Boolean ableToPay = false;
+	private Boolean unableToAfford = false;
+	private Boolean ableToReOrder = false;
 			
 	// State of a customer
 	public enum CustomerState
@@ -73,13 +72,13 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 //			leaveIfRestIsFull = true;	
 //		}
 //		if (tokens[3].equalsIgnoreCase("y")) {
-//			orderFoodThatICanAfford = true;	
+//			ableToPay = true;	
 //		}
 //		if (tokens[4].equalsIgnoreCase("y")) {
-//			leaveIfCheapestFoodOutOfStock = true;	
+//			unableToAfford = true;	
 //		}
 //		if (tokens[5].equalsIgnoreCase("y")) {
-//			reorderAcceptable = true;
+//			ableToReOrder = true;
 //		}
 		this.restGui = gui;
 		customerGui = new CustomerGui(this);
@@ -269,7 +268,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		if (state == CustomerState.WAITING_FOR_FOOD && event == CustomerEvent.ASKED_TO_REORDER) {
 			state = CustomerState.MAKING_DECISION;
-			if (reorderAcceptable){
+			if (ableToReOrder){
 				makeDecision();
 				return true;
 			}
@@ -360,7 +359,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		}
 		//Case 1 - Can't afford anything on the menu. Customer leaves
 		if (event == CustomerEvent.SEATED){
-			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
+			if (getPersonAgent().getMoney() < minimumPrice && ableToPay){
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -373,7 +372,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == CustomerEvent.ASKED_TO_REORDER){
 
-			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
+			if (getPersonAgent().getMoney() < minimumPrice && (ableToPay||unableToAfford)){
 				print ("Can't afford anything else, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = CustomerState.LEAVING;
@@ -404,7 +403,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		// Customer has only enough money to order the cheapest item if moneyOnMe is greater than 5.99 and less
 		// than 8.99.
-		if (orderFoodThatICanAfford) {
+		if (ableToPay) {
 			for (FoodOnMenu temp : menu) {
 				if (temp.price > maximumPrice && temp.price <= getPersonAgent().getMoney()) {
 					maximumPrice = temp.price;
