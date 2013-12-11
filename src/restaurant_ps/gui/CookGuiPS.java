@@ -102,7 +102,7 @@ public class CookGuiPS implements Gui {
         }
         else g.drawString("", 50, 265);
         for (int i=0; i<3;i++) {
-        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        	g.drawString(foodPlated.get(i), 20, 130+30*i);
         }
 	}
 

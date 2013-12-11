@@ -67,7 +67,7 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
         // plating
     	g2.setColor(Color.green);
         for (int i=1; i<4; i++) {
-        	g2.fillRect(50+45*(i-1), 210, 40, 20);
+        	g2.fillRect(20, 130+30*i, 40, 20);
         }
         
         // fridge
