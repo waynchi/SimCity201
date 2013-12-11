@@ -4,7 +4,7 @@ SimCity201 Project Repository for CS 201 students
 
 # Overall Project Completion
 
-Unlike many other groups, our project is a fully autonomous SimCity, which we are incredibly proud of. 
+Our project is a fully autonomous SimCity, which we are incredibly proud of. 
 Not only that, but we have implemented a method involving arraylists and stoplights to completely avoid collisions with vehicles within the city (This can be tested with a button in our Gui)
 Currently, our SimCity will run through each day over and over again autonomously deciding what to do.
 
@@ -102,7 +102,8 @@ However, if it does not work, all you have to do is copy the normativeBaselineA 
   * Transportation Logic (Vehicles)
   * Transportation Gui
   * City Configuration
-  * Person Gui
+  * Person Gui & Logic
+  * Crosswalks & Redlight logic
   * Add Person Function
 * Wayne Chi
   * People Logic
