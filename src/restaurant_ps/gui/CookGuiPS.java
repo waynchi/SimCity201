@@ -36,7 +36,7 @@ public class CookGuiPS implements Gui {
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 150, fridgeY = 300;
+    private int fridgeX = 20, fridgeY = 300;
     
     boolean isPresent;
 	
