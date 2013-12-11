@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+
 import restaurant_es.CookRoleEs;
 
 
@@ -17,6 +20,7 @@ public class CookGui implements Gui {
 	String foodBeingCooked = null;
 	RestaurantGuiEs gui;
 	private List<String> foodPlated = new ArrayList<String>();
+	private ImageIcon cook = new ImageIcon("res/custsprite_2.png");
 
 	 
     private int xDestination = 200, 
@@ -77,16 +81,17 @@ public class CookGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-        g.setColor(Color.blue);
-		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.black);
+        //g.setColor(Color.blue);
+		//g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(cook.getImage(), xPos, yPos, null);
+        g.setColor(Color.white);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
-        	g.drawString(foodBeingCooked, 50, 265);
+        	g.drawString(foodBeingCooked, 200, 290);
         }
-        else g.drawString("", 50, 265);
+        else g.drawString("", 200, 275);
         for (int i=0; i<3;i++) {
-        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        	g.drawString(foodPlated.get(i), 200+45*i, 240);
         }
 	}
 

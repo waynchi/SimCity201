@@ -35,7 +35,7 @@ public class WaiterGui implements Gui {
     
     private int xDestination = 20, yDestination = 20;//default start position
     private Customer currentCustomer;
-    private ImageIcon img = new ImageIcon("waiter.png");
+    private ImageIcon img = new ImageIcon("res/bank/tellersprite.png");
     private boolean BringingFoodToCustomer = false;
     private boolean leaving =false;
     
@@ -90,7 +90,7 @@ public class WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         
     	g.drawImage(img.getImage(),xPos,yPos,null);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.white);
         g.drawString(role.getName(), xPos, yPos+10);
         if (BringingFoodToCustomer) {
     		g.setColor(Color.BLACK);
@@ -108,7 +108,7 @@ public class WaiterGui implements Gui {
         yDestination = (int)(dm.getHeight()) - 20;
         currentTableX = (int)(dm.getWidth());
         currentTableY = (int)(dm.getHeight());
-        c.getGui().DoGoToPosition(currentTableX, currentTableY);
+        c.getGui().DoGoToPosition(currentTableX+60, currentTableY);
     }
 
     public void DoApproachCustomer(Customer c) {

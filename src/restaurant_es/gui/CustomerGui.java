@@ -26,7 +26,7 @@ public class CustomerGui implements Gui{
 	private boolean MsgGoToSeatFromAgent = false;
 	private boolean leaving = false;
 	private boolean goingToCashier = false;
-    private ImageIcon img = new ImageIcon("res/cust_1.png");
+    private ImageIcon img = new ImageIcon("res/custsprite_2.png");
     
     private int xFinal = -20;
     private int yFinal = -20;

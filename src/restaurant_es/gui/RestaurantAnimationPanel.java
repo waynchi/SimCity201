@@ -29,6 +29,11 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private static final int TABLEY = 250;
     private static final int TABLESIZE = 50;
     static final int NTABLES = 3;
+    private ImageIcon back = new ImageIcon("res/es/back.png");
+    private ImageIcon cook = new ImageIcon("res/es/grill.png");
+    private ImageIcon plate = new ImageIcon("res/es/plate.png");
+    private ImageIcon table = new ImageIcon("res/es/table.png");
+    private ImageIcon stand = new ImageIcon("res/es/stand.png");
 
     private List<Gui> guis = new ArrayList<Gui>();
 
@@ -51,23 +56,27 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        g2.drawImage(back.getImage(), 0, 0, null);
 
         //Here are the tables
         g2.setColor(Color.ORANGE);
         
         g2.fillRect(100, 100, TABLESIZE, TABLESIZE);
+        g2.drawImage(table.getImage(), 100, 100, null);
         
         g2.fillRect(200, 100, TABLESIZE, TABLESIZE);
+        g2.drawImage(table.getImage(), 200, 100, null);
         
         g2.fillRect(300, 100, TABLESIZE, TABLESIZE);
+        g2.drawImage(table.getImage(), 300, 100, null);
         
-        g2.fillOval(350, 250, 70, 70); //revolving
+        g2.drawImage(stand.getImage(), 350, 250, null);
         
         g2.setColor(Color.RED);
-        g2.fillRect(COOKX, COOKY, 100, COOKSIZE);
+        g2.drawImage(plate.getImage(), COOKX, COOKY, null);
         
         g2.setColor(Color.BLUE);
-        g2.fillRect(PLATEX, PLATEY, 100, PLATESIZE);
+        g2.drawImage(cook.getImage(), PLATEX, PLATEY, null);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {
