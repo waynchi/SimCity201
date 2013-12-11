@@ -98,7 +98,7 @@ public class WaiterGuiZt implements Gui {
         
     	g.drawImage(restaurant_waiter.getImage(),xPos,yPos,null);
         g.setColor(Color.YELLOW);
-        g.drawString(role.getName(), xPos, yPos-10);
+        g.drawString(role.getName(), xPos + 10, yPos);
         if (BringingFoodToCustomer) {
     		g.setColor(Color.BLACK);
 			g.drawString(currentCustomer.getChoice().substring(0,2),xPos, yPos);
@@ -143,7 +143,7 @@ public class WaiterGuiZt implements Gui {
     }
     
     public void DoGoRest () {
-    	xDestination = 50+30*homeIndex;
+    	xDestination = 50+40*homeIndex;
     	yDestination = 10;
     }
     
