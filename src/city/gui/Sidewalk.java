@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 
+import people.People;
+import people.PeopleAgent;
+
 
 public class Sidewalk {
 	Rectangle2D.Double rectangle;
@@ -21,6 +24,8 @@ public class Sidewalk {
 	public String name;
 	public boolean redLight;
 	boolean hasPerson;
+	People person;
+	public boolean simulatingCrash;
 	
 	public Sidewalk(int xo, int yo, int w, int h, double xv, double yv, boolean ish, Color lc, Color sc, String name ) {
 		width = w;
@@ -34,6 +39,7 @@ public class Sidewalk {
 		sideColor = sc;
 		this.name = name;
 		hasPerson = false;
+		simulatingCrash = false;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );
@@ -50,6 +56,9 @@ public class Sidewalk {
 		
 		people = new ArrayList<PersonGui>();
 	}
+	public void setPerson(People person) {
+		this.person = person;
+	}
 	
 	public void draw( Graphics2D g2 ) {
 		g2.setColor( laneColor );
@@ -62,6 +71,9 @@ public class Sidewalk {
 	}
 	public void redLight() {
 		redLight = true;
+	}
+	public PersonGui getPersonGui() {
+		return person.getPersonGui();
 	}
 	
 	public void greenLight() {

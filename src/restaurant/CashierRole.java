@@ -8,8 +8,12 @@ import restaurant.interfaces.Host;
 import restaurant.interfaces.Waiter;
 import restaurant.test.mock.EventLog;
 import restaurant.test.mock.LoggedEvent;
+
+import java.awt.Component;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import bank.TellerRole;
 import bank.interfaces.Teller;
 import market.interfaces.MarketEmployee;
 import people.People;
@@ -86,20 +90,23 @@ public class CashierRole extends Role implements Cashier {
 		Double amount;
 		public boolean itemsReceived = false;
 		public boolean checkReceived = false;
-		public int orderNumber;
+		public int orderNumber = -1;
+		public int marketNumber = -1;
 		Map<String, Integer> itemsOrdered = new HashMap<String, Integer>();
 
-		public MarketBill (double a, Map<String, Integer> items, int number) {
+		public MarketBill (double a, Map<String, Integer> items, int number, int market) {
 			amount = a;
 			itemsOrdered = items;
 			checkReceived = true;
 			orderNumber = number;
+			marketNumber = market;
 		}
 
-		public MarketBill ( Map<String, Integer> items, int number) {
+		public MarketBill ( Map<String, Integer> items, int number, int market) {
 			itemsOrdered = items;
 			itemsReceived = true;
 			orderNumber = number;
+			marketNumber = market;
 		}
 
 	}
@@ -139,12 +146,14 @@ public class CashierRole extends Role implements Cashier {
 
 	// from people agent
 	public void msgIsActive() {
+		print ("received msgIsActive");
 		turnActive = true;
 		isActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
+		print("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -153,38 +162,42 @@ public class CashierRole extends Role implements Cashier {
 	// market interaction
 	
 	// from cook
-	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber) {
+	public void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber) {
+		print("notified by cook that market order " + orderNumber + "has been delivered");
 		log.add(new LoggedEvent("told by cook that market order is delivered, ready to pay"));
 		boolean orderFound = false;
 		synchronized(marketBills){
 			for (MarketBill mb : marketBills) {
-				if (mb.orderNumber == orderNumber) {
+				if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
+					print("verifying market order number");
 					mb.itemsReceived = true;
 					orderFound = true;
+					print("");
 				}
 			}
 			if (!orderFound) {
-				marketBills.add(new MarketBill(marketOrder, orderNumber));
+				marketBills.add(new MarketBill(marketOrder, orderNumber, marketNumber));
 			}
 		}
 		getPersonAgent().CallstateChanged();
 	}
 	
 	// from market cashier
-	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber) {
+	public void msgHereIsWhatIsDue(double price, Map<String, Integer> items,int orderNumber, int marketNumber) {
+		print("got market bill for order number " + orderNumber);
 		log.add(new LoggedEvent("Received msgHereIsWhatIsDue with price " + price + " and order number is " + orderNumber));
 
 		boolean orderFound = false;
 		synchronized(marketBills){
 			for (MarketBill mb : marketBills) {
-				if (mb.orderNumber == orderNumber) {
+				if (mb.orderNumber == orderNumber && mb.marketNumber == marketNumber) {
 					mb.checkReceived = true;
 					orderFound = true;
 				}
 			}
 		}
 		if (!orderFound) {
-			marketBills.add(new MarketBill(price ,items, orderNumber));
+			marketBills.add(new MarketBill(price ,items, orderNumber, marketNumber));
 		}
 		getPersonAgent().CallstateChanged();
 
@@ -192,6 +205,7 @@ public class CashierRole extends Role implements Cashier {
 
 	// from market cashier
 	public void msgHereIsChange(double change) {
+		print("received change " + change + " from market cashier");
 		log.add(new LoggedEvent("received change " + change + " from market cashier"));
 		working_capital += change;
 		getPersonAgent().CallstateChanged();
@@ -205,6 +219,7 @@ public class CashierRole extends Role implements Cashier {
 	
 	// from waiter
 	public void msgHereIsBill (Customer c, String food, Waiter w) {
+		print("received a customer bill from waiter");
 		log.add(new LoggedEvent("received a bill from waiter " + w.getName() + " for customer " + c.getName()));
 		synchronized(balance){
 			if (balance.containsKey(c)){
@@ -220,6 +235,7 @@ public class CashierRole extends Role implements Cashier {
 
 	// from restaurant customer
 	public void msgPayMyCheck (Customer c, Double amount) {
+		print("received payment from customer");
 		log.add(new LoggedEvent("Received msgPayMyCheck from Customer " + c.getName() + " and the amount is " + amount));
 		synchronized (checks){
 			for (Check check : checks) {
@@ -237,6 +253,7 @@ public class CashierRole extends Role implements Cashier {
 	
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
+		print("received ready to help from teller");
 		log.add(new LoggedEvent("received msgReadyToHelp from teller"));
 		bankEvent = bankActivityEvent.READY_TO_HELP;
 		getPersonAgent().CallstateChanged();
@@ -250,6 +267,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgWithdrawSuccessful(double funds, double amount){
+		print("received withdraw successful from teller");
 		log.add(new LoggedEvent("received msgWithDrawSuccessful from teller"));
 		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
 		working_capital += amount;
@@ -257,6 +275,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	public void msgDepositSuccessful(double funds){
+		print("received deposit successful from teller");
 		log.add(new LoggedEvent("received msgDepositSuccessful from teller"));
 		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
 		working_capital = min_working_capital;
@@ -264,6 +283,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	public void msgGetOut() {
+		print("received msg get out from teller");
 		log.add(new LoggedEvent("received msgGetOut from teller"));
 		bankEvent = bankActivityEvent.BANK_CLOSED;
 		getPersonAgent().CallstateChanged();
@@ -343,7 +363,15 @@ public class CashierRole extends Role implements Cashier {
 		}
 		
 		if (leaveWork) 	{
-			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) prepareToClose();
+			if (getPersonAgent().getRestaurant(0).isClosed && host.getCustomerSize() == 0) {
+				if (!getPersonAgent().getBank(0).isClosed) {
+					prepareToClose();
+				}
+				else {
+					payWorkers();
+					closeRestaurant();
+				}
+			}
 			else if (!getPersonAgent().getRestaurant(0).isClosed) leaveWork();
 			return true;
 		}
@@ -361,6 +389,7 @@ public class CashierRole extends Role implements Cashier {
 
 	// Actions
 	private void clockIn() {
+		print("in clock in");
 		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(0);
 		teller = (Teller) getPersonAgent().getTeller(0);
@@ -382,7 +411,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void sendCheckToWaiter (final Check c) {
-
+		print("giving customer check to waiter");
 		log.add(new LoggedEvent("In action sendCheckToWaiter, ready to send Check to " + c.waiter.getName() + 
 				". Customer " + c.customer.getName() + " needs to pay " + c.due));
 		/*new java.util.Timer().schedule(
@@ -398,7 +427,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void giveChangeToCustomer (Check c) {
-		print("in action giveChangeToCustomer");
+		print("giving change to customer");
 		log.add(new LoggedEvent("In action giveChangeToCustomer, ready to give change to "+ c.customer.getName()));
 		if (c.due > c.amountPaid) {
 			c.customer.msgHereIsYourChange(0.00);
@@ -417,11 +446,12 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payMarket(MarketBill bill){
+		print("paying market bill number " + bill.orderNumber);
 		log.add(new LoggedEvent("In action payMarket, amount due is "+bill.amount));
 		//if (working_capital > bill.amount) {
 		//print ("Paying " + bill.market.getName() + " "+ String.format("%.2f",bill.amount));
 		if (!inTest) {
-		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.itemsOrdered, this);
+		((MarketEmployee) getPersonAgent().getMarketEmployee(0)).getCashier().msgHereIsPayment(working_capital, bill.orderNumber, this);
 		}
 		setMyMoney(0);
 
@@ -437,6 +467,7 @@ public class CashierRole extends Role implements Cashier {
 
 	// leave work in the middle of a day, i.e. the restaurant is not close yet
 	private void leaveWork() {
+		print("leaving work");
 		isActive = false;
 		if (!inTest){
 			cashierGui.DoLeaveWork();
@@ -454,6 +485,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 	
 	private void prepareToClose() {
+		print("preparing to close");
 		log.add(new LoggedEvent("In action prepareToClose"));
 		leaveWork = false;
 		double total = getTotalSalary() + min_working_capital;
@@ -474,6 +506,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void payWorkers() {
+		print("paying restaurant workers");
 		log.add(new LoggedEvent("in action payWorkers, paying everybody"));
 		working_capital -= getTotalSalary();
 		for (People p : ((HostRole)host).getWorkers()) {
@@ -485,8 +518,11 @@ public class CashierRole extends Role implements Cashier {
 
 	
 	private void closeRestaurant() {
+		print("closing restaurant");
 		log.add(new LoggedEvent("in action closeRestaurant, goint to the exit"));
-		teller.msgDoneAndLeaving();
+		if (!getPersonAgent().getBank(0).isClosed){
+			teller.msgDoneAndLeaving();
+		}
 		deposit = withdraw = false;
 		isActive = false;
 		if (!inTest){
@@ -512,6 +548,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void depositExcessMoney() {
+		print("deposit money");
 		double amount = working_capital - min_working_capital;
 		log.add(new LoggedEvent("in action depositExcessMoney, about to deposit " + amount));
 		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, amount);
@@ -519,6 +556,7 @@ public class CashierRole extends Role implements Cashier {
 	}
 
 	private void withdrawMoney() {
+		print("withdraw money");
 		double amount = getTotalSalary() + min_working_capital - working_capital;
 		log.add(new LoggedEvent("in action withdrawMoney, about to withdraw " + amount));
 		teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID,amount);
@@ -578,5 +616,7 @@ public class CashierRole extends Role implements Cashier {
 	public String getName() {
 		return getPersonAgent().getName();
 	}
+
+
 
 }

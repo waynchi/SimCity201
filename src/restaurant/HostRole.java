@@ -62,7 +62,7 @@ public class HostRole extends Role implements Host{
 	
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
-	private int waiterCount = 0;
+	private int waiterCount = -1;
 	public class MyWaiter {
 		Waiter w;
 		waiterStatus s;
@@ -203,7 +203,6 @@ public class HostRole extends Role implements Host{
 		synchronized(customers){
 
 			for (Table table : tables) {
-				if (table.tableNumber == tableNum) {
 					print(table.getOccupant() + " leaving " + table);
 					for (MyCustomer mc : customers){
 						if (mc.customer == table.getOccupant()) {
@@ -217,7 +216,7 @@ public class HostRole extends Role implements Host{
 				}
 			}
 		}
-	}
+	
 
 
 
@@ -267,7 +266,7 @@ public class HostRole extends Role implements Host{
 										waiterCount = 0;
 									}
 
-									else {
+									else if (waiters.size()!=1){
 										waiterCount++;
 									}
 									synchronized(waiters){

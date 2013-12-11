@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class House extends Item{
 	public List<Item> items;
 	public int number;
-	public Resident occupant;
+	public Resident occupant = null;
 	public HouseGui gui;
 	public boolean isBroken = false;
 	public HouseType type;
@@ -55,6 +55,10 @@ public class House extends Item{
 				((HousingResidentRole)occ).gui.setApartmentsGui(this.a.gui);
 			}
 		}
+	}
+	
+	public void removeOccupant() {
+		this.occupant = null;
 	}
 
 	public void addItem(Item i) {

@@ -23,6 +23,7 @@ public class Lane implements MouseListener{
 	ArrayList<VehicleGui> vehicles;
 	public String name;
 	boolean hasCar;
+	public boolean simulatingCrash;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc, String name ) {
 		this.name = name;
@@ -37,6 +38,7 @@ public class Lane implements MouseListener{
 		laneColor = lc;
 		sideColor = sc;
 		hasCar = false;
+		simulatingCrash = false;
 		
 		//Make the lane surface
 		rectangle = new Rectangle2D.Double( xOrigin, yOrigin, width, height );

@@ -89,6 +89,7 @@ public class TellerGui implements Gui{
 	public void DoExitRestaurant() {
 		xDestination = 520;
 		yDestination = 90;
+		updatePosition();
 	}
 	
     public int getXPos() {
@@ -98,4 +99,10 @@ public class TellerGui implements Gui{
     public int getYPos() {
         return yPos;
     }
+
+	@Override
+	public void setCust(int i) {
+		// TODO Auto-generated method stub
+		
+	}
 }

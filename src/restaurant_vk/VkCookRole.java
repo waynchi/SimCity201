@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -36,8 +37,8 @@ public class VkCookRole extends Role implements Cook {
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
-	private final int period = 5000;
-	private MarketEmployee market;
+	private final int period = 1000;
+	private List<MarketEmployee> markets = new ArrayList<MarketEmployee>();
 	private Cashier cashier;
 	private boolean leave = false;
 	private boolean enter = false;
@@ -46,7 +47,7 @@ public class VkCookRole extends Role implements Cook {
 
 	public VkCookRole(RevolvingStand s, RestaurantVkAnimationPanel p) {
 		timer = new Timer();
-		standTimer = new Timer();
+		standTimer = null;
 		this.stand = s;
 		gui = new VkCookGui(this);
 		gui.setAnimationPanel(p);
@@ -102,12 +103,14 @@ public class VkCookRole extends Role implements Cook {
 	 * An action to plate the order once it has been cooked.
 	 */
 	private void plateIt(Order o) {
+		print("Plating " + o.choice);
 		DoPlateIt(o.choice);
 		try {
 			movingAround.acquire();
 		} catch (InterruptedException e) {}
 		o.w.orderIsReady(o.choice, o.table);
 		o.s = State.Finished;
+		print("Done plating " + o.choice);
 	}
 	
 	public void orderFromMarket() {
@@ -121,7 +124,9 @@ public class VkCookRole extends Role implements Cook {
 				order.put(f.name, qty);
 			}
 		}
-		MarketOrder o = new MarketOrder(order);
+		int marketNumber = selectMarket();
+		MarketEmployee market = markets.get(marketNumber);
+		MarketOrder o = new MarketOrder(order, marketNumber);
 		marketOrders.add(o);
 		market.msgHereIsAnOrder(order, this, cashier);
 	}
@@ -129,11 +134,12 @@ public class VkCookRole extends Role implements Cook {
 	public void informCashier(MarketOrder mo) {
 		print("Informing cashier about order.");
 		mo.s = MarketOrderState.InformedCashier;
-		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber);
+		cashier.msgGotMarketOrder(mo.itemsSupplied, mo.orderNumber, mo.marketNumber);
 	}
 	
 	private void enterRestaurant() {
 		if (closingState == ClosingState.Closed) {
+			standTimer = new Timer();
 			startStandTimer();
 			closingState = ClosingState.None;
 		}
@@ -153,7 +159,7 @@ public class VkCookRole extends Role implements Cook {
 		} catch (InterruptedException e) {}
 		isActive = false;
 		leave = false;
-		myPerson.msgDone("Cook");
+		myPerson.msgDone("RestaurantCookRole");
 	}
 	
 	private void prepareToClose() {
@@ -162,7 +168,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	private void shutDown() {
-		standTimer.cancel();
+		standTimer = null;
 		closingState = ClosingState.Closed;
 	}
 	
@@ -215,9 +221,9 @@ public class VkCookRole extends Role implements Cook {
 	 * A message called by the market employee to assign order number to an order.
 	 */
 	@Override
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int marketNumber) {
 		for (MarketOrder mo : marketOrders) {
-			if (mo.itemsRequested == items) {
+			if (mo.itemsRequested == items && marketNumber == mo.marketNumber) {
 				mo.orderNumber = orderNumber;
 				return;
 			}
@@ -230,8 +236,8 @@ public class VkCookRole extends Role implements Cook {
 	 * been requested.
 	 */
 	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
-		MarketOrder mo = findMarketOrder(orderNumber);
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+		MarketOrder mo = findMarketOrder(orderNumber, marketNumber);
 		mo.itemsSupplied = items;
 		for (Map.Entry<String, Integer> e : items.entrySet()) {
 			Food f = inventory.get(e.getKey());
@@ -257,6 +263,10 @@ public class VkCookRole extends Role implements Cook {
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}
+		if (markets.size() == 0) {
+			this.markets.add((MarketEmployee) myPerson.getMarketEmployee(0));
+//			this.markets.add((MarketEmployee) myPerson.getMarketEmployee(1));
+		}
 		isActive = true;
 		enter = true;
 		stateChanged();
@@ -264,6 +274,30 @@ public class VkCookRole extends Role implements Cook {
 	
 	public void msgIsInActive() {
 		leave = true;
+		stateChanged();
+	}
+	
+	public void setLow() {
+		Food f1 = inventory.get("Steak");
+		f1.low = 2;
+		f1.amount = 1;
+		f1.s = FoodState.Low;
+		
+		Food f2 = inventory.get("Chicken");
+		f2.low = 2;
+		f2.amount = 1;
+		f2.s = FoodState.Low;
+		
+		Food f3 = inventory.get("Salad");
+		f3.low = 2;
+		f3.amount = 1;
+		f3.s = FoodState.Low;
+		
+		Food f4 = inventory.get("Pizza");
+		f4.low = 2;
+		f4.amount = 1;
+		f4.s = FoodState.Low;
+		
 		stateChanged();
 	}
 	
@@ -365,9 +399,9 @@ public class VkCookRole extends Role implements Cook {
 		return null;
 	}
 	
-	private MarketOrder findMarketOrder(int number) {
+	private MarketOrder findMarketOrder(int number, int marketNumber) {
 		for (MarketOrder o : marketOrders) {
-			if (o.orderNumber == number)
+			if (o.orderNumber == number && o.marketNumber == marketNumber)
 				return o;
 		}
 		return null;
@@ -387,10 +421,10 @@ public class VkCookRole extends Role implements Cook {
 	 * This is to initialize the inventory of food materials of the cook.
 	 */
 	private void initializeInventory() {
-		Food f1 = new Food("Steak", 1000, 1, 1, 5);
-		Food f2 = new Food("Chicken", 1000, 1, 2, 5);
-		Food f3 = new Food("Salad", 1000, 1, 2, 5);
-		Food f4 = new Food("Pizza", 1000, 1, 2, 5);
+		Food f1 = new Food("Steak", 500, 10, 2, 10);
+		Food f2 = new Food("Chicken", 500, 10, 2, 10);
+		Food f3 = new Food("Salad", 500, 10, 2, 10);
+		Food f4 = new Food("Pizza", 500, 10, 2, 10);
 		inventory.put("Steak", f1);
 		inventory.put("Chicken", f2);
 		inventory.put("Salad", f3);
@@ -424,7 +458,7 @@ public class VkCookRole extends Role implements Cook {
 	}
 	
 	public void addMarket(MarketEmployee m) {
-		this.market = m;
+		markets.add(m);
 	}
 	
 	@Override
@@ -434,6 +468,18 @@ public class VkCookRole extends Role implements Cook {
 	
 	public void setCashier(Cashier c) {
 		this.cashier = c;
+	}
+	
+	public String getName() {
+		return myPerson.getName();
+	}
+	
+	private int selectMarket() {
+		Random generator = new Random();
+		int num = generator.nextInt(markets.size());
+		if (markets.size() != 0)
+			return num;
+		return -1;
 	}
 	
 	/**--------------------------------------------------------------------------------------------------------------
@@ -509,11 +555,13 @@ public class VkCookRole extends Role implements Cook {
 		public Map<String, Integer> itemsRequested = new HashMap<String, Integer>();
 		public Map<String, Integer> itemsSupplied = new HashMap<String, Integer>();
 		public int orderNumber;
+		public int marketNumber;
 		public MarketOrderState s;
 		
-		public MarketOrder(Map<String, Integer> items) {
+		public MarketOrder(Map<String, Integer> items, int marketNumber) {
 			itemsRequested = items;
 			s = MarketOrderState.Requested;
+			this.marketNumber = marketNumber;
 		}
 	}
 	

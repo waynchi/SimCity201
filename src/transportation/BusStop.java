@@ -27,13 +27,16 @@ public int yLocation;
 public String name;
 public BusStopGui myGui;
 public BuildingPanel bp;
+public int buildingNumber;
+public List<String> placesNearby;
 
-public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, String name){
+public BusStop( BusStopGui bg, int x, int y, int width, int height, int xLoc, int yLoc, List<String> places,String name){
 	super(x,y,width,height);
 	this.xLocation = xLoc;
 	this.yLocation = yLoc;
 	this.name = name;
 	this.myGui = bg;
+	this.placesNearby = places;
 	
 }
 
@@ -129,7 +132,9 @@ public BusStopGui getGui(){
 
 public void displayBuilding() {
 	// TODO Auto-generated method stub
-	bp.displayBuildingPanel();
+	if(bp != null) {
+		bp.displayBuildingPanel();
+	}
 }
 
 
@@ -137,7 +142,16 @@ public void setBuildingPanel(BuildingPanel bp) {
 	// TODO Auto-generated method stub
 	this.bp = bp;
 }
-
+public void setBuildingNumber(int n)
+{
+	this.buildingNumber = n;
+}
+public int getBuildingNumber(){
+	return buildingNumber;
+}
+public List<String> getNearbyPlaces(){
+	return this.placesNearby;
+}
 }
 
 

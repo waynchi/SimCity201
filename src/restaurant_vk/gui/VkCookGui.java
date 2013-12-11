@@ -3,8 +3,15 @@ package restaurant_vk.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+
 import restaurant_vk.VkCookRole;
 import restaurant_vk.gui.VkWaiterGui.MyState;
 
@@ -26,6 +33,9 @@ public class VkCookGui implements VkGui{
 	private Dimension grill = new Dimension(140,40);
 	private MyState state = MyState.None;
 	public RestaurantVkAnimationPanel ap;
+	public Image sprite1 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite2 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite;
 	
 	enum MyState {None, Inactive, Cooking, Plating, Entering, Exiting};
 	
@@ -35,6 +45,17 @@ public class VkCookGui implements VkGui{
 		homePosY = 90;
 		xPos = xDestination = -20;
 		yPos = yDestination = 90;
+		try {
+			sprite1 = ImageIO.read(new File("res/restaurant_vk/chefFront.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		try {
+			sprite2 = ImageIO.read(new File("res/restaurant_vk/chefBack.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		sprite = sprite1;
 		
 		setSymbols();
 	}
@@ -68,6 +89,7 @@ public class VkCookGui implements VkGui{
         			xDestination = grill.width;
         			yDestination = grill.height;
         			caption = symbol;
+        			sprite = sprite2;
         		}
         		else {
         			caption = "";
@@ -80,6 +102,7 @@ public class VkCookGui implements VkGui{
         			xDestination = plate.width;
         			yDestination = plate.height;
         			caption = symbol;
+        			sprite = sprite1;
         		}
         		else {
         			state = MyState.Inactive;
@@ -92,10 +115,7 @@ public class VkCookGui implements VkGui{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(xPos, yPos, cookWidth, cookHeight);
-		g.setColor(Color.WHITE);
-		g.drawString("CO", xPos + 1, yPos + 15);
+		g.drawImage(sprite, xPos, yPos, null);
 		g.setColor(Color.BLACK);
 		int carryYPos = 0;
 		if (state == MyState.Cooking)
@@ -115,6 +135,7 @@ public class VkCookGui implements VkGui{
 		xDestination = fridge.width;
 		yDestination = fridge.height;
 		state = MyState.Cooking;
+		sprite = sprite1;
 	}
 	
 	public void DoPlateIt(String choice) {
@@ -122,18 +143,21 @@ public class VkCookGui implements VkGui{
 		xDestination = grill.width;
 		yDestination = grill.height;
 		state = MyState.Plating;
+		sprite = sprite2;
 	}
 	
 	public void DoEnterRestaurant() {
     	state = MyState.Entering;
     	xDestination = homePosX;
     	yDestination = homePosY;
+    	sprite = sprite1;
     }
     
     public void DoLeaveRestaurant() {
     	state = MyState.Exiting;
     	xDestination = -20;
     	yDestination = 90;
+    	sprite = sprite2;
     }
     
     public void setAnimationPanel(RestaurantVkAnimationPanel p) {

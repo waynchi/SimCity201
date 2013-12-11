@@ -3,6 +3,7 @@ package restaurant;
 import restaurant.gui.CookGui;
 import restaurant.gui.RestaurantGui;
 import restaurant.gui.RestaurantPanel.CookWaiterMonitor;
+import restaurant.gui.RestaurantPanel.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant.interfaces.Host;
@@ -15,6 +16,7 @@ import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketEmployee;
 import people.People;
+import people.PeopleAgent;
 import people.Role;
 
 /**
@@ -37,7 +39,7 @@ public class CookRole extends Role implements Cook{
 	private CookWaiterMonitor theMonitor = null;
 
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
-	private Timer schedulerTimer = new Timer();
+	private Timer schedulerTimer;
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
@@ -52,7 +54,9 @@ public class CookRole extends Role implements Cook{
 
 	private Host host;
 	private Cashier cashier;
-	private MarketEmployee marketEmployee;
+	private final int period = 700;
+
+	//private MarketEmployee marketEmployee;
 
 	//private MarketEmployeeRole marketEmployee = null;
 
@@ -61,13 +65,15 @@ public class CookRole extends Role implements Cook{
 	public class MarketOrder {
 		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		Boolean delivered;
-		int marketCount;
+		//int marketCount;
 		int orderNumber = -1;
+		int marketNumber = -1;
 
-		private MarketOrder (Map<String,Integer> mo){
+		private MarketOrder (Map<String,Integer> mo, int market){
 			marketOrder = mo;
 			delivered = false;
-			marketCount = 1;
+			//marketCount = 1;
+			marketNumber = market;
 		};
 	}
 
@@ -94,6 +100,7 @@ public class CookRole extends Role implements Cook{
 
 	// Cook receives an order from the waiter and stores it into a list
 	public void msgIsActive() {
+		print("received msgIsActive");
 		log.add(new LoggedEvent("received msgIsActive"));
 		isActive = true;
 		turnActive = true;
@@ -101,6 +108,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void msgIsInActive() {
+		print("received msgIsInActive");
 		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
@@ -128,8 +136,10 @@ public class CookRole extends Role implements Cook{
 		atFridge.release();
 		myPerson.CallstateChanged();
 	}
-
+	
+	
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
+		print("got an order from normal waiter");
 		log.add(new LoggedEvent("received an order for table " + tableNum));
 		orders.add( new MyOrder(food, w, tableNum));
 		getPersonAgent().CallstateChanged();
@@ -142,15 +152,35 @@ public class CookRole extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}	
 
+	
+	public void startStandTimer() {
+		schedulerTimer = new Timer();
+		schedulerTimer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				checkStand();
+			}
+		}, period, period);
+	}
+	
+	
+	public void checkStand() {
+		if (theMonitor.getOrderSize() != 0) {
+			synchronized(orders) {
+				getOrderFromRevolvingStand();			}
+			getPersonAgent().CallstateChanged();
+		}
+	}
+	
 	// from market truck (market employee for now)
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+		print ("received items from market");
 		log.add(new LoggedEvent("received items from market"));
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			foods.get(entry.getKey()).amount += entry.getValue();
 			foods.get(entry.getKey()).isOrdered = false;
 		}
 		for (MarketOrder mo : marketOrders) {
-			if (mo.orderNumber == orderNumber) {
+			if (mo.orderNumber == orderNumber && mo.marketNumber == marketNumber) {
 				mo.delivered = true;
 			}
 		}
@@ -159,9 +189,10 @@ public class CookRole extends Role implements Cook{
 	}
 
 
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber) {
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
+		print ("got order confirmation and number from market");
 		for (MarketOrder mo : marketOrders) {
-			if (mo.marketOrder == items) {
+			if (mo.marketOrder == items && mo.marketNumber == market) {
 				mo.orderNumber = orderNumber;
 			}
 		}
@@ -238,17 +269,6 @@ public class CookRole extends Role implements Cook{
 			}
 		}
 
-
-		schedulerTimer.scheduleAtFixedRate(
-				new TimerTask(){
-					public void run(){
-						while (theMonitor.getOrderSize() != 0){
-							getOrderFromRevolvingStand();
-							orders.add (new MyOrder(theMonitor.removeOrder()));
-						}									
-					} 
-				},0,5000);
-
 		if (leaveWork) {
 			done();
 			return true;
@@ -263,14 +283,16 @@ public class CookRole extends Role implements Cook{
 	// Actions
 
 	public void askCashierToPayForOrder(MarketOrder order) {
+		print ("notify restaurant cahsier that order's been delivered");
 		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
-		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber);
+		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, order.marketNumber);
 		marketOrders.remove(order);
 	}
 	
 	// The correct waiter is notified of the cooked order
 	public void plateFood(MyOrder order) {
+		print("plating food for table " + order.tableNumber);
 		log.add(new LoggedEvent("food for table " + order.tableNumber + " is ready!"));
 		order.waiter.msgOrderIsReady(order.food, order.tableNumber);
 		order.state = OrderState.PLATED;
@@ -290,6 +312,7 @@ public class CookRole extends Role implements Cook{
 		f.amount--;
 
 		order.state = OrderState.COOKING;
+		print("goint to fridge");
 		cookGui.goToFridge();
 		try {
 			atFridge.acquire();
@@ -305,7 +328,7 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		print("cooking for table " + order.tableNumber);
 		cookGui.cookFood(order.food);
 		new java.util.Timer().schedule(
 				new java.util.TimerTask(){
@@ -321,6 +344,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void orderFoodThatIsLow(){
+		print("ordering food from market");
 		log.add(new LoggedEvent("order food that is low"));
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
@@ -331,13 +355,18 @@ public class CookRole extends Role implements Cook{
 				}
 			}
 		}
-		marketOrders.add(new MarketOrder(marketOrder));
-		marketEmployee.msgHereIsAnOrder(marketOrder,this, cashier);	
+		if (marketOrder.size()!=0) {
+		int marketSize = ((PeopleAgent)getPersonAgent()).Markets.size();
+		int marketNumber = (int)(Math.random() * marketSize);
+		marketOrders.add(new MarketOrder(marketOrder,marketNumber));
+		((MarketEmployee)getPersonAgent().getMarketEmployee(marketNumber)).msgHereIsAnOrder(marketOrder,this, cashier);	
+		}
 	}
 	
 	
 	public void getOrderFromRevolvingStand() {
 		print ("going to revolving stand");
+		orders.add (new MyOrder(theMonitor.removeOrder()));
 		cookGui.DoGoToRevolvingStand();
 		try {
 			atRevolvingStand.acquire();
@@ -345,14 +374,15 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cookGui.DoGoToCookingPlace();
-			try {
-				atGrill.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
+		cookGui.DoGoToCookingPlace();
+		try {
+			atGrill.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		getPersonAgent().CallstateChanged();
 	}
 
 
@@ -390,6 +420,7 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
+		print ("in clock in");
 		log.add(new LoggedEvent("clock in"));
 		cookGui.setPresent(true);
 		cookGui.DoGoToCookingPlace();
@@ -401,13 +432,15 @@ public class CookRole extends Role implements Cook{
 		}
 		host = (Host) getPersonAgent().getHost(0);
 		host.setCook(this);
-		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
+		startStandTimer();
+		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
 		orderFoodThatIsLow();
 	}
 
 	public void done() {
+		print ("leaving work");
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();
@@ -415,6 +448,8 @@ public class CookRole extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		schedulerTimer = null;
+		isActive = false;
 		leaveWork = false;
 		cookGui.setPresent(false);
 		cookGui.setDefaultDestination();
@@ -446,13 +481,13 @@ public class CookRole extends Role implements Cook{
 			tableNumber = t;
 			state = OrderState.PENDING;
 		}
-		public MyOrder (MyOrder order) {
-			if (order != null) {
-				waiter = order.waiter;
-				tableNumber = order.tableNumber;
-				food = order.food;
-				state = OrderState.PENDING;
-			}
+		
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
+//			getPersonAgent().CallstateChanged();
 		}
 	}
 
@@ -470,20 +505,20 @@ public class CookRole extends Role implements Cook{
 			capacity = 5;
 			isOrdered = false;
 			if (type.equals("Steak")) {
-				cookingTime = 5000;
-				amount = 3;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Chicken")) {
-				cookingTime = 3000;
-				amount = 3;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Salad")) {
-				cookingTime = 3000;
-				amount = 5;
+				cookingTime = 1000;
+				amount = 100;
 			}
 			if (type.equals("Pizza")) {
-				cookingTime = 4000;
-				amount = 5;
+				cookingTime = 1000;
+				amount = 100;
 			}
 		}
 	}
@@ -513,6 +548,17 @@ public class CookRole extends Role implements Cook{
 	public int getRestaurantIndex() {
 		// TODO Auto-generated method stub
 		return restaurantIndex;
+	}
+
+	//for normative scenario C
+
+	@Override
+	public void setLow() {
+		for (Map.Entry<String, Food> entry : foods.entrySet()) {
+			foods.get(entry.getKey()).amount = 2;
+		}
+		orderFoodThatIsLow();
+		getPersonAgent().CallstateChanged();
 	}
 	
 }

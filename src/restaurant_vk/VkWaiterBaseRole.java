@@ -27,9 +27,9 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	protected VkCookRole cook;
 	protected MyState state = MyState.Working;
 	protected Cashier cashier = null;
-	private boolean leave = false;
-	private boolean enter = false;
-	private ClosingState closingState = ClosingState.Closed;
+	protected boolean leave = false;
+	protected boolean enter = false;
+	protected ClosingState closingState = ClosingState.Closed;
 		
 	public VkWaiterBaseRole(Host host) {
 		super();
@@ -49,11 +49,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	public void sitAtTable(Customer c, int table) {
 		try {
 			customers.add(new MyCustomer(c, table));
-			stateChanged();
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
 		}
+		stateChanged();
 	}
 		
 	/*
@@ -65,11 +65,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			print(c + " has called me to order.");
 			MyCustomer mc = find(c);
 			mc.s = CustomerState.ReadyToOrder;
-			stateChanged();
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
 		}
+		stateChanged();
 	}
 		
 	/*
@@ -83,11 +83,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			mc.os = OrderStatus.TakenFromCustomer;
 			mc.choice = item;
 			waitingForOrder.release();
-			stateChanged();
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
 		}
+		stateChanged();
 	}
 		
 	/*
@@ -102,11 +102,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 					break;
 				}
 			}
-			stateChanged();
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
 		}
+		stateChanged();
 	}
 		
 	/*
@@ -119,11 +119,11 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			mc.s = CustomerState.Leaving;
 			mc.os = OrderStatus.None;
 			mc.checkGiven = false;
-			stateChanged();
 		}
 		catch (ConcurrentModificationException e) {
 			print("Exception caught.");
 		}
+		stateChanged();
 	}
 		
 	/*
@@ -131,7 +131,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	 * destination.
 	 */
 	public void atDestination() {
-		movingAround.release();		
+		movingAround.release();
 	}
 	
 	/*
@@ -196,6 +196,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			for (MyCustomer mc : customers) {
 				if (mc.table == table && mc.s == CustomerState.Ordered) {
 					mc.os = OrderStatus.OutOfMaterials;
+					print("Out of " + choice + " for table " + table);
 					break;
 				}
 			}
@@ -236,6 +237,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	}
 	
 	public void msgIsActive() {
+		print("I'm a waiter.");
 		if (cashier == null) {
 			this.cashier = ((VkHostRole)host).cashier;
 		}
@@ -302,9 +304,9 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 			e.printStackTrace();
 		}
 		
-		mc.c.whatWouldYouLike();
 		print("What would you like?");
 		mc.s = CustomerState.AskedToOrder;
+		mc.c.whatWouldYouLike();
 		
 		try {
 			waitingForOrder.acquire();
@@ -453,16 +455,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		enter = false;
 	}
 	
-	private void leaveRestaurant() {
-		if (closingState == ClosingState.None)
-			((VkCashierRole) cashier).recordShift((PeopleAgent)myPerson, "Waiter");
-		gui.DoLeaveRestaurant();
-		try {
-			movingAround.acquire();
-		} catch (InterruptedException e) {}
-		isActive = false;
-		leave = false;
-		myPerson.msgDone("Waiter");
+	protected void leaveRestaurant() {
 	}
 	
 	private void prepareToClose() {
@@ -504,86 +497,80 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 		
 		MyCustomer mc;
 		
-		try {
-			// If the waiter is back from a break, he has to inform the host.
-			if (state == MyState.BackFromBreak) {
-				ImBack();
-				return true;
-			}
-		
-			// If the waiter needs a break he requests for a break.
-			if (state == MyState.WantABreak) {
-				requestBreak();
-				return true;
-			}
-		
-			// Finds the first customer in the list whose order has been taken, but has
-			// not been given to the cook yet. The order is then passed to the cook.
-			mc = findCustomerByOrderStatus(OrderStatus.TakenFromCustomer);
-			if (mc != null) {
-				passOrderToCook(mc);
-				return true;
-			}
-		
-			// Finds the first customer in the list whose order is ready to be served, 
-			// and serves him/ her.
-			mc = findCustomerByOrderStatus(OrderStatus.ReadyToServe);
-			if (mc != null) {
-				serve(mc);
-				return true;
-			}
-		
-			// Finds the first customer who is leaving without eating and sends a message
-			// to the host and removes from his own list.
-			mc = findCustomerByCustomerState(CustomerState.LeavingWithoutEating);
-			if (mc != null) {
-				customerIsLeavingWithoutEating(mc);
-				return true;
-			}
-		
-			// Finds the first customer in the list who is leaving, and takes appropriate
-			// action for it.
-			mc = findCustomerByCustomerState(CustomerState.Leaving);
-			if (mc != null) {
-				customerIsLeaving(mc);
-				return true;
-			}
-		
-			// Searches if there is any customer who can't be served and informs him/ her.
-			mc = findCustomerByOrderStatus(OrderStatus.OutOfMaterials);
-			if (mc != null) {
-				informCustomerNoMoreFood(mc);
-				return true;
-			}
-		
-			// Finds a customer who is yet to be given his/ her bill and gives it.
-			mc = findCustomerToBeGivenCheck();
-			if (mc != null) {
-				giveCheck(mc);
-				return true;
-			}
-		
-			// Finds the first customer in the list who is waiting to be seated. Then
-			// he/ she is seated.
-			mc = findCustomerByCustomerState(CustomerState.Waiting);
-			if (mc != null) {
-				seatCustomer(mc);
-				return true;
-			}
-		
-			// Finds the first customer in the list who is ready to order, and takes
-			// the order.
-			mc = findCustomerByCustomerState(CustomerState.ReadyToOrder);
-			if (mc != null) {
-				takeOrder(mc);
-				return true;
-			}
-		}
-		catch (ConcurrentModificationException e) {
-			print("Exception caught.");
-			return false;
+		// If the waiter is back from a break, he has to inform the host.
+		if (state == MyState.BackFromBreak) {
+			ImBack();
+			return true;
 		}
 		
+		// If the waiter needs a break he requests for a break.
+		if (state == MyState.WantABreak) {
+			requestBreak();
+			return true;
+		}
+	
+		// Finds the first customer in the list whose order has been taken, but has
+		// not been given to the cook yet. The order is then passed to the cook.
+		mc = findCustomerByOrderStatus(OrderStatus.TakenFromCustomer);
+		if (mc != null) {
+			passOrderToCook(mc);
+			return true;
+		}
+	
+		// Finds the first customer in the list whose order is ready to be served, 
+		// and serves him/ her.
+		mc = findCustomerByOrderStatus(OrderStatus.ReadyToServe);
+		if (mc != null) {
+			serve(mc);
+			return true;
+		}
+	
+		// Finds the first customer who is leaving without eating and sends a message
+		// to the host and removes from his own list.
+		mc = findCustomerByCustomerState(CustomerState.LeavingWithoutEating);
+		if (mc != null) {
+			customerIsLeavingWithoutEating(mc);
+			return true;
+		}
+	
+		// Finds the first customer in the list who is leaving, and takes appropriate
+		// action for it.
+		mc = findCustomerByCustomerState(CustomerState.Leaving);
+		if (mc != null) {
+			customerIsLeaving(mc);
+			return true;
+		}
+	
+		// Searches if there is any customer who can't be served and informs him/ her.
+		mc = findCustomerByOrderStatus(OrderStatus.OutOfMaterials);
+		if (mc != null) {
+			informCustomerNoMoreFood(mc);
+			return true;
+		}
+	
+		// Finds a customer who is yet to be given his/ her bill and gives it.
+		mc = findCustomerToBeGivenCheck();
+		if (mc != null) {
+			giveCheck(mc);
+			return true;
+		}
+	
+		// Finds the first customer in the list who is waiting to be seated. Then
+		// he/ she is seated.
+		mc = findCustomerByCustomerState(CustomerState.Waiting);
+		if (mc != null) {
+			seatCustomer(mc);
+			return true;
+		}
+	
+		// Finds the first customer in the list who is ready to order, and takes
+		// the order.
+		mc = findCustomerByCustomerState(CustomerState.ReadyToOrder);
+		if (mc != null) {
+			takeOrder(mc);
+			return true;
+		}
+	
 		return false;
 	}
 	
@@ -623,7 +610,7 @@ public class VkWaiterBaseRole extends Role implements Waiter {
 	 * specified Customer object in it.
 	 */
 	private MyCustomer find(Customer ca) {
-		MyCustomer mc = null;
+	MyCustomer mc = null;
 		for (MyCustomer o : customers) {
 			if (o.c == ca) {
 				mc = o;

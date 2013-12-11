@@ -35,10 +35,12 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		Cook cook = null;
 		Map<String,Integer> items;
 		int orderNumber;		
-		Order (Cook c, Map<String, Integer> i, int number) {
+		int marketNumber;
+		Order (Cook c, Map<String, Integer> i, int number, int market) {
 			cook = c;
 			items = i;
 			orderNumber = number;
+			marketNumber = market;
 		}
 	}
 	
@@ -56,9 +58,10 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 	
 	
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number, int market) {
+		print ("got an order from employee and it is for cook " + cook.getName());
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
-		orders.add(new Order (cook, items, number));
+		orders.add(new Order (cook, items, number, market));
 		stateChanged();
 	}
 
@@ -87,12 +90,16 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 					e.printStackTrace();
 				}
 				*/
+		//maybe put a timer here so that it'll not be an instant delivery
+		
 				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
-					order.cook.msgHereIsYourOrder(order.items, order.orderNumber);	
+					print("order delivered to cook " + order.cook.getName());
+					order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
 					employee.msgOrderDelivered(order.orderNumber);
 				}
 				else {
+					print("order not delivered to cook " + order.cook.getName() + " because restaurant is closed");
 					log.add(new LoggedEvent("restaurant is closed and delivery failed"));
 					employee.msgOrderNotDelivered(order.orderNumber);
 				}

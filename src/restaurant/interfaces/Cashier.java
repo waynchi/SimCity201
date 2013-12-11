@@ -13,10 +13,10 @@ import market.interfaces.MarketEmployee;
 
 public interface Cashier {
 	//from cook
-	public abstract void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber);
+	public abstract void msgGotMarketOrder(Map<String, Integer> marketOrder, int orderNumber, int marketNumber);
 	
 	// from market cashier
-	public abstract void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber);
+	public abstract void msgHereIsWhatIsDue(double price, Map<String, Integer> items, int orderNumber, int marketNumber);
 
 	// from market cashier
 	public abstract void msgHereIsChange(double change);

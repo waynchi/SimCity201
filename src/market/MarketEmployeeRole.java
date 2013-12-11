@@ -28,7 +28,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	private boolean turnActive = false;
 	private boolean setClose = false;
 	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
-
+	private int marketNumber = 0;
 
 	public int restaurantOrderNumber;
 
@@ -120,6 +120,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// messages
 
 	public void msgIsActive() {
+		print("received msgIsActive");
 		log.add(new LoggedEvent("received msgActive"));
 		if(!workers.contains(this.getPersonAgent())) workers.add(this.getPersonAgent());
 		if (!inTest) {
@@ -132,12 +133,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public void msgIsInActive() {
+		print("received msgIsInActive");
 		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgSetClose() {
+		print("received msgSetClose");
 		setClose = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -160,6 +163,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// order from regular market customer
 	public void msgHereIsAnOrder(MarketCustomer customer, Map<String, Integer> chosenItems) {
 		if (!inTest) {
+			print("received order from market customer " + customer.getPerson().getName());
 			log.add(new LoggedEvent("received an order from market customer " + customer.getPerson().getName()));
 		}
 		orders.add(new Order(customer, chosenItems));
@@ -168,18 +172,18 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	// order from restaurant cook
 	public void msgHereIsAnOrder(Map<String, Integer> chosenItems, Cook cook, Cashier cashier) {
-		if(!inTest){
-			log.add(new LoggedEvent("received an order from restaurant cook " + cook.getName()));
-		}
-		orders.add(new Order (cook, cashier, chosenItems));
+		print("received order from restaurant cook " + cook.getName());
+		log.add(new LoggedEvent("received an order from restaurant cook " + cook.getName()));
+		orders.add(new Order(cook, cashier, chosenItems));
 		getPersonAgent().CallstateChanged();
 
 	}
 
 	// from truck
-	public void msgOrderDelivered(int orderNum) {
+	public void msgOrderDelivered(int orderNumer) {
+		print ("market order " + orderNumer + " is delivered successfully, removing it");
 		for (Order o : orders) {
-			if (o.orderNumber == orderNum) {
+			if (o.orderNumber == orderNumer) {
 				orders.remove(o);
 				break;
 			}
@@ -188,6 +192,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public void msgOrderNotDelivered(int orderNumber) {
+		print ("market order " + orderNumber + " failed to deliver, will be redeliverd");
 		for (Order o : orders) {
 			if (o.orderNumber == orderNumber) {
 				o.state = orderState.TO_BE_REDELIVERED;
@@ -231,7 +236,13 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 
 	// action
-	private void getOrder(Map<String, Integer> itemList) { //gui
+	private void getOrder(Map<String, Integer> itemList, Order order) { //gui
+		if (order.cook != null)	{
+			print ("getting items for cook" + order.cook.getName());
+		}
+		else if (!inTest){
+			print ("getting items for customer " + order.customer.getPerson().getName());
+		}
 		for (Map.Entry<String,Integer> entry : itemList.entrySet()) {
 			employeeGui.doGetItem(entry.getKey());
 			try {
@@ -255,47 +266,50 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	// if customer is at the Market, give it the items; otherwise send a truck to its place
 	private void giveOrderToCustomer(Order order) {
 		
-		Map<String,Integer> supply = new HashMap<String, Integer>(); 
 		for (Map.Entry<String, Integer> entry: order.itemsOrdered.entrySet()) {
-			System.out.print(entry.getKey());
 			if (items.get(entry.getKey()).inventory >= entry.getValue()) {
-				supply.put(entry.getKey(), entry.getValue());
+				order.supply.put(entry.getKey(), entry.getValue());
 				items.get(entry.getKey()).inventory -= entry.getValue();
 			}
 			else {
-				supply.put(entry.getKey(), items.get(entry.getKey()).inventory);
+				order.supply.put(entry.getKey(), items.get(entry.getKey()).inventory);
 				items.get(entry.getKey()).inventory = 0;
 			}
 		}
+		
 		//gui show text
 		if (order.cook!=null) {
-		employeeGui.showGotOrderFromRestaurant();
+			employeeGui.showGotOrderFromRestaurant(order.cook);
 		}
 		
-		order.supply = supply;
-		if(!inTest)		getOrder(supply);
+		if(!inTest)	{
+			getOrder(order.supply, order);
+		}
 
 		employeeGui.noCommand();
 		
 		// if order is from restaurant
 		if (order.cook != null) {
+			print ("sending confirmation to cook " + order.cook.getName());
 			log.add(new LoggedEvent("sending confirmation to cook, check to market cashier, and order to truck"));
-			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber);
-			cashier.msgHereIsACheck(order.restaurantCashier, supply, order.orderNumber);
+			order.cook.msgHereIsYourOrderNumber(order.itemsOrdered, order.orderNumber, marketNumber);
+			cashier.msgHereIsACheck(order.restaurantCashier, order.supply, order.orderNumber, marketNumber);
 			if (!inTest) {
 				if (!getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+					print("restaurant " + order.cook.getRestaurantIndex() + " is not closed, sending a truck");
 					//do some gui stuff
-					getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+					getNextMarketTruck().msgHereIsAnOrder(order.cook, order.supply, order.orderNumber, marketNumber);
 					order.state = orderState.IN_DELIVERY;
 				}
 				else {//if restaurant is already closed
+					print("restaurant " + order.cook.getRestaurantIndex() + " is closed, order will be redelivered");
 					order.state = orderState.TO_BE_REDELIVERED;
 				}
 			}
 			else {
 				if (!((MockPeople)getPersonAgent()).getMyRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					//do some gui stuff
-					getNextMarketTruck().msgHereIsAnOrder(order.cook, supply, order.orderNumber);
+					getNextMarketTruck().msgHereIsAnOrder(order.cook, order.supply, order.orderNumber, marketNumber);
 					order.state = orderState.IN_DELIVERY;
 				}
 				else {//if restaurant is already closed
@@ -307,6 +321,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		//if order is from customer
 		else {
 			log.add(new LoggedEvent("giving items to customer"));
+			if (!inTest)	print ("giving items to customer " + order.customer.getPerson().getName());
 			order.customer.msgHereIsYourOrder(order.supply);
 			cashier.msgHereIsACheck(order.customer, order.itemsOrdered);
 			orders.remove(order);
@@ -332,13 +347,14 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			for (Order o : orders) {
 				if (!inTest){
 					if (o.state == orderState.TO_BE_REDELIVERED && !getPersonAgent().getRestaurant(o.cook.getRestaurantIndex()).isClosed) {
-						getNextMarketTruck().msgHereIsAnOrder(o.cook, o.supply, o.orderNumber);
+						print("sending truck to redeliver ordre to cook " + o.cook.getName());
+						getNextMarketTruck().msgHereIsAnOrder(o.cook, o.supply, o.orderNumber, marketNumber);
 						o.state = orderState.IN_DELIVERY;
 					}
 				}
 				else{
 					if (o.state == orderState.TO_BE_REDELIVERED && !((MockPeople)getPersonAgent()).getMyRestaurant(o.cook.getRestaurantIndex()).isClosed) {
-						getNextMarketTruck().msgHereIsAnOrder(o.cook, o.supply, o.orderNumber);
+						getNextMarketTruck().msgHereIsAnOrder(o.cook, o.supply, o.orderNumber, marketNumber);
 						o.state = orderState.IN_DELIVERY;
 					}
 				}
@@ -348,6 +364,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	private void done() {
+		print("in action done, finished work, leaving market");
 		employeeGui.doExit();
 		try {
 			atExit.acquire();
@@ -364,6 +381,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	private void closeMarket() {
+		print("in action closeMarket, set market isClosed to true");
 		setClose = false;
 		getPersonAgent().getMarket(0).isClosed = true;
 	}

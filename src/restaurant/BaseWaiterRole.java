@@ -100,12 +100,14 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	//}
 	
 	public void msgIsActive() {
+		print("received msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgIsInActive () {
+		print("received msgIsInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -168,7 +170,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	}
 	
 	public void SitAtTable(Customer customer, int table) {
-		print("got SitAtTable from host, about to go to waiting area to pick up customer " + customer.getName());
+		print("got SitAtTable from host, will go to waiting area to pick up customer " + customer.getName());
 		currentCustomerNum++;
 		customers.add(new MyCustomer(customer, table, "waiting"));
 		getPersonAgent().CallstateChanged();
@@ -177,7 +179,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	public void msgIAmReadyToOrder(Customer cust) {
 		print("got msgIAMReadyToOrder from customer " + cust.getName());
-
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.readyToOrder;
@@ -188,7 +189,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 
 	public void msgHereIsMyOrder (Customer cust, String choice) {
 		print("got msgHereIsMyOrder from customer " + cust.getName());
-
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.ordered;
@@ -201,7 +201,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void msgOrderIsReady (String order, int t) {
 		print("got msgOrderIsReady for table " + t);
-
 		for (MyCustomer customer : customers) {
 			if (customer.tableNumber == t){
 				customer.state = customerState.foodIsReady;
@@ -220,10 +219,10 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgHereIsCheck (Customer customer2, Double d) {
-		print("got msgHereIsCheck from cashier for customer " + customer2.getName());
+	public void msgHereIsCheck (Customer cust, Double d) {
+		print("got msgHereIsCheck from cashier for customer " + cust.getName());
 		for (MyCustomer customer : customers) {
-			if (customer.c == customer2){
+			if (customer.c == cust){
 				customer.due = d;
 				customer.state = customerState.checkIsReady;
 			}
@@ -233,7 +232,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void msgDoneEatingAndLeaving (Customer cust){
 		print("got msgDoneEatingAndLeaving from customer " + cust.getName());
-
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.doneLeaving;
@@ -333,7 +331,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		
+		print ("in clock in");
 		host = (Host) getPersonAgent().getHost(0);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
@@ -374,7 +372,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		print ("What would you like?");
+		print ( "What would you like?");
 		customer.c.msgWhatWouldYouLike();
 		//waiterGui.DoAskCustomer();
 		customer.state = customerState.askedToOrder;	
@@ -435,7 +433,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 	
 	public void giveCheckToCustomer(MyCustomer customer) {
 		print("going to cashier to pick up check for customer " + customer.c.getName());
-		
 		waiterGui.DoGoToCashier();
 		try {
 			atCashier.acquire();
@@ -443,7 +440,6 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		print("goint to customer " + customer.c.getName());
 
 		waiterGui.DoApproachCustomer(customer.c);
 		try {
@@ -454,7 +450,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			e.printStackTrace();
 		}
 		
-		print ("Hi " + customer.c + " here is your check.");
+		print ("Hi " + customer.c.getName() + " here is your check.");
 		customer.c.msgHereIsCheck(customer.due, cashier);
 		customer.state = customerState.needsToPay;
 	}
