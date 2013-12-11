@@ -22,13 +22,13 @@ public class NormalWaiterRole extends BaseWaiterRole implements Waiter{
 	
 	public void goPlaceOrder(MyCustomer customer) {
 		cook = host.getCook();
-		print ("Here's an order for table " + customer.tableNumber);
+		print ("goint to cook to place order for table " + customer.tableNumber);
 		((CookRole) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
 	}
 	
 	public void done () {
-		// gui needs to walk to exit
+		print("leaving work");
 		waiterGui.DoExit();
 		try {
 			atExit.acquire();

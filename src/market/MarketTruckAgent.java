@@ -90,6 +90,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 					e.printStackTrace();
 				}
 				*/
+		//maybe put a timer here so that it'll not be an instant delivery
+		
 				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
 					log.add(new LoggedEvent("order delivered to restaurant"));
 					print("order delivered to cook " + order.cook.getName());
@@ -97,6 +99,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 					employee.msgOrderDelivered(order.orderNumber);
 				}
 				else {
+					print("order not delivered to cook " + order.cook.getName() + " because restaurant is closed");
 					log.add(new LoggedEvent("restaurant is closed and delivery failed"));
 					employee.msgOrderNotDelivered(order.orderNumber);
 				}

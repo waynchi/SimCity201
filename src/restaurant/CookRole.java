@@ -100,6 +100,7 @@ public class CookRole extends Role implements Cook{
 
 	// Cook receives an order from the waiter and stores it into a list
 	public void msgIsActive() {
+		print("received msgIsActive");
 		log.add(new LoggedEvent("received msgIsActive"));
 		isActive = true;
 		turnActive = true;
@@ -107,6 +108,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void msgIsInActive() {
+		print("received msgIsInActive");
 		log.add(new LoggedEvent("received msgIsInActive"));
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
@@ -137,6 +139,7 @@ public class CookRole extends Role implements Cook{
 	
 	
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
+		print("got an order from normal waiter");
 		log.add(new LoggedEvent("received an order for table " + tableNum));
 		orders.add( new MyOrder(food, w, tableNum));
 		getPersonAgent().CallstateChanged();
@@ -187,7 +190,7 @@ public class CookRole extends Role implements Cook{
 
 
 	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
-		print ("got order number from market");
+		print ("got order confirmation and number from market");
 		for (MarketOrder mo : marketOrders) {
 			if (mo.marketOrder == items && mo.marketNumber == market) {
 				mo.orderNumber = orderNumber;
@@ -341,6 +344,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void orderFoodThatIsLow(){
+		print("ordering food from market");
 		log.add(new LoggedEvent("order food that is low"));
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
@@ -416,6 +420,7 @@ public class CookRole extends Role implements Cook{
 	}*/
 
 	private void clockIn() {
+		print ("in clock in");
 		log.add(new LoggedEvent("clock in"));
 		cookGui.setPresent(true);
 		cookGui.DoGoToCookingPlace();
@@ -435,6 +440,7 @@ public class CookRole extends Role implements Cook{
 	}
 
 	public void done() {
+		print ("leaving work");
 		cookGui.DoLeaveWork();
 		try {
 			atExit.acquire();

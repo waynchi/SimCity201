@@ -28,7 +28,8 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 	JComboBox rolesList;
 	JTextField money;
 	JCheckBox hasCar;
-	JButton btnScenario8;
+	JButton btnScenario8; //pedes crash
+	JButton btnScenario7; //vehicle crash
 	
 	
 	static final int FPS_MIN = 1;
@@ -95,7 +96,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			btnScenario6.addActionListener(this);
 			panel.add(btnScenario6);
 			
-			JButton btnScenario7 = new JButton("Vehicle Crash");
+			btnScenario7 = new JButton("Vehicle Crash");
 			btnScenario7.addActionListener(this);
 			panel.add(btnScenario7);
 			
@@ -281,11 +282,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		
 		else if(e.getActionCommand().equals("People Gui Labels")) {
 			for (People peep : cityGui.people) {
-				if (peep.getPersonGui().labelIt) {
-					peep.getPersonGui().labelIt = false;
-				}
 				if (!peep.getPersonGui().labelIt) {
 					peep.getPersonGui().labelIt = true;
+				}
+				else if (peep.getPersonGui().labelIt) {
+					peep.getPersonGui().labelIt = false;
 				}
 			}
 		}
@@ -312,12 +313,15 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			System.out.println("Day has been changed to friday");
 			cityGui.dayOfWeek = 4; //4 is the integer equivalent of friday
 		}
-		else if(e.getActionCommand().equals("Trigger Vehicle Crash")) {
-			if(cityGui.cityPanel.vehicles.size() < 3)
+		else if(e.getActionCommand().equals("Vehicle Crash")) {
+			if(cityGui.numberOfCarsDriving() < 2)
 			{
-				System.out.println("Must be more than 2 cars present to trigger a vehicle crash, currently only: " + (cityGui.cityPanel.vehicles.size()-1));
+				System.out.println("Must be more than 2 cars present to trigger a vehicle crash, currently only: " + (cityGui.numberOfCarsDriving()));
 				return;
 			}
+			System.out.println(cityGui.cityPanel.vehicles.size());
+			System.out.println("Triggering vehicle crash");
+			this.btnScenario7.setEnabled(false);
 			cityGui.triggerVehicleCrash();
 		}
 		else if(e.getActionCommand().equals("Trigger Pedestrian Getting Hit")) {
@@ -342,7 +346,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			person.setPersonGui(personGui);
 			CarGui vehicle = new CarGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 			vehicle.setPersonAgent(person);
-			vehicle.setCarDestination("Restaurant 6");
+			vehicle.setCarDestination("Market");
 			cityPanel.vehicles.add(vehicle);
 		}
 		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {

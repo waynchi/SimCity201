@@ -1,10 +1,14 @@
 package restaurant_vk.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import restaurant_vk.VkCustomerRole;
 import restaurant_vk.VkWaiterBaseRole;
 import restaurant_vk.VkWaiterNormalRole;
@@ -15,10 +19,7 @@ public class VkWaiterGui implements VkGui{
     private int xDestination = 40, yDestination = 40;//default start positio
     public static final int xTable = 350;
     public static final int yTable = 350;
-    private final int HOST_WIDTH = 20;
-    private final int HOST_HEIGHT = 20;
     private final int tableWidth = 50;
-	private final int tableHeight = 50;
 	private int homePosX;
 	private int homePosY;
 	private int destinationTable = 0;
@@ -30,6 +31,7 @@ public class VkWaiterGui implements VkGui{
 	private boolean breakCheckBox = false;
 	private boolean breakEnabled = true;
 	public RestaurantVkAnimationPanel ap;
+	public Image sprite = new BufferedImage(10, 34, BufferedImage.TYPE_INT_BGR);
 	
 	/*
      * States of the waiterGui while performing certain actions.
@@ -52,6 +54,12 @@ public class VkWaiterGui implements VkGui{
 		tables[1] = new TableCoordinates(2, xTable + tableWidth + 10, yTable);
 		tables[2] = new TableCoordinates(3, xTable + (2 * (tableWidth + 10)), yTable);
 		tables[3] = new TableCoordinates(4, xTable + (3 * (tableWidth + 10)), yTable);
+		
+		try {
+			sprite = ImageIO.read(new File("res/restaurant_vk/waitress.jpg"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
 		
 		setSymbols();
     }
@@ -111,10 +119,7 @@ public class VkWaiterGui implements VkGui{
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.CYAN);
-        g.fillRect(xPos, yPos, HOST_WIDTH, HOST_HEIGHT);
-        g.setColor(Color.BLACK);
-        g.drawString("W", xPos + 4, yPos + 14);
+    	g.drawImage(sprite, xPos, yPos, null);
         g.drawString(symbols.get(thingInHand), xPos + 1, yPos + 34);
     }
 

@@ -48,7 +48,7 @@ public class CookRoleWc extends Role implements Cook{
 	
 	private CookGui cookGui = null;
 	private RestaurantGuiWc restGui = null;
-	public int restaurantIndex = 0;
+	public int restaurantIndex = 3;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
