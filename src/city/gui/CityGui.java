@@ -77,7 +77,6 @@ import transportation.CarGui;
 import transportation.CarPassengerRole;
 import transportation.gui.BusGui;
 import transportation.gui.BusStopGui;
-import transportation.gui.InsideBusGui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -141,6 +140,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketEmployeeRole MarketEmployeeRole;
+	MarketEmployeeRole MarketEmployeeRole2;
 	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1",1);
 	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2",2);
 	Restaurant restaurant3 = new Restaurant(RestaurantHostRoleZt, new Dimension(100,100), "Restaurant 3",3);
@@ -158,6 +158,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	Market market;
 	TellerRole BankTellerRole;
+	TellerRole BankTellerRole2;
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
@@ -204,6 +205,7 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui = new BankGui(timer);
 		bankGui2 = new BankGui(timer);
 		BankTellerRole = new TellerRole(bankGui); 
+		BankTellerRole2 = new TellerRole(bankGui2);
 		BankTellerRole.setTag(AlertTag.BANK);
 		bank.t = BankTellerRole;
 		restaurantGuiYc = new RestaurantGui(timer);
@@ -221,6 +223,7 @@ public class CityGui extends JFrame implements ActionListener {
 		marketGui = new MarketGui(timer);
 		marketGui2 = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
+		MarketEmployeeRole2 = new MarketEmployeeRole(marketGui2);
 		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 		
@@ -354,8 +357,6 @@ public class CityGui extends JFrame implements ActionListener {
 		busStop1Container.setOpaque(true);
 		JScrollPane busStop4Container = new JScrollPane(this.cityPanel.busStops.get(3).getGui());
 		busStop1Container.setOpaque(true);
-		JScrollPane bus1Container = new JScrollPane(this.cityPanel.buses.get(0).getGui());
-		bus1Container.setOpaque(true);
 		
 		
 		buildingPanels.add(apartment1Container,"" + 13);
@@ -1201,7 +1202,14 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
 						BankTellerRole.setPerson(person);	
-//						person.hasCar = true;
+						person.hasCar = true;
+					}
+					if (job.equals("Teller2"))
+					{
+						person.addJob("Teller2", start, end);
+						person.addRole(BankTellerRole2, "Teller2");
+						BankTellerRole2.setPerson(person);	
+						person.hasCar = true;
 					}
 					if(job.equals("Nobody")) {
 						person.addJob("MarketEmployee", start, end);
@@ -1224,7 +1232,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(MarketEmployeeRole, "MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
 						person.setMoney(10000);
-//						person.hasCar = true;
+						person.hasCar = true;
 					}
 					if(job.equals("MarketCashier"))
 					{
@@ -1232,6 +1240,24 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+//						person.hasCar = true;
+						person.hasCar = false;
+					}
+					if(job.equals("MarketEmployee2"))
+					{
+						person.addJob("MarketEmployee2", start,end);
+						person.addRole(MarketEmployeeRole2, "MarketEmployee2");
+						MarketEmployeeRole2.setPerson(person);
+						person.setMoney(10000);
+						person.hasCar = true;
+					}
+					if(job.equals("MarketCashier2"))
+					{
+						MarketCashierRole marketCashierRole2 = new MarketCashierRole(marketGui2);
+						person.addJob("MarketCashier2", start, end);
+						person.addRole(marketCashierRole2, "MarketCashier2");
+						marketCashierRole2.setPerson(person);
 						person.setMoney(1000);
 //						person.hasCar = true;
 						person.hasCar = false;
@@ -1308,8 +1334,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Restaurant 2", "Restaurant 5","Bank")), "BusStop 4"));
 		busStopGui = new BusStopGui();
 		
-		InsideBusGui igb = new InsideBusGui();
-		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+		BusGui bg = new BusGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 		cityPanel.buses.add(bg);
 		busAgent.setGui(bg);
 		busAgent.startThread();
@@ -1834,8 +1859,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
 		busStopGui = new BusStopGui();
 		
-		InsideBusGui igb = new InsideBusGui();
-		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+		BusGui bg = new BusGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 		cityPanel.buses.add(bg);
 		busAgent.setGui(bg);
 		busAgent.startThread();
@@ -2363,8 +2387,7 @@ public class CityGui extends JFrame implements ActionListener {
 		cityPanel.busStops.add(new BusStop(busStopGui,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Bank","Restaurant 2", "Restaurant 5")), "BusStop 4"));
 		busStopGui = new BusStopGui();
 		
-		InsideBusGui igb = new InsideBusGui();
-		BusGui bg = new BusGui(igb,5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
+		BusGui bg = new BusGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 		cityPanel.buses.add(bg);
 		busAgent.setGui(bg);
 		busAgent.startThread();
@@ -2560,6 +2583,19 @@ public class CityGui extends JFrame implements ActionListener {
 				num++;
 		}
 		return num;
+	}
+
+	public void startBusStopScenario() {
+		// TODO Auto-generated method stub
+		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
+		PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);					
+		personGui.setDestination("Bus Stop 1");
+		person.setPersonGui(personGui);
+		personGui.setSidewalk(cityPanel.allSidewalks.get(0).get(1));
+		personGui.setSideWalkSegment(cityPanel.allSidewalks.get(0));
+		personGui.setDirection("right");
+		personGui.setBusStopScenario(true);
+		cityPanel.people.add(personGui);
 	}
 
 

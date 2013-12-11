@@ -88,12 +88,7 @@ public class HostRoleWc extends Role implements Host{
 
 		public MyCustomer (RestaurantCustomerRoleWc cust) {
 			customer = cust;
-			if (customerCount >= NTABLES){
-				state = customerState.PENDING;
-			}
-			else {
 				state = customerState.WAITING;
-			}
 		}
 	}
 	
@@ -297,19 +292,6 @@ public class HostRoleWc extends Role implements Host{
 
 			}
 		}
-
-		synchronized(customers){
-
-			for (MyCustomer mc : customers) {
-				if (mc.state == customerState.PENDING) {
-					if (customerCount >= NTABLES){
-						tellCustomerRestIsFull(mc);
-						return true;
-					}
-				}
-			}
-		}
-		
 		if (leaveWork) {
 			done();
 			return true;

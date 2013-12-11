@@ -1,0 +1,17 @@
+1,Teller,teller,800,2000
+1,RestaurantNormalWaiter,John,1000,1500
+1,RestaurantNormalWaiter,Joey,1000,1500
+1,RestaurantNormalWaiter,Judah,1000,1500
+1,RestaurantCook,James,1000,1500
+1,RestaurantHost,Billy,900,1530
+1,RestaurantCashier,Zack,930,1500
+1,RestaurantNormalWaiter,John2,1700,2100
+1,RestaurantNormalWaiter,Joey2,1700,2100
+1,RestaurantNormalWaiter,Judah2,1700,2100
+1,RestaurantCook,James2,1700,2100
+1,RestaurantHost,Billy2,1630,2100
+1,RestaurantCashier,Zack2,1660,2100
+1,MarketEmployee,MarketBob,930,2000
+1,MarketCashier,MarketNotBob,930,2000
+1,BankRestaurantMarket,bankrestaurantmarket,50000,50000
+1,NormativeA,NormativeA,5000,50000

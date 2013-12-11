@@ -57,6 +57,12 @@ public class MockBus extends Role implements Bus{
 	public void GoToNextStop(){
 		//\\System.out.println("Driving to next stop");
 	}
+
+	@Override
+	public void msgNumberOfBoardingPassengers(int size) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

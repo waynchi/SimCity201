@@ -31,6 +31,7 @@ public class PersonGui extends Rectangle2D.Double {
 	private ImageIcon custsprite = new ImageIcon("res/person_gui.png");
 	public boolean simulatingCrash;
 	public boolean labelIt = false;
+	public boolean simulatingBusStop = false;
 
 	public PersonGui(int x, int y, int width, int height,
 			ArrayList<Sidewalk> sidewalkSegment, Sidewalk currentCell,
@@ -312,7 +313,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.destination = null;
 				
 			}
-			else if (x == 1002.0 && y == 210.0 && called == true) { //hack for peppy
+			else if (x == 1002.0 && y == 210.0 && called == true && this.destination.equals("Restaurant 6")) { //hack for peppy
 				this.reachedDestination(this.destination);
 				this.currentCell.hasPerson = false;
 				called = false;
@@ -517,7 +518,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if(getCurrentLane().equals("19_11")) {
 				this.currentCell.hasPerson = false;
-				if(yDestination < 200 || this.destination.equals("Restaurant 6"))
+				if(xDestination < 200 || this.destination.equals("Restaurant 6"))
 					this.direction = "down";
 				else{
 					this.direction = "left";
@@ -871,15 +872,16 @@ public class PersonGui extends Rectangle2D.Double {
 
 	public void reachedDestination(String reachedDestination) {
 		// TODO Auto-generated method stub
-//		if(reachedDestination.equals("Bus Stop 1"))
-//		{
-//			BusPassengerRole bpr = new BusPassengerRole();
-//			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
-//			bpr.setDestinationPlace("Bank");
-//			bpr.msgIsActive();
-//			person.addRole(bpr, "BusPassenger");
-//			
-//		}
+		if(reachedDestination.equals("Bus Stop 1") && this.simulatingBusStop)
+		{
+			BusPassengerRole bpr = new BusPassengerRole();
+			bpr.setCurrentBusStop(cityPanel.busStops.get(0));
+			bpr.setDestinationPlace("Bank");
+			bpr.msgIsActive();
+			bpr.setPerson(person);
+			person.addRole(bpr, "BusPassenger");
+			
+		}
 	}
 
 	public void stopNow() {
@@ -892,5 +894,10 @@ public class PersonGui extends Rectangle2D.Double {
 	public void setDirection(String direction)
 	{
 		this.direction = direction;
+	}
+
+	public void setBusStopScenario(boolean b) {
+		// TODO Auto-generated method stub
+		simulatingBusStop = b;
 	}
 }

@@ -11,7 +11,6 @@ import transportation.CarGui;
 import transportation.CarPassengerRole;
 import transportation.gui.BusGui;
 import transportation.gui.BusStopGui;
-import transportation.gui.InsideBusGui;
 import transportation.interfaces.Bus;
 
 import java.awt.Color;

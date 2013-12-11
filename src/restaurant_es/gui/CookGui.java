@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+
 import restaurant_es.CookRoleEs;
 
 
@@ -17,20 +20,20 @@ public class CookGui implements Gui {
 	String foodBeingCooked = null;
 	RestaurantGuiEs gui;
 	private List<String> foodPlated = new ArrayList<String>();
+	private ImageIcon cook = new ImageIcon("res/custsprite_2.png");
 
 	 
-    private int xDestination = 70, 
+    private int xDestination = 200, 
     		xPos = 0;
-    private int yDestination = 270,
+    private int yDestination = 250,
     		yPos = 0;
     
-    private int cookX = 70;
-    private int cookY = 270;
+    private int cookX = 200;
+    private int cookY = 250;
     
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 150, fridgeY = 300;
     
     boolean isPresent;
 	
@@ -70,12 +73,6 @@ public class CookGui implements Gui {
         }
         
         if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
-        	goingToFridge = false;
-        	role.msgAtFridge();
-        }
-        
-        if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == exitX) && (yDestination == exitY) && leavingWork) {
         	leavingWork = false;
         	role.msgAtExit();
@@ -84,16 +81,17 @@ public class CookGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-        g.setColor(Color.blue);
-		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.black);
+        //g.setColor(Color.blue);
+		//g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(cook.getImage(), xPos, yPos, null);
+        g.setColor(Color.white);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
-        	g.drawString(foodBeingCooked, 50, 265);
+        	g.drawString(foodBeingCooked, 200, 290);
         }
-        else g.drawString("", 50, 265);
+        else g.drawString("", 200, 275);
         for (int i=0; i<3;i++) {
-        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        	g.drawString(foodPlated.get(i), 200+45*i, 240);
         }
 	}
 
@@ -175,13 +173,5 @@ public class CookGui implements Gui {
 		goingBack = true;
 		xDestination = cookX;
 		yDestination = cookY;
-	}
-
-
-	public void goToFridge() {
-		// TODO Auto-generated method stub
-		xDestination = fridgeX;
-		yDestination = fridgeY;
-		goingToFridge = true;
 	}
 }
