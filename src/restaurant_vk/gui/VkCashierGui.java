@@ -74,10 +74,6 @@ public class VkCashierGui implements VkGui {
 
 	@Override
 	public void draw(Graphics2D g) {
-//		g.setColor(Color.RED);
-//		g.fillRect(xPos, yPos, 20, 20);
-//		g.setColor(Color.BLACK);
-//		g.drawString("CA", xPos + 2, yPos + 15);
 		g.drawImage(sprite, xPos, yPos, null);
 	}
 
