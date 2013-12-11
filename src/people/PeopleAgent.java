@@ -3486,6 +3486,46 @@ public class PeopleAgent extends Agent implements People{
 			//personGui.setDestination(580, 322);
 			//roles.TellerRole.msgIsActive();
 		}
+		if(jobs.get(i).job.equals("Teller2"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("Teller2"))
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Bank");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Bank");
+							print("Do Not Have Car");
+						}
+					//TOOD personGui.goToBank();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Bank;
+					print("I am now a " + r.description);
+					r.role.msgIsActive();
+				}
+			}
+			//personGui.setDestination(580, 322);
+			//roles.TellerRole.msgIsActive();
+		}
 		if(jobs.get(i).job.equals("MarketCashier"))
 		{
 			for(MyRole r: roles)
@@ -3530,6 +3570,84 @@ public class PeopleAgent extends Agent implements People{
 			for(MyRole r: roles)
 			{
 				if(r.description.equals("MarketEmployee"))
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Market");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Market");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
+					print("I am now a " + r.description);
+					r.role.msgIsActive();
+				}
+			}
+			//roles.TellerRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("MarketCashier2"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("MarketCashier2"))
+				{		
+					location = AgentLocation.Road;
+					if(!testmode)
+					{
+						if(hasCar)
+						{
+							for(MyRole ro: roles)
+							{
+								if(ro.description == "CarPassenger")
+								{
+									((CarPassengerRole)ro.role).setDestination("Market");
+									ro.role.msgIsActive();
+								}
+							}
+						}
+						else
+						{
+							personGui.setDestination("Market");
+							print("Do Not Have Car");
+						}
+					//TODO personGui.GoToMarket();
+					try {
+						moving.acquire();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					}
+					location = AgentLocation.Market;
+					print("I am now a " + r.description);
+					r.role.msgIsActive();
+				}
+			}
+			//roles.TellerRole.msgIsActive();
+		}
+		if(jobs.get(i).job.equals("MarketEmployee2"))
+		{
+			for(MyRole r: roles)
+			{
+				if(r.description.equals("MarketEmployee2"))
 				{		
 					location = AgentLocation.Road;
 					if(!testmode)
