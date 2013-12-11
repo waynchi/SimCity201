@@ -35,8 +35,10 @@ public class MockMarketEmployee extends Mock implements MarketEmployee{
 	@Override
 	public void setCashier(MarketCashier marketCashier) {
 		cashier =  marketCashier;
-		if (!workers.contains(marketCashier.getPersonAgent())){
-			workers.add(cashier.getPersonAgent());
+		if (marketCashier.getPersonAgent()!=null ) {
+			if (!workers.contains(marketCashier.getPersonAgent())){
+				workers.add(cashier.getPersonAgent());
+			}
 		}
 	}
 

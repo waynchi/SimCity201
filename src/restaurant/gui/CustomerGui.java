@@ -3,10 +3,6 @@ package restaurant.gui;
 import restaurant.interfaces.Customer;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class CustomerGui implements Gui{
@@ -57,7 +53,7 @@ public class CustomerGui implements Gui{
 			yPos = yDestination;
 
 			if (command==Command.GoToSeat) customer.msgAtTable();
-			else if (xDestination == 250 && yDestination == 230 && goingToCashier) {
+			else if (xDestination == 340 && yDestination == 175 && goingToCashier) {
 				goingToCashier = false;
 				customer.msgAtCashier();
 				
@@ -113,8 +109,8 @@ public class CustomerGui implements Gui{
 		// how could customer know where cashier is? I don't know...
 		command = Command.noCommand;
 		goingToCashier = true;
-		xDestination = 250;
-		yDestination = 230;
+		xDestination = 340;
+		yDestination = 175;
 		
 	}
 	
