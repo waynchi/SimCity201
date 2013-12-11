@@ -106,7 +106,7 @@ public class RestaurantCustomerRolePS extends Role implements Customer{
 
 	public void msgIsActive() {
 		customerGui.setPresent(true);
-		host = (HostRolePS) myPerson.getHost(0);
+		host = (HostRolePS) myPerson.getHost(5);
 		print("I'm hungry");
 		state = CustomerState.DOING_NOTHING;
 		event = CustomerEvent.GOT_HUNGRY;
