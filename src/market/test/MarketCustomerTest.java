@@ -70,7 +70,7 @@ public class MarketCustomerTest extends TestCase{
 		assertEquals("customer state is "+customer.getState(), customer.getState(),"WAITING_FOR_CHECK");
 		assertEquals(customer.getEvent(),"RECEIVED_CHECK");
 		customer.pickAndExecuteAnAction();
-		assertTrue("log reads "+ customer.log.toString(),customer.log.containsString("paying my bill"));
+		assertTrue("log reads "+ customer.log.toString(),customer.log.containsString("making payment to market cashier"));
 		assertEquals(people.getMoney(),0.0);
 		
 		assertTrue(mmc.log.containsString("received msgHereIsACheck from customer"));

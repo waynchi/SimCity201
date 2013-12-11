@@ -2,6 +2,8 @@ package restaurant_es.gui;
 
 import javax.swing.*;
 
+import restaurant_es.gui.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,32 +11,34 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class RestaurantAnimationPanel extends JPanel implements ActionListener {
-	//static final int?
-    private final int WINDOWX = 500;
+	
+	private final int WINDOWX = 450;
     private final int WINDOWY = 400;
-    private final int TABLENUM = 3;
-    //private final int TABLEX = 200;
-    //private final int TABLEY = 250;
-    
-    
-    private final int TABLEWIDTH = 50;
-    
     private Image bufferImage;
     private Dimension bufferSize;
+    
+    private static final int COOKX = 300;
+    private static final int COOKY = 0;
+    private static final int COOKSIZE = 25;
+    
+    private static final int PLATEX = 300;
+    private static final int PLATEY = 50;
+    private static final int PLATESIZE = 25;
+    
+    private static final int TABLEX = 100;
+    private static final int TABLEY = 250;
+    private static final int TABLESIZE = 50;
+    static final int NTABLES = 3;
 
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
-    private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
-    private ImageIcon fridge = new ImageIcon("res/restaurant/fridge.png");
 
-
-
-    public RestaurantAnimationPanel(Timer timer) {
+    public RestaurantAnimationPanel(Timer t) {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
-     	Timer t = timer;
+ 
+    	Timer timer = t;
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -47,49 +51,21 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
-        
-        g2.drawImage(rest_floor.getImage(), 0, 0, 500, 400, null);
 
-
-        //Here is the table
+        //Here are the tables
         g2.setColor(Color.ORANGE);
-        for (int i=1; i<4; i++){
-            g2.drawImage(rest_table.getImage(),50+100*(i-1), 100,50,50, null);
-        }
-
-        // grilling
-        g2.setColor(Color.yellow);
-        g2.fillRect(50, 250, 60, 20);//cooking
         
-        // plating
-    	g2.setColor(Color.lightGray);
-        for (int i=1; i<4; i++) {
-        	g2.fillRect(50+45*(i-1), 210, 40, 20);
+        for(int i = 0; i < NTABLES; i++) {
+        	g2.fillRect(TABLEX*(i + 1), TABLEY, TABLESIZE, TABLESIZE); //Draw all of the tables with a 50px gap in between them
         }
         
-        // fridge
-        g2.drawImage(fridge.getImage(),150,320,30,60, null);
+        g2.fillOval(350, 250, 70, 70); //revolving
         
-        //revolving stand
-        g2.fillOval(350, 250, 70, 70);
+        g2.setColor(Color.RED);
+        g2.fillRect(COOKX, COOKY, 100, COOKSIZE);
         
-        
-        g2.setColor(Color.white);
-        g2.drawString("Cooking", 0, 265);
-        g2.drawString("Plating",0,225);
-                
-        
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
-        }
+        g2.setColor(Color.BLUE);
+        g2.fillRect(PLATEX, PLATEY, 100, PLATESIZE);
     }
 
     public void addGui(CustomerGui gui) {

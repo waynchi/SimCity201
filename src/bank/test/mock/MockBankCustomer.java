@@ -49,4 +49,10 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	public void msgDepositSuccessful(double balance) {
 		log.add(new LoggedEvent("received account balance " + balance));
 	}
+
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
 }

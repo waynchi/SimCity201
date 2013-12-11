@@ -23,7 +23,7 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
-    private ImageIcon rest_floor = new ImageIcon("res/restaurant/rest_floor.jpeg");
+    private ImageIcon rest_floor = new ImageIcon("src/restaurant_ps/gui/myfloor.jpg");
     private ImageIcon rest_table = new ImageIcon("res/restaurant/rest_table.png");
     private ImageIcon fridge = new ImageIcon("res/restaurant/fridge.png");
 
@@ -75,8 +75,8 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
         
         
         g2.setColor(Color.white);
-        g2.drawString("Cooking", 0, 265);
-        g2.drawString("Plating",0,225);
+//        g2.drawString("Cooking", 0, 265);
+//        g2.drawString("Plating",0,225);
                 
         
         for(Gui gui : guis) {
