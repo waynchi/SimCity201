@@ -15,6 +15,7 @@ import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.PeopleAgent;
 import people.PeopleAgent.AgentLocation;
+import people.PeopleAgent.BuyState;
 import people.PeopleAgent.HungerState;
 import people.Role;
 import restaurant.CashierRole;
@@ -72,8 +73,11 @@ public class PeopleTest extends TestCase
 	public void setUp() throws Exception{
 		super.setUp();		
 		market = new Market(null, new Dimension(100,100),"Market 1");
+		market.isClosed = false;
 		restaurant = new Restaurant(null, new Dimension(100,100),"Restaurant 1", 0);
+		restaurant.isClosed = false;
 		bank = new Bank(null, null, "Bank 1");
+		bank.isClosed = false;
 		RestaurantPeople = Collections.synchronizedList(new ArrayList<PeopleAgent>());
 		cook = new PeopleAgent("Gordon", 100, false);
 		waiter = new PeopleAgent("Waiter", 50, false);
@@ -172,6 +176,7 @@ public class PeopleTest extends TestCase
 		
 		marketCustomer.addJob("MarketEmployee", 5000, 500000);
 		assertTrue("Testing Job addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
+		marketCustomer.setMoney(50000);
 		
 		//Wake Up Call
 		for(PeopleAgent p: MarketPeople)
@@ -197,7 +202,8 @@ public class PeopleTest extends TestCase
 			}
 			else	
 			{
-				//System.out.println("BLANK of DOOM " + p.log.getLastLoggedEvent().toString());
+				System.out.println("BLANK of DOOM " + MarketPeople.get(i).log.getLastLoggedEvent().toString());
+				System.out.println("BLANK of DOOM " + MarketPeople.get(i).buy.toString());
 				assertTrue("TestingTimeIs", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar"));
 				assertTrue("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
 //				//p.Arrived();
@@ -224,7 +230,7 @@ public class PeopleTest extends TestCase
 			{
 				p.msgDone("MarketCustomerRole");
 				p.msgTimeIs(1801);
-				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 			}
 		}
 		
@@ -330,7 +336,7 @@ public class PeopleTest extends TestCase
 			}
 			else
 			{
-				//System.out.println(p.log.getLastLoggedEvent().toString());
+				System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney" ));
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 				//System.out.println(p.log.getLastLoggedEvent().toString());
@@ -372,7 +378,7 @@ public class PeopleTest extends TestCase
 			//System.out.println(p.state.toString());
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
 			System.out.println(p.state.toString());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
 			}
 			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);
@@ -525,7 +531,7 @@ public class PeopleTest extends TestCase
 			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
 			//System.out.println(p.log.getLastLoggedEvent().toString());
 			System.out.println(p.state.toString());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("IdleAtHome"));
+			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
 			}
 			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);

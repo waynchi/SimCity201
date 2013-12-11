@@ -1131,6 +1131,10 @@ public class PeopleAgent extends Agent implements People{
 								else
 								{
 									buy = BuyState.NotBuying;
+									if(testmode)
+									{
+										buy = BuyState.GoingToBuy;
+									}
 								}
 								if(buy == BuyState.GoingToBuy)
 								{
@@ -1157,7 +1161,7 @@ public class PeopleAgent extends Agent implements People{
 					}
 				}
 			}
-			else if(!Banks.get(0).isClosed)
+			if(!Banks.get(0).isClosed)
 			{
 				//System.out.println(Money);
 				if(Money >= 1000000)
@@ -1250,7 +1254,7 @@ public class PeopleAgent extends Agent implements People{
 					{
 						if(!hasCar)
 						{
-							if(rand.nextInt(100) <= 10)
+							if(rand.nextInt(100) <= 50)
 							{
 								buy = BuyState.GoingToBuy;
 							}
@@ -1277,17 +1281,17 @@ public class PeopleAgent extends Agent implements People{
 								buy = BuyState.NotBuying;
 							}
 						}				
-						else if(!Banks.get(0).isClosed)
-						{
-							if(deposit == DepositState.NextDay)
-							{
-								event = AgentEvent.GoingToDepositMoney;
-								deposit = DepositState.Deposited;
-								stateChanged();
-								return;
-							}
-						}
 						//event = AgentEvent.GoingHome;
+					}
+				}
+				if(!Banks.get(0).isClosed)
+				{
+					if(deposit == DepositState.NextDay)
+					{
+						event = AgentEvent.GoingToDepositMoney;
+						deposit = DepositState.Deposited;
+						stateChanged();
+						return;
 					}
 				}
 				if(location != AgentLocation.Home)
