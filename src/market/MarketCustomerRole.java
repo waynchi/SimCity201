@@ -190,7 +190,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			}
 		}
 		print("making payment to market cashier");
-		log.add(new LoggedEvent("making payment cashier"));
+		log.add(new LoggedEvent("making payment to market cashier"));
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);
 		state = marketCustomerState.PAID;	

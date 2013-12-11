@@ -47,19 +47,28 @@ public class MockCook extends Mock implements Cook{
 	}
 
 	@Override
-	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber) {
-		
-	}
-
-	@Override
-	public void msgHereIsYourOrderNumber(Map<String, Integer> items,int orderNumber) {
-		log.add(new LoggedEvent("order confirmed, get order number " + orderNumber));
-		
-	}
-
-	@Override
 	public int getRestaurantIndex() {
 		// TODO Auto-generated method stub
 		return restaurantIndex;
+	}
+
+	@Override
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber,
+			int marketNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items,
+			int orderNumber, int marketNumber) {
+		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("order confirmed, get order number " + orderNumber));
+	}
+
+	@Override
+	public void setLow() {
+		// TODO Auto-generated method stub
+		
 	}
 }

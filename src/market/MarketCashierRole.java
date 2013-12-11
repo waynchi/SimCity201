@@ -38,7 +38,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public bankActivityEvent bankEvent;
 
 	private Teller teller;
-	private Boolean deposit = false;
+	public Boolean deposit = false;
 	private Boolean withdraw = false;
 
 	public double working_capital = 10000.0;
@@ -453,7 +453,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		print ("will message teller deposit");
 		double amount = working_capital - min_working_capital;
 		log.add(new LoggedEvent("in action depositExcessMoney, about to deposit " + amount + " from bank"));
-		teller.msgDeposit(getPersonAgent().getMarket(0).bankAccountID, working_capital - min_working_capital);
+		if (!inTest){
+			teller.msgDeposit(getPersonAgent().getMarket(0).bankAccountID, amount);
+		}
+		else {
+			teller.msgDeposit(((MockPeople)getPersonAgent()).getMyMarket(0).id, amount);
+		}
 		bankState = bankActivityState.ASKED_DEPOSIT;
 	}
 
@@ -481,6 +486,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public void setTeller(Teller t) {
 		this.teller = t;
+	}
+	
+	public String getBankEvent() {
+		return bankEvent.toString();
+	}
+	
+	public String getBankState() {
+		return bankState.toString();
 	}
 
 

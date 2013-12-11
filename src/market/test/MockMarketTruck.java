@@ -20,8 +20,9 @@ public class MockMarketTruck extends Mock implements MarketTruck{
 
 
 	@Override
-	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number) {
-		log.add(new LoggedEvent("received order number " + number + ", about to deliver it to cook"));
+	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items,
+			int number, int marketNumber) {
+		log.add(new LoggedEvent("get an order from employee for cook, with order number "+ number));
 		
 	}
 
