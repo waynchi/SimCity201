@@ -31,7 +31,7 @@ public class CookGui implements Gui {
     private int cookX = 70;
     private int cookY = 270;
     
-    private int revolvingStandX = 350, revolvingStandY = 250;
+    private int revolvingStandX = 130, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
     private int fridgeX = 150, fridgeY = 300;

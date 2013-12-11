@@ -32,7 +32,7 @@ public class WaiterGuiZt implements Gui {
     private int cashierX = 250;
     private int cashierY = 250;
     
-    private int revolvingStandX = 350;
+    private int revolvingStandX = 130;
     private int revolvingStandY = 250;
     
     private int xExit = 0, yExit = 0;
