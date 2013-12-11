@@ -4,11 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+
 import restaurant_zt.CookRoleZt;
 
 
 public class CookGui implements Gui {
 
+    private ImageIcon restaurant_cook = new ImageIcon("res/restaurant_zt/cook.png");
 	private CookRoleZt role = null;
 	Boolean isCooking;
 	boolean goingBack = false;
@@ -84,9 +88,8 @@ public class CookGui implements Gui {
 
 	@Override
 	public void draw(Graphics2D g) {
-        g.setColor(Color.blue);
-		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.black);
+    	g.drawImage(restaurant_cook.getImage(),xPos,yPos,null);
+        g.setColor(Color.YELLOW);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
         	g.drawString(foodBeingCooked, 50, 265);

@@ -5,16 +5,11 @@ import java.util.Map;
 
 import javax.swing.Timer;
 
-import market.MarketCashierRole;
 import market.MarketCustomerRole;
 import market.gui.MarketGui;
 import people.PeopleAgent;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import restaurant.test.mock.LoggedEvent;
-import restaurant.test.mock.MockCashier;
-import restaurant.test.mock.MockCook;
-import test.NewCashierTest;
 
 public class MarketCustomerTest extends TestCase{
 	PeopleAgent people;

@@ -57,9 +57,10 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 		
 	}
 	
-	private JPanel makePanel(String text) {
+	private JScrollPane makePanel(String text) {
 		if(text.equals("Scenarios")) {
 			JPanel panel = new JPanel();
+			panel.setLayout(new FlowLayout());
 			JButton btnScenarioOne = new JButton("Normal Scenario 1");
 			btnScenarioOne.addActionListener(this);
 			panel.add(btnScenarioOne);
@@ -133,8 +134,9 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			JButton btnNewWorld = new JButton("Create World From Config File");
 			btnNewWorld.addActionListener(this);
 			panel.add(btnNewWorld);
-			
-			return panel;
+			panel.setPreferredSize( new Dimension(400, 268) );
+			JScrollPane pane = new JScrollPane(panel);
+			return pane;
 		}
 		if(text.equals("Controls")) {
 			JPanel panel = new JPanel();
@@ -170,11 +172,11 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			
 			
 			
-			JButton btnDemonstrateCollisionVehicle = new JButton("Add Vehicles to Demonstrate Collision");
+			JButton btnDemonstrateCollisionVehicle = new JButton("Add Test Vehicle");
 			btnDemonstrateCollisionVehicle.addActionListener(this);
 			panel.add(btnDemonstrateCollisionVehicle);
 			
-			JButton btnDemonstrateCollisionPerson = new JButton("Add Person to Demonstrate Collision");
+			JButton btnDemonstrateCollisionPerson = new JButton("Add Test Person");
 			btnDemonstrateCollisionPerson.addActionListener(this);
 			panel.add(btnDemonstrateCollisionPerson);
 			
@@ -193,8 +195,9 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			
 			
 			panel.setBackground( Color.ORANGE );
-			panel.setPreferredSize( new Dimension(500, 268) );
-			return panel;
+			panel.setPreferredSize( new Dimension(400, 268) );
+			JScrollPane pane = new JScrollPane(panel);
+			return pane;
 
 		} 
 		if (text.equals("TraceLog")) {
@@ -230,7 +233,7 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			JPanel panel2 = new JPanel();
 			panel2.setLayout(new BorderLayout());
 			panel2.add(pane, BorderLayout.CENTER);
-			return panel2;
+			return pane;
 		}
 		else return null;
 	}
@@ -342,20 +345,20 @@ public class CityControls extends JPanel implements ActionListener, ChangeListen
 			
 		}
 		
-		else if(e.getActionCommand().equals("Add Vehicles to Demonstrate Collision")) {
+		else if(e.getActionCommand().equals("Add Test Vehicle")) {
 			People person = new PeopleAgent("TEST PERSON", 1000.0, false);
 			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);
 			person.setPersonGui(personGui);
 			CarGui vehicle = new CarGui(5, 5, 10, 10, cityPanel.road2, cityPanel.road2.get(0), cityPanel.allRoads, cityPanel);
 			vehicle.setPersonAgent(person);
-			vehicle.setCarDestination("Market");
+			vehicle.setCarDestination("Restaurant 6");
 			cityPanel.vehicles.add(vehicle);
 		}
-		else if(e.getActionCommand().equals("Add Person to Demonstrate Collision")) {
+		else if(e.getActionCommand().equals("Add Test Person")) {
 			PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
 			PersonGui personGui = new PersonGui( 5, 5, 5, 5, cityPanel.sidewalkStrip1,cityPanel.sidewalkStrip1.get(0),cityPanel.allSidewalks, cityPanel, person);			
 			person.setPersonGui(personGui);
-			personGui.setDestination("Bank");
+			personGui.setDestination("Restaurant 6");
 			cityPanel.people.add(personGui); 
 			
 			

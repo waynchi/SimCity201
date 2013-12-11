@@ -27,8 +27,8 @@ public class WaiterGui implements Gui {
 	private int cookX = 110;
 	private int cookY = 200;
 
-	private int cashierX = 250;
-	private int cashierY = 250;
+	private int cashierX = 340;
+	private int cashierY = 175;
 
 	private int revolvingStandX = 350;
 	private int revolvingStandY = 250;
@@ -80,7 +80,7 @@ public class WaiterGui implements Gui {
 			if ((xDestination == cookX) && (yDestination == cookY-20)) {
 				role.msgAtCook();
 			}
-			if ((xDestination == cashierX) && (yDestination == cashierY-20)) {
+			if ((xDestination == cashierX) && (yDestination == cashierY)) {
 				role.msgAtCashier();
 			}
 			if ((xDestination == 20) && (yDestination == 25)) {
@@ -136,7 +136,7 @@ public class WaiterGui implements Gui {
 
 	public void DoGoToCashier() {
 		xDestination = cashierX;
-		yDestination = cashierY - 20;
+		yDestination = cashierY;
 	}
 
 	public void DoBringFoodToCustomer(Customer c) {

@@ -72,7 +72,6 @@ public class PersonGui extends Rectangle2D.Double {
 	public void move(double xVelocity, double yVelocity) {
 		if(simulatingCrash)
 			return;
-		System.out.println(this.destination);
 		Sidewalk nextCell;
 		if (this.direction.equals("right")) {
 			nextCell = sidewalkSegment.get(sidewalkSegment
