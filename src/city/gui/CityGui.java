@@ -93,6 +93,7 @@ public class CityGui extends JFrame implements ActionListener {
 	public int dayOfWeek = 0;
 	public Timer timer;
 	BankGui bankGui;
+	BankGui bankGui2;
 	public CityPanel cityPanel;
 	public JPanel buildingPanels;
 	CardLayout cardLayout;
@@ -113,6 +114,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketGui marketGui;
+	MarketGui marketGui2;
 	List<House> houses = new ArrayList<House>();
 	List<HouseAnimationPanel> houseAnimationPanels = new ArrayList<HouseAnimationPanel>();
 	List<HouseAnimationPanel> apartment1HouseAnimationPanels = new ArrayList<HouseAnimationPanel>();
@@ -200,6 +202,7 @@ public class CityGui extends JFrame implements ActionListener {
 		timer = new Timer(5, this);
 		
 		bankGui = new BankGui(timer);
+		bankGui2 = new BankGui(timer);
 		BankTellerRole = new TellerRole(bankGui); 
 		BankTellerRole.setTag(AlertTag.BANK);
 		bank.t = BankTellerRole;
@@ -216,6 +219,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 		
 		marketGui = new MarketGui(timer);
+		marketGui2 = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
 		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
@@ -324,6 +328,8 @@ public class CityGui extends JFrame implements ActionListener {
 		apartment2Container.setOpaque(true);
 		JScrollPane marketContainer = new JScrollPane(marketGui);
 		marketContainer.setOpaque(true);
+		JScrollPane market2Container = new JScrollPane(marketGui2);
+		market2Container.setOpaque(true);
 		JScrollPane restaurantContainer = new JScrollPane(restaurantGuiYc);
 		restaurantContainer.setOpaque(true);
 		JScrollPane restaurantContainerZT = new JScrollPane(restaurantGuiZt);
@@ -338,6 +344,8 @@ public class CityGui extends JFrame implements ActionListener {
 		restaurantContainerVK.setOpaque(true);
 		JScrollPane bankContainer = new JScrollPane(bankGui);
 		bankContainer.setOpaque(true);
+		JScrollPane bank2Container = new JScrollPane(bankGui2);
+		bank2Container.setOpaque(true);
 		JScrollPane busStop1Container = new JScrollPane(this.cityPanel.busStops.get(0).getGui());
 		busStop1Container.setOpaque(true);
 		JScrollPane busStop2Container = new JScrollPane(this.cityPanel.busStops.get(1).getGui());
@@ -361,9 +369,13 @@ public class CityGui extends JFrame implements ActionListener {
         buildingPanels.add(restaurantContainerPS, "" + 21);
 
 
-        buildingPanels.add(bankContainer, "" + 15);
+        buildingPanels.add(bank2Container, "" + 15);
+        buildingPanels.add(bank2Container, "" + 23);
+
         
         buildingPanels.add(marketContainer,"" + 14);
+        buildingPanels.add(market2Container,"" + 22);
+
         
         buildingPanels.add(busStop1Container,"" + cityPanel.busStops.get(0).getBuildingNumber());
         buildingPanels.add(busStop2Container,"" + cityPanel.busStops.get(1).getBuildingNumber());
@@ -414,13 +426,6 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		timer.start();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//		PeopleAgent person = new PeopleAgent("TEST PERSON", 1000.0, false);
-//		PersonGui personGui = new PersonGui( 5, 5, 5, 5, this.sidewalkStrip1,this.sidewalkStrip1.get(0),this.allSidewalks, this, person);					
-//		personGui.setDestination("Bus Stop 1");
-//		personGui.setSidewalk(allSidewalks.get(23).get(24));
-//		personGui.setSideWalkSegment(allSidewalks.get(23));
-//		personGui.setDirection("left");
-//		this.people.add(personGui);
 
 	}
 	

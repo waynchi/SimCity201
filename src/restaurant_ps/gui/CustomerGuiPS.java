@@ -4,8 +4,10 @@ import restaurant_ps.interfaces.Customer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class CustomerGuiPS implements Gui{
 
@@ -27,6 +29,7 @@ public class CustomerGuiPS implements Gui{
 	private boolean leaving = false;
 	private boolean goingToCashier = false;
     private BufferedImage img = null;
+    //private ImageIcon icon = null;
 
 	
 	
@@ -37,9 +40,8 @@ public class CustomerGuiPS implements Gui{
 		xDestination = 20;
 		yDestination = 20;
 		try {
-            img = ImageIO.read(getClass().getResource("customer.png"));
-        } catch (IOException e) {}
-        
+            img = ImageIO.read(new File("res/custsprite_1.png"));
+		  } catch (IOException e) {}
 	}
 
 	

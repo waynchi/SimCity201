@@ -58,6 +58,9 @@ public class AnimationPanelZt extends JPanel implements ActionListener {
         g2.setColor(Color.ORANGE);
         g2.fillRect(TABLEFILLX3, TABLEFILLY, TABLEWIDTH, TABLEHEIGHT);
 
+        //revolving stand
+        g2.fillOval(350, 250, 70, 70);
+        
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();

@@ -88,12 +88,7 @@ public class HostRoleZt extends Role implements Host{
 
 		public MyCustomer (RestaurantCustomerRoleZt cust) {
 			customer = cust;
-			if (customerCount >= NTABLES){
-				state = customerState.PENDING;
-			}
-			else {
-				state = customerState.WAITING;
-			}
+			state = customerState.WAITING;
 		}
 	}
 	
@@ -126,7 +121,6 @@ public class HostRoleZt extends Role implements Host{
 	}
 
 	public void msgSetClose() {
-		System.out.println("CLOSING THE MOTHAFUCKIN RESTAURANT");
 		closeRestaurant = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -299,17 +293,6 @@ public class HostRoleZt extends Role implements Host{
 			}
 		}
 
-		synchronized(customers){
-
-			for (MyCustomer mc : customers) {
-				if (mc.state == customerState.PENDING) {
-					if (customerCount >= NTABLES){
-						tellCustomerRestIsFull(mc);
-						return true;
-					}
-				}
-			}
-		}
 		
 		if (leaveWork) {
 			done();
@@ -328,12 +311,6 @@ public class HostRoleZt extends Role implements Host{
 	}
 
 	// Actions
-
-	private void tellCustomerRestIsFull (MyCustomer mc) {
-		print ("Hi "+ mc.customer.getName() + ", restaurant is full now, do you want to wait?");
-		mc.customer.msgRestaurantIsFull();
-		mc.state = customerState.ASKED_WHETHER_TO_WAIT;
-	}
 
 	private void TellWaiterToSeatCustomer(MyCustomer mc, Waiter waiter, Table table) {
 		print("Please take "+mc.customer.getName()+ " to table#" + table.tableNumber);
