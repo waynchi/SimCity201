@@ -184,8 +184,8 @@ public class CityGui extends JFrame implements ActionListener {
 		yelp.addRestaurant(restaurant, 5);
 		yelp.addRestaurant(restaurant2, 3);
 		yelp.addRestaurant(restaurant3, 4);
-		yelp.addRestaurant(restaurant4, 50000);
-		yelp.addRestaurant(restaurant5, 3);
+		yelp.addRestaurant(restaurant4, 3);
+		yelp.addRestaurant(restaurant5, 50000);
 		yelp.addRestaurant(restaurant6, 4);
 		
 		
@@ -572,7 +572,7 @@ public class CityGui extends JFrame implements ActionListener {
 		person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 		RestaurantCustomerRoleVk.setPerson(person);
 		
-		RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT3);
+		RestaurantCustomerRoleZt.setTag(AlertTag.RESTAURANT3);
 		person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 		RestaurantCustomerRoleZt.setPerson(person);
 	
@@ -582,11 +582,11 @@ public class CityGui extends JFrame implements ActionListener {
 		
 		RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
 		person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
-		RestaurantCustomerRoleWc.setPerson(person);
+		RestaurantCustomerRoleEs.setPerson(person);
 		
 		RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT6);
 		person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
-		RestaurantCustomerRoleWc.setPerson(person);
+		RestaurantCustomerRolePs.setPerson(person);
 							
 		
 		BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
@@ -880,7 +880,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
-					RestaurantCustomerRoleWc.setTag(AlertTag.RESTAURANT3);
+					RestaurantCustomerRoleZt.setTag(AlertTag.RESTAURANT3);
 					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 					RestaurantCustomerRoleZt.setPerson(person);
 				
@@ -890,11 +890,11 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
 					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRoleEs.setPerson(person);
 					
 					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT6);
 					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRolePs.setPerson(person);
 										
 					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
@@ -1443,6 +1443,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
+					RestaurantCustomerRoleZt.setTag(AlertTag.RESTAURANT3);
 					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 					RestaurantCustomerRoleZt.setPerson(person);
 					
@@ -1452,11 +1453,11 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
 					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRoleEs.setPerson(person);
 					
 					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
 					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRolePs.setPerson(person);
 										
 					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
@@ -1971,6 +1972,7 @@ public class CityGui extends JFrame implements ActionListener {
 					person.addRole(RestaurantCustomerRoleVk, "RestaurantCustomerVk");
 					RestaurantCustomerRoleVk.setPerson(person);
 					
+					RestaurantCustomerRoleZt.setTag(AlertTag.RESTAURANT3);
 					person.addRole(RestaurantCustomerRoleZt, "RestaurantCustomerZt");
 					RestaurantCustomerRoleZt.setPerson(person);
 					
@@ -1980,11 +1982,11 @@ public class CityGui extends JFrame implements ActionListener {
 					
 					RestaurantCustomerRoleEs.setTag(AlertTag.RESTAURANT5);
 					person.addRole(RestaurantCustomerRoleEs, "RestaurantCustomerEs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRoleEs.setPerson(person);
 					
 					RestaurantCustomerRolePs.setTag(AlertTag.RESTAURANT5);
 					person.addRole(RestaurantCustomerRolePs, "RestaurantCustomerPs");
-					RestaurantCustomerRoleWc.setPerson(person);
+					RestaurantCustomerRolePs.setPerson(person);
 										
 					
 					BankCustomerRole bankCustomerRole = new BankCustomerRole(bankGui);
