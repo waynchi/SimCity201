@@ -52,6 +52,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	// messages
 	public void msgIsActive () {
+		print("received msgIsActive");
 		log.add(new LoggedEvent("received msgIsActive"));
 		isActive = true;
 		customerGui.setPresent(true);
@@ -87,6 +88,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 
 	public void msgHereIsYourOrder(Map<String, Integer> _itemsReceived) { //from MarketEmployee
+		print("received my item");
 		log.add(new LoggedEvent("received my item "));
 		itemsReceived = _itemsReceived;
 		event = marketCustomerEvent.RECEIVED_ORDER;
@@ -101,7 +103,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 
 	public void msgHereIsWhatIsDue(double _totalDue, MarketCashier c) {
-		log.add(new LoggedEvent("got bill for my order and total amount is " + _totalDue));
+		print("got check for my order");
+		log.add(new LoggedEvent("got check for my order and total amount is " + _totalDue));
 		totalDue = _totalDue;
 		cashier = c;
 		event = marketCustomerEvent.RECEIVED_CHECK;
@@ -110,6 +113,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	public void msgHereIsChange(double totalChange) {
+		print("got change for my purchase");
 		log.add(new LoggedEvent("received change from cashier and amount is " + totalChange));
 		double money = getPersonAgent().getMoney();
 		money += totalChange;
@@ -168,6 +172,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				e.printStackTrace();
 			}
 		}
+		print("ordering my itmes");
 		log.add(new LoggedEvent("ordering my items"));
 		employee.msgHereIsAnOrder(this, itemsNeeded);
 		state = marketCustomerState.MADE_ORDER;
@@ -184,14 +189,16 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 				e.printStackTrace();
 			}
 		}
-		log.add(new LoggedEvent("paying my bill"));
+		print("making payment to market cashier");
+		log.add(new LoggedEvent("making payment to market cashier"));
 		cashier.msgHereIsPayment(this, getPersonAgent().getMoney());
 		getPersonAgent().setMoney(0.0);
 		state = marketCustomerState.PAID;	
 	}
 
 	private void done() {
-		log.add(new LoggedEvent("done and leaving"));
+		print("done and leaving market");
+		log.add(new LoggedEvent("done and leaving market"));
 		if (!inTest){
 			customerGui.DoGoToExit();
 			try {

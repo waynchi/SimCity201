@@ -7,6 +7,7 @@ import market.interfaces.MarketCustomer;
 import bank.interfaces.Teller;
 import bank.test.LoggedEvent;
 import bank.test.Mock;
+import people.People;
 import people.Role;
 import restaurant.interfaces.Cashier;
 
@@ -26,11 +27,7 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 		
 	}
 
-	@Override
-	public void msgHereIsACheck(Cashier restaurantCashier,
-			Map<String, Integer> items) {		
-		
-	}
+
 
 	@Override
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {	
@@ -38,11 +35,6 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	}
 	
 
-	@Override
-	public void msgHereIsPayment(Double amount,
-			Map<String, Integer> itemsOrdered, Cashier cashier) {	
-		
-	}
 
 	@Override
 	public String getName() {
@@ -83,6 +75,31 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	public void msgDepositSuccessful(double funds) {
 		log.add(new LoggedEvent("received account balance " + funds));
 		
+	}
+
+	@Override
+	public void msgGetOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsACheck(Cashier restaurantCashier,
+			Map<String, Integer> items, int orderNumber, int marketNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgHereIsPayment(Double amount, int orderNumber, Cashier cashier) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public People getPersonAgent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

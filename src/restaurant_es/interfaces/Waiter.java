@@ -12,8 +12,6 @@ public interface Waiter {
 	
 	public abstract void msgAtCook();
 	
-	public abstract void msgAtCashier();
-	
 	public abstract void msgAtWaitingCustomer();
 	
 	public abstract void msgAskForBreak();

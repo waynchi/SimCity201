@@ -40,10 +40,9 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	//private Double due;
 	
 	//customer behaviors
-	private Boolean leaveIfRestIsFull = false;
-	private Boolean orderFoodThatICanAfford = false;
-	private Boolean leaveIfCheapestFoodOutOfStock = false;
-	private Boolean reorderAcceptable = false;
+	private Boolean ableToPay = false;
+	private Boolean unableToAfford = false;
+	private Boolean ableToReOrder = false;
 			
 	// State of a customer
 	public enum AgentState
@@ -64,6 +63,26 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	 */
 	public RestaurantCustomerRoleWc(RestaurantGuiWc gui){
 		super();
+<<<<<<< HEAD
+=======
+//		// parsing customer name string to get desirable customer behavior
+//		String delims = "[ ]+";
+//		String[] tokens = temp.split(delims);
+//		choice = tokens[0];
+//		moneyOnMe = Double.parseDouble(tokens[1]);
+//		if (tokens[2].equalsIgnoreCase("y")) {
+//			leaveIfRestIsFull = true;	
+//		}
+//		if (tokens[3].equalsIgnoreCase("y")) {
+//			ableToPay = true;	
+//		}
+//		if (tokens[4].equalsIgnoreCase("y")) {
+//			unableToAfford = true;	
+//		}
+//		if (tokens[5].equalsIgnoreCase("y")) {
+//			ableToReOrder = true;
+//		}
+>>>>>>> staging
 		this.restGui = gui;
 		customerGui = new CustomerGui(this);
 		restGui.getAnimationPanel().addGui(customerGui);
@@ -242,10 +261,17 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 			return true;
 		}
 		
+<<<<<<< HEAD
 		if (state == AgentState.WaitingForFood && event == AgentEvent.reordered) {
 			state = AgentState.Ordering;
 			if (reorderAcceptable){
 				TellWaiter();
+=======
+		if (state == CustomerState.WAITING_FOR_FOOD && event == CustomerEvent.ASKED_TO_REORDER) {
+			state = CustomerState.MAKING_DECISION;
+			if (ableToReOrder){
+				makeDecision();
+>>>>>>> staging
 				return true;
 			}
 			else {
@@ -333,8 +359,13 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
 		}
 		//Case 1 - Can't afford anything on the menu. Customer leaves
+<<<<<<< HEAD
 		if (event == AgentEvent.seated){
 			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
+=======
+		if (event == CustomerEvent.SEATED){
+			if (getPersonAgent().getMoney() < minimumPrice && ableToPay){
+>>>>>>> staging
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = AgentState.Leaving;
@@ -347,7 +378,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == AgentEvent.reordered){
 
-			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
+			if (getPersonAgent().getMoney() < minimumPrice && (ableToPay||unableToAfford)){
 				print ("Can't afford anything else, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = AgentState.Leaving;
@@ -378,7 +409,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		// Customer has only enough money to order the cheapest item if moneyOnMe is greater than 5.99 and less
 		// than 8.99.
-		if (orderFoodThatICanAfford) {
+		if (ableToPay) {
 			for (FoodOnMenu temp : menu) {
 				if (temp.price > maximumPrice && temp.price <= getPersonAgent().getMoney()) {
 					maximumPrice = temp.price;

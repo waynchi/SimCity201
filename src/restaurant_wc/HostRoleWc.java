@@ -61,8 +61,13 @@ public class HostRoleWc extends Role implements Host{
 	
 	
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+<<<<<<< HEAD
 	public enum waiterStatus{onBreak, Working, askingForBreak};	
 	private int waiterCount = 0;
+=======
+	public enum waiterStatus{ON_BREAK, AT_WORK, ASKING_FOR_BREAK};	
+	private int waiterCount = -1;
+>>>>>>> staging
 	public class MyWaiter {
 		Waiter w;
 		waiterStatus s;
@@ -88,12 +93,16 @@ public class HostRoleWc extends Role implements Host{
 
 		public MyCustomer (RestaurantCustomerRoleWc cust) {
 			customer = cust;
+<<<<<<< HEAD
 			if (customerCount >= NTABLES){
 				state = customerState.pending;
 			}
 			else {
 				state = customerState.waiting;
 			}
+=======
+				state = customerState.WAITING;
+>>>>>>> staging
 		}
 	}
 	
@@ -297,6 +306,7 @@ public class HostRoleWc extends Role implements Host{
 
 			}
 		}
+<<<<<<< HEAD
 
 		synchronized(customers){
 
@@ -310,6 +320,8 @@ public class HostRoleWc extends Role implements Host{
 			}
 		}
 		
+=======
+>>>>>>> staging
 		if (leaveWork) {
 			done();
 			return true;

@@ -38,7 +38,7 @@ public class VkCashierRole extends Role implements Cashier {
 	private double workingCapital = 10000.0;
 	private double minCapital = 1000;
 	private Timer timer = new Timer();
-	private final int TIME_TO_CHECK_OUT = 1000;
+	private final int TIME_TO_CHECK_OUT = 7000;
 	private MarketCashier mCashier;
 	private boolean leave = false;
 	private boolean enter = false;

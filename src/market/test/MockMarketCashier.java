@@ -21,11 +21,6 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 		
 	}
 
-	@Override
-	public void msgHereIsACheck(Cashier restaurantCashier,	Map<String, Integer> items, int orderNumber) {
-		log.add(new LoggedEvent("received msgHereIsACheck for restaurant cashier with order number " + orderNumber));		
-		
-	}
 	
 	@Override
 	public void msgHereIsPayment(MarketCustomer customer, double totalPaid) {
@@ -33,13 +28,6 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 		
 	}
 	
-
-	@Override
-	public void msgHereIsPayment(Double amount, Map<String, Integer> itemsOrdered, Cashier cashier) {
-		log.add(new LoggedEvent("received msgHereIsPayment from cashier"));		
-		
-	}
-
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -92,6 +80,19 @@ public class MockMarketCashier extends Mock implements MarketCashier{
 	public People getPersonAgent() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void msgHereIsACheck(Cashier restaurantCashier,
+			Map<String, Integer> items, int orderNumber, int marketNumber) {
+		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("received msgHereIsACheck for restaurant cashier with order number " + orderNumber));
+	}
+
+	@Override
+	public void msgHereIsPayment(Double amount, int orderNumber, Cashier cashier) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

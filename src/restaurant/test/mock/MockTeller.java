@@ -54,7 +54,6 @@ public class MockTeller extends Mock implements Teller{
 
 	@Override
 	public void msgNeedHelp(Cashier cashier, String name) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -64,7 +63,8 @@ public class MockTeller extends Mock implements Teller{
 	@Override
 	public void msgNeedHelp(MarketCashier mcashier, String name) {
 		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("received msgNeedHelp from market cashier " + mcashier.getName()));
+
 	}
 
 

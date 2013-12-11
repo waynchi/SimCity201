@@ -1,6 +1,8 @@
 package transportation.test;
 
-import market.test.MockPeople;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import junit.framework.TestCase;
 
 
@@ -8,42 +10,56 @@ import people.People;
 import people.PeopleAgent;
 import transportation.BusPassengerRole;
 import transportation.BusStop;
-import transportation.BusPassengerRole.State;
-import transportation.gui.BusGui;
 import transportation.gui.BusPassengerGui;
 import transportation.mock.MockBus;
+import transportation.BusStop.MyBusPassenger;
 
 public class BusPassengerRoleTest extends TestCase{
 	
-	BusPassengerRole bpr = new BusPassengerRole();
+	BusPassengerRole bpr1 = new BusPassengerRole();
+	BusPassengerRole bpr2 = new BusPassengerRole();
+	BusPassengerRole bpr3 = new BusPassengerRole();
 	MockBus mockBus = new MockBus("mockbus");
 	BusPassengerGui bprGui = new BusPassengerGui();
 	//BusGui bg = new BusGui();
-	BusStop bs = new BusStop(0, 0, 0, 0, 0, 0, "busstop");
+	BusStop currentBusStop = new BusStop(null,220,180,30,30,220,152,new ArrayList<String>(Arrays.asList("Home 1","Home 2",
+			"Home 3","Home 4","Home 5","Home 6","Home 7","Home 8","Home 9","Home 10","Home 11","Home 12","Apartment 1","Apartment 2")), "BusStop 1");
+	BusStop destinationBusStop = new BusStop(null,650,90,30,30,660,132,new ArrayList<String>(Arrays.asList("Restaurant 2", "Restaurant 5","Bank")), "BusStop 4");
 	People p = new PeopleAgent("people", 0, false);
-	BusStop destinationBusStop = new BusStop(0, 0, 0, 0, 0, 0, "dest");
+	MyBusPassenger mbp;
+	
 	
 	public void setUp() throws Exception{
 		super.setUp();
-		bpr.currentBusStop = bs;
 		//mockBus.busGui = bg;
-		bpr.destination = destinationBusStop;
-		bpr.setGui(bprGui);
-		bpr.setPerson(p);
+		bpr1.setCurrentBusStop(currentBusStop);
+		bpr1.myGui = bprGui;
+		bpr1.setDestinationPlace("Bank");
+		bpr2.setCurrentBusStop(currentBusStop);
+		bpr2.myGui = bprGui;
+		bpr2.setDestinationPlace("Bank");
+		bpr3.setCurrentBusStop(currentBusStop);
+		bpr3.myGui = bprGui;
+		bpr3.setDestinationPlace("Bank");
+		
 	}
 	
 	public void testBusWithMultiplePassengers(){
-		bpr.msgIsActive();
-		assertEquals("Bus stop's passenger list should be 1, but it's not",1,bs.waitingPassengers.size());
-		bs.msgBusArrived(mockBus);
-		assertEquals("BusPassengerRole's bus variable should be set to the bus that arrived, but it's not",mockBus,bpr.myBus);
-		//assertTrue("BusPassengerRole's scheduler should return true to react to the bus arriving, but it didnt",bpr.pickAndExecuteAnAction());
-		assertTrue("Bus's log should record that bus passenger is boarding",mockBus.log.containsString("Recieved message that busPassenger is boarding"));
-		assertTrue("Bus's log should record that all bus stop passengers have been notified that bus arrived",mockBus.log.containsString("Recieved message that all passengers have been notified"));
-		//assertEquals("BusPassengerRole's state should be waitingInBus, but it's not",bpr.myState,State.waitingInBus);
-		bpr.msgArrivedAtStop(destinationBusStop);
-		//assertTrue("BusPassengerRole's scheudler should return true to react to arriving to destination, but it didnt",bpr.pickAndExecuteAnAction());
-		assertEquals("Bus's log should record that bus passenger is leaving, but it didnt",3,mockBus.log.size());
+		currentBusStop.addBoardingPassenger(bpr1);
+		currentBusStop.addBoardingPassenger(bpr2);
+		currentBusStop.addBoardingPassenger(bpr3);
+		currentBusStop.msgBusArrived(mockBus);
+		assertEquals("BusPassengerRole's bus variable should be set to the bus that arrived, but it's not",mockBus,bpr1.myBus);
+		assertEquals("BusPassengerRole's bus variable should be set to the bus that arrived, but it's not",mockBus,bpr2.myBus);
+		assertEquals("BusPassengerRole's bus variable should be set to the bus that arrived, but it's not",mockBus,bpr3.myBus);
+		currentBusStop.msgAnimationFinishedDoLeaveBusStop(bpr1);
+		currentBusStop.msgAnimationFinishedDoLeaveBusStop(bpr2);
+		currentBusStop.msgAnimationFinishedDoLeaveBusStop(bpr3);
+		assertEquals("Bus's log should record that bus passenger is boarding, but it didnt",3,mockBus.log.size());
+		bpr1.msgArrivedAtStop(destinationBusStop);
+		bpr2.msgArrivedAtStop(destinationBusStop);
+		bpr3.msgArrivedAtStop(destinationBusStop);
+		assertEquals("Bus's log should record that bus passenger is leaving, but it didnt",6,mockBus.log.size());
 		
 		
 	}

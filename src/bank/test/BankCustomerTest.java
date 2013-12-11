@@ -1,5 +1,7 @@
 package bank.test;
 
+import javax.swing.Timer;
+
 import people.PeopleAgent.AgentEvent;
 import bank.BankCustomerRole;
 import bank.BankCustomerRole.CustomerState;
@@ -29,8 +31,9 @@ public class BankCustomerTest extends TestCase
 	 * for your agent and mocks, etc.
 	 */
 	public void setUp() throws Exception{
-		super.setUp();		
-		bgui = new BankGui();
+		super.setUp();	
+		Timer t = null;
+		bgui = new BankGui(t);
 		customer = new BankCustomerRole(bgui);		
 		teller = new MockTeller("mockcustomer");
 		person = new MockPeopleBank("teller");

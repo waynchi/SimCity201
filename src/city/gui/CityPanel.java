@@ -11,7 +11,6 @@ import transportation.CarGui;
 import transportation.CarPassengerRole;
 import transportation.gui.BusGui;
 import transportation.gui.BusStopGui;
-import transportation.gui.InsideBusGui;
 import transportation.interfaces.Bus;
 
 import java.awt.Color;
@@ -390,6 +389,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		if(k==15) {
 			crosswalks.add(s);
 		}
+		if(k==5){
+			crosswalks.add(s);
+		}
 		}
 		
 		
@@ -740,6 +742,10 @@ public class CityPanel extends JPanel implements MouseListener {
 //		buildings.add(bank2);
 		Building restaurant6 = new Building( hozX + 660, hozY + 140, 20, 40, 982, 180, "Restaurant 6" );
 		buildings.add(restaurant6);
+		Building market2 = new Building( hozX + 450, hozY + 310, 60, 140, 580, 322, "Market 2" );
+		buildings.add(market2);
+		Building bank2 = new Building( hozX - 30, hozY, 90, 70, 580, 42, "Bank 2" );
+		buildings.add(bank2);
 //		Building restaurant7 = new Building( hozX + 450, hozY + 190, 20, 20, 580, 322, "Restaurant 7" );
 //		buildings.add(restaurant7);
 //		
@@ -804,6 +810,9 @@ public class CityPanel extends JPanel implements MouseListener {
 					crosswalk.greenLight();
 				}
 				if(crosswalk.name.equals("23_4")) {
+					crosswalk.greenLight();
+				}
+				if(crosswalk.name.equals("16_5")) {
 					crosswalk.greenLight();
 				}
 				if(crosswalk.name.equals("16_15")) {
@@ -892,6 +901,9 @@ public class CityPanel extends JPanel implements MouseListener {
 					crosswalk.redLight();
 				}
 				if(crosswalk.name.equals("16_15")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("16_5")) {
 					crosswalk.redLight();
 				}
 				

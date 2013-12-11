@@ -30,6 +30,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private Dimension bufferSize;
     private Graphics2D g2;
     int i = 0;  
+    
+    private ImageIcon floor = new ImageIcon("res/restaurantWc/background.png");
 
     private List<Gui> guis = new ArrayList<Gui>();
 
@@ -63,6 +65,8 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        g2.drawImage(floor.getImage(), 0, 0, 500, 400, null);
 
         //Here is the table
         for(int i = 0; i <3; i++)

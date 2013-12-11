@@ -6,9 +6,16 @@ import housing.interfaces.Resident;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
+
 import people.PeopleAgent;
 
 public class ResidentGui implements HGui{
@@ -32,6 +39,11 @@ public class ResidentGui implements HGui{
 	public Resident r;
 	public HouseGui hGui;
 	public ApartmentsGui aGui;
+	public Image sprite1 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite2 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite3 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite4 = new BufferedImage(20, 20, BufferedImage.TYPE_INT_BGR);
+	public Image sprite;
 	
 	private enum State {Idle, Pooping, Bathing, FetchingFromShelves, Preping, Cooking, Eating, Reading,
 		WatchingTV, RelaxingOnSofa, Sleeping, PlayingVideoGames, PlayingFussball, Leaving, Entering};
@@ -43,6 +55,27 @@ public class ResidentGui implements HGui{
 		yPos = 155;
 		xDestination = 40;
 		yDestination = 155;
+		try {
+			sprite1 = ImageIO.read(new File("res/housingItemImages/sleepingResident.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		try {
+			sprite2 = ImageIO.read(new File("res/housingItemImages/nakedResident.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		try {
+			sprite3 = ImageIO.read(new File("res/housingItemImages/resident.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		try {
+			sprite4 = ImageIO.read(new File("res/housingItemImages/backResident.png"));
+		} catch (IOException e) {
+			System.out.println("Image not found.");
+		}
+		sprite = sprite1;
 	}
 
 	@Override
@@ -62,6 +95,8 @@ public class ResidentGui implements HGui{
 			yPos -= 2;
 		
 		if (Math.abs(xPos - xDestination) < 2 && Math.abs(yPos - yDestination) < 2) {
+			xPos = xDestination;
+			yPos = yDestination;
 			if (state == State.FetchingFromShelves) {
 				state = State.Preping;
 				Random generator = new Random();
@@ -90,6 +125,7 @@ public class ResidentGui implements HGui{
 			else if (state == State.Bathing) {
 				timer.schedule(getTimerTask(state), BATHING_TIME);
 				state = State.Idle;
+				sprite = sprite2;
 			}
 			else if (state == State.Reading) {
 				state = State.Idle;
@@ -144,21 +180,23 @@ public class ResidentGui implements HGui{
 					}
 				}
 			}
+			else if (state == State.Sleeping) {
+				sprite = sprite1;
+			}
 		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		if (this.location != Location.Outside) {
-			g.setColor(Color.BLUE);
-			g.fillOval(xPos, yPos, 15, 15);
+			g.drawImage(sprite, xPos, yPos, null);
 			if (readingBook == true) {
 				g.setColor(Color.green);
 				g.fill3DRect(xPos + 2, yPos - 14, 10, 5, true);
 			}
 			if (videoGames == true) {
 				g.setColor(Color.darkGray);
-				g.fill3DRect(xPos + 2, yPos - 14, 6, 4, true);
+				g.fill3DRect(xPos, yPos - 14, 15, 10, true);
 			}
 			if (cellPhone == true) {
 				g.setColor(Color.black);
@@ -191,13 +229,18 @@ public class ResidentGui implements HGui{
 	public void DoPoop() {
 		state = State.Pooping;
 		Dimension d = hGui.getPosition("Toilet");
+		d.width += 5;
 		goToLocation(d);
+		sprite = sprite4;
 	}
 	
 	public void DoBathe() {
 		state = State.Bathing;
 		Dimension d = hGui.getPosition("BathTub");
+		d.width += 10;
+		d.height += 15;
 		goToLocation(d);
+		sprite = sprite4;
 	}
 	
 	public void DoWatchTV() {
@@ -212,13 +255,17 @@ public class ResidentGui implements HGui{
 		num++;
 		String sofa = "Sofa" + num;
 		Dimension d = hGui.getPosition(sofa);
+		d.height += 10;
+		d.width += 10;
 		goToLocation(d);
+		sprite = sprite3;
 	}
 	
 	public void DoCook() {
 		state = State.FetchingFromShelves;
 		Dimension d = hGui.getPosition("Shelves");
 		goToLocation(d);
+		sprite = sprite3;
 	}
 	
 	public void DoEat() {
@@ -233,30 +280,39 @@ public class ResidentGui implements HGui{
 		num++;
 		Dimension d = hGui.getPosition("Chair" + num);
 		goToLocation(d);
+		sprite = sprite3;
 	}
 	
 	public void DoSleep() {
 		state = State.Sleeping;
 		Dimension d = hGui.getPosition("Bed");
 		goToLocation(d);
+		sprite = sprite3;
 	}
 	
 	public void DoRelaxOnSofa() {
 		state = State.RelaxingOnSofa;
 		Dimension d = hGui.getPosition("Sofa1");
+		d.height += 20;
+		d.width += 10;
 		goToLocation(d);
+		sprite = sprite3;
 	}
 	
 	public void DoRead() {
 		state = State.Reading;
 		Dimension d = hGui.getPosition("StudyChair");
+		d.width += 5;
 		goToLocation(d);
+		sprite = sprite4;
 	}
 	
 	public void DoPlayVideoGames() {
 		state = State.PlayingVideoGames;
 		Dimension d = hGui.getPosition("StudyChair");
+		d.width += 5;
 		goToLocation(d);
+		sprite = sprite4;
 	}
 	
 	public void DoPlayFussball() {
@@ -265,6 +321,7 @@ public class ResidentGui implements HGui{
 		d.width += 25;
 		d.height += 40;
 		goToLocation(d);
+		sprite = sprite4;
 	}
 	
 	public void DoEnterHome() {
@@ -287,11 +344,13 @@ public class ResidentGui implements HGui{
 			goToLocation(d);
 			r.activityDone();
 		}
+		sprite = sprite3;
 	}
 	
 	public void DoLeaveHome() {
 		state = State.Leaving;
 		goToLocation(new Dimension(hGui.entranceCoordinatesInternal.width, hGui.entranceCoordinatesInternal.height));
+		sprite = sprite3;
 	}
 	
 	public void DoUseCellPhone() {

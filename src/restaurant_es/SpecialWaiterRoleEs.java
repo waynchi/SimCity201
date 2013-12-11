@@ -24,7 +24,7 @@ public class SpecialWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
 	
 	public void goPlaceOrder(MyCustomer customer) throws InterruptedException {
 		cook = host.getCook();
-		print ("Here's an order for table " + customer.tableNumber + ". Adding to the revolving stand!");
+		print ("Here's an order for table " + customer.tableNumber + ". Adding to the revolving stand.");
 		waiterGui.DoGoToRevolvingStand();
 		atRevolvingStand.acquire();
         theMonitor.addOrder(customer.tableNumber, customer.choice, this);
@@ -45,5 +45,29 @@ public class SpecialWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
 		waiterGui.setDefaultDestination();
 		isActive = false;
 		getPersonAgent().msgDone("RestaurantSpecialWaiterRole");
+	}
+
+	@Override
+	public void msgAskForBreak() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgOffBreak() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgBreakApproved() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgBreakDenied() {
+		// TODO Auto-generated method stub
+		
 	}
 }

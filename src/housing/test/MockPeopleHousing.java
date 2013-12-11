@@ -10,7 +10,7 @@ import people.PeopleAgent.AgentEvent;
 import people.PeopleAgent.AgentState;
 import people.PeopleAgent.HungerState;
 import restaurant.test.mock.LoggedEvent;
-import market.test.EventLog;
+import restaurant.test.mock.EventLog;
 import market.test.Mock;
 
 public class MockPeopleHousing extends PeopleAgent implements People {

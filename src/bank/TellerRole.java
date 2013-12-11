@@ -94,8 +94,8 @@ public class TellerRole extends Role implements Teller {
 		if (!isTest) {
 			if (gui == null) gui = bgui.addPerson(this);
 			else gui.isAtDesk = true;
+			myPerson.getBank(0).isClosed = false;
 		}
-		myPerson.getBank(0).isClosed = false;
 		stateChanged();
 	}
 	

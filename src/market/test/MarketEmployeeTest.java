@@ -117,7 +117,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		//truck noticed employee that order has been delivered
 		employee.msgOrderDelivered(1);
@@ -209,7 +209,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		employee.pickAndExecuteAnAction();
 
@@ -229,7 +229,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 2"));
 		assertTrue("market truck 2 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck2.log.containsString("received order number 2, about to deliver it to cook"));		
+				truck2.log.containsString("get an order from employee for cook, with order number 2"));		
 
 
 		//just make sure the order number is correct
@@ -361,7 +361,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		//customer sends an order to employee
 				employee.msgHereIsAnOrder(customer, items);
@@ -389,7 +389,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 2"));
 		assertTrue("market truck 2 should get a message to deliver the items to cook, it doesn't. the log reads " + truck2.log.toString(),
-				truck2.log.containsString("received order number 2, about to deliver it to cook"));		
+				truck2.log.containsString("get an order from employee for cook, with order number 2"));		
 
 
 		//just make sure the order number is correct
@@ -473,7 +473,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("employee shoule be in action redeliver restaurant order, but it's not",
 				employee.log.containsString("check order list to see if any redelivery is needed"));
 		assertTrue("market truck should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		
 		//truck noticed employee that order has been delivered

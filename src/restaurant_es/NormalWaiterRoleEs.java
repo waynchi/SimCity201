@@ -22,7 +22,7 @@ public class NormalWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
 	
 	public void goPlaceOrder(MyCustomer customer) {
 		cook = host.getCook();
-		print ("Here's an order for table " + customer.tableNumber);
+		print ("Here is an order for table: " + customer.tableNumber);
 		((CookRoleEs) cook).msgHereIsAnOrder (customer.choice, this, customer.tableNumber);
 		customer.state = customerState.waitingForFood;
 	}
@@ -41,5 +41,29 @@ public class NormalWaiterRoleEs extends BaseWaiterRoleEs implements Waiter{
 		isActive = false;
 		leaveWork = false;
 		getPersonAgent().msgDone("RestaurantNormalWaiterRole");
+	}
+
+	@Override
+	public void msgAskForBreak() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgOffBreak() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgBreakApproved() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgBreakDenied() {
+		// TODO Auto-generated method stub
+		
 	}
 }

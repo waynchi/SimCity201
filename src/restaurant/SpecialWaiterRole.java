@@ -32,7 +32,7 @@ public class SpecialWaiterRole extends BaseWaiterRole implements Waiter{
 	}
 	
 	public void done () {
-		// gui has to walk to exit
+		print("leaving work");
 		leaveWork = false;
 		waiterGui.DoExit();
 		try {
