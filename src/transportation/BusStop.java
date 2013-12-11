@@ -11,10 +11,10 @@ import java.util.concurrent.Semaphore;
 import city.gui.BuildingPanel;
 
 public class BusStop extends Rectangle2D.Double{
-	class MyBusPassenger{
+	public class MyBusPassenger{
 		BusPassenger bp;
 		BusStopPassengerGui bg;
-		MyBusPassenger(BusPassenger bp, BusStopPassengerGui bg){
+		public MyBusPassenger(BusPassenger bp, BusStopPassengerGui bg){
 			this.bp = bp;
 			this.bg = bg;
 		}
@@ -151,6 +151,11 @@ public int getBuildingNumber(){
 }
 public List<String> getNearbyPlaces(){
 	return this.placesNearby;
+}
+public void addBoardingPassenger(BusPassengerRole bpr)
+{
+	MyBusPassenger waitingPassenger = new MyBusPassenger(bpr, new BusStopPassengerGui(bpr,this));
+	this.myWaitingPassengers.add(waitingPassenger);
 }
 }
 
