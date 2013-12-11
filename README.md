@@ -115,5 +115,5 @@ However, if it does not work, all you have to do is copy the normativeBaselineA 
 
 + I (Wayne Chi, the Team Leader) believe that, although there were differences in skill level, everyone gave 200%  to this project (The extra hundred percent being derived from our sleep) and did an approximately equal amount of work.
 + Not only that, but the roles and contributions we have are loosely defined as we all helped each other out throughout the project, with most people fixing and editing code from all throughout the project.
-it 
++ As for our Restaurants, Yinyi was our chief architect. Due to the complexity of integration, we decided that it would be best to integrate our code into hers, rather than the other way around. As a result, our code may be similar, but some things, especially the gui should be from our individual code.
 + Also, in the end, since it's hard for people to jump in on other tasks (such as my peopleAgent), some people spent a lot of time helping debug which was also useful.

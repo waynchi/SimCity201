@@ -16,7 +16,7 @@ public class TestGui extends JFrame {
 		this.setLayout(new GridLayout());
 		bhp.setLayout(cl);
 //		bhp.add(hp);
-		h.a.gui.ap.setTestGui(this);
+//		h.a.gui.ap.setTestGui(this);
 		this.add(bhp);
 		this.setSize(525, 570);
 		JScrollPane container = new JScrollPane(h.a.gui.ap);

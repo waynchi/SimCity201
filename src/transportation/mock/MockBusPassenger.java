@@ -2,11 +2,11 @@ package transportation.mock;
 
 import people.People;
 import people.Role;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import transportation.BusStop;
 import transportation.interfaces.Bus;
 import transportation.interfaces.BusPassenger;
-import test.EventLog;
-import test.LoggedEvent;
 
 public class MockBusPassenger extends Role implements BusPassenger {
 
