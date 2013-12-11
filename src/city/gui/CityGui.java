@@ -141,6 +141,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 
 	MarketEmployeeRole MarketEmployeeRole;
+	MarketEmployeeRole MarketEmployeeRole2;
 	Restaurant restaurant = new Restaurant(RestaurantHostRoleYc, new Dimension(100, 100), "Restaurant 1",1);
 	Restaurant restaurant2 = new Restaurant(RestaurantHostRoleVk, new Dimension(100,100), "Restaurant 2",2);
 	Restaurant restaurant3 = new Restaurant(RestaurantHostRoleZt, new Dimension(100,100), "Restaurant 3",3);
@@ -158,6 +159,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	Market market;
 	TellerRole BankTellerRole;
+	TellerRole BankTellerRole2;
 	Bank bank = new Bank(BankTellerRole, new Dimension(100, 100), "Bank 1");
 	HousingRepairManRole repairManRole = new HousingRepairManRole();
 	Random rand = new Random();
@@ -204,6 +206,7 @@ public class CityGui extends JFrame implements ActionListener {
 		bankGui = new BankGui(timer);
 		bankGui2 = new BankGui(timer);
 		BankTellerRole = new TellerRole(bankGui); 
+		BankTellerRole2 = new TellerRole(bankGui2);
 		BankTellerRole.setTag(AlertTag.BANK);
 		bank.t = BankTellerRole;
 		restaurantGuiYc = new RestaurantGui(timer);
@@ -221,6 +224,7 @@ public class CityGui extends JFrame implements ActionListener {
 		marketGui = new MarketGui(timer);
 		marketGui2 = new MarketGui(timer);
 		MarketEmployeeRole = new MarketEmployeeRole(marketGui);
+		MarketEmployeeRole2 = new MarketEmployeeRole(marketGui2);
 		MarketEmployeeRole.setTag(AlertTag.MARKET);
 		market = new Market(MarketEmployeeRole, new Dimension(100,100),"Market 1"); 
 		
@@ -1201,7 +1205,14 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("Teller", start, end);
 						person.addRole(BankTellerRole, "Teller");
 						BankTellerRole.setPerson(person);	
-//						person.hasCar = true;
+						person.hasCar = true;
+					}
+					if (job.equals("Teller2"))
+					{
+						person.addJob("Teller2", start, end);
+						person.addRole(BankTellerRole2, "Teller2");
+						BankTellerRole2.setPerson(person);	
+						person.hasCar = true;
 					}
 					if(job.equals("Nobody")) {
 						person.addJob("MarketEmployee", start, end);
@@ -1224,7 +1235,7 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addRole(MarketEmployeeRole, "MarketEmployee");
 						MarketEmployeeRole.setPerson(person);
 						person.setMoney(10000);
-//						person.hasCar = true;
+						person.hasCar = true;
 					}
 					if(job.equals("MarketCashier"))
 					{
@@ -1232,6 +1243,24 @@ public class CityGui extends JFrame implements ActionListener {
 						person.addJob("MarketCashier", start, end);
 						person.addRole(marketCashierRole, "MarketCashier");
 						marketCashierRole.setPerson(person);
+						person.setMoney(1000);
+//						person.hasCar = true;
+						person.hasCar = false;
+					}
+					if(job.equals("MarketEmployee2"))
+					{
+						person.addJob("MarketEmployee2", start,end);
+						person.addRole(MarketEmployeeRole2, "MarketEmployee2");
+						MarketEmployeeRole2.setPerson(person);
+						person.setMoney(10000);
+						person.hasCar = true;
+					}
+					if(job.equals("MarketCashier2"))
+					{
+						MarketCashierRole marketCashierRole2 = new MarketCashierRole(marketGui2);
+						person.addJob("MarketCashier2", start, end);
+						person.addRole(marketCashierRole2, "MarketCashier2");
+						marketCashierRole2.setPerson(person);
 						person.setMoney(1000);
 //						person.hasCar = true;
 						person.hasCar = false;
