@@ -5,30 +5,28 @@ import restaurant_zt.interfaces.Customer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class CustomerGuiZt implements Gui{
-
-	private Customer customer = null;
-	private boolean isPresent = false;
-	private boolean isHungry = false;
-
 	//private HostAgent host;
 	RestaurantGuiZt gui;
 
 	private int xPos, yPos;
 	private int xExit = 0, yExit = 0;
-	private int xDestination, yDestination;//??
+	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, WaitingForFood, Eating};
 	private Command command=Command.noCommand;
 	private String choice = new String("");
 	
-	private Boolean MsgGoToSeatFromAgent = false;
+    private Customer customer = null;
+	private Boolean toldToSit = false;
 	private boolean leaving = false;
-	private boolean goingToCashier = false;
-    private BufferedImage img = null;
-
-	
+	private boolean goingToCashier = false;   
+	private boolean isPresent = false;
+	private boolean isHungry = false;
+    private ImageIcon restaurant_customer = new ImageIcon("res/custsprite_1.png");
 	
 	// set the initial position of customer
 	public CustomerGuiZt(Customer c){ //HostAgent m) {
@@ -36,9 +34,6 @@ public class CustomerGuiZt implements Gui{
 		xPos = yPos = 0;
 		xDestination = 20;
 		yDestination = 20;
-		try {
-            img = ImageIO.read(getClass().getResource("customer.png"));
-        } catch (IOException e) {}
         
 	}
 
@@ -65,16 +60,13 @@ public class CustomerGuiZt implements Gui{
 				customer.msgAtExit();
 				isHungry = false;
 				leaving = false;
-				//gui.setCustomerEnabled((RestaurantCustomerRole) customer);
 			}
 			command=Command.noCommand;
 		}
 	}
 
 	public void draw(Graphics2D g) {
-    	g.drawImage(img,xPos,yPos,null);
-
-    	// Display customer's order with text
+        g.drawImage(restaurant_customer.getImage(), xPos, yPos, 20, 30, null);
 		g.setColor(Color.black);
 		if (customer.getState().equalsIgnoreCase("waiting_for_food")) g.drawString(choice+"?",xPos+20, yPos+30);
 		if (customer.getState().equalsIgnoreCase("eating")) g.drawString(choice,xPos+20, yPos+30);
@@ -97,19 +89,16 @@ public class CustomerGuiZt implements Gui{
 	}
 
 	public void DoGoToSeat(int seatnumber) {//later you will map seatnumber to table coordinates.
-		MsgGoToSeatFromAgent = true;
+		toldToSit = true;
 		command = Command.GoToSeat;
 	}
 	
 	public void DoGoToPosition(int xDest, int yDest) {
-		//if (MsgGoToSeatFromAgent) {
-			xDestination = xDest-50;
-			yDestination = yDest;
-		//}
+		xDestination = xDest-50;
+		yDestination = yDest;
 	}
 	
 	public void DoGoToCashier() {
-		// how could customer know where cashier is? I don't know...
 		command = Command.noCommand;
 		goingToCashier = true;
 		xDestination = 250;

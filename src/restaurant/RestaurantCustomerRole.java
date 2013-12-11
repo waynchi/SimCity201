@@ -107,7 +107,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	public void msgIsActive() {
 		customerGui.setPresent(true);
 		host = (HostRole) myPerson.getHost(0);
-		print("I'm hungry");
+		print("received msgIsActive, I'm hungry");
 		state = CustomerState.DOING_NOTHING;
 		event = CustomerEvent.GOT_HUNGRY;
 		isActive = true;
@@ -121,14 +121,9 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		getPersonAgent().CallstateChanged();
 	}
 
-	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
-		event = CustomerEvent.REST_IS_FULL;
-		getPersonAgent().CallstateChanged();
-	}
-	
 	// handles waiter follow me message and eventually sits down at the correct table
 	public void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m) {
-		print("got message from waiter " + waiter.getName());
+		print("following " + waiter.getName());
 		this.setWaiter(waiter);
 		tableNum = tableNumber;
 		menu = m;
@@ -138,22 +133,17 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
-		print("atTable released");
-
 		event = CustomerEvent.SEATED;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-		print("atCashier released");
-
 		getPersonAgent().CallstateChanged();
 	}
 	
 	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
-		print("made decision");
 		event = CustomerEvent.MADE_DECISION;
 		getPersonAgent().CallstateChanged();
 	}
@@ -167,8 +157,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	//from waiter agent
 	public void msgReorder(List<FoodOnMenu> newMenu) {
-		print("asked to reorder"
-				+ "");
+		print("asked to reorder");
 		event = CustomerEvent.ASKED_TO_REORDER;
 		menu = newMenu;
 		getPersonAgent().CallstateChanged();
@@ -177,14 +166,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	//from waiter agent
 	public void msgHereIsYourFood() {
 		print("got my food");
-
 		event = CustomerEvent.FOOD_SERVED;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgHereIsCheck (Double d, Cashier c) {
 		print("got my check");
-
 		event = CustomerEvent.GOT_CHECK;
 		cashier = c;
 		//due = d;
@@ -193,9 +180,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	public void msgHereIsYourChange (Double change) {
 		print("got my change");
-
 		getPersonAgent().setMoney(change);
-		
 		event = CustomerEvent.DONE_PAYING;
 		getPersonAgent().CallstateChanged();
 	}
@@ -326,12 +311,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		host.IWantToEat(this);//send our instance, so he can respond to us
 	}
 
-	private void leaveRestaurantBecauseItsFull(){
-		print ("Rather leave than wait");
-		host.leaveRestaurant(this);
-		customerGui.DoExitRestaurant();
-
-	}
 	
 	private void doNotWantToReorder() {
 		//Animation support for Customer leaving after restaurant runs out of your choice
@@ -340,11 +319,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		customerGui.DoExitRestaurant();
 		state = CustomerState.LEAVING;
 	}
-	
-	private void stayInRestaurant() {
-		print("It's fine I'll wait");
-		host.waitInRestaurant(this);
-	}
+
 	
 	private void SitDown() {
 		Do("Being seated. Going to table");
@@ -353,7 +328,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 
 	private void makeDecision() {	
 		print("making decision");
-
 		Double minimumPrice = 100.00;
 		for (FoodOnMenu temp : menu) {
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
@@ -372,7 +346,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		
 		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == CustomerEvent.ASKED_TO_REORDER){
-
 			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
 				print ("Can't afford anything else, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
@@ -388,7 +361,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 				getPersonAgent().CallstateChanged();
 			}
 		},
-		3000);
+		2000);
 	}
 	
 	private void signalToWaiter(){
@@ -420,7 +393,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 		}
 		
 		
-		
+		//preset
 		for (FoodOnMenu f : menu){
 			if (f.type.equals(choice)){
 				Do("Can I have " + choice+ " ?");
@@ -441,14 +414,6 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	private void eatFood() {
 		customerGui.eatFood();
 		Do("Eating Food");
-		//This next complicated line creates and starts a timer thread.
-		//We schedule a deadline of getHungerLevel()*1000 milliseconds.
-		//When that time elapses, it will call back to the run routine
-		//located in the anonymous class created right there inline:
-		//TimerTask is an interface that we implement right there inline.
-		//Since Java does not all us to pass functions, only objects.
-		//So, we use Java syntactic mechanism to create an
-		//anonymous inner class that has the public method run() in it.
 		timer.schedule(new TimerTask() {
 			Object cookie = 1;
 			public void run() {
@@ -457,13 +422,11 @@ public class RestaurantCustomerRole extends Role implements Customer{
 				getPersonAgent().CallstateChanged();
 			}
 		},
-		2000);//getHungerLevel() * 1000);//how long to wait before running task
+		2000);
 	}
 
 	// customer must pay for his meal
 	private void payCheck() {
-		print("going to pay check");
-
 		customerGui.DoGoToCashier();
 		try {
 			atCashier.acquire();
@@ -477,8 +440,7 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	}
 	
 	private void leaveTable() {
-		print("leaving table");
-
+		print("done and leaving restaurant");
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
 		try {
@@ -548,6 +510,12 @@ public class RestaurantCustomerRole extends Role implements Customer{
 	
 	public String getState() {
 		return state.toString();
+	}
+
+	@Override
+	public void msgRestaurantIsFull() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

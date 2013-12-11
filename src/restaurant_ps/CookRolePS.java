@@ -1,10 +1,9 @@
 package restaurant_ps;
 
-import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_ps.gui.CookGuiPS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
-import restaurant.CookRole.MarketOrder;
+import restaurant_ps.gui.RestaurantPanelPS.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_ps.interfaces.Host;
@@ -48,7 +47,7 @@ public class CookRolePS extends Role implements Cook{
 	
 	private CookGuiPS cookGui = null;
 	private RestaurantGuiPS restGui = null;
-	public int restaurantIndex = 0;
+	public int restaurantIndex = 5;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
@@ -417,7 +416,7 @@ public class CookRolePS extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(5);
 		host.setCook(this);
 		startStandTimer();
 		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
@@ -474,6 +473,13 @@ public class CookRolePS extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
+			// TODO Auto-generated constructor stub
 		}
 	}
 

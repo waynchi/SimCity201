@@ -40,22 +40,21 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	//private Double due;
 	
 	//customer behaviors
-	private Boolean leaveIfRestIsFull = false;
-	private Boolean orderFoodThatICanAfford = false;
-	private Boolean leaveIfCheapestFoodOutOfStock = false;
-	private Boolean reorderAcceptable = false;
+	private Boolean ableToPay = false;
+	private Boolean unableToAfford = false;
+	private Boolean ableToReOrder = false;
 			
 	// State of a customer
-	public enum CustomerState
-	{DOING_NOTHING, COMING_TO_RESTAURANT, WAITING_IN_RESTAURANT, BEING_SEATED, MAKING_DECISION, READY_TO_ORDER, 
-		WAITING_FOR_FOOD, EATING, DONE_EAETING_AND_WAITING_FOR_CHECK, EATING_AND_CHECK_AVAILABLE, PAYING, LEAVING};
-	private CustomerState state = CustomerState.DOING_NOTHING;//The start state
+	public enum AgentState
+	{DoingNothing, GoingToRestaurant, WaitingInRestaurant, BeingSeated, Ordering, Ordered, 
+		WaitingForFood, Eating, DoneEating, EatingAndCheckArrived, Paying, Leaving};
+	private AgentState state = AgentState.DoingNothing;//The start state
 
 	// Events for a customer
-	public enum CustomerEvent
-	{NONE, GOT_HUNGRY, REST_IS_FULL, FOLLOW_WAITER, SEATED, MADE_DECISION, ASKED_TO_ORDER, ASKED_TO_REORDER,  
-		FOOD_SERVED, DONE_EATING, GOT_CHECK, DONE_PAYING, DONE_LEAVING};
-	private CustomerEvent event = CustomerEvent.NONE; // The start event
+	public enum AgentEvent
+	{none, gotHungry, restaurantFull, followWaiter, seated, ordering, ordered, reordered,  
+		eating, doneEating, gotCheck, donePayng, doneLeaving};
+	private AgentEvent event = AgentEvent.none; // The start event
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -64,23 +63,6 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	 */
 	public RestaurantCustomerRoleWc(RestaurantGuiWc gui){
 		super();
-//		// parsing customer name string to get desirable customer behavior
-//		String delims = "[ ]+";
-//		String[] tokens = temp.split(delims);
-//		choice = tokens[0];
-//		moneyOnMe = Double.parseDouble(tokens[1]);
-//		if (tokens[2].equalsIgnoreCase("y")) {
-//			leaveIfRestIsFull = true;	
-//		}
-//		if (tokens[3].equalsIgnoreCase("y")) {
-//			orderFoodThatICanAfford = true;	
-//		}
-//		if (tokens[4].equalsIgnoreCase("y")) {
-//			leaveIfCheapestFoodOutOfStock = true;	
-//		}
-//		if (tokens[5].equalsIgnoreCase("y")) {
-//			reorderAcceptable = true;
-//		}
 		this.restGui = gui;
 		customerGui = new CustomerGui(this);
 		restGui.getAnimationPanel().addGui(customerGui);
@@ -108,96 +90,82 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		customerGui.setPresent(true);
 		host = (HostRoleWc) myPerson.getHost(3);
 		print("I'm hungry");
-		state = CustomerState.DOING_NOTHING;
-		event = CustomerEvent.GOT_HUNGRY;
+		state = AgentState.DoingNothing;
+		event = AgentEvent.gotHungry;
 		isActive = true;
-		getPersonAgent().CallstateChanged();
+		stateChanged();
 
 	}
 	
 	public void msgAtExit() {
-		event = CustomerEvent.DONE_LEAVING;
+		event = AgentEvent.doneLeaving;
 		atExit.release();
-		getPersonAgent().CallstateChanged();
+		stateChanged();
 	}
 
-	public void msgRestaurantIsFull() { // from host, notifying customer that restaurant is full
-		event = CustomerEvent.REST_IS_FULL;
-		getPersonAgent().CallstateChanged();
+	public void msgYouNeedToWait() { // from host, notifying customer that restaurant is full
+		event = AgentEvent.restaurantFull;
+		stateChanged();
 	}
 	
 	// handles waiter follow me message and eventually sits down at the correct table
-	public void msgFollowMeToTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m) {
+	public void msgSitAtTable(Waiter waiter, int tableNumber, List<FoodOnMenu> m) {
 		print("got message from waiter " + waiter.getName());
-		this.setWaiter(waiter);
+		this.waiter = waiter;
 		tableNum = tableNumber;
 		menu = m;
-		event = CustomerEvent.FOLLOW_WAITER;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.followWaiter;
+		stateChanged();
 	}
 
-	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
-		print("atTable released");
-
-		event = CustomerEvent.SEATED;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.seated;
+		stateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-		print("atCashier released");
 
-		getPersonAgent().CallstateChanged();
+		stateChanged();
 	}
 	
-	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
 		print("made decision");
-		event = CustomerEvent.MADE_DECISION;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.ordering;
+		stateChanged();
 	}
 	
-	//from waiter agent
 	public void msgWhatWouldYouLike() {
 		print("asked to order");
-		event = CustomerEvent.ASKED_TO_ORDER;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.ordered;
+		stateChanged();
 	}
 	
-	//from waiter agent
-	public void msgReorder(List<FoodOnMenu> newMenu) {
-		print("asked to reorder"
-				+ "");
-		event = CustomerEvent.ASKED_TO_REORDER;
+	public void msgWhatElseWouldYouLike(List<FoodOnMenu> newMenu) {
+		print("asked to reorder");
+		event = AgentEvent.reordered;
 		menu = newMenu;
-		getPersonAgent().CallstateChanged();
+		stateChanged();
 	}
 	
-	//from waiter agent
 	public void msgHereIsYourFood() {
 		print("got my food");
-
-		event = CustomerEvent.FOOD_SERVED;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.eating;
+		stateChanged();
 	}
 	
-	public void msgHereIsCheck (Double d, Cashier c) {
+	public void msgHereIsYourTotal (Double d, Cashier c) {
 		print("got my check");
-
-		event = CustomerEvent.GOT_CHECK;
+		event = AgentEvent.gotCheck;
 		cashier = c;
-		//due = d;
-		getPersonAgent().CallstateChanged();
+		stateChanged();
 	}
 	
 	public void msgHereIsYourChange (Double change) {
 		print("got my change");
-
 		getPersonAgent().setMoney(change);
-		
-		event = CustomerEvent.DONE_PAYING;
-		getPersonAgent().CallstateChanged();
+		event = AgentEvent.donePayng;
+		stateChanged();
 	}
 
 	
@@ -208,111 +176,94 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 
-		if (state == CustomerState.DOING_NOTHING && event == CustomerEvent.GOT_HUNGRY ){
-			state = CustomerState.WAITING_IN_RESTAURANT;
-			//state = CustomerState.COMING_TO_RESTAURANT;
+		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
+			state = AgentState.WaitingInRestaurant;
 			goToRestaurant();
 			return true;
 		}
-		
-	/*	if (state == CustomerState.COMING_TO_RESTAURANT && event == CustomerEvent.REST_IS_FULL){
-			//Customer comes to restaurant and restaurant is full, customer is told and leaves.
-			if (leaveIfRestIsFull){
-				state = CustomerState.LEAVING;
-				leaveRestaurantBecauseItsFull();
-				return true;
-			}
-			//Customer comes to restaurant and restaurant is full, customer is told and waits
-			else {
-				state = CustomerState.WAITING_IN_RESTAURANT;
-				stayInRestaurant();
-				return true;
-			}
-		}*/
 			
-		if (state == CustomerState.WAITING_IN_RESTAURANT && event == CustomerEvent.FOLLOW_WAITER ){
-			state = CustomerState.BEING_SEATED;
+		if (state == AgentState.WaitingInRestaurant && event == AgentEvent.followWaiter ){
+			state = AgentState.BeingSeated;
 			SitDown();
 			return true;
 		}
 		
-		if (state == CustomerState.COMING_TO_RESTAURANT && event == CustomerEvent.FOLLOW_WAITER ){
-			state = CustomerState.BEING_SEATED;
+		if (state == AgentState.GoingToRestaurant && event == AgentEvent.followWaiter ){
+			state = AgentState.BeingSeated;
 			SitDown();
 			return true;
 		}
 		
-		if (state == CustomerState.BEING_SEATED && event == CustomerEvent.SEATED){
-			state = CustomerState.MAKING_DECISION;
-			makeDecision();
+		if (state == AgentState.BeingSeated && event == AgentEvent.seated){
+			state = AgentState.Ordering;
+			TellWaiter();
 			return true;
 		}
 		
 
-		if (state == CustomerState.MAKING_DECISION && event == CustomerEvent.MADE_DECISION) {
-			state = CustomerState.READY_TO_ORDER;
-			signalToWaiter();
+		if (state == AgentState.Ordering && event == AgentEvent.ordering) {
+			state = AgentState.Ordered;
+			CallWaiter();
 			return true;
 		}
 		
-		if (state == CustomerState.READY_TO_ORDER && event == CustomerEvent.ASKED_TO_ORDER) {
-			state = CustomerState.WAITING_FOR_FOOD;
-			makeOrder();
+		if (state == AgentState.Ordered && event == AgentEvent.ordered) {
+			state = AgentState.WaitingForFood;
+			OrderFood();
 			return true;
 		}
 		
-		if (state == CustomerState.WAITING_FOR_FOOD && event == CustomerEvent.FOOD_SERVED) {
-			state = CustomerState.EATING;
-			eatFood();
+		if (state == AgentState.WaitingForFood && event == AgentEvent.eating) {
+			state = AgentState.Eating;
+			EatFood();
 			return true;
 		}
 		
-		if (state == CustomerState.WAITING_FOR_FOOD && event == CustomerEvent.ASKED_TO_REORDER) {
-			state = CustomerState.MAKING_DECISION;
-			if (reorderAcceptable){
-				makeDecision();
+
+		if (state == AgentState.WaitingForFood && event == AgentEvent.reordered) {
+			state = AgentState.Ordering;
+			if (ableToReOrder){
+				TellWaiter();
 				return true;
 			}
 			else {
-				doNotWantToReorder();
+				NoMoreChoices();
 				return true;
 			}
 		}
 		
-		if (state == CustomerState.EATING && event == CustomerEvent.DONE_EATING) {
-			state = CustomerState.DONE_EAETING_AND_WAITING_FOR_CHECK;
+		if (state == AgentState.Eating && event == AgentEvent.doneEating) {
+			state = AgentState.DoneEating;
 			print("Done eating, waiting for check");
-			//waiting for check to pay
  			return true;
 		}
 		
-		if (state == CustomerState.EATING && event == CustomerEvent.GOT_CHECK) {
-			state = CustomerState.EATING_AND_CHECK_AVAILABLE;
+		if (state == AgentState.Eating && event == AgentEvent.gotCheck) {
+			state = AgentState.EatingAndCheckArrived;
 			print("Got check, will pay after done eating");
-			//waiting to finish up food and pay
 			return true;
 		}
 		
-		if (state == CustomerState.DONE_EAETING_AND_WAITING_FOR_CHECK && event == CustomerEvent.GOT_CHECK) {
-			state = CustomerState.PAYING;
-			payCheck();
+		if (state == AgentState.DoneEating && event == AgentEvent.gotCheck) {
+			state = AgentState.Paying;
+			PayCheck();
 			return true;
 		}
 		
-		if (state == CustomerState.EATING_AND_CHECK_AVAILABLE && event == CustomerEvent.DONE_EATING) {
-			state = CustomerState.PAYING;
-			payCheck();
+		if (state == AgentState.EatingAndCheckArrived && event == AgentEvent.doneEating) {
+			state = AgentState.Paying;
+			PayCheck();
 			return true;
 		}
 		
-		if (state == CustomerState.PAYING && event == CustomerEvent.DONE_PAYING){
-			state = CustomerState.LEAVING;
-			leaveTable();
+		if (state == AgentState.Paying && event == AgentEvent.donePayng){
+			state = AgentState.Leaving;
+			LeaveRestaurant();
 			return true;
 		}
 		
-		if (state == CustomerState.LEAVING && event == CustomerEvent.DONE_LEAVING){
-			state = CustomerState.DOING_NOTHING;
+		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
+			state = AgentState.DoingNothing;
 			//no action
 			return true;
 		}
@@ -326,57 +277,53 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		host.IWantToEat(this);//send our instance, so he can respond to us
 	}
 
-	private void leaveRestaurantBecauseItsFull(){
-		print ("Rather leave than wait");
-		host.leaveRestaurant(this);
-		customerGui.DoExitRestaurant();
-
-	}
+//	private void leaveRestaurantBecauseItsFull(){
+//		print ("Rather leave than wait");
+//		host.leaveRestaurant(this);
+//		customerGui.DoExitRestaurant();
+//
+//	}
 	
-	private void doNotWantToReorder() {
+	private void NoMoreChoices() {
 		//Animation support for Customer leaving after restaurant runs out of your choice
 		print ("Don't want to reorder, leaving");
 		waiter.msgDoneEatingAndLeaving(this);
 		customerGui.DoExitRestaurant();
-		state = CustomerState.LEAVING;
+		state = AgentState.Leaving;
 	}
 	
-	private void stayInRestaurant() {
-		print("It's fine I'll wait");
-		host.waitInRestaurant(this);
-	}
+//	private void stayInRestaurant() {
+//		print("It's fine I'll wait");
+//		host.waitInRestaurant(this);
+//	}
 	
 	private void SitDown() {
 		Do("Being seated. Going to table");
 		customerGui.DoGoToSeat(tableNum);
 	}
 
-	private void makeDecision() {	
+	private void TellWaiter() {	
 		print("making decision");
-
 		Double minimumPrice = 100.00;
 		for (FoodOnMenu temp : menu) {
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
 		}
-		//Case 1 - Can't afford anything on the menu. Customer leaves
-		if (event == CustomerEvent.SEATED){
-			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
+		if (event == AgentEvent.seated){
+			if (getPersonAgent().getMoney() < minimumPrice && ableToPay){
 				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
-				state = CustomerState.LEAVING;
+				state = AgentState.Leaving;
 				customerGui.DoExitRestaurant();
 				return;
 				
 			}
 		}
-		
-		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
-		if (event == CustomerEvent.ASKED_TO_REORDER){
+		if (event == AgentEvent.reordered){
 
-			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
-				print ("Can't afford anything else, leaving");
+			if (getPersonAgent().getMoney() < minimumPrice && (ableToPay||unableToAfford)){
+				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
-				state = CustomerState.LEAVING;
+				state = AgentState.Leaving;
 				customerGui.DoExitRestaurant();
 				return;
 			}
@@ -384,19 +331,19 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		timer.schedule(new TimerTask() {
 			public void run() {
-				event = CustomerEvent.MADE_DECISION;
-				getPersonAgent().CallstateChanged();
+				event = AgentEvent.ordering;
+				stateChanged();
 			}
 		},
-		3000);
+		1000);
 	}
 	
-	private void signalToWaiter(){
+	private void CallWaiter(){
 		Do("I'm ready to order");
 		waiter.msgIAmReadyToOrder(this);
 	}
 	
-	private void makeOrder() {
+	private void OrderFood() {
 		// can only order one item at a time. Prices are on the menu
 		print("ordering");
 
@@ -404,7 +351,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		// Customer has only enough money to order the cheapest item if moneyOnMe is greater than 5.99 and less
 		// than 8.99.
-		if (orderFoodThatICanAfford) {
+		if (ableToPay) {
 			for (FoodOnMenu temp : menu) {
 				if (temp.price > maximumPrice && temp.price <= getPersonAgent().getMoney()) {
 					maximumPrice = temp.price;
@@ -423,7 +370,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		for (FoodOnMenu f : menu){
 			if (f.type.equals(choice)){
-				Do("Can I have " + choice+ " ?");
+				Do("Please give me " + choice);
 				waiter.msgHereIsMyOrder (this, choice);
 				customerGui.madeDecision(choice);
 				return;
@@ -438,7 +385,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 	}
 	
-	private void eatFood() {
+	private void EatFood() {
 		customerGui.eatFood();
 		Do("Eating Food");
 		//This next complicated line creates and starts a timer thread.
@@ -450,19 +397,18 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		//So, we use Java syntactic mechanism to create an
 		//anonymous inner class that has the public method run() in it.
 		timer.schedule(new TimerTask() {
-			Object cookie = 1;
 			public void run() {
-				print("Done eating, the " + choice + " is so good: )");
-				event = CustomerEvent.DONE_EATING;
-				getPersonAgent().CallstateChanged();
+				print("Done eating " + choice);
+				event = AgentEvent.doneEating;
+				stateChanged();
 			}
 		},
 		5000);//getHungerLevel() * 1000);//how long to wait before running task
 	}
 
 	// customer must pay for his meal
-	private void payCheck() {
-		print("going to pay check");
+	private void PayCheck() {
+		print("paying Check");
 
 		customerGui.DoGoToCashier();
 		try {
@@ -476,7 +422,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		print ("Paying my bill");
 	}
 	
-	private void leaveTable() {
+	private void LeaveRestaurant() {
 		print("leaving table");
 
 		waiter.msgDoneEatingAndLeaving(this);

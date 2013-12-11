@@ -18,7 +18,7 @@ public class NormalWaiterRoleWc extends BaseWaiterRole implements Waiter{
 		menu.add(new FoodOnMenu("Chicken", 10.99));
 		menu.add(new FoodOnMenu("Salad", 5.99));
 		menu.add(new FoodOnMenu("Pizza", 8.99));
-		state = agentState.WORKING;
+		state = agentState.working;
 	}
 	
 	public void goPlaceOrder(MyCustomer customer) {
@@ -28,7 +28,7 @@ public class NormalWaiterRoleWc extends BaseWaiterRole implements Waiter{
 		customer.state = customerState.waitingForFood;
 	}
 	
-	public void done () {
+	public void Leaving() {
 		// gui needs to walk to exit
 		waiterGui.DoExit();
 		try {

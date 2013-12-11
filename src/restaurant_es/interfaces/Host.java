@@ -21,11 +21,7 @@ public interface Host {
 
 	public abstract void msgTableIsFree(int tableNumber);
 
-	public abstract void IWantABreak(Waiter w);
-
 	public abstract List<Waiter> getAvailableWaiters();
-
-	public abstract void IAmOffBreak(Waiter w);
 
 	public abstract void addWaiter(Waiter Waiter);
 

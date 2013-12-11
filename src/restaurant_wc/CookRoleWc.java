@@ -4,6 +4,7 @@ import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_wc.gui.CookGui;
 import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant_wc.gui.RestaurantPanelWc.CookWaiterMonitorWc;
+import restaurant_wc.gui.RestaurantPanelWc.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -48,14 +49,13 @@ public class CookRoleWc extends Role implements Cook{
 	
 	private CookGui cookGui = null;
 	private RestaurantGuiWc restGui = null;
-	public int restaurantIndex = 0;
+	public int restaurantIndex = 3;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
 
 	private Host host;
 	private Cashier cashier;
-	private MarketEmployee marketEmployee;
 	private final int period = 700;
 
 	//private MarketEmployeeRole marketEmployee = null;
@@ -238,7 +238,7 @@ public class CookRoleWc extends Role implements Cook{
 		synchronized(orders){
 			for (MyOrder order : orders) {
 				if (order.state == OrderState.PENDING){
-					tryToCookFood (order);
+					cookFood (order);
 					return true;
 				}
 			}
@@ -291,7 +291,7 @@ public class CookRoleWc extends Role implements Cook{
 		orders.remove(order);
 	}
 
-	public void tryToCookFood (final MyOrder order) {
+	public void cookFood (final MyOrder order) {
 		// problem here, the following code is not logically correct
 		Food f = foods.get(order.food);
 		if (f.amount == 0) {
@@ -329,11 +329,11 @@ public class CookRoleWc extends Role implements Cook{
 				},
 				f.cookingTime);
 		if (f.amount <= f.low) {
-			orderFoodThatIsLow ();
+			orderFood ();
 		}
 	}
 
-	public void orderFoodThatIsLow(){
+	public void orderFood(){
 		log.add(new LoggedEvent("order food that is low"));
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
@@ -418,13 +418,13 @@ public class CookRoleWc extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(3);
 		host.setCook(this);
 		startStandTimer();
 		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
 		cashier = host.getCashier(); // how to make sure it's already created
 		turnActive = false;
-		orderFoodThatIsLow();
+		orderFood();
 	}
 
 	public void done() {
@@ -475,6 +475,13 @@ public class CookRoleWc extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			// TODO Auto-generated constructor stub
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
 		}
 	}
 
@@ -542,7 +549,7 @@ public class CookRoleWc extends Role implements Cook{
 		for (Map.Entry<String, Food> entry : foods.entrySet()) {
 			entry.getValue().amount = 2;
 		}
-		orderFoodThatIsLow();
+		orderFood();
 		getPersonAgent().CallstateChanged();
 	}
 	

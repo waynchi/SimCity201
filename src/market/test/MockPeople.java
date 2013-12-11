@@ -19,6 +19,7 @@ public class MockPeople extends Mock implements People{
 	
 	public class MyMarket {
 		public boolean isClosed = false;
+		public int id = 0;
 	}
 	
 	public class MyBank {
@@ -247,6 +248,18 @@ public class MockPeople extends Mock implements People{
 	public Market getMarket(int i) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public PersonGui getPersonGui() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setHasCar(boolean t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

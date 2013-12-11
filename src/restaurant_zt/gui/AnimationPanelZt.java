@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class AnimationPanelZt extends JPanel implements ActionListener {
-	//static final int?
     private final int WINDOWX = 400;
     private final int WINDOWY = 200;
 	static final int TABLEFILLX = 80;
@@ -23,6 +22,8 @@ public class AnimationPanelZt extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
     private List<Gui> guis = new ArrayList<Gui>();
+    private ImageIcon floor = new ImageIcon("res/restaurant_zt/floor.png");
+
 
     public AnimationPanelZt(Timer timer) {
     	setSize(WINDOWX, WINDOWY);
@@ -41,6 +42,9 @@ public class AnimationPanelZt extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(NULLX, NULLY, WINDOWX, WINDOWY );
+        
+        g2.drawImage(floor.getImage(), 0, 0, 500, 500, null);
+
 
         //Here is the table
         g2.setColor(Color.ORANGE);
@@ -58,6 +62,9 @@ public class AnimationPanelZt extends JPanel implements ActionListener {
         g2.setColor(Color.ORANGE);
         g2.fillRect(TABLEFILLX3, TABLEFILLY, TABLEWIDTH, TABLEHEIGHT);
 
+        //revolving stand
+        g2.fillOval(130, 250, 30, 30);
+        
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();

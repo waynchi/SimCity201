@@ -1,7 +1,8 @@
 package transportation.mock;
 
 import people.Role;
-import test.*;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import transportation.BusStop;
 import transportation.gui.BusGui;
 import transportation.interfaces.Bus;
@@ -56,6 +57,12 @@ public class MockBus extends Role implements Bus{
 	@Override
 	public void GoToNextStop(){
 		//\\System.out.println("Driving to next stop");
+	}
+
+	@Override
+	public void msgNumberOfBoardingPassengers(int size) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

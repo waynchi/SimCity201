@@ -89,6 +89,7 @@ public class VkCookGui implements VkGui{
         			xDestination = grill.width;
         			yDestination = grill.height;
         			caption = symbol;
+        			sprite = sprite2;
         		}
         		else {
         			caption = "";
@@ -101,6 +102,7 @@ public class VkCookGui implements VkGui{
         			xDestination = plate.width;
         			yDestination = plate.height;
         			caption = symbol;
+        			sprite = sprite1;
         		}
         		else {
         			state = MyState.Inactive;
@@ -133,6 +135,7 @@ public class VkCookGui implements VkGui{
 		xDestination = fridge.width;
 		yDestination = fridge.height;
 		state = MyState.Cooking;
+		sprite = sprite1;
 	}
 	
 	public void DoPlateIt(String choice) {
@@ -140,18 +143,21 @@ public class VkCookGui implements VkGui{
 		xDestination = grill.width;
 		yDestination = grill.height;
 		state = MyState.Plating;
+		sprite = sprite2;
 	}
 	
 	public void DoEnterRestaurant() {
     	state = MyState.Entering;
     	xDestination = homePosX;
     	yDestination = homePosY;
+    	sprite = sprite1;
     }
     
     public void DoLeaveRestaurant() {
     	state = MyState.Exiting;
     	xDestination = -20;
     	yDestination = 90;
+    	sprite = sprite2;
     }
     
     public void setAnimationPanel(RestaurantVkAnimationPanel p) {

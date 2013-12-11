@@ -4,6 +4,7 @@ import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_zt.gui.CookGui;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
+import restaurant_zt.gui.RestaurantPanelZt.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -47,7 +48,7 @@ public class CookRoleZt extends Role implements Cook{
 	
 	private CookGui cookGui = null;
 	private RestaurantGuiZt restGui = null;
-	public int restaurantIndex = 0;
+	public int restaurantIndex = 2;
 
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
@@ -351,6 +352,7 @@ public class CookRoleZt extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		startStandTimer();
 		host = (Host) getPersonAgent().getHost(2);
 		host.setCook(this);
 		marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
@@ -407,6 +409,13 @@ public class CookRoleZt extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
+			// TODO Auto-generated constructor stub
 		}
 	}
 

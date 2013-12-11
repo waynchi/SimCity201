@@ -37,7 +37,7 @@ public class CustomerGui implements Gui{
 		xDestination = 20;
 		yDestination = 20;
 		try {
-            img = ImageIO.read(getClass().getResource("customer.png"));
+            img = ImageIO.read(getClass().getResource("custsprite_2.png"));
         } catch (IOException e) {}
         
 	}

@@ -17,19 +17,19 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	//data
 	private EventLog log = new EventLog();
 	public boolean inTest = false;
-	
+
 	MarketTruckGui gui = null;
 	MarketEmployee employee;
 	String name;
 	Semaphore atRestaurant = new Semaphore(0,true);
 	Semaphore atMarket = new Semaphore(0,true);
 
-	
+
 	public MarketTruckAgent(String n, MarketEmployee me) {
 		employee = me;
 		name = n;
 	}
-	
+
 	List<Order> orders = new ArrayList<Order>();
 	class Order {
 		Cook cook = null;
@@ -43,10 +43,10 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 			marketNumber = market;
 		}
 	}
-	
-	
+
+
 	//messages
-	
+
 	public void msgAnimationFinishedArrivedAtDestination(String destination) {
 		if (destination.equals("Market")) {
 			atMarket.release();
@@ -56,8 +56,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		}
 		stateChanged();
 	}
-	
-	
+
+
 	public void msgHereIsAnOrder(Cook cook, Map<String, Integer> items, int number, int market) {
 		print ("got an order from employee and it is for cook " + cook.getName());
 		log.add(new LoggedEvent("received an order from employee, deliver to cook"));
@@ -66,9 +66,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 
-	
+
 	//scheduler
-	
+
 	public boolean pickAndExecuteAnAction() {
 		if (!orders.isEmpty()) {
 			deliverOrder(orders.get(0));
@@ -79,36 +79,21 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
 
 	//actions
-	
+
 	private void deliverOrder(final Order order) {
-		//if(!inTest){
-/*				gui.doDeliver(this, order.cook, order.orderNumber);
-				try {
-					atRestaurant.acquire();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
-				if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
-					log.add(new LoggedEvent("order delivered to restaurant"));
-					print("order delivered to cook " + order.cook.getName());
-					order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
-					employee.msgOrderDelivered(order.orderNumber);
-				}
-				else {
-					log.add(new LoggedEvent("restaurant is closed and delivery failed"));
-					employee.msgOrderNotDelivered(order.orderNumber);
-				}
-				orders.remove(order);
-				
-				/*gui.doGoBackToMarket();
-				try {
-					atMarket.acquire();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+
+		if (!((MarketEmployeeRole) employee).getPersonAgent().getRestaurant(order.cook.getRestaurantIndex()).isClosed) {
+			log.add(new LoggedEvent("order delivered to restaurant"));
+			print("order delivered to cook " + order.cook.getName());
+			order.cook.msgHereIsYourOrder(order.items, order.orderNumber, order.marketNumber);	
+			employee.msgOrderDelivered(order.orderNumber);
+		}
+		else {
+			print("order not delivered to cook " + order.cook.getName() + " because restaurant is closed");
+			log.add(new LoggedEvent("restaurant is closed and delivery failed"));
+			employee.msgOrderNotDelivered(order.orderNumber);
+		}
+		orders.remove(order);
 	}
 
 
@@ -116,10 +101,10 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	public void setGui(MarketTruckGui mtg){
 		gui = mtg;
 	}
-	
+
 	public void setEmployee (MarketEmployee me) {
 		employee = me;
 	}
-	
+
 
 }

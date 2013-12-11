@@ -30,7 +30,7 @@ public class WaiterGuiPS implements Gui {
     private int cashierX = 250;
     private int cashierY = 250;
     
-    private int revolvingStandX = 350;
+    private int revolvingStandX = 300;
     private int revolvingStandY = 250;
     
     private int xExit = 0, yExit = 0;
@@ -45,13 +45,13 @@ public class WaiterGuiPS implements Gui {
     
     public WaiterGuiPS(BaseWaiterRole role) {
         try {
-            img = ImageIO.read(getClass().getResource("waiter.png"));
+            img = ImageIO.read(getClass().getResource("anotherwaiter.png"));
         } catch (IOException e) {}
         
         this.role = role;
-        tableMap.put (1,new Dimension(100,100));
-        tableMap.put (2,new Dimension(200,100));
-        tableMap.put (3,new Dimension(300,100));  
+        tableMap.put (1,new Dimension(300,50));
+        tableMap.put (2,new Dimension(400,50));
+        tableMap.put (3,new Dimension(350,125));  
     }
 
     public void setHomePosition(int x) {

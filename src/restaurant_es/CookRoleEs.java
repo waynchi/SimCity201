@@ -3,6 +3,7 @@ package restaurant_es;
 import restaurant_es.gui.CookGui;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant_es.gui.RestaurantPanelEs.CookWaiterMonitorEs;
+import restaurant_es.gui.RestaurantPanelEs.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.CookRole.MyOrder;
 import restaurant.interfaces.Cashier;
@@ -23,60 +24,28 @@ import people.Role;
 /**
  * Restaurant Cook Agent
  */
-// There is only one CookAgent in this version of Restaurant. Waiter(s) will take customers' order 
-// and then go to the cook and tell him to prepare the food. The CookAgent will then cook the food (
-// cooking time depends on food) and plate it, then notify the correct waiter that food is done.
-// Cook may run out of food and order that from markets (three for now)
-
-//Cook can run out of food, and when that happens, he orders food from the market. He only orders food 
-//has not been ordered for now.
-
 
 public class CookRoleEs extends Role implements Cook{
 	public EventLog log = new EventLog();
 	private List<MyOrder> orders = Collections.synchronizedList(new ArrayList<MyOrder>());
-	//private List<MarketEmployeeRole> marketEmployees = Collections.synchronizedList(new ArrayList<MarketEmployeeRole>());
 	public enum OrderState {PENDING, COOKING, DONE, PLATED};
 	private CookWaiterMonitorEs theMonitor = null;
-
 	private Map<String, Food> foods = Collections.synchronizedMap(new HashMap<String, Food>());			
 	private Timer schedulerTimer;
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
-	protected Semaphore atFridge = new Semaphore (0,true);
-	
 	private CookGui cookGui = null;
 	private RestaurantGuiEs restGui = null;
-	public int restaurantIndex = 0;
-
+	public int restaurantIndex = 4;
 	private Boolean turnActive = false;
 	private Boolean leaveWork = false;
-
 	private Host host;
 	private Cashier cashier;
 	private MarketEmployee marketEmployee;
 	private final int period = 700;
-
-	//private MarketEmployeeRole marketEmployee = null;
-
-
 	private List<MarketOrder> marketOrders = Collections.synchronizedList(new ArrayList<MarketOrder>());
-	public class MarketOrder {
-		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
-		Boolean delivered;
-		//int marketCount;
-		int orderNumber = -1;
-		int marketNumber = -1;
-
-		private MarketOrder (Map<String,Integer> mo, int market){
-			marketOrder = mo;
-			delivered = false;
-			//marketCount = 1;
-			marketNumber = market;
-		};
-	}
-
+	
 	/**
 	 * Constructor for CookAgent class
 	 *
@@ -99,14 +68,14 @@ public class CookRoleEs extends Role implements Cook{
 
 	// Cook receives an order from the waiter and stores it into a list
 	public void msgIsActive() {
-		log.add(new LoggedEvent("received msgIsActive"));
+		print("People agent sent msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgIsInActive() {
-		log.add(new LoggedEvent("received msgIsInActive"));
+		print("msgInActive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
@@ -114,7 +83,6 @@ public class CookRoleEs extends Role implements Cook{
 	public void msgAtRevolvingStand() {
 		atRevolvingStand.release();
 		myPerson.CallstateChanged();
-		
 	}
 	
 	public void msgAtExit() {
@@ -127,15 +95,9 @@ public class CookRoleEs extends Role implements Cook{
 		atGrill.release();
 		myPerson.CallstateChanged();
 	}
-	
-
-	public void msgAtFridge() {
-		atFridge.release();
-		myPerson.CallstateChanged();
-	}
 
 	public void msgHereIsAnOrder (String food, Waiter w,int tableNum) {
-		log.add(new LoggedEvent("received an order for table " + tableNum));
+		print("Received new order");
 		orders.add( new MyOrder(food, w, tableNum));
 		getPersonAgent().CallstateChanged();
 	}
@@ -165,53 +127,31 @@ public class CookRoleEs extends Role implements Cook{
 		}
 	}
 
-	// from market truck (market employee for now)
-		public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
-			log.add(new LoggedEvent("received items from market"));
-			for (Map.Entry<String, Integer> entry : items.entrySet()) {
-				foods.get(entry.getKey()).amount += entry.getValue();
-				foods.get(entry.getKey()).isOrdered = false;
-			}
-			for (MarketOrder mo : marketOrders) {
-				if (mo.orderNumber == orderNumber && mo.marketNumber == marketNumber) {
-					mo.delivered = true;
-				}
-			}
-			getPersonAgent().CallstateChanged();
-
+	public void msgHereIsYourOrder(Map<String, Integer> items, int orderNumber, int marketNumber) {
+		print("Received items from market");
+		for (Map.Entry<String, Integer> entry : items.entrySet()) {
+			foods.get(entry.getKey()).amount += entry.getValue();
+			foods.get(entry.getKey()).isOrdered = false;
 		}
-
-
-		public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
-			for (MarketOrder mo : marketOrders) {
-				if (mo.marketOrder == items && mo.marketNumber == market) {
-					mo.orderNumber = orderNumber;
-				}
-			}
-			getPersonAgent().CallstateChanged();
-			
-		}
-	
-	/*public void msgSupply (Map<String,Integer> orderList, Map<String,Integer> supplyList) {
-		synchronized (marketOrders) {
-
-			for (MarketOrder mo : marketOrders) {
-				if (mo.marketOrder == orderList) {
-					for (Map.Entry<String, Integer> entry : mo.marketOrder.entrySet()) {
-						mo.marketOrder.put(entry.getKey(), (entry.getValue()-supplyList.get(entry.getKey())));
-						foods.get(entry.getKey()).amount += supplyList.get(entry.getKey());
-					}
-					mo.isResponded = true;
-					getPersonAgent().CallstateChanged();
-				}
+		for (MarketOrder mo : marketOrders) {
+			if (mo.orderNumber == orderNumber && mo.marketNumber == marketNumber) {
+				mo.delivered = true;
 			}
 		}
-	}*/
-
-	/*public void addMarket (MarketEmployeeRole m) {
-		markets.add(m);
 		getPersonAgent().CallstateChanged();
-	}*/
+	}
+
+
+	public void msgHereIsYourOrderNumber(Map<String, Integer> items, int orderNumber, int market) {
+		print("Market has recieved our order");
+		for (MarketOrder mo : marketOrders) {
+			if (mo.marketOrder == items && mo.marketNumber == market) {
+				mo.orderNumber = orderNumber;
+			}
+		}
+		getPersonAgent().CallstateChanged();
+	}
+	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
@@ -224,7 +164,6 @@ public class CookRoleEs extends Role implements Cook{
 		if (!orders.isEmpty()){
 			synchronized(orders){
 				for (MyOrder order : orders) {
-					//print ("in cook scheduler. order done: " + order.food);
 					if (order.state == OrderState.DONE){
 						plateFood (order);
 						return true;
@@ -241,15 +180,6 @@ public class CookRoleEs extends Role implements Cook{
 				}
 			}
 		}
-
-		/*synchronized(marketOrders){
-			for (MarketOrder mo : marketOrders) {
-				if (mo.isResponded) {
-					orderFromAnotherMarket (mo);
-					return true;
-				}
-			}
-		}*/
 		
 		synchronized(marketOrders) {
 			for (MarketOrder mo:marketOrders) {
@@ -260,8 +190,6 @@ public class CookRoleEs extends Role implements Cook{
 			}
 		}
 
-
-		
 		if (leaveWork) {
 			done();
 			return true;
@@ -276,15 +204,12 @@ public class CookRoleEs extends Role implements Cook{
 	// Actions
 
 	public void askCashierToPayForOrder(MarketOrder order) {
-		log.add(new LoggedEvent("asking restaurant cashier to pay for market order"));
 		cashier = host.getCashier();
 		cashier.msgGotMarketOrder(order.marketOrder, order.orderNumber, order.marketNumber);
 		marketOrders.remove(order);
 	}
 	
-	// The correct waiter is notified of the cooked order
 	public void plateFood(MyOrder order) {
-		log.add(new LoggedEvent("food for table " + order.tableNumber + " is ready!"));
 		order.waiter.msgOrderIsReady(order.food, order.tableNumber);
 		order.state = OrderState.PLATED;
 		cookGui.plateFood(order.food,order.tableNumber);
@@ -292,25 +217,15 @@ public class CookRoleEs extends Role implements Cook{
 	}
 
 	public void tryToCookFood (final MyOrder order) {
-		// problem here, the following code is not logically correct
 		Food f = foods.get(order.food);
 		if (f.amount == 0) {
 			order.waiter.msgOutOfFood (order.food, order.tableNumber);
-			log.add(new LoggedEvent("we are running our of " + order.food));
 			orders.remove(order);
 			return;
 		}
 		f.amount--;
 
 		order.state = OrderState.COOKING;
-		cookGui.goToFridge();
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		cookGui.DoGoToCookingPlace();
 		try {
 			atGrill.acquire();
@@ -334,7 +249,6 @@ public class CookRoleEs extends Role implements Cook{
 	}
 
 	public void orderFoodThatIsLow(){
-		log.add(new LoggedEvent("order food that is low"));
 		Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
 		synchronized (foods) {
 			for (Food f: foods.values()){
@@ -354,7 +268,6 @@ public class CookRoleEs extends Role implements Cook{
 	
 	
 	public void getOrderFromRevolvingStand() {
-		print ("going to revolving stand");
 		orders.add (new MyOrder(theMonitor.removeOrder()));
 		cookGui.DoGoToRevolvingStand();
 		try {
@@ -374,42 +287,7 @@ public class CookRoleEs extends Role implements Cook{
 		getPersonAgent().CallstateChanged();
 	}
 
-
-	/*private void orderFromAnotherMarket (MarketOrder mo) {
-
-		List<String> foodFulfilled = Collections.synchronizedList (new ArrayList<String>());
-		synchronized (mo.marketOrder){
-			for (Map.Entry<String, Integer> entry : mo.marketOrder.entrySet()) {
-				if (entry.getValue() == 0) {
-					foods.get(entry.getKey()).isOrdered = false;
-					foodFulfilled.add(entry.getKey());
-				}
-			}	
-		}
-		for (String temp : foodFulfilled) {
-			mo.marketOrder.remove(temp);
-		}
-
-		if (!mo.marketOrder.isEmpty()){
-			if (mo.marketCount < markets.size()) {
-				(markets.get(mo.marketCount)).msgOrder(mo.marketOrder, this, cashier);
-				mo.marketCount ++;
-				mo.isResponded = false;
-				return;
-			}
-			// we've gone through the market list 
-			else {
-				//print("Already gone through all markets, request not fulfilled");
-				marketOrders.remove(mo);
-				return;
-			}		
-		}
-
-
-	}*/
-
 	private void clockIn() {
-		log.add(new LoggedEvent("clock in"));
 		cookGui.setPresent(true);
 		cookGui.DoGoToCookingPlace();
 		try {
@@ -418,11 +296,10 @@ public class CookRoleEs extends Role implements Cook{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		host = (Host) getPersonAgent().getHost(0);
+		host = (Host) getPersonAgent().getHost(4);
 		host.setCook(this);
 		startStandTimer();
-		//marketEmployee = (MarketEmployee) getPersonAgent().getMarketEmployee(0);
-		cashier = host.getCashier(); // how to make sure it's already created
+		cashier = host.getCashier(); 
 		turnActive = false;
 		orderFoodThatIsLow();
 	}
@@ -475,6 +352,13 @@ public class CookRoleEs extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food= order.food;
+			state = OrderState.PENDING;
 		}
 	}
 
@@ -546,6 +430,20 @@ public class CookRoleEs extends Role implements Cook{
 		orderFoodThatIsLow();
 		getPersonAgent().CallstateChanged();
 	}
+	
+	public class MarketOrder {
+		private Map<String, Integer> marketOrder = Collections.synchronizedMap(new HashMap<String, Integer>());
+		Boolean delivered;
+		int orderNumber = -1;
+		int marketNumber = -1;
+
+		private MarketOrder (Map<String,Integer> mo, int market){
+			marketOrder = mo;
+			delivered = false;
+			marketNumber = market;
+		};
+	}
+
 	
 }
 

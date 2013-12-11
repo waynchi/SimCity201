@@ -37,7 +37,7 @@ public class VkCookRole extends Role implements Cook {
 	private Semaphore movingAround = new Semaphore(0, true);
 	private RevolvingStand stand;
 	private Timer standTimer;
-	private final int period = 700;
+	private final int period = 1000;
 	private List<MarketEmployee> markets = new ArrayList<MarketEmployee>();
 	private Cashier cashier;
 	private boolean leave = false;
@@ -277,6 +277,30 @@ public class VkCookRole extends Role implements Cook {
 		stateChanged();
 	}
 	
+	public void setLow() {
+		Food f1 = inventory.get("Steak");
+		f1.low = 2;
+		f1.amount = 1;
+		f1.s = FoodState.Low;
+		
+		Food f2 = inventory.get("Chicken");
+		f2.low = 2;
+		f2.amount = 1;
+		f2.s = FoodState.Low;
+		
+		Food f3 = inventory.get("Salad");
+		f3.low = 2;
+		f3.amount = 1;
+		f3.s = FoodState.Low;
+		
+		Food f4 = inventory.get("Pizza");
+		f4.low = 2;
+		f4.amount = 1;
+		f4.s = FoodState.Low;
+		
+		stateChanged();
+	}
+	
 	/**--------------------------------------------------------------------------------------------------------------
 	 * -------------------------------------------------------------------------------------------------------------*/
 
@@ -361,28 +385,6 @@ public class VkCookRole extends Role implements Cook {
 		return false;
 	}
 	
-	public void setLow() {
-		Food f1 = inventory.get("Steak");
-		f1.low = 2;
-		f1.amount = 1;
-		f1.s = FoodState.Low;
-		
-		Food f2 = inventory.get("Chicken");
-		f2.low = 2;
-		f2.amount = 1;
-		f2.s = FoodState.Low;
-		
-		Food f3 = inventory.get("Salad");
-		f3.low = 2;
-		f3.amount = 1;
-		f3.s = FoodState.Low;
-		
-		Food f4 = inventory.get("Pizza");
-		f4.low = 2;
-		f4.amount = 1;
-		f4.s = FoodState.Low;
-	}
-	
 	/*
 	 * Finds the first order in the list of orders which has the specified
 	 * state.
@@ -419,10 +421,10 @@ public class VkCookRole extends Role implements Cook {
 	 * This is to initialize the inventory of food materials of the cook.
 	 */
 	private void initializeInventory() {
-		Food f1 = new Food("Steak", 500, 2, 2, 10);
-		Food f2 = new Food("Chicken", 500, 2, 2, 10);
-		Food f3 = new Food("Salad", 500, 2, 2, 10);
-		Food f4 = new Food("Pizza", 500, 2, 2, 10);
+		Food f1 = new Food("Steak", 500, 10, 2, 10);
+		Food f2 = new Food("Chicken", 500, 10, 2, 10);
+		Food f3 = new Food("Salad", 500, 10, 2, 10);
+		Food f4 = new Food("Pizza", 500, 10, 2, 10);
 		inventory.put("Steak", f1);
 		inventory.put("Chicken", f2);
 		inventory.put("Salad", f3);

@@ -2,6 +2,10 @@ package restaurant_ps.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import restaurant_ps.CashierRolePS;
 
@@ -15,11 +19,14 @@ public class RestaurantCashierGuiPS implements Gui{
 	int xExit = 0, yExit = 0;
 	boolean goingToWorkPlace= false;
 	boolean leaving = false;
-	
+	private BufferedImage img = null;
 	
 	public RestaurantCashierGuiPS(CashierRolePS cashierRole) {
 		// TODO Auto-generated constructor stub
 		cashier = cashierRole;
+		try {
+            img = ImageIO.read(getClass().getResource("mycashier.png"));
+        } catch (IOException e) {}
 	}
 
 	@Override
@@ -50,7 +57,7 @@ public class RestaurantCashierGuiPS implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		g.setColor(Color.yellow);
-		g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(img,xPos,yPos,null);
         g.setColor(Color.white);
         g.drawString("Cashier", xPos, yPos+20);
         

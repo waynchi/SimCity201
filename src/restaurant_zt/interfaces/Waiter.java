@@ -28,7 +28,7 @@ public interface Waiter {
 	
 	public abstract void msgIAmReadyToOrder(Customer cust);
 
-	public abstract void msgHereIsMyOrder (Customer cust, String choice);
+	public abstract void msgHereIsOrder (Customer cust, String choice);
 	
 	public abstract void msgOrderIsReady (String order, int t);
 	
@@ -36,7 +36,7 @@ public interface Waiter {
 	
 	public abstract void msgHereIsCheck (Customer cust, Double d);
 	
-	public abstract void msgDoneEatingAndLeaving (Customer cust);
+	public abstract void msgDoneEating (Customer cust);
 
 	public abstract String getName();
 

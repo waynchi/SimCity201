@@ -319,7 +319,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 	private void doNotWantToReorder() {
 		//Animation support for Customer leaving after restaurant runs out of your choice
 		print ("Don't want to reorder, leaving");
-		waiter.msgDoneEatingAndLeaving(this);
+		waiter.msgDoneEating(this);
 		customerGui.DoExitRestaurant();
 		state = CustomerState.LEAVING;
 	}
@@ -345,7 +345,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 		if (event == CustomerEvent.SEATED){
 			if (getPersonAgent().getMoney() < minimumPrice && orderFoodThatICanAfford){
 				print ("Can't afford anything, leaving");
-				waiter.msgDoneEatingAndLeaving(this);
+				waiter.msgDoneEating(this);
 				state = CustomerState.LEAVING;
 				customerGui.DoExitRestaurant();
 				return;
@@ -358,7 +358,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 
 			if (getPersonAgent().getMoney() < minimumPrice && (orderFoodThatICanAfford||leaveIfCheapestFoodOutOfStock)){
 				print ("Can't afford anything else, leaving");
-				waiter.msgDoneEatingAndLeaving(this);
+				waiter.msgDoneEating(this);
 				state = CustomerState.LEAVING;
 				customerGui.DoExitRestaurant();
 				return;
@@ -397,7 +397,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 				}
 			}
 			Do("Can I have " + choice+ " ?");
-			waiter.msgHereIsMyOrder (this, choice);
+			waiter.msgHereIsOrder (this, choice);
 			customerGui.madeDecision(choice);
 			return;
 		}
@@ -407,7 +407,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 		for (FoodOnMenu f : menu){
 			if (f.type.equals(choice)){
 				Do("Can I have " + choice+ " ?");
-				waiter.msgHereIsMyOrder (this, choice);
+				waiter.msgHereIsOrder (this, choice);
 				customerGui.madeDecision(choice);
 				return;
 			}
@@ -416,7 +416,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 		int rand = randomGenerator.nextInt(menu.size());
 		choice = menu.get(rand).type;
 		Do("Can I have " + choice + " ?");
-		waiter.msgHereIsMyOrder (this, choice);
+		waiter.msgHereIsOrder (this, choice);
 		customerGui.madeDecision(choice);
 		
 	}
@@ -462,7 +462,7 @@ public class RestaurantCustomerRoleZt extends Role implements Customer{
 	private void leaveTable() {
 		print("leaving table");
 
-		waiter.msgDoneEatingAndLeaving(this);
+		waiter.msgDoneEating(this);
 		customerGui.DoExitRestaurant();
 		try {
 			atExit.acquire();

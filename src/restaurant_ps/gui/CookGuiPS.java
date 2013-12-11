@@ -2,8 +2,13 @@ package restaurant_ps.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import restaurant_ps.CookRolePS;
 
 
@@ -16,6 +21,7 @@ public class CookGuiPS implements Gui {
 	boolean goingToFridge = false;
 	String foodBeingCooked = null;
 	RestaurantGuiPS gui;
+	private BufferedImage img = null;
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
@@ -30,7 +36,7 @@ public class CookGuiPS implements Gui {
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 150, fridgeY = 300;
+    private int fridgeX = 20, fridgeY = 300;
     
     boolean isPresent;
 	
@@ -41,6 +47,9 @@ public class CookGuiPS implements Gui {
 		for (int i=0;i<3;i++) {
 			foodPlated.add("");
 		}
+		try {
+            img = ImageIO.read(getClass().getResource("chef.png"));
+        } catch (IOException e) {}
 	}
 	
 
@@ -85,7 +94,7 @@ public class CookGuiPS implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
         g.setColor(Color.blue);
-		g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(img,xPos,yPos,null);
         g.setColor(Color.black);
         g.drawString("Cook", xPos, yPos+20);
         if (isCooking) {
@@ -93,7 +102,7 @@ public class CookGuiPS implements Gui {
         }
         else g.drawString("", 50, 265);
         for (int i=0; i<3;i++) {
-        	g.drawString(foodPlated.get(i), 50+45*i, 225);
+        	g.drawString(foodPlated.get(i), 20, 130+30*i);
         }
 	}
 

@@ -23,7 +23,7 @@ public class Lane implements MouseListener{
 	ArrayList<VehicleGui> vehicles;
 	public String name;
 	boolean hasCar;
-	boolean simulatingCrash;
+	public boolean simulatingCrash;
 	
 	public Lane(int xo, int yo, int w, int h, int xv, int yv, boolean ish, Color lc, Color sc, String name ) {
 		this.name = name;

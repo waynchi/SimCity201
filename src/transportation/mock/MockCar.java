@@ -1,8 +1,8 @@
 package transportation.mock;
 
 import people.Role;
-import test.EventLog;
-import test.LoggedEvent;
+import restaurant.test.mock.EventLog;
+import restaurant.test.mock.LoggedEvent;
 import transportation.CarGui;
 import transportation.interfaces.Car;
 import transportation.interfaces.CarPassenger;

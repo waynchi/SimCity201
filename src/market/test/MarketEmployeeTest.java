@@ -98,7 +98,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 
 		employee.pickAndExecuteAnAction();
 
@@ -117,7 +117,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		//truck noticed employee that order has been delivered
 		employee.msgOrderDelivered(1);
@@ -142,7 +142,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 
 		employee.pickAndExecuteAnAction();
 
@@ -177,7 +177,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 		assertEquals("the only order in the list should have orderNumber 1, but it doesn't",
 				employee.orders.get(0).getOrderNumber(),1);
 
@@ -186,7 +186,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 2, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 2);
 		assertEquals("the second order should have the state of pending, but instead it has the state " + employee.orders.get(1).getState(),
-				employee.orders.get(1).getState(),"PENDING");
+				employee.orders.get(1).getState(),"pending");
 		assertEquals("the second order in the list should have orderNumber 2, but it doesn't",
 				employee.orders.get(1).getOrderNumber(),2);
 
@@ -209,7 +209,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		employee.pickAndExecuteAnAction();
 
@@ -229,7 +229,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 2"));
 		assertTrue("market truck 2 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck2.log.containsString("received order number 2, about to deliver it to cook"));		
+				truck2.log.containsString("get an order from employee for cook, with order number 2"));		
 
 
 		//just make sure the order number is correct
@@ -268,14 +268,14 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 
 		//another customer sends an order to employee
 		employee.msgHereIsAnOrder(customer2, items);
 		assertTrue("right now the order list should have size 2, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 2);
 		assertEquals("the second order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(1).getState(),"PENDING");
+				employee.orders.get(1).getState(),"pending");
 
 		employee.pickAndExecuteAnAction();
 
@@ -287,7 +287,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("one order should be removed from the order list and list should be of size 1, but it has the size of " + employee.orders.size(), 
 				employee.orders.size() == 1);
 		assertTrue("the only order now should still have the state pending, but it doesn't",
-				employee.orders.get(0).getState().equals("PENDING"));
+				employee.orders.get(0).getState().equals("pending"));
 
 		// verify message reception for mocks
 		assertTrue("customer should have got its items, but it doesn't. the log reads " + customer.log.toString(),
@@ -329,7 +329,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 		assertEquals("the only order in the list should have orderNumber 1, but it doesn't",
 				employee.orders.get(0).getOrderNumber(),1);
 
@@ -338,7 +338,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 2, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 2);
 		assertEquals("the second order should have the state of pending, but instead it has the state " + employee.orders.get(1).getState(),
-				employee.orders.get(1).getState(),"PENDING");
+				employee.orders.get(1).getState(),"pending");
 		assertEquals("the second order in the list should have orderNumber 2, but it doesn't",
 				employee.orders.get(1).getOrderNumber(),2);
 
@@ -361,14 +361,14 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 1"));
 		assertTrue("market truck 1 should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		//customer sends an order to employee
 				employee.msgHereIsAnOrder(customer, items);
 				assertTrue("right now the order list should have size 3, but instead it has the size of " + employee.orders.size(),
 						employee.orders.size() == 3);
 				assertEquals("the new order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-						employee.orders.get(2).getState(),"PENDING");
+						employee.orders.get(2).getState(),"pending");
 
 		
 		employee.pickAndExecuteAnAction();
@@ -389,7 +389,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("market cashier should have received a check for cook, it doesn't",
 				cashier.log.containsString("received msgHereIsACheck for restaurant cashier with order number 2"));
 		assertTrue("market truck 2 should get a message to deliver the items to cook, it doesn't. the log reads " + truck2.log.toString(),
-				truck2.log.containsString("received order number 2, about to deliver it to cook"));		
+				truck2.log.containsString("get an order from employee for cook, with order number 2"));		
 
 
 		//just make sure the order number is correct
@@ -444,7 +444,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("right now the order list should have size 1, but instead it has the size of " + employee.orders.size(),
 				employee.orders.size() == 1);
 		assertEquals("the only order in the list should have the state of pending, but instead it has the state " + employee.orders.get(0).getState(),
-				employee.orders.get(0).getState(),"PENDING");
+				employee.orders.get(0).getState(),"pending");
 
 		employee.pickAndExecuteAnAction();
 
@@ -473,7 +473,7 @@ public class MarketEmployeeTest extends TestCase{
 		assertTrue("employee shoule be in action redeliver restaurant order, but it's not",
 				employee.log.containsString("check order list to see if any redelivery is needed"));
 		assertTrue("market truck should get a message to deliver the items to cook, it doesn't. the log reads " + truck1.log.toString(),
-				truck1.log.containsString("received order number 1, about to deliver it to cook"));		
+				truck1.log.containsString("get an order from employee for cook, with order number 1"));		
 
 		
 		//truck noticed employee that order has been delivered
