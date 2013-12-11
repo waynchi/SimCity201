@@ -2494,7 +2494,7 @@ public class CityGui extends JFrame implements ActionListener {
 		List<CarGui> currentCars = new ArrayList<CarGui>();
 		for(VehicleGui v : cityPanel.vehicles)
 		{
-			if(v.typeOfVehicle.equals("Car"))
+			if(v.typeOfVehicle.equals("Car") && v.isCurrentlyDriving())
 				currentCars.add((CarGui)v);
 		}
 		int maxVehicleListIndex = currentCars.size() - 1;
@@ -2507,7 +2507,7 @@ public class CityGui extends JFrame implements ActionListener {
 
 	public boolean isPedestrianCrossingStreet() {
 		// TODO Auto-generated method stub
-		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
+		if(cityPanel.sidewalkStrip3.get(8).hasPerson)
 			return true;
 		
 		
@@ -2519,9 +2519,9 @@ public class CityGui extends JFrame implements ActionListener {
 
 		PersonGui p = null;
 		
-		if(cityPanel.sidewalkStrip23.get(1).hasPerson)
+		if(cityPanel.sidewalkStrip3.get(8).hasPerson)
 		{
-			p = cityPanel.sidewalkStrip23.get(1).getPersonGui();
+			p = cityPanel.sidewalkStrip3.get(8).getPersonGui();
 			p.stopNow();
 		}
 		if(p != null)
@@ -2542,6 +2542,17 @@ public class CityGui extends JFrame implements ActionListener {
 			v.simulatorPerson = null;
 		}
 		this.cityControls.btnScenario8.setEnabled(true);
+	}
+
+	public int numberOfCarsDriving() {
+		// TODO Auto-generated method stub
+		int num = 0;
+		for(VehicleGui v : cityPanel.vehicles)
+		{
+			if(v.typeOfVehicle.equals("Car") && v.isCurrentlyDriving())
+				num++;
+		}
+		return num;
 	}
 
 
