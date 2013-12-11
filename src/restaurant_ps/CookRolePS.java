@@ -3,6 +3,7 @@ package restaurant_ps;
 import restaurant_ps.gui.CookGuiPS;
 import restaurant_ps.gui.RestaurantGuiPS;
 import restaurant_ps.gui.RestaurantPanelPS.CookWaiterMonitorPS;
+import restaurant_ps.gui.RestaurantPanelPS.Order;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_ps.interfaces.Host;
@@ -472,6 +473,13 @@ public class CookRolePS extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
+			// TODO Auto-generated constructor stub
 		}
 	}
 
