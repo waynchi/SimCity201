@@ -79,8 +79,8 @@ the city handles pathing and collision detection.
   * Main Gui Layout
   * Trace Log
 * Yinyi Chen
-  * Restaurant Logic
-  * Restaurant Gui
+  * Restaurant Logic (New Things)
+  * Restaurant Gui (New Things)
   * Market Logic
   * Market Gui
 * Peppy Sisay
