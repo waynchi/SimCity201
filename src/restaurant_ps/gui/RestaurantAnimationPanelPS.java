@@ -75,8 +75,8 @@ public class RestaurantAnimationPanelPS extends JPanel implements ActionListener
         
         
         g2.setColor(Color.white);
-        g2.drawString("Cooking", 0, 265);
-        g2.drawString("Plating",0,225);
+//        g2.drawString("Cooking", 0, 265);
+//        g2.drawString("Plating",0,225);
                 
         
         for(Gui gui : guis) {
