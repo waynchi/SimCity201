@@ -35,7 +35,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	private Semaphore atTable = new Semaphore(0,true);
 	private Semaphore atCook = new Semaphore(0,true);
 	private Semaphore atWaitingCustomer = new Semaphore(0,true);
-	private Semaphore atCashier = new Semaphore(0,true);
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atExit = new Semaphore(0,true);
 	
@@ -124,11 +123,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	
 	public void msgAtCook() {
 		atCook.release();
-		getPersonAgent().CallstateChanged();
-	}
-	
-	public void msgAtCashier() {
-		atCashier.release();
 		getPersonAgent().CallstateChanged();
 	}
 	
@@ -435,14 +429,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	
 	public void giveCheckToCustomer(MyCustomer customer) {
 		print("going to cashier to pick up check for customer " + customer.c.getName());
-		
-		waiterGui.DoGoToCashier();
-		try {
-			atCashier.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		print("goint to customer " + customer.c.getName());
 
 		waiterGui.DoApproachCustomer(customer.c);

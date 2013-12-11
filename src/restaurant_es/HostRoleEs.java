@@ -1,6 +1,5 @@
 package restaurant_es;
 
-import restaurant_es.gui.HostGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
 import restaurant_es.interfaces.Host;
@@ -17,14 +16,13 @@ import people.Role;
 //A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class HostRoleEs extends Role implements Host{
-	static final int NTABLES = 3;//a global for the number of tables.
+	static final int NTABLES = 3;
 	private List<Waiter> allWaiters = Collections.synchronizedList(new ArrayList<Waiter>());
 	private List<People> workers = Collections.synchronizedList(new ArrayList<People>());
 	
 	private boolean leaveWork = false;
 	private boolean setClose = false;
 
-	public HostGui hostGui = null;
 	private Cashier cashier;
 	private Cook cook;
 	
@@ -396,13 +394,6 @@ public class HostRoleEs extends Role implements Host{
 		return cook;
 	}
 
-	public void setGui(HostGui gui) {
-		hostGui = gui;
-	}
-
-	public HostGui getGui() {
-		return hostGui;
-	}
 
 	public boolean isActive() {
 		return isActive;
