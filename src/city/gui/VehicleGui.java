@@ -98,7 +98,7 @@ public class VehicleGui extends Rectangle2D.Double {
 			carToRemove.simulatingCrash = false;
 			carToRemove.currentCell.hasCar = false;
 			carToRemove.tellPersonGuiToWalk();
-			
+			cityPanel.city.cityControls.btnScenario7.setEnabled(true);
 			if(this.typeOfVehicle.equals("Car"))
 			{
 				cityPanel.vehicles.remove(this);
@@ -828,10 +828,9 @@ public class VehicleGui extends Rectangle2D.Double {
 
 		
 	}
-	public void stopNow() {
+	//gets overwritten by cargui
+	protected void stopNow() {
 		// TODO Auto-generated method stub
-		simulatingCrash = true;
-		this.currentCell.simulatingCrash = true;
 	}
 	
 	public void setSimulatorPerson(PersonGui p)
@@ -839,6 +838,12 @@ public class VehicleGui extends Rectangle2D.Double {
 		simulatorPerson = p;
 	}
 	
+	public boolean isCurrentlyDriving(){
+		if(xDestination > 0 && yDestination >0)
+			return true;
+		else
+			return false;
+	}
 	//gets overwritten by cargui
 	protected void tellPersonGuiToWalk(){
 	}

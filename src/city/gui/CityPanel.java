@@ -390,6 +390,9 @@ public class CityPanel extends JPanel implements MouseListener {
 		if(k==15) {
 			crosswalks.add(s);
 		}
+		if(k==5){
+			crosswalks.add(s);
+		}
 		}
 		
 		
@@ -806,6 +809,9 @@ public class CityPanel extends JPanel implements MouseListener {
 				if(crosswalk.name.equals("23_4")) {
 					crosswalk.greenLight();
 				}
+				if(crosswalk.name.equals("16_5")) {
+					crosswalk.greenLight();
+				}
 				if(crosswalk.name.equals("16_15")) {
 					crosswalk.greenLight();
 				}
@@ -892,6 +898,9 @@ public class CityPanel extends JPanel implements MouseListener {
 					crosswalk.redLight();
 				}
 				if(crosswalk.name.equals("16_15")) {
+					crosswalk.redLight();
+				}
+				if(crosswalk.name.equals("16_5")) {
 					crosswalk.redLight();
 				}
 				

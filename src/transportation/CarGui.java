@@ -29,6 +29,7 @@ public class CarGui extends VehicleGui{
 	}
 	@Override
 	public void reachedDestination(){
+		if(carAgent != null)
 		carAgent.msgAnimationFinishedArrivedAtDestination(destination);
 	}
 
@@ -41,12 +42,21 @@ public class CarGui extends VehicleGui{
 	public void tellPersonGuiToWalk(){
 		person.setHasCar(false);
 		person.getPersonGui().setDestination(destination);
+		person.getPersonGui().setSideWalkSegment(cityPanel.allSidewalks.get(8));
+		person.getPersonGui().setSidewalk(cityPanel.allSidewalks.get(8).get(9));
+		person.getPersonGui().setDirection("left");
 		cityPanel.people.add(person.getPersonGui());
 	}
 	
 	public void setCarDestination(String destination){
 		this.destination = destination;
 		super.driveHere(destination);
+	}
+	
+	@Override
+	public void stopNow(){
+		simulatingCrash = true;
+		this.currentCell.simulatingCrash = true;
 	}
 
 }

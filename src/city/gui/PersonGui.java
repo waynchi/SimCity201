@@ -422,6 +422,16 @@ public class PersonGui extends Rectangle2D.Double {
 				this.currentCell.hasPerson = false;
 				this.direction = "up";
 			}
+			if(getCurrentLane().equals("6_16")) {
+				this.currentCell.hasPerson = false;
+				if(xDestination > 200 || !this.destination.equals("Bank"))
+				{
+					this.direction = "down";
+					sidewalkSegment = allSidewalks.get(19);
+					currentCell = sidewalkSegment.get(0);
+					this.currentCell.hasPerson = true;
+				}
+			}
 			if(getCurrentLane().equals("6_20")) {
 				this.currentCell.hasPerson = false;
 				this.direction = "up";
@@ -436,6 +446,7 @@ public class PersonGui extends Rectangle2D.Double {
 					this.direction="down";
 					sidewalkSegment = allSidewalks.get(20);
 					currentCell = sidewalkSegment.get(0);
+					this.currentCell.hasPerson = true;
 				}
 			}
 			if(getCurrentLane().equals("9_4")) {
@@ -443,6 +454,7 @@ public class PersonGui extends Rectangle2D.Double {
 				this.direction="up";
 				sidewalkSegment = allSidewalks.get(16);
 				currentCell = sidewalkSegment.get(27);
+				this.currentCell.hasPerson = true;
 
 			}
 			if(getCurrentLane().equals("16_15")) {
@@ -451,21 +463,29 @@ public class PersonGui extends Rectangle2D.Double {
 					this.direction="right";
 					sidewalkSegment = allSidewalks.get(22);
 					currentCell = sidewalkSegment.get(4);
-
-					
+					this.currentCell.hasPerson = true;
 				}
 			}
+			if(getCurrentLane().equals("16_0")) {
+				this.currentCell.hasPerson = false;
+				this.direction="left";
+				sidewalkSegment = allSidewalks.get(4);
+				currentCell = sidewalkSegment.get(4);
+				this.currentCell.hasPerson = true;
+			}
 			if(getCurrentLane().equals("8_0")) {
-				if(this.destination.equals("Restaurant 4") || this.destination.equals("Restaurant 3")) {
+				if(this.destination.equals("Restaurant 4") || this.destination.equals("Restaurant 3") || this.xDestination > x) {
 					this.currentCell.hasPerson = false;
 					this.direction="up";
 					sidewalkSegment = allSidewalks.get(20);
 					currentCell = sidewalkSegment.get(11);
+					this.currentCell.hasPerson = true;
 				} else {
 					this.currentCell.hasPerson = false;
 					this.direction="left";
 					sidewalkSegment = allSidewalks.get(9);
 					currentCell = sidewalkSegment.get(36);
+					this.currentCell.hasPerson = true;
 				}
 			}
 			if(getCurrentLane().equals("24_3")) {
@@ -497,7 +517,7 @@ public class PersonGui extends Rectangle2D.Double {
 			}
 			if(getCurrentLane().equals("19_11")) {
 				this.currentCell.hasPerson = false;
-				if(yDestination < 130)
+				if(yDestination < 200 || this.destination.equals("Restaurant 6"))
 					this.direction = "down";
 				else{
 					this.direction = "left";
@@ -613,11 +633,14 @@ public class PersonGui extends Rectangle2D.Double {
 				}
 			}
 			if (getCurrentLane().equals("16_5")) {
+				if(!this.destination.equals("Market") && xDestination > 200)
+				{
 				this.currentCell.hasPerson = false;
 				this.direction = "right";
 				sidewalkSegment = allSidewalks.get(10);
 				currentCell = sidewalkSegment.get(4);
 				this.currentCell.hasPerson = true;
+				}
 			}
 			if(getCurrentLane().equals("10_36")) {
 				this.currentCell.hasPerson = false;
@@ -813,6 +836,12 @@ public class PersonGui extends Rectangle2D.Double {
 				}
 				else if (getCurrentLane().equals("16_15")) {
 					Sidewalk intersection = getSidewalkInformation("16_15");
+					if (intersection.redLight) {
+						canMove = false;
+					}
+				}
+				else if (getCurrentLane().equals("16_5")) {
+					Sidewalk intersection = getSidewalkInformation("16_5");
 					if (intersection.redLight) {
 						canMove = false;
 					}
