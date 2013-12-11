@@ -1,7 +1,8 @@
 package restaurant.gui;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
+
+import javax.swing.ImageIcon;
 
 import restaurant.CashierRole;
 
@@ -10,12 +11,13 @@ public class RestaurantCashierGui implements Gui{
 	CashierRole cashier;
 	RestaurantGui gui;
 	
-	int xDestination = 250, yDestination = 250;
+	int xDestination = 400, yDestination = 165;
 	int xPos = 0, yPos = 0;
 	int xExit = 0, yExit = 0;
 	boolean goingToWorkPlace= false;
 	boolean leaving = false;
-	
+    private ImageIcon cashierImage = new ImageIcon("res/restaurant/cashier.png");
+
 	
 	public RestaurantCashierGui(CashierRole cashierRole) {
 		// TODO Auto-generated constructor stub
@@ -44,8 +46,8 @@ public class RestaurantCashierGui implements Gui{
 	        }
 	        if (leaving){
 	        	cashier.msgAtExit();
-	        	xDestination = 250;
-	        	yDestination = 250;
+	        	xDestination = 400;
+	        	yDestination = 165;
 	        	leaving = false;
 	        }
 		}
@@ -54,11 +56,8 @@ public class RestaurantCashierGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.yellow);
-		g.fillRect(xPos, yPos, 20, 20);
-        g.setColor(Color.white);
-        g.drawString("Cashier", xPos, yPos+20);
-        
+        g.drawImage(cashierImage.getImage(), xPos, yPos, 30, 40, null);
+
 	}
 
 	@Override
@@ -75,8 +74,8 @@ public class RestaurantCashierGui implements Gui{
 
 	public void DoGoToWorkingPosition() {
 		// TODO Auto-generated method stub
-		xDestination = 250;
-		yDestination = 250;
+		xDestination = 400;
+		yDestination = 165;
 		goingToWorkPlace = true;
 		
 	}
@@ -114,8 +113,8 @@ public class RestaurantCashierGui implements Gui{
 
 	public void setDefaultDestination() {
 		// TODO Auto-generated method stub
-		xDestination = 250;
-		yDestination = 250;
+		xDestination = 365;
+		yDestination = 210;
 		goingToWorkPlace = true;
 	}
 
