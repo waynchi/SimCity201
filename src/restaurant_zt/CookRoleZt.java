@@ -4,6 +4,7 @@ import restaurant_es.CookRoleEs.MyOrder;
 import restaurant_zt.gui.CookGui;
 import restaurant_zt.gui.RestaurantGuiZt;
 import restaurant_zt.gui.RestaurantPanelZt.CookWaiterMonitorZt;
+import restaurant_zt.gui.RestaurantPanelZt.Order;
 import restaurant.CookRole.MarketOrder;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Cook;
@@ -408,6 +409,13 @@ public class CookRoleZt extends Role implements Cook{
 				food = order.food;
 				state = OrderState.PENDING;
 			}
+		}
+		public MyOrder(Order order) {
+			waiter = order.waiter;
+			tableNumber = order.table;
+			food = order.food;
+			state = OrderState.PENDING;
+			// TODO Auto-generated constructor stub
 		}
 	}
 
