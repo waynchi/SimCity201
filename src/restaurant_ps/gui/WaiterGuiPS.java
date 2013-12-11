@@ -45,7 +45,7 @@ public class WaiterGuiPS implements Gui {
     
     public WaiterGuiPS(BaseWaiterRole role) {
         try {
-            img = ImageIO.read(getClass().getResource("waiter.png"));
+            img = ImageIO.read(getClass().getResource("anotherwaiter.png"));
         } catch (IOException e) {}
         
         this.role = role;

@@ -187,7 +187,7 @@ public class VehicleGui extends Rectangle2D.Double {
 		if(xDestination > 0 && yDestination > 0)
 		{
 //			if(typeOfVehicle.equals("Car"))
-//				System.out.println(x+","+y + ", current lane: " + getCurrentLane());	
+//				System.out.println(((CarGui)this).getDestination());	
 			
 		time++;
 		if(typeOfVehicle.equals("Bus"))

@@ -58,5 +58,9 @@ public class CarGui extends VehicleGui{
 		simulatingCrash = true;
 		this.currentCell.simulatingCrash = true;
 	}
+	
+	public String getDestination(){
+		return this.destination;
+	}
 
 }
