@@ -185,7 +185,7 @@ public class CityGui extends JFrame implements ActionListener {
 		yelp.addRestaurant(restaurant2, 3);
 		yelp.addRestaurant(restaurant3, 4);
 		yelp.addRestaurant(restaurant4, 4);
-		yelp.addRestaurant(restaurant5, 3);
+		yelp.addRestaurant(restaurant5, 5000);
 		yelp.addRestaurant(restaurant6, 4);
 		
 		

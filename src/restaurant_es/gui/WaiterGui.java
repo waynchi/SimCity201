@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class WaiterGui implements Gui {
 
@@ -24,11 +25,8 @@ public class WaiterGui implements Gui {
     
     private int homeIndex;
     
-    private int cookX = 110;
+    private int cookX = 205;
     private int cookY = 200;
-    
-    private int cashierX = 250;
-    private int cashierY = 250;
     
     private int revolvingStandX = 350;
     private int revolvingStandY = 250;
@@ -37,17 +35,13 @@ public class WaiterGui implements Gui {
     
     private int xDestination = 20, yDestination = 20;//default start position
     private Customer currentCustomer;
-    private BufferedImage img = null;
+    private ImageIcon img = new ImageIcon("waiter.png");
     private boolean BringingFoodToCustomer = false;
     private boolean leaving =false;
     
     private Map<Integer, Dimension> tableMap = new HashMap<Integer, Dimension>();
     
     public WaiterGui(BaseWaiterRoleEs role) {
-        try {
-            img = ImageIO.read(getClass().getResource("waiter.png"));
-        } catch (IOException e) {}
-        
         this.role = role;
         tableMap.put (1,new Dimension(100,100));
         tableMap.put (2,new Dimension(200,100));
@@ -75,12 +69,8 @@ public class WaiterGui implements Gui {
            role.msgAtTable();
         }
         if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == cookX) && (yDestination == cookY-20)) {
+        		&& (xDestination == cookX) && (yDestination == cookY)) {
            role.msgAtCook();
-        }
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == cashierX) && (yDestination == cashierY-20)) {
-           role.msgAtCashier();
         }
         if (xPos == xDestination && yPos == yDestination
         		&& (xDestination == 20) && (yDestination == 25)) {
@@ -99,7 +89,7 @@ public class WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         
-    	g.drawImage(img,xPos,yPos,null);
+    	g.drawImage(img.getImage(),xPos,yPos,null);
         g.setColor(Color.BLACK);
         g.drawString(role.getName(), xPos, yPos+10);
         if (BringingFoodToCustomer) {
@@ -132,12 +122,7 @@ public class WaiterGui implements Gui {
     
     public void DoGoToCook() {
     	xDestination = cookX;
-    	yDestination = cookY-20;
-    }
-    
-    public void DoGoToCashier() {
-    	xDestination = cashierX;
-    	yDestination = cashierY - 20;
+    	yDestination = cookY;
     }
     
     public void DoBringFoodToCustomer(Customer c) {

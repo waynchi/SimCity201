@@ -19,18 +19,17 @@ public class CookGui implements Gui {
 	private List<String> foodPlated = new ArrayList<String>();
 
 	 
-    private int xDestination = 70, 
+    private int xDestination = 200, 
     		xPos = 0;
-    private int yDestination = 270,
+    private int yDestination = 250,
     		yPos = 0;
     
-    private int cookX = 70;
-    private int cookY = 270;
+    private int cookX = 200;
+    private int cookY = 250;
     
     private int revolvingStandX = 350, revolvingStandY = 250;
     
     private int exitX = 0, exitY = 0;
-    private int fridgeX = 150, fridgeY = 300;
     
     boolean isPresent;
 	
@@ -67,12 +66,6 @@ public class CookGui implements Gui {
         		&& (xDestination == cookX) && (yDestination == cookY) && goingBack) {
         	goingBack = false;
         	role.msgAtGrill();
-        }
-        
-        if (xPos == xDestination && yPos == yDestination
-        		&& (xDestination == fridgeX) && (yDestination == fridgeY) && goingToFridge) {
-        	goingToFridge = false;
-        	role.msgAtFridge();
         }
         
         if (xPos == xDestination && yPos == yDestination
@@ -175,13 +168,5 @@ public class CookGui implements Gui {
 		goingBack = true;
 		xDestination = cookX;
 		yDestination = cookY;
-	}
-
-
-	public void goToFridge() {
-		// TODO Auto-generated method stub
-		xDestination = fridgeX;
-		yDestination = fridgeY;
-		goingToFridge = true;
 	}
 }

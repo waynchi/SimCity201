@@ -17,12 +17,12 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
     
-    private static final int COOKX = 300;
-    private static final int COOKY = 0;
+    private static final int COOKX = 200;
+    private static final int COOKY = 225;
     private static final int COOKSIZE = 25;
     
-    private static final int PLATEX = 300;
-    private static final int PLATEY = 50;
+    private static final int PLATEX = 200;
+    private static final int PLATEY = 275;
     private static final int PLATESIZE = 25;
     
     private static final int TABLEX = 100;
@@ -55,9 +55,11 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         //Here are the tables
         g2.setColor(Color.ORANGE);
         
-        for(int i = 0; i < NTABLES; i++) {
-        	g2.fillRect(TABLEX*(i + 1), TABLEY, TABLESIZE, TABLESIZE); //Draw all of the tables with a 50px gap in between them
-        }
+        g2.fillRect(100, 100, TABLESIZE, TABLESIZE);
+        
+        g2.fillRect(200, 100, TABLESIZE, TABLESIZE);
+        
+        g2.fillRect(300, 100, TABLESIZE, TABLESIZE);
         
         g2.fillOval(350, 250, 70, 70); //revolving
         
@@ -66,6 +68,18 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
         
         g2.setColor(Color.BLUE);
         g2.fillRect(PLATEX, PLATEY, 100, PLATESIZE);
+        
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.updatePosition();
+            }
+        }
+
+        for(Gui gui : guis) {
+            if (gui.isPresent()) {
+                gui.draw(g2);
+            }
+        }
     }
 
     public void addGui(CustomerGui gui) {
@@ -79,12 +93,6 @@ public class RestaurantAnimationPanel extends JPanel implements ActionListener {
     public void addGui(CookGui gui) {
     	guis.add(gui);
     }
-
-	public void addGui(RestaurantCashierGui cashierGui) {
-		guis.add(cashierGui);
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public void updatePosition() {
 		for(Gui gui : guis) {

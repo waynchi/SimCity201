@@ -5,41 +5,42 @@ import restaurant_es.interfaces.Customer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class CustomerGui implements Gui{
 
 	private Customer customer = null;
 	private boolean isPresent = false;
 	private boolean isHungry = false;
-
-	//private HostAgent host;
+	
 	RestaurantGuiEs gui;
 
 	private int xPos, yPos;
-	private int xExit = 0, yExit = 0;
-	private int xDestination, yDestination;//??
+	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant, WaitingForFood, Eating};
 	private Command command=Command.noCommand;
 	private String choice = new String("");
 	
-	private Boolean MsgGoToSeatFromAgent = false;
+	private boolean MsgGoToSeatFromAgent = false;
 	private boolean leaving = false;
 	private boolean goingToCashier = false;
-    private BufferedImage img = null;
+    private ImageIcon img = new ImageIcon("res/cust_1.png");
+    
+    private int xFinal = -20;
+    private int yFinal = -20;
 
-	
+	public final int CUST_SIZE = 20;
 	
 	// set the initial position of customer
 	public CustomerGui(Customer c){ //HostAgent m) {
-		customer = c;
-		xPos = yPos = 0;
+		xPos = -20;
+		yPos = -20;
 		xDestination = 20;
 		yDestination = 20;
-		try {
-            img = ImageIO.read(getClass().getResource("customer.png"));
-        } catch (IOException e) {}
-        
+		setPresent(true);
+		customer = c;
 	}
 
 	
@@ -72,9 +73,8 @@ public class CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-    	g.drawImage(img,xPos,yPos,null);
+    	g.drawImage(img.getImage(), xPos, yPos, null);
 
-    	// Display customer's order with text
 		g.setColor(Color.black);
 		if (customer.getState().equalsIgnoreCase("waiting_for_food")) g.drawString(choice+"?",xPos+20, yPos+30);
 		if (customer.getState().equalsIgnoreCase("eating")) g.drawString(choice,xPos+20, yPos+30);
@@ -108,8 +108,7 @@ public class CustomerGui implements Gui{
 		//}
 	}
 	
-	public void DoGoToCashier() {
-		// how could customer know where cashier is? I don't know...
+	public void GoToCashier() {
 		command = Command.noCommand;
 		goingToCashier = true;
 		xDestination = 250;
@@ -127,8 +126,8 @@ public class CustomerGui implements Gui{
 	}
 
 	public void DoExitRestaurant() {
-		xDestination = xExit;
-		yDestination = yExit;
+		xDestination = xFinal;
+		yDestination = yFinal;
 		leaving = true;
 	}
 }
