@@ -15,13 +15,10 @@ import java.util.concurrent.Semaphore;
 import people.People;
 import people.Role;
 /**
- * Restaurant Host Agent
+ * Restaurant Base Waiter Role
  * @param <MyCustomer>
  */
-// waiter gets the message from host and do all the rest job to serve the customer.
 
-// waiter can go on break if the gui button is pushed (as long as there are more than one waiter available)
-// that's why customer must negotiate with host and host might deny his request.
 public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 
 	protected List<MyCustomer> customers = new ArrayList<MyCustomer>();
@@ -30,7 +27,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	protected Host host;
 	protected Cook cook;
 	private Cashier cashier;
-	//private Boolean inProgress = false; // true if WaiterAgent is in the middle of animation
 	protected Boolean onBreak = false; 
 	private Semaphore atTable = new Semaphore(0,true);
 	private Semaphore atCook = new Semaphore(0,true);
@@ -48,69 +44,26 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	protected enum agentState {WORKING, ASKING_FOR_BREAK, ON_BREAK};
 	protected agentState state;
 	protected CookWaiterMonitorEs theMonitor;
-	
-	public class FoodOnMenu {
-		String type;
-		Double price;
-		
-		public FoodOnMenu (String t, Double p) {
-			type = t;
-			price = p;
-		}
-	}
-	
-	
 	public WaiterGui waiterGui = null;
 	protected RestaurantGuiEs restGui = null;
-
-	/*public BaseWaiterRole(String name, CookWaiterMonitor monitor) {
-		super();
-		this.name = name;
-		currentCustomerNum = 0;
-		menu.add(new FoodOnMenu("Steak", 15.99));
-		menu.add(new FoodOnMenu("Chicken", 10.99));
-		menu.add(new FoodOnMenu("Salad", 5.99));
-		menu.add(new FoodOnMenu("Pizza", 8.99));
-		state = agentState.WORKING;
-		theMonitor = monitor;
-	}
-
-	public BaseWaiterRole() {
-		super();
-	}*/
-
-	public String getMaitreDName() {
-		return getPersonAgent().getName();
-
-	}
-
-	public List<MyCustomer> getCustomers() {
-		return customers;
-	}
-
-	public int getCustomerNum() {
-		return currentCustomerNum;
-	}
 	
 	// messages
 	
-	//public void goOnBreak() { // from restPanel
-	//	
-	//}
-	
 	public void msgIsActive() {
+		print("Person agent sent msgIsActive");
 		isActive = true;
 		turnActive = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
 	public void msgIsInActive () {
+		print("Person agent sent msgIsInactive");
 		leaveWork = true;
 		getPersonAgent().CallstateChanged();
 	}
 	
-	public void msgAtTable() {//from animation
-		atTable.release();// = true;
+	public void msgAtTable() {
+		atTable.release();
 		getPersonAgent().CallstateChanged();
 
 	}
@@ -138,40 +91,15 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		
 	}
 	
-	public void msgAskForBreak() { //from gui onBreak button
-		state = agentState.ASKING_FOR_BREAK;
-		getPersonAgent().CallstateChanged();
-	}
-	
-	public void msgOffBreak() { // from gui
-		state = agentState.WORKING;
-		onBreak = false;
-		getPersonAgent().CallstateChanged();
-	}
-	
-	public void msgBreakApproved() { // from host Agent
-		state = agentState.ON_BREAK;
-		onBreak = true;
-		getPersonAgent().CallstateChanged();
-	}
-	
-	public void msgBreakDenied() { // from host agent
-		state = agentState.WORKING;
-		onBreak = false;
-		getPersonAgent().CallstateChanged();
-	}
-	
 	public void SitAtTable(Customer customer, int table) {
-		print("got SitAtTable from host, about to go to waiting area to pick up customer " + customer.getName());
+		print("Host has a customer waiting to be seated. I will go pick up: " + customer.getName());
 		currentCustomerNum++;
 		customers.add(new MyCustomer(customer, table, "waiting"));
 		getPersonAgent().CallstateChanged();
 	}
-	
 
 	public void msgIAmReadyToOrder(Customer cust) {
-		print("got msgIAMReadyToOrder from customer " + cust.getName());
-
+		print("Customer: " + cust.getName() + " is ready to order");
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.readyToOrder;
@@ -181,8 +109,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 
 	public void msgHereIsMyOrder (Customer cust, String choice) {
-		print("got msgHereIsMyOrder from customer " + cust.getName());
-
+		print("Customer: " + cust.getName() + " ordered: " + choice);
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.ordered;
@@ -190,22 +117,20 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 			}
 		}
 		getPersonAgent().CallstateChanged();
-
 	}
 	
 	public void msgOrderIsReady (String order, int t) {
-		print("got msgOrderIsReady for table " + t);
-
+		print("There is an order ready for pickup");
 		for (MyCustomer customer : customers) {
 			if (customer.tableNumber == t){
 				customer.state = customerState.foodIsReady;
 			}
 		}
 		getPersonAgent().CallstateChanged();
-
 	}
 	
 	public void msgOutOfFood (String order, int t) {
+		print("Cook is out of: " + order);
 		for (MyCustomer customer : customers) {
 			if (customer.tableNumber == t){
 				customer.state = customerState.outOfChoice;
@@ -215,7 +140,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 	
 	public void msgHereIsCheck (Customer customer2, Double d) {
-		print("got msgHereIsCheck from cashier for customer " + customer2.getName());
+		print("Received check for: " + customer2.getName());
 		for (MyCustomer customer : customers) {
 			if (customer.c == customer2){
 				customer.due = d;
@@ -226,8 +151,7 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 	
 	public void msgDoneEatingAndLeaving (Customer cust){
-		print("got msgDoneEatingAndLeaving from customer " + cust.getName());
-
+		print("Customer: " + cust.getName() + " is done eating and leaving.");
 		for (MyCustomer customer : customers) {
 			if (customer.c == cust){
 				customer.state = customerState.doneLeaving;
@@ -327,7 +251,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	// Actions
 
 	private void clockIn() {
-		
 		host = (Host) getPersonAgent().getHost(4);
 		host.addWaiter(this);
 		waiterGui.setHomePosition(host.getWaiters().indexOf(this));
@@ -339,7 +262,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 	
 	private void seatCustomer(MyCustomer customer) {
-		print("Approaching waiting customer "+customer.c.getName());
 		waiterGui.DoGoToWaitingCustomer();
 		try {
 			atWaitingCustomer.acquire();
@@ -348,7 +270,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		}
 		customer.c.msgFollowMeToTable(this, customer.tableNumber, menu);
 		waiterGui.DoSeatCustomer(customer.c, customer.tableNumber);
-		print("Seating " + customer.c + " at table " + customer.tableNumber);
 		try {
 			atTable.acquire();
 			
@@ -356,21 +277,16 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 			e.printStackTrace();
 		}
 		customer.state = customerState.seated;
-
-
 	}
 
 	public void goTakeOrder (MyCustomer customer) {
-		print ("Approaching " + customer.c + " to take order.");
 		waiterGui.DoApproachCustomer(customer.c);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		print ("What would you like?");
 		customer.c.msgWhatWouldYouLike();
-		//waiterGui.DoAskCustomer();
 		customer.state = customerState.askedToOrder;	
 	} 
 
@@ -383,8 +299,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		print ("Sorry we are running out of " + customer.choice + ". Please reorder");
-		//generates a new menu for the customer
 		List<FoodOnMenu> newMenu = new ArrayList<FoodOnMenu>();
 		FoodOnMenu f = new FoodOnMenu(" ",0.00);
 		newMenu.add(new FoodOnMenu("Steak", 15.99));
@@ -402,8 +316,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	}
 	
 	public void serveFoodToCustomer(MyCustomer customer){
-		print ("Going to get food for customer " + customer.c.getName());
-
 		atCook.drainPermits();
 		waiterGui.DoGoToCook();
 		try {
@@ -413,24 +325,18 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 			}
 		((CookRoleEs) cook).getGui().foodPickedUp(customer.tableNumber);
 		waiterGui.DoBringFoodToCustomer(customer.c);
-		print ("Bringing food to table " + customer.tableNumber);
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
-		print ("Here's your food. Enjoy!");
 		customer.c.msgHereIsYourFood();
-		print ("Can you take care of the bill for table " + customer.tableNumber);
 		cashier = host.getCashier();
 		((CashierRoleEs) cashier).msgHereIsBill(customer.c, customer.choice, this);
 		customer.state = customerState.eating;
 	}
 	
 	public void giveCheckToCustomer(MyCustomer customer) {
-		print("going to cashier to pick up check for customer " + customer.c.getName());
-		print("goint to customer " + customer.c.getName());
-
 		waiterGui.DoApproachCustomer(customer.c);
 		try {
 			atTable.drainPermits();
@@ -439,8 +345,6 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		print ("Hi " + customer.c + " here is your check.");
 		customer.c.msgHereIsCheck(customer.due, cashier);
 		customer.state = customerState.needsToPay;
 	}
@@ -453,6 +357,19 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 	public abstract void done();
 
 	//utilities
+	
+	public String getMaitreDName() {
+		return getPersonAgent().getName();
+
+	}
+
+	public List<MyCustomer> getCustomers() {
+		return customers;
+	}
+
+	public int getCustomerNum() {
+		return currentCustomerNum;
+	}
 
 	public void setGui(WaiterGui gui) {
 		waiterGui = gui;
@@ -507,6 +424,16 @@ public abstract class BaseWaiterRoleEs extends Role implements Waiter {
 		}	
 	}
 
+	public class FoodOnMenu {
+		String type;
+		Double price;
+		
+		public FoodOnMenu (String t, Double p) {
+			type = t;
+			price = p;
+		}
+	}
+	
 	public Boolean isActive() {
 		return isActive;
 	}

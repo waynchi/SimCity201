@@ -1,8 +1,6 @@
 package transportation.test;
 
-import transportation.CarGui;
 import transportation.CarPassengerRole;
-import transportation.CarPassengerRole.State;
 import transportation.mock.MockCar;
 import junit.framework.TestCase;
 
@@ -10,7 +8,6 @@ import junit.framework.TestCase;
 import people.People;
 import people.PeopleAgent;
 import transportation.gui.CarPassengerGui;
-import transportation.interfaces.*;
 
 public class CarPassengerRoleTest extends TestCase{
 
@@ -31,12 +28,9 @@ public class CarPassengerRoleTest extends TestCase{
 		
 		cpr.msgIsActive();
 		cpr.destination = "Bank";
-		//assertEquals("CarPassengerRole's state should be readyToLeave but its not", State.readyToLeave, cpr.myState);
-		//assertTrue("CarPassengerRole's scheduler should return true to react to the state change but it didn't",cpr.pickAndExecuteAnAction());
 		assertEquals("Car should have log size one to record recieving message that car passenger whats to go somewhere, but it didnt",1,mockCar.log.size());
 		cpr.msgArrivedToDestination("Bank");
-		//assertTrue("CarPassengerRole's scheduler should return true to react to the car arriving, but it didnt",cpr.pickAndExecuteAnAction());
-		assertEquals("Car should have log size two to record that passenger is leving, but it didn't",2,mockCar.log.size());
+		assertEquals("Car should have log size two to record that passenger is leaving, but it didn't",2,mockCar.log.size());
 		
 	}
 	
