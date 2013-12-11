@@ -276,7 +276,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 		if (leaveWork) {
 			if (!inTest) {
-				if (getPersonAgent().getMarket(0).isClosed && checks.isEmpty()) {
+				if (getPersonAgent().getMarket(0).isClosed) {
 					if (getPersonAgent().getBank(0).isClosed) {
 						payWorkers();
 						closeMarket();
@@ -291,7 +291,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			}
 
 			else {
-				if (((MockPeople)getPersonAgent()).getMyMarket(0).isClosed && checks.isEmpty()) {
+				if (((MockPeople)getPersonAgent()).getMyMarket(0).isClosed) {
 					prepareToClose();
 				}
 				else if (!((MockPeople)getPersonAgent()).getMyMarket(0).isClosed) {
