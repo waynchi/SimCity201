@@ -464,7 +464,7 @@ public class RestaurantCustomerRoleEs extends Role implements Customer{
 	private void payCheck() {
 		print("going to pay check");
 
-		customerGui.DoGoToCashier();
+		customerGui.GoToCashier();
 		try {
 			atCashier.acquire();
 		} catch (InterruptedException e) {

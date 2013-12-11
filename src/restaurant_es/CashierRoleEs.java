@@ -1,6 +1,5 @@
 package restaurant_es;
 
-import restaurant_es.gui.RestaurantCashierGui;
 import restaurant_es.gui.RestaurantGuiEs;
 import restaurant.CashierRole.MarketBill;
 import restaurant.interfaces.Cashier;
@@ -42,7 +41,6 @@ public class CashierRoleEs extends Role implements Cashier {
 	public bankActivityEvent bankEvent;
 
 	RestaurantGuiEs restGui;
-	RestaurantCashierGui cashierGui;
 	private Semaphore atExit = new Semaphore(0,true);
 	private Semaphore atPosition = new Semaphore(0,true);
 
@@ -112,12 +110,6 @@ public class CashierRoleEs extends Role implements Cashier {
 
 
 	public CashierRoleEs(RestaurantGuiEs gui) {
-		if (!inTest) {
-			cashierGui = new RestaurantCashierGui(this);
-			restGui = gui;
-			restGui.getAnimationPanel().addGui(cashierGui);
-			cashierGui.setPresent(false);
-		}
 		price.put("Steak", 15.99);
 		price.put("Chicken", 10.99);
 		price.put("Salad", 5.99);
@@ -370,17 +362,7 @@ public class CashierRoleEs extends Role implements Cashier {
 		log.add(new LoggedEvent("in clock in"));
 		host = (Host) getPersonAgent().getHost(4);
 		teller = (Teller) getPersonAgent().getTeller(0);
-		if (!inTest){
-			host.setCashier(this);
-			cashierGui.setPresent(true);
-			cashierGui.DoGoToWorkingPosition();
-			try {
-				atPosition.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		host.setCashier(this);
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
@@ -444,19 +426,7 @@ public class CashierRoleEs extends Role implements Cashier {
 	// leave work in the middle of a day, i.e. the restaurant is not close yet
 	private void leaveWork() {
 		isActive = false;
-		if (!inTest){
-			cashierGui.DoLeaveWork();
-			try {
-				atExit.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			leaveWork = false;
-			cashierGui.setPresent(false);
-			cashierGui.setDefaultDestination();
-			getPersonAgent().msgDone("RestaurantCashierRole");
-		}	
+		getPersonAgent().msgDone("RestaurantCashierRole");
 	}
 	
 	private void prepareToClose() {
@@ -495,21 +465,10 @@ public class CashierRoleEs extends Role implements Cashier {
 		teller.msgDoneAndLeaving();
 		deposit = withdraw = false;
 		isActive = false;
-		if (!inTest){
-			cashierGui.DoLeaveWork();
-			try {
-				atExit.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			leaveWork = false;
-			bankEvent = bankActivityEvent.NONE;
-			bankState = bankActivityState.NONE;
-			cashierGui.setPresent(false);
-			cashierGui.setDefaultDestination();
-			getPersonAgent().msgDone("RestaurantCashierRole");
-		}
+		leaveWork = false;
+		bankEvent = bankActivityEvent.NONE;
+		bankState = bankActivityState.NONE;
+		getPersonAgent().msgDone("RestaurantCashierRole");
 	}
 
 	private double getTotalSalary() {

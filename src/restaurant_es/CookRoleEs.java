@@ -44,7 +44,6 @@ public class CookRoleEs extends Role implements Cook{
 	protected Semaphore atRevolvingStand = new Semaphore (0,true);
 	protected Semaphore atGrill= new Semaphore (0,true);
 	protected Semaphore atExit= new Semaphore (0,true);
-	protected Semaphore atFridge = new Semaphore (0,true);
 	
 	private CookGui cookGui = null;
 	private RestaurantGuiEs restGui = null;
@@ -125,12 +124,6 @@ public class CookRoleEs extends Role implements Cook{
 
 	public void msgAtGrill() {
 		atGrill.release();
-		myPerson.CallstateChanged();
-	}
-	
-
-	public void msgAtFridge() {
-		atFridge.release();
 		myPerson.CallstateChanged();
 	}
 
@@ -303,14 +296,6 @@ public class CookRoleEs extends Role implements Cook{
 		f.amount--;
 
 		order.state = OrderState.COOKING;
-		cookGui.goToFridge();
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		cookGui.DoGoToCookingPlace();
 		try {
 			atGrill.acquire();
