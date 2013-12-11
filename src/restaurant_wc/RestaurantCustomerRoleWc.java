@@ -52,9 +52,9 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 
 	// Events for a customer
 	public enum AgentEvent
-	{NONE, gotHungry, restaurantFull, followWaiter, seated, ordering, ordered, reordered,  
+	{none, gotHungry, restaurantFull, followWaiter, seated, ordering, ordered, reordered,  
 		eating, doneEating, gotCheck, donePayng, doneLeaving};
-	private AgentEvent event = AgentEvent.NONE; // The start event
+	private AgentEvent event = AgentEvent.none; // The start event
 
 	/**
 	 * Constructor for CustomerAgent class
@@ -118,34 +118,29 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		stateChanged();
 	}
 
-	// from animation, when customer has arrived at the table
 	public void msgAtTable() {
-//		print("atTable released");
 		event = AgentEvent.seated;
 		stateChanged();
 	}
 	
 	public void msgAtCashier() {
 		atCashier.release();
-//		print("atCashier released");
+
 		stateChanged();
 	}
 	
-	//from animation, when customer has made the choice on pop up list
 	public void msgAnimationChoiceMade() {
 		print("made decision");
 		event = AgentEvent.ordering;
 		stateChanged();
 	}
 	
-	//from waiter agent
 	public void msgWhatWouldYouLike() {
 		print("asked to order");
 		event = AgentEvent.ordered;
 		stateChanged();
 	}
 	
-	//from waiter agent
 	public void msgWhatElseWouldYouLike(List<FoodOnMenu> newMenu) {
 		print("asked to reorder");
 		event = AgentEvent.reordered;
@@ -153,7 +148,6 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		stateChanged();
 	}
 	
-	//from waiter agent
 	public void msgHereIsYourFood() {
 		print("got my food");
 		event = AgentEvent.eating;
@@ -184,25 +178,9 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
 			state = AgentState.WaitingInRestaurant;
-			//state = AgentState.GoingToRestaurant;
 			goToRestaurant();
 			return true;
 		}
-		
-	/*	if (state == AgentState.GoingToRestaurant && event == AgentEvent.restaurantFull){
-			//Customer comes to restaurant and restaurant is full, customer is told and leaves.
-			if (leaveIfRestIsFull){
-				state = AgentState.Leaving;
-				leaveRestaurantBecauseItsFull();
-				return true;
-			}
-			//Customer comes to restaurant and restaurant is full, customer is told and waits
-			else {
-				state = AgentState.WaitingInRestaurant;
-				stayInRestaurant();
-				return true;
-			}
-		}*/
 			
 		if (state == AgentState.WaitingInRestaurant && event == AgentEvent.followWaiter ){
 			state = AgentState.BeingSeated;
@@ -257,14 +235,12 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		if (state == AgentState.Eating && event == AgentEvent.doneEating) {
 			state = AgentState.DoneEating;
 			print("Done eating, waiting for check");
-			//waiting for check to pay
  			return true;
 		}
 		
 		if (state == AgentState.Eating && event == AgentEvent.gotCheck) {
 			state = AgentState.EatingAndCheckArrived;
 			print("Got check, will pay after done eating");
-			//waiting to finish up food and pay
 			return true;
 		}
 		
@@ -332,7 +308,6 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		for (FoodOnMenu temp : menu) {
 			if (temp.price < minimumPrice) minimumPrice = temp.price;
 		}
-		//Case 1 - Can't afford anything on the menu. Customer leaves
 		if (event == AgentEvent.seated){
 			if (getPersonAgent().getMoney() < minimumPrice && ableToPay){
 				print ("Can't afford anything, leaving");
@@ -343,12 +318,10 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 				
 			}
 		}
-		
-		//Case 2 - Restaurant runs out of Customer order, can't afford anything else
 		if (event == AgentEvent.reordered){
 
 			if (getPersonAgent().getMoney() < minimumPrice && (ableToPay||unableToAfford)){
-				print ("Can't afford anything else, leaving");
+				print ("Can't afford anything, leaving");
 				waiter.msgDoneEatingAndLeaving(this);
 				state = AgentState.Leaving;
 				customerGui.DoExitRestaurant();
@@ -362,7 +335,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 				stateChanged();
 			}
 		},
-		3000);
+		1000);
 	}
 	
 	private void CallWaiter(){
@@ -397,7 +370,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		
 		for (FoodOnMenu f : menu){
 			if (f.type.equals(choice)){
-				Do("Can I have " + choice+ " ?");
+				Do("Please give me " + choice);
 				waiter.msgHereIsMyOrder (this, choice);
 				customerGui.madeDecision(choice);
 				return;
@@ -424,9 +397,8 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 		//So, we use Java syntactic mechanism to create an
 		//anonymous inner class that has the public method run() in it.
 		timer.schedule(new TimerTask() {
-			Object cookie = 1;
 			public void run() {
-				print("Done eating, the " + choice + " is so good: )");
+				print("Done eating " + choice);
 				event = AgentEvent.doneEating;
 				stateChanged();
 			}
@@ -436,7 +408,7 @@ public class RestaurantCustomerRoleWc extends Role implements Customer{
 
 	// customer must pay for his meal
 	private void PayCheck() {
-		print("going to pay check");
+		print("paying Check");
 
 		customerGui.DoGoToCashier();
 		try {

@@ -35,20 +35,7 @@ public class RestaurantPanelWc extends JPanel implements ActionListener{
 
     private RestaurantGuiWc gui; //reference to main gui
     
-    private JButton pauseButton = new JButton ("Pause/Resume");
-	private JPanel imagePanel = new JPanel();
-	Boolean agentPaused = false;
-
-	/*public class Order {
-        int table;
-        String food;
-        WaiterAgent waiter;
-        Order (int t, String f,WaiterAgent w) {
-                table  = t;
-                food = f;
-                waiter = w;
-        }
-    }*/
+	Boolean paused = false;
 
     public class CookWaiterMonitorWc extends Object {
         private List<MyOrder> orders = new ArrayList<MyOrder>();
@@ -145,17 +132,5 @@ public class RestaurantPanelWc extends JPanel implements ActionListener{
 		
 	}
 
-    
 
-/*	public void addWaiter(String name) {
-		WaiterAgent newWaiter = new WaiterAgent(name);
-		WaiterGui newWaiterGui = new WaiterGui(newWaiter);
-		newWaiter.setGui(newWaiterGui);
-		host.addWaiter(newWaiter);
-		newWaiter.setHost(host);
-		newWaiter.setCook(cook);
-        gui.animationPanel.addGui(newWaiterGui);
-        newWaiter.startThread();
-	}
-*/
 }

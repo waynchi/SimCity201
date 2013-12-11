@@ -1,6 +1,5 @@
 package restaurant_wc;
 
-import restaurant_ps.CashierRolePS.MarketBill;
 import restaurant_wc.gui.RestaurantCashierGui;
 import restaurant_wc.gui.RestaurantGuiWc;
 import restaurant.interfaces.Cashier;
@@ -37,12 +36,12 @@ public class CashierRoleWc extends Role implements Cashier {
 	private List<MarketBill> marketBills = Collections.synchronizedList(new ArrayList<MarketBill>());
 
 	private Map<Customer, Double> balance = Collections.synchronizedMap(new HashMap<Customer, Double>());
-	public enum checkState {COMPUTED, SENT_TO_WAITER, BEING_PAID};
+	public enum checkState {compute, sending, paying};
 
-	public enum bankActivityState {NONE, ASKED_FOR_HELP, ASKED_DEPOSIT, ASKED_WITHDRAW, DONE}
+	public enum bankActivityState {none, needHelp, depositing, withdrawing, finished}
 	public bankActivityState bankState;
 
-	public enum bankActivityEvent {NONE, READY_TO_HELP, LOAN_GIVEN, DEPOSIT_SUCCESSFUL, WITHDRAW_SUCCESSFUL}
+	public enum bankActivityEvent {none, ready, loan, succesfulDeposit, withdrawal}
 	public bankActivityEvent bankEvent;
 
 	RestaurantGuiWc restGui;
@@ -77,7 +76,7 @@ public class CashierRoleWc extends Role implements Cashier {
 			customer = c;
 			due = balance;
 			amountPaid = 0.00;
-			setState(checkState.COMPUTED);
+			setState(checkState.compute);
 		}
 
 		public checkState getState() {
@@ -241,7 +240,7 @@ public class CashierRoleWc extends Role implements Cashier {
 		synchronized (checks){
 			for (Check check : checks) {
 				if (check.customer == c) {
-					check.setState(checkState.BEING_PAID);
+					check.setState(checkState.paying);
 					check.amountPaid = amount;
 				}
 			}
@@ -255,7 +254,7 @@ public class CashierRoleWc extends Role implements Cashier {
 	// from BankTellerRole
 	public void msgReadyToHelp(Teller teller) {
 		print("received msgReadyToHelp from teller");
-		bankEvent = bankActivityEvent.READY_TO_HELP;
+		bankEvent = bankActivityEvent.ready;
 		System.out.println("got msgreadytohelp from teller");
 
 		getPersonAgent().CallstateChanged();
@@ -263,21 +262,21 @@ public class CashierRoleWc extends Role implements Cashier {
 
 	public void msgGiveLoan(double balance, double amount) {
 		print("received loan successful from bank");
-		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
+		bankEvent = bankActivityEvent.withdrawal;
 		working_capital += amount;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgWithdrawSuccessful(double funds, double amount){
 		print("received msgWithDrawSuccessful from teller");
-		bankEvent = bankActivityEvent.WITHDRAW_SUCCESSFUL;
+		bankEvent = bankActivityEvent.withdrawal;
 		working_capital += amount;
 		getPersonAgent().CallstateChanged();
 	}
 
 	public void msgDepositSuccessful(double funds){
 		print("received msgDepositSuccessful from teller");
-		bankEvent = bankActivityEvent.DEPOSIT_SUCCESSFUL;
+		bankEvent = bankActivityEvent.succesfulDeposit;
 		working_capital = min_working_capital;
 		getPersonAgent().CallstateChanged();
 	}
@@ -295,7 +294,7 @@ public class CashierRoleWc extends Role implements Cashier {
 
 		synchronized (checks) {
 			for (Check check : checks) {
-				if (check.getState() == checkState.COMPUTED){
+				if (check.getState() == checkState.compute){
 					sendCheckToWaiter(check);
 					return true;
 				}
@@ -304,7 +303,7 @@ public class CashierRoleWc extends Role implements Cashier {
 
 		synchronized (checks) {
 			for (Check check : checks) {
-				if (check.getState() == checkState.BEING_PAID){
+				if (check.getState() == checkState.paying){
 					giveChangeToCustomer(check);
 					return true;
 				}
@@ -339,27 +338,27 @@ public class CashierRoleWc extends Role implements Cashier {
 			closeRestaurant();	
 			return true;
 		}*/
-		if (bankState == bankActivityState.ASKED_FOR_HELP && bankEvent == bankActivityEvent.READY_TO_HELP) {
+		if (bankState == bankActivityState.needHelp && bankEvent == bankActivityEvent.ready) {
 			if (deposit) {
 				depositExcessMoney();
-				bankState = bankActivityState.ASKED_DEPOSIT;
+				bankState = bankActivityState.depositing;
 				return true;
 			}
 			if (withdraw) {
 				withdrawMoney();
-				bankState = bankActivityState.ASKED_WITHDRAW;
+				bankState = bankActivityState.withdrawing;
 				return true;
 			}
 		}
 
 
-		if (bankState == bankActivityState.ASKED_DEPOSIT && bankEvent == bankActivityEvent.DEPOSIT_SUCCESSFUL) {
-			bankState = bankActivityState.NONE;
+		if (bankState == bankActivityState.depositing && bankEvent == bankActivityEvent.succesfulDeposit) {
+			bankState = bankActivityState.none;
 			closeRestaurant();
 			return true;
 		}
-		if (bankState == bankActivityState.ASKED_WITHDRAW && bankEvent == bankActivityEvent.WITHDRAW_SUCCESSFUL) {
-			bankState = bankActivityState.NONE;
+		if (bankState == bankActivityState.withdrawing && bankEvent == bankActivityEvent.withdrawal) {
+			bankState = bankActivityState.none;
 			payWorkers();
 			closeRestaurant();
 			return true;
@@ -400,7 +399,7 @@ public class CashierRoleWc extends Role implements Cashier {
 		turnActive = false;
 		deposit = false;
 		withdraw = false;
-		bankState = bankActivityState.NONE;
+		bankState = bankActivityState.none;
 	}
 
 	private void sendCheckToWaiter (final Check c) {
@@ -416,7 +415,7 @@ public class CashierRoleWc extends Role implements Cashier {
 				},
 			    1000);*/
 		c.waiter.msgHereIsCheck (c.customer, c.due);
-		c.setState(checkState.SENT_TO_WAITER);
+		c.setState(checkState.sending);
 	}
 
 	private void giveChangeToCustomer (Check c) {
@@ -483,14 +482,14 @@ public class CashierRoleWc extends Role implements Cashier {
 			payWorkers(); 	
 			System.out.println("Depositing Money");
 			teller.msgNeedHelp(this, "blah");
-			bankState = bankActivityState.ASKED_FOR_HELP;	
+			bankState = bankActivityState.needHelp;	
 			deposit = true;
 		}
 
 		else {
 			teller.msgNeedHelp(this, "blah");
 			System.out.println("Withdrawing Money");
-			bankState = bankActivityState.ASKED_FOR_HELP;
+			bankState = bankActivityState.needHelp;
 			withdraw = true;
 		}
 	}
@@ -536,7 +535,7 @@ public class CashierRoleWc extends Role implements Cashier {
 		double amount = working_capital - min_working_capital;
 		System.out.println("deposit monely " + amount + " to bank");
 		teller.msgDeposit(getPersonAgent().getRestaurant(0).bankAccountID, working_capital - min_working_capital);
-		bankState = bankActivityState.ASKED_DEPOSIT;
+		bankState = bankActivityState.depositing;
 	}
 
 	private void withdrawMoney() {
@@ -544,7 +543,7 @@ public class CashierRoleWc extends Role implements Cashier {
 		double amount = getTotalSalary() + min_working_capital - working_capital;
 		System.out.println("withdraw monely " + amount + " to bank");
 		teller.msgWithdraw(getPersonAgent().getRestaurant(0).bankAccountID,getTotalSalary() + min_working_capital - working_capital);
-		bankState = bankActivityState.ASKED_WITHDRAW;
+		bankState = bankActivityState.withdrawing;
 	}
 
 

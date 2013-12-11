@@ -14,7 +14,9 @@ import city.Restaurant;
 import city.gui.CityGui;
 import city.gui.PersonGui;
 import people.PeopleAgent;
+import people.PeopleAgent.AgentEvent;
 import people.PeopleAgent.AgentLocation;
+import people.PeopleAgent.AgentState;
 import people.PeopleAgent.BuyState;
 import people.PeopleAgent.HungerState;
 import people.Role;
@@ -65,6 +67,9 @@ public class PeopleTest extends TestCase
 	PeopleAgent marketCashier;
 	PeopleAgent marketEmployee;
 	PeopleAgent marketCustomer;
+	
+	List<PeopleAgent> NormativeBPeople;
+	PeopleAgent NormativeB1;
 	//these are instantiated for each test separately via the setUp() method.
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -72,6 +77,7 @@ public class PeopleTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
+		NormativeBPeople = Collections.synchronizedList(new ArrayList<PeopleAgent>());
 		market = new Market(null, new Dimension(100,100),"Market 1");
 		market.isClosed = false;
 		restaurant = new Restaurant(null, new Dimension(100,100),"Restaurant 1", 0);
@@ -134,18 +140,30 @@ public class PeopleTest extends TestCase
 			}
 		}
 		
+		NormativeB1 = new PeopleAgent("NormativeB1", 1000000, false);
+		NormativeB1.setTest();
+		NormativeB1.Markets.add(market);
+		NormativeB1.Banks.add(bank);
+		for(int i = 0; i < 6; i++)
+		{
+			NormativeB1.Restaurants.add(restaurant);
+		}
+		NormativeB1.setType("NormativeB1");
+		NormativeBPeople.add(marketCashier);
+		NormativeBPeople.add(marketEmployee);
+		NormativeBPeople.add(teller);
+		NormativeBPeople.add(cook);
+		NormativeBPeople.add(waiter);
+		NormativeBPeople.add(host);
+		NormativeBPeople.add(restaurantCashier);
+		NormativeBPeople.add(NormativeB1);
+		
 		//person.addRole(new )
 	}	
 	
-	//This tests normative scenarioB
-	public void NormativeScenarioB()
+	//This tests normative scenarioB. aka the ULTIMATE TEST
+	public void testNormativeScenarioB()
 	{
-		
-	}
-	
-	public void testMarketScenario()
-	{
-		//AddingRoles
 		marketCashier.addRole((Role)new MockCustomer(marketCashier.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		marketCashier.addRole((Role)new MockBankCustomer(marketCashier.name), "BankCustomer");
@@ -164,246 +182,12 @@ public class PeopleTest extends TestCase
 		marketEmployee.addRole((Role)new MockTeller(marketEmployee.name), "MarketEmployee");
 		assertTrue("Testing Role addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Role added: MarketEmployee"));
 		
-		marketCustomer.addRole((Role)new MockCustomer(marketCustomer.name), "RestaurantCustomer");
-		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		marketCustomer.addRole((Role)new MockBankCustomer(marketCustomer.name), "BankCustomer");
-		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
-		marketCustomer.addRole((Role)new MockBankCustomer(marketEmployee.name), "MarketCustomer");
-		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
-		marketCustomer.addRole((Role)new MockTeller(marketEmployee.name), "MarketEmployee");
-		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: MarketEmployee"));
-		
-		//Adding Jobs
-		marketCashier.addJob("MarketCashier", 1200, 1800);
-		assertTrue("Testing Job addition", marketCashier.log.getLastLoggedEvent().toString().contains("Job added: MarketCashier"));
-					
-		marketEmployee.addJob("MarketEmployee", 1200, 1800);
-		assertTrue("Testing Job addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
-		
-		marketCustomer.addJob("MarketEmployee", 5000, 500000);
-		assertTrue("Testing Job addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
-		marketCustomer.setMoney(50000);
-		
-		//Wake Up Call
-		for(PeopleAgent p: MarketPeople)
-		{
-			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
-			p.msgTimeIs(600);
-			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
-			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
-		}
-		
-		//Going to Work
-		synchronized(MarketPeople)
-		{
-		for(int i = 0; i < MarketPeople.size(); i++)
-		{
-			MarketPeople.get(i).msgTimeIs(1200);
-			if(MarketPeople.get(i) != marketCustomer)
-			{
-				assertTrue("Testing TimeIs", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Work"));
-				assertTrue("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
-			}
-			else	
-			{
-				System.out.println("BLANK of DOOM " + MarketPeople.get(i).log.getLastLoggedEvent().toString());
-				System.out.println("BLANK of DOOM " + MarketPeople.get(i).buy.toString());
-				assertTrue("TestingTimeIs", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar"));
-				assertTrue("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
-//				//p.Arrived();
-//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
-			}
-				assertFalse("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
-		}
-		}
-		marketCustomer.msgDone("MarketCustomerRole");
-		assertTrue("Testing to see if scheduler changed state", marketCustomer.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
-		marketCustomer.Money = 0.0;
-		//Taking them off work
-		
-		for(PeopleAgent p : MarketPeople)
-		{
-			p.msgTimeIs(1800);
-			if (p != marketCustomer)
-			{
-				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
-			}
-			else
-			{
-				p.msgDone("MarketCustomerRole");
-				p.msgTimeIs(1801);
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			}
-		}
-		
-		//Sleeping Time!
-		for(PeopleAgent p : MarketPeople)
-		{
-			System.out.println(p.name + p.state.toString());
-			if(p == marketCustomer)
-			{
-				p.msgDone("DoneEating");
-			}
-			else
-			{
-				p.msgDone("MarketRole");
-			}
-			p.msgTimeIs(2330);
-			if(p == marketCustomer)
-			{
-				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-			}
-			else
-			{
-				System.out.println(p.log.getLastLoggedEvent().toString());
-//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
-//
-//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-//				p.msgDone("DoneEating");
-//				p.msgTimeIs(2330);
-				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-				
-			}
-			
-			
-//			System.out.println(p + p.state.toString());
-//			p.msgDone("Test");
-//			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
-////			p.msgDone("DoneEating");
-//			p.msgTimeIs(2200);
-//			System.out.println(p + p.state.toString());
-//			System.out.println(p + p.event.toString());
-//			System.out.println(p.log.getLastLoggedEvent().toString());
-//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
-//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-//			System.out.println(p.log.getLastLoggedEvent().toString());
-//			p.msgDone("DoneEating");
-//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-//			System.out.println(p + p.state.toString());
-//			System.out.println(p + p.event.toString());
-//			p.msgTimeIs(2330);
-//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-		}	
-	}
-	
-	public void testBankScenario()
-	{
-		//AddingRoles
 		teller.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		teller.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
 		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
 		teller.addRole((Role)new MockTeller(teller.name), "Teller");
 		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
-		
-		bankCustomer.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
-		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		bankCustomer.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
-		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
-		bankCustomer.addRole((Role)new MockTeller(teller.name), "Teller");
-		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
-		
-		//Adding Jobs
-		teller.addJob("Teller", 1200, 1800);
-		assertTrue("Testing Job addition", teller.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
-				
-		bankCustomer.addJob("Teller", 5000, 50000);
-		assertTrue("Testing Job addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
-		
-		//Wake Up Call
-		for(PeopleAgent p: BankPeople)
-		{
-			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
-			p.msgTimeIs(600);
-			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
-			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
-		}
-		
-		//Going to Work
-		for(PeopleAgent p: BankPeople)
-		{
-			p.msgTimeIs(1200);
-			if(p == teller)
-			{
-				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
-			}
-			else
-			{
-				System.out.println(p.log.getLastLoggedEvent().toString());
-				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney" ));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				//System.out.println(p.log.getLastLoggedEvent().toString());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
-			}
-				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-		}
-		
-		//Taking them off work
-		for(PeopleAgent p : BankPeople)
-		{
-			p.msgTimeIs(1800);
-			if (p == teller)
-			{
-				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
-			}
-			else
-			{
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
-			}
-		}
-		
-		bankCustomer.msgDone("BankCustomerRole");
-		assertTrue("Testing to see if msg is recieved", bankCustomer.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
-		
-		
-		//Sleeping Time!
-		for(PeopleAgent p : BankPeople)
-		{
-			//System.out.println(p + p.state.toString());
-			p.msgDone("Test");
-			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
-			if(!p.location.toString().equals("Home"))
-			{
-			p.msgTimeIs(2200);
-			//System.out.println(p.event.toString());
-			//System.out.println(p.state.toString());
-			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			System.out.println(p.state.toString());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
-			}
-			p.msgDone("DoneEating");
-			p.msgTimeIs(2330);
-		//	System.out.println(p + p.state.toString());
-			//System.out.println(p + p.event.toString());
-			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
-			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-		}	
-	}
-	
-	/**
-	 * This tests the restaurantCashier under very simple terms: one restaurantCustomer is ready to pay the exact bill.
-	 */
-	public void testRestaurantScenario()
-	{
-		//Adding Roles into all of the People
-		
 		
 		cook.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
@@ -415,11 +199,6 @@ public class PeopleTest extends TestCase
 		waiter.addRole((Role)new MockWaiter(waiter.name), "RestaurantNormalWaiter");
 		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantNormalWaiter"));
 		
-		restaurantCustomer.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
-		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
-		restaurantCustomer.addRole((Role)new MockCook(cook.name), "RestaurantCook");
-		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
-		
 		host.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
 		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
 		host.addRole((Role)new MockHost(host.name), "RestaurantHost");
@@ -430,6 +209,25 @@ public class PeopleTest extends TestCase
 		restaurantCashier.addRole((Role)new MockCashier(restaurantCashier.name), "RestaurantCashier");
 		assertTrue("Testing Role addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCashier"));
 		
+		marketCashier.addRole((Role)new MockCustomer(marketCashier.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		marketCashier.addRole((Role)new MockBankCustomer(marketCashier.name), "BankCustomer");
+		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		marketCashier.addRole((Role)new MockBankCustomer(marketCashier.name), "MarketCustomer");
+		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
+		marketCashier.addRole((Role)new MockTeller(marketCashier.name), "MarketCashier");
+		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: MarketCashier"));
+		
+
+		NormativeB1.addRole((Role)new MockCustomer(marketCashier.name), "RestaurantCustomer");
+		assertTrue("Testing Role addition", NormativeB1.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+		NormativeB1.addRole((Role)new MockBankCustomer(marketCashier.name), "BankCustomer");
+		assertTrue("Testing Role addition", NormativeB1.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+		NormativeB1.addRole((Role)new MockBankCustomer(marketCashier.name), "MarketCustomer");
+		assertTrue("Testing Role addition", NormativeB1.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
+		NormativeB1.addRole((Role)new MockTeller(marketCashier.name), "MarketCashier");
+		assertTrue("Testing Role addition", NormativeB1.log.getLastLoggedEvent().toString().contains("Role added: MarketCashier"));
+		
 		//Adding Jobs
 		cook.addJob("RestaurantCook", 1200, 1800);
 		assertTrue("Testing Job addition", cook.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
@@ -437,54 +235,84 @@ public class PeopleTest extends TestCase
 		waiter.addJob("RestaurantNormalWaiter", 1200, 1800);
 		assertTrue("Testing Job addition", waiter.log.getLastLoggedEvent().toString().contains("Job added: RestaurantNormalWaiter"));
 		
-		restaurantCustomer.addJob("RestaurantCook", 5000, 50000);
-		assertTrue("Testing Job addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
-		
 		host.addJob("RestaurantHost" , 1100, 1900);
 		assertTrue("Testing Job addition", host.log.getLastLoggedEvent().toString().contains("Job added: RestaurantHost"));
 		
 		restaurantCashier.addJob("RestaurantCashier", 1200, 1800);
 		assertTrue("Testing Job addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
 		
-		//Sending message to RestaurantPeople!
-		//Wake up call!
-		
-		for(PeopleAgent p: RestaurantPeople)
-		{
-			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
-			p.msgTimeIs(600);
-			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
-			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
-		}
-		
-		restaurantCustomer.hunger = HungerState.Hungry;
+		marketCashier.addJob("MarketCashier", 1200, 1800);
+		assertTrue("Testing Job addition", marketCashier.log.getLastLoggedEvent().toString().contains("Job added: MarketCashier"));
 
+		NormativeB1.addJob("MarketCashier", 50000, 50000);
+		assertTrue("Testing Job addition", marketCashier.log.getLastLoggedEvent().toString().contains("Job added: MarketCashier"));
+					
+		marketEmployee.addJob("MarketEmployee", 1200, 1800);
+		assertTrue("Testing Job addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
 		
-		for(PeopleAgent p: RestaurantPeople)
+		teller.addJob("Teller", 1000, 1800);
+		assertTrue("Testing Job addition", teller.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
+		
+		for(PeopleAgent p: NormativeBPeople)
+			{
+				assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+				p.msgTimeIs(600);
+				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+			}
+		teller.msgTimeIs(1000);
+		assertTrue("Testing TimeIs", teller.log.getLastLoggedEvent().toString().contains("Going To Work"));
+		assertTrue("Testing Scheduler", teller.pickAndExecuteAnAction());
+		assertTrue("Testing to see if scheduler changed state", teller.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+		
+		host.msgTimeIs(1100);	
+		assertTrue("Testing TimeIs", host.log.getLastLoggedEvent().toString().contains("Going To Work"));
+		assertTrue("Testing Scheduler", host.pickAndExecuteAnAction());
+		assertTrue("Testing to see if scheduler changed state", host.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+		for(PeopleAgent p: NormativeBPeople)
 		{
-			if(p == host)
+			
+			if(p != teller)
 			{
-				p.msgTimeIs(1100);
-				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+				if(p != host)
+				{
+					p.msgTimeIs(1200);
+					if(p != NormativeB1)
+					{
+						assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+						assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+						assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+					}
+					else
+					{
+						//He goes to the bank!
+						assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney"));
+						assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+						assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
+					}
+				}
 			}
-			else if(p != restaurantCustomer)
-			{
-				p.msgTimeIs(1200);
-				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
-			}
-			else
-			{
-				p.msgTimeIs(1200);
-				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			}
-				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
-		for(PeopleAgent p : RestaurantPeople)
+		NormativeB1.msgDone("BankCustomerRole");
+		assertTrue("Testing to see if msg is recieved", NormativeB1.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+		
+		//Making him hungry
+		NormativeB1.hunger = HungerState.Hungry;
+		
+		//He goes to eat!
+		NormativeB1.msgTimeIs(1250);
+		assertTrue("Testing to see if msg is recieved", NormativeB1.event.toString().equals("GoingToRestaurant"));
+		//Doing this because yelp is not feasible in this scenario.
+		NormativeB1.event = AgentEvent.Idle;
+		
+		NormativeB1.msgTimeIs(1400);
+		
+		//buying a car!
+		NormativeB1.msgDone("MarketCustomerRole");
+		assertTrue("Testing to see if msg is recieved", NormativeB1.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+		
+		for(PeopleAgent p : NormativeBPeople)
 		{
 			if(p == host)
 			{
@@ -493,7 +321,7 @@ public class PeopleTest extends TestCase
 				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
-			else if(p!= restaurantCustomer)
+			else if(p!= NormativeB1 )
 			{
 				p.msgTimeIs(1800);
 				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
@@ -501,53 +329,430 @@ public class PeopleTest extends TestCase
 				//System.out.println(p.log.getLastLoggedEvent().toString());
 				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
 			}
-			else
-			{
-				p.msgTimeIs(1800);
-				if(p.state.toString().equals("EatingAtRestaurant"))
-				{
-					p.msgDone("RestaurantCustomerRole");
-				}
-				else
-				{
-					p.msgDone("HomeEating");
-				}
-				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-			}
 			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
 		}
 		
-		//Sleeping Time!
-		for(PeopleAgent p : RestaurantPeople)
+		//Sleeping!
+		for(PeopleAgent p : NormativeBPeople)
 		{
-			if(p == restaurantCustomer)
+			//only testing him because everyone else is tested in other tests.
+			if(p == NormativeB1)
 			{
-				p.msgDone("RestaurantCustomerRole");
-			}
-			else
-			{
-				p.msgDone("Test");
-			}
-			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
-			if(!p.location.toString().equals("Home"))
-			{
-			p.msgTimeIs(2200);
-			//System.out.println(p.event.toString());
-			//System.out.println(p.state.toString());
-			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
-			//System.out.println(p.log.getLastLoggedEvent().toString());
-			System.out.println(p.state.toString());
-			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
-			}
-			p.msgDone("DoneEating");
 			p.msgTimeIs(2330);
-			
 			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
 			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
-			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
-			
-			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
-		}	
+			}
+		}
+	
+		
+		
 	}
+	
+//	public void testMarketScenario()
+//	{
+//		//AddingRoles
+//		marketCashier.addRole((Role)new MockCustomer(marketCashier.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		marketCashier.addRole((Role)new MockBankCustomer(marketCashier.name), "BankCustomer");
+//		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+//		marketCashier.addRole((Role)new MockBankCustomer(marketCashier.name), "MarketCustomer");
+//		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
+//		marketCashier.addRole((Role)new MockTeller(marketCashier.name), "MarketCashier");
+//		assertTrue("Testing Role addition", marketCashier.log.getLastLoggedEvent().toString().contains("Role added: MarketCashier"));
+//		
+//		marketEmployee.addRole((Role)new MockCustomer(marketEmployee.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		marketEmployee.addRole((Role)new MockBankCustomer(marketEmployee.name), "BankCustomer");
+//		assertTrue("Testing Role addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+//		marketEmployee.addRole((Role)new MockBankCustomer(marketEmployee.name), "MarketCustomer");
+//		assertTrue("Testing Role addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
+//		marketEmployee.addRole((Role)new MockTeller(marketEmployee.name), "MarketEmployee");
+//		assertTrue("Testing Role addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Role added: MarketEmployee"));
+//		
+//		marketCustomer.addRole((Role)new MockCustomer(marketCustomer.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		marketCustomer.addRole((Role)new MockBankCustomer(marketCustomer.name), "BankCustomer");
+//		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+//		marketCustomer.addRole((Role)new MockBankCustomer(marketEmployee.name), "MarketCustomer");
+//		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: MarketCustomer"));
+//		marketCustomer.addRole((Role)new MockTeller(marketEmployee.name), "MarketEmployee");
+//		assertTrue("Testing Role addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Role added: MarketEmployee"));
+//		
+//		//Adding Jobs
+//		marketCashier.addJob("MarketCashier", 1200, 1800);
+//		assertTrue("Testing Job addition", marketCashier.log.getLastLoggedEvent().toString().contains("Job added: MarketCashier"));
+//					
+//		marketEmployee.addJob("MarketEmployee", 1200, 1800);
+//		assertTrue("Testing Job addition", marketEmployee.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
+//		
+//		marketCustomer.addJob("MarketEmployee", 5000, 500000);
+//		assertTrue("Testing Job addition", marketCustomer.log.getLastLoggedEvent().toString().contains("Job added: MarketEmployee"));
+//		marketCustomer.setMoney(50000);
+//		
+//		//Wake Up Call
+//		for(PeopleAgent p: MarketPeople)
+//		{
+//			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+//			p.msgTimeIs(600);
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+//		}
+//		
+//		//Going to Work
+//		synchronized(MarketPeople)
+//		{
+//		for(int i = 0; i < MarketPeople.size(); i++)
+//		{
+//			MarketPeople.get(i).msgTimeIs(1200);
+//			if(MarketPeople.get(i) != marketCustomer)
+//			{
+//				assertTrue("Testing TimeIs", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Work"));
+//				assertTrue("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+//			}
+//			else	
+//			{
+//				System.out.println("BLANK of DOOM " + MarketPeople.get(i).log.getLastLoggedEvent().toString());
+//				System.out.println("BLANK of DOOM " + MarketPeople.get(i).buy.toString());
+//				assertTrue("TestingTimeIs", MarketPeople.get(i).log.getLastLoggedEvent().toString().contains("Going To Buy Car. Event is now: GoingToBuyCar"));
+//				assertTrue("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
+////				//p.Arrived();
+////				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Buy Car. New State is BuyingCar"));
+//			}
+//				assertFalse("Testing Scheduler", MarketPeople.get(i).pickAndExecuteAnAction());
+//		}
+//		}
+//		marketCustomer.msgDone("MarketCustomerRole");
+//		assertTrue("Testing to see if scheduler changed state", marketCustomer.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+//		marketCustomer.Money = 0.0;
+//		//Taking them off work
+//		
+//		for(PeopleAgent p : MarketPeople)
+//		{
+//			p.msgTimeIs(1800);
+//			if (p != marketCustomer)
+//			{
+//				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
+//			}
+//			else
+//			{
+//				p.msgDone("MarketCustomerRole");
+//				p.msgTimeIs(1801);
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			}
+//		}
+//		
+//		//Sleeping Time!
+//		for(PeopleAgent p : MarketPeople)
+//		{
+//			System.out.println(p.name + p.state.toString());
+//			if(p == marketCustomer)
+//			{
+//				p.msgDone("DoneEating");
+//			}
+//			else
+//			{
+//				p.msgDone("MarketRole");
+//			}
+//			p.msgTimeIs(2330);
+//			if(p == marketCustomer)
+//			{
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+//			}
+//			else
+//			{
+//				System.out.println(p.log.getLastLoggedEvent().toString());
+////				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+////
+////				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+////				p.msgDone("DoneEating");
+////				p.msgTimeIs(2330);
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+//				
+//			}
+//			
+//			
+////			System.out.println(p + p.state.toString());
+////			p.msgDone("Test");
+////			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+//////			p.msgDone("DoneEating");
+////			p.msgTimeIs(2200);
+////			System.out.println(p + p.state.toString());
+////			System.out.println(p + p.event.toString());
+////			System.out.println(p.log.getLastLoggedEvent().toString());
+////			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+////			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+////			System.out.println(p.log.getLastLoggedEvent().toString());
+////			p.msgDone("DoneEating");
+////			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+////			System.out.println(p + p.state.toString());
+////			System.out.println(p + p.event.toString());
+////			p.msgTimeIs(2330);
+////			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+////			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+////			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}	
+//	}
+//	
+//	public void testBankScenario()
+//	{
+//		//AddingRoles
+//		teller.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		teller.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+//		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+//		teller.addRole((Role)new MockTeller(teller.name), "Teller");
+//		assertTrue("Testing Role addition", teller.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+//		
+//		bankCustomer.addRole((Role)new MockCustomer(teller.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		bankCustomer.addRole((Role)new MockBankCustomer(teller.name), "BankCustomer");
+//		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: BankCustomer"));
+//		bankCustomer.addRole((Role)new MockTeller(teller.name), "Teller");
+//		assertTrue("Testing Role addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Role added: Teller"));
+//		
+//		//Adding Jobs
+//		teller.addJob("Teller", 1200, 1800);
+//		assertTrue("Testing Job addition", teller.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
+//				
+//		bankCustomer.addJob("Teller", 5000, 50000);
+//		assertTrue("Testing Job addition", bankCustomer.log.getLastLoggedEvent().toString().contains("Job added: Teller"));
+//		
+//		//Wake Up Call
+//		for(PeopleAgent p: BankPeople)
+//		{
+//			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+//			p.msgTimeIs(600);
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+//		}
+//		
+//		//Going to Work
+//		for(PeopleAgent p: BankPeople)
+//		{
+//			p.msgTimeIs(1200);
+//			if(p == teller)
+//			{
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+//			}
+//			else
+//			{
+//				System.out.println(p.log.getLastLoggedEvent().toString());
+//				assertTrue("TestingTimeIs", p.log.getLastLoggedEvent().toString().contains("Depositing Money. Event is now: GoingToDepositMoney" ));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				//System.out.println(p.log.getLastLoggedEvent().toString());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
+//			}
+//				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}
+//		
+//		//Taking them off work
+//		for(PeopleAgent p : BankPeople)
+//		{
+//			p.msgTimeIs(1800);
+//			if (p == teller)
+//			{
+//				assertTrue("Testing to see if Leaving work", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
+//			}
+//			else
+//			{
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Bank. New State is GoingToBank"));
+//			}
+//		}
+//		
+//		bankCustomer.msgDone("BankCustomerRole");
+//		assertTrue("Testing to see if msg is recieved", bankCustomer.log.getLastLoggedEvent().toString().contains("Recieved msgDone"));
+//		
+//		
+//		//Sleeping Time!
+//		for(PeopleAgent p : BankPeople)
+//		{
+//			//System.out.println(p + p.state.toString());
+//			p.msgDone("Test");
+//			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+//			if(!p.location.toString().equals("Home"))
+//			{
+//			p.msgTimeIs(2200);
+//			//System.out.println(p.event.toString());
+//			//System.out.println(p.state.toString());
+//			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
+//			System.out.println(p.state.toString());
+//			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
+//			}
+//			p.msgDone("DoneEating");
+//			p.msgTimeIs(2330);
+//		//	System.out.println(p + p.state.toString());
+//			//System.out.println(p + p.event.toString());
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}	
+//	}
+//	
+//	/**
+//	 * This tests the restaurantCashier under very simple terms: one restaurantCustomer is ready to pay the exact bill.
+//	 */
+//	public void testRestaurantScenario()
+//	{
+//		//Adding Roles into all of the People
+//		
+//		
+//		cook.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		cook.addRole((Role)new MockCook(cook.name), "RestaurantCook");
+//		assertTrue("Testing Role addition", cook.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
+//		
+//		waiter.addRole((Role)new MockCustomer(waiter.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		waiter.addRole((Role)new MockWaiter(waiter.name), "RestaurantNormalWaiter");
+//		assertTrue("Testing Role addition", waiter.log.getLastLoggedEvent().toString().contains("Role added: RestaurantNormalWaiter"));
+//		
+//		restaurantCustomer.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		restaurantCustomer.addRole((Role)new MockCook(cook.name), "RestaurantCook");
+//		assertTrue("Testing Role addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCook"));
+//		
+//		host.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		host.addRole((Role)new MockHost(host.name), "RestaurantHost");
+//		assertTrue("Testing Role addition", host.log.getLastLoggedEvent().toString().contains("Role added: RestaurantHost"));
+//		
+//		restaurantCashier.addRole((Role)new MockCustomer(cook.name), "RestaurantCustomer");
+//		assertTrue("Testing Role addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCustomer"));
+//		restaurantCashier.addRole((Role)new MockCashier(restaurantCashier.name), "RestaurantCashier");
+//		assertTrue("Testing Role addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Role added: RestaurantCashier"));
+//		
+//		//Adding Jobs
+//		cook.addJob("RestaurantCook", 1200, 1800);
+//		assertTrue("Testing Job addition", cook.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
+//		
+//		waiter.addJob("RestaurantNormalWaiter", 1200, 1800);
+//		assertTrue("Testing Job addition", waiter.log.getLastLoggedEvent().toString().contains("Job added: RestaurantNormalWaiter"));
+//		
+//		restaurantCustomer.addJob("RestaurantCook", 5000, 50000);
+//		assertTrue("Testing Job addition", restaurantCustomer.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCook"));
+//		
+//		host.addJob("RestaurantHost" , 1100, 1900);
+//		assertTrue("Testing Job addition", host.log.getLastLoggedEvent().toString().contains("Job added: RestaurantHost"));
+//		
+//		restaurantCashier.addJob("RestaurantCashier", 1200, 1800);
+//		assertTrue("Testing Job addition", restaurantCashier.log.getLastLoggedEvent().toString().contains("Job added: RestaurantCashier"));
+//		
+//		//Sending message to RestaurantPeople!
+//		//Wake up call!
+//		
+//		for(PeopleAgent p: RestaurantPeople)
+//		{
+//			assertTrue("Make sure Initial state is sleeping!", p.getAgentState().equals("Sleeping"));
+//			p.msgTimeIs(600);
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Waking Up In Message"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Waking Up In Scheduler. New State is Idle"));
+//		}
+//		
+//		restaurantCustomer.hunger = HungerState.Hungry;
+//
+//		
+//		for(PeopleAgent p: RestaurantPeople)
+//		{
+//			if(p == host)
+//			{
+//				p.msgTimeIs(1100);
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+//			}
+//			else if(p != restaurantCustomer)
+//			{
+//				p.msgTimeIs(1200);
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Going To Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Going To Work. New State is Working"));
+//			}
+//			else
+//			{
+//				p.msgTimeIs(1200);
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			}
+//				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}
+//		for(PeopleAgent p : RestaurantPeople)
+//		{
+//			if(p == host)
+//			{
+//				p.msgTimeIs(1900);
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
+//			}
+//			else if(p!= restaurantCustomer)
+//			{
+//				p.msgTimeIs(1800);
+//				assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Leaving Work"));
+//				assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//				//System.out.println(p.log.getLastLoggedEvent().toString());
+//				assertTrue("Testing to see if scheduler changed state", p.log.getLastLoggedEvent().toString().contains("Leaving Work. New State is Waiting"));
+//			}
+//			else
+//			{
+//				p.msgTimeIs(1800);
+//				if(p.state.toString().equals("EatingAtRestaurant"))
+//				{
+//					p.msgDone("RestaurantCustomerRole");
+//				}
+//				else
+//				{
+//					p.msgDone("HomeEating");
+//				}
+//				assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//			}
+//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}
+//		
+//		//Sleeping Time!
+//		for(PeopleAgent p : RestaurantPeople)
+//		{
+//			if(p == restaurantCustomer)
+//			{
+//				p.msgDone("RestaurantCustomerRole");
+//			}
+//			else
+//			{
+//				p.msgDone("Test");
+//			}
+//			assertTrue("Make sure Initial state is Idle!", p.getAgentState().equals("Idle"));
+//			if(!p.location.toString().equals("Home"))
+//			{
+//			p.msgTimeIs(2200);
+//			//System.out.println(p.event.toString());
+//			//System.out.println(p.state.toString());
+//			assertTrue("TestingScheduler", p.pickAndExecuteAnAction());
+//			//System.out.println(p.log.getLastLoggedEvent().toString());
+//			System.out.println(p.state.toString());
+//			assertTrue("Testing to see if state is correct", p.state.toString().equals("Idle"));
+//			}
+//			p.msgDone("DoneEating");
+//			p.msgTimeIs(2330);
+//			
+//			assertTrue("Testing TimeIs", p.log.getLastLoggedEvent().toString().contains("Sleeping In Message"));
+//			assertTrue("Testing Scheduler", p.pickAndExecuteAnAction());
+//			assertTrue("Testing Scheduler Log", p.log.getLastLoggedEvent().toString().contains("Sleeping In Scheduler. New State is Sleeping"));
+//			
+//			assertFalse("Testing Scheduler", p.pickAndExecuteAnAction());
+//		}	
+//	}
 
 }

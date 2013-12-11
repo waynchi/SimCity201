@@ -309,13 +309,6 @@ public class HostRoleWc extends Role implements Host{
 	}
 
 	// Actions
-
-	private void tellCustomerRestIsFull (MyCustomer mc) {
-		print ("Hi "+ mc.customer.getName() + ", restaurant is full now, do you want to wait?");
-		mc.customer.msgYouNeedToWait();
-		mc.state = customerState.informed;
-	}
-
 	private void TellWaiterToSeatCustomer(MyCustomer mc, Waiter waiter, Table table) {
 		print("Please take "+mc.customer.getName()+ " to table#" + table.tableNumber);
 		waiter.SitAtTable(mc.customer, table.tableNumber);
@@ -328,7 +321,7 @@ public class HostRoleWc extends Role implements Host{
 
 			for (MyWaiter temp : waiters) {
 				if (temp.s == temp.s.Working && temp!=waiter) {
-					print ("Okay "+waiter.w.getName()+", you can have a break!");
+					print (waiter.w.getName()+", you may go on break.");
 					waiter.s = waiterStatus.onBreak;
 					waiter.w.msgBreakApproved();
 					//availableWaiters.remove(waiter.w);
@@ -336,8 +329,7 @@ public class HostRoleWc extends Role implements Host{
 				}
 			}
 		}
-		print ("Sorry "+waiter.w.getName()+" , you are the only available waiter now and we're"
-				+ " counting on you. Fight on!");
+		print ("You may not go on break. You are the last waiter.");
 		waiter.s = waiterStatus.Working;
 		waiter.w.msgBreakDenied();
 	}
