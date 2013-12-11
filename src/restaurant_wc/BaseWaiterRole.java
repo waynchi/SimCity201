@@ -351,7 +351,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		customer.c.msgFollowMeToTable(this, customer.tableNumber, menu);
+		customer.c.msgSitAtTable(this, customer.tableNumber, menu);
 		waiterGui.DoSeatCustomer(customer.c, customer.tableNumber);
 		print("Seating " + customer.c + " at table " + customer.tableNumber);
 		try {
@@ -402,7 +402,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 			}
 		}
 		newMenu.remove(f);
-		customer.c.msgReorder(newMenu);
+		customer.c.msgWhatElseWouldYouLike(newMenu);
 		customer.state = customerState.askedToOrder;
 	}
 	
@@ -454,7 +454,7 @@ public abstract class BaseWaiterRole extends Role implements Waiter {
 		}
 		
 		print ("Hi " + customer.c + " here is your check.");
-		customer.c.msgHereIsCheck(customer.due, cashier);
+		customer.c.msgHereIsYourTotal(customer.due, cashier);
 		customer.state = customerState.needsToPay;
 	}
 	

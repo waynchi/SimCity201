@@ -330,7 +330,7 @@ public class HostRoleWc extends Role implements Host{
 
 	private void tellCustomerRestIsFull (MyCustomer mc) {
 		print ("Hi "+ mc.customer.getName() + ", restaurant is full now, do you want to wait?");
-		mc.customer.msgRestaurantIsFull();
+		mc.customer.msgYouNeedToWait();
 		mc.state = customerState.ASKED_WHETHER_TO_WAIT;
 	}
 
