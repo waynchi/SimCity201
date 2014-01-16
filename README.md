@@ -33,6 +33,14 @@ If there are any other suggestions, please post on our issue tracker!
 
 # How To Use Our SimCity
 
+In order to start up our simulation in Eclipse follow the following procedure
+1. first click the new button on the top left.
+2. Choose Java Project
+3. Uncheck 'use default location' and then browse to the SimCity201 folder. Choose that.
+4. Run the Project. Choose Java Application. Then Choose CityGui.java
+5. Alternately, navigate to SimCity201->src->city.gui in Eclipse and Right-Click CityGui.java. Choose Run As-> Java Application
+
+
 V2.1
 
 Our SimCity runs autonomously. As a result, there is no configuration Panel.
@@ -61,7 +69,7 @@ V2.2
 As per V2.1, you can still start the SimCity through the config file.
 However, now we have now implemented many new methods to run our city as well as modify it. You can find these in the scenarios tab.
 
-#1 importance
+#1 Importance
 Clear World Function. This clears the world of all people, guis, etc. This is vital as it will allow you to completely restart the simulation for normativeBaselineA, normativeBaselineB, and the original config file. 
 I understand that this is no longer a necessity since the professor has stated that we can just restart the simulation, but I am still incredibly proud of it.
 However, if it does not work, all you have to do is copy the normativeBaselineA or normativeBaselineB into config.txt and restart the simulation.
